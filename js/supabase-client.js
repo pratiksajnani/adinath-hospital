@@ -393,3 +393,4 @@ console.log(SupabaseAuth.isConfigured()
     : '⚠️ Supabase not configured - using demo mode'
 );
 
+/* Cache buster: 1766342676 */
