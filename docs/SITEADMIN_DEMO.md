@@ -1,6 +1,6 @@
 # 🏥 ADINATH HOSPITAL - SITE ADMIN DEMO GUIDE
 
-> **Live Site:** https://main.d2a0i6erg1hmca.amplifyapp.com/
+> **Live Site:** https://adinathhealth.com/
 > **Last Updated:** December 20, 2025
 
 ---
@@ -19,7 +19,7 @@
 ## 📋 DEMO WALKTHROUGH
 
 ### 1. HOMEPAGE TOUR (5 mins)
-- [ ] Visit: https://main.d2a0i6erg1hmca.amplifyapp.com/
+- [ ] Visit: https://adinathhealth.com/
 - [ ] Click language toggle (EN → हिंदी → ગુજરાતી)
 - [ ] Click "Services" dropdown → See all services
 - [ ] Click "Doctors" dropdown → See doctor profiles
@@ -28,7 +28,7 @@
 - [ ] Click "Book Appointment" button
 
 ### 2. BOOK AN APPOINTMENT (3 mins)
-- [ ] Visit: https://main.d2a0i6erg1hmca.amplifyapp.com/book.html
+- [ ] Visit: https://adinathhealth.com/book.html
 - [ ] Select Dr. Ashok (Orthopedic)
 - [ ] Pick a date and time slot
 - [ ] Fill patient details:
@@ -40,7 +40,7 @@
 - [ ] See confirmation message
 
 ### 3. PORTAL HUB (2 mins)
-- [ ] Visit: https://main.d2a0i6erg1hmca.amplifyapp.com/portal/index.html
+- [ ] Visit: https://adinathhealth.com/portal/index.html
 - [ ] See all portal options:
   - Patient Portal
   - Doctor Dashboard (Simple)
@@ -50,7 +50,7 @@
   - Printable Forms
 
 ### 4. DOCTOR DASHBOARD - SIMPLE VIEW (5 mins)
-- [ ] Visit: https://main.d2a0i6erg1hmca.amplifyapp.com/portal/doctor/simple.html
+- [ ] Visit: https://adinathhealth.com/portal/doctor/simple.html
 - [ ] Large buttons designed for seniors (60+ years)
 - [ ] Click "Next Patient" → See patient info
 - [ ] Click "Write Prescription" → Opens prescription form
@@ -58,30 +58,30 @@
 - [ ] Click "Forms" → Access printable forms
 
 ### 5. PATIENT PORTAL (3 mins)
-- [ ] Visit: https://main.d2a0i6erg1hmca.amplifyapp.com/portal/patient/index.html
+- [ ] Visit: https://adinathhealth.com/portal/patient/index.html
 - [ ] Enter phone: 9876543210
 - [ ] Enter name: Test Patient
 - [ ] Click Login
 - [ ] See: My Appointments, My Prescriptions, Profile
 
 ### 6. PRINTABLE FORMS (5 mins)
-- [ ] Visit: https://main.d2a0i6erg1hmca.amplifyapp.com/forms/index.html
+- [ ] Visit: https://adinathhealth.com/forms/index.html
 - [ ] Click "Patient Registration" → Bilingual form (EN + ગુજરાતી)
 - [ ] Click "Consent Form" → Medical consent
 - [ ] Click "Prescription Pad" → Doctor's Rx form
 - [ ] Try "Print Form" button on any form
 
 ### 7. MEDICAL STORE (3 mins)
-- [ ] Visit: https://main.d2a0i6erg1hmca.amplifyapp.com/store.html
+- [ ] Visit: https://adinathhealth.com/store.html
 - [ ] See store info: hours, contact, ordering
 - [ ] Click "Order via WhatsApp"
-- [ ] Visit store dashboard: https://main.d2a0i6erg1hmca.amplifyapp.com/store/index.html
+- [ ] Visit store dashboard: https://adinathhealth.com/store/index.html
 - [ ] See: Inventory, Sales, Patient Queue, Print Queue
 
 ### 8. SERVICE PAGES (5 mins)
-- [ ] Orthopedic: https://main.d2a0i6erg1hmca.amplifyapp.com/services/orthopedic.html
-- [ ] Gynecology: https://main.d2a0i6erg1hmca.amplifyapp.com/services/gynecology.html
-- [ ] Yoga Classes: https://main.d2a0i6erg1hmca.amplifyapp.com/services/yoga.html
+- [ ] Orthopedic: https://adinathhealth.com/services/orthopedic.html
+- [ ] Gynecology: https://adinathhealth.com/services/gynecology.html
+- [ ] Yoga Classes: https://adinathhealth.com/services/yoga.html
   - See yoga gallery photos
   - Book yoga class button
 

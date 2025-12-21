@@ -79,7 +79,7 @@ const CONFIG = {
     PHONE: '+919925450425',
     PHONE_DISPLAY: '+91 99254 50425',
     WHATSAPP: '919925450425',
-    EMAIL: 'info@adinathhospital.com',
+    EMAIL: 'info@adinathhealth.com',
     
     // Address
     ADDRESS: {

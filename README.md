@@ -4,7 +4,9 @@ Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Mana
 
 ## 🌐 Live Website
 
-**Production:** https://main.d2a0i6erg1hmca.amplifyapp.com/
+**Production:** https://adinathhealth.com/ *(Domain live in 10-48 hours)*
+
+**Staging:** https://main.d2a0i6erg1hmca.amplifyapp.com/
 
 ---
 

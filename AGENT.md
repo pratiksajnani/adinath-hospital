@@ -13,7 +13,7 @@
 - **Frontend:** Pure HTML5, CSS3, Vanilla JavaScript
 - **Data:** localStorage-based HMS (Hospital Management System) - see `js/hms.js`
 - **Hosting:** AWS Amplify (auto-deploys from GitHub)
-- **Live URL:** https://main.d2a0i6erg1hmca.amplifyapp.com/
+- **Live URL:** https://adinathhealth.com/
 
 ### Key Files
 | File | Purpose |
@@ -81,7 +81,7 @@
 
 ## 🧪 TEST COMMANDS
 
-Run these in browser console at https://main.d2a0i6erg1hmca.amplifyapp.com/
+Run these in browser console at https://adinathhealth.com/
 
 ```javascript
 // 1. Reset and reinitialize HMS data
@@ -211,7 +211,7 @@ adinath-hospital/
 - **Address:** 2nd Floor, Shukan Mall, Shahibaug Rd, near Rajasthan Hospital, Ahmedabad 380004
 - **Phone:** +91 99254 50425
 - **Hours:** 11 AM - 7 PM (does NOT take emergencies)
-- **Website:** https://main.d2a0i6erg1hmca.amplifyapp.com/
+- **Website:** https://adinathhealth.com/
 
 ---
 

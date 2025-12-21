@@ -2,12 +2,13 @@
     "name": "Adinath Hospital",
     "short_name": "Adinath",
     "description": "Expert Orthopedic and Gynecology care in Ahmedabad",
-    "start_url": "/adinath-hospital/",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
-    "theme_color": "#1a7369",
+    "theme_color": "#0f766e",
     "orientation": "portrait-primary",
-    "scope": "/adinath-hospital/",
+    "scope": "/",
+    "id": "adinath-hospital",
     "icons": [
         {
             "src": "images/icon-192.png",
@@ -28,14 +29,22 @@
     "shortcuts": [
         {
             "name": "Book Appointment",
-            "url": "/adinath-hospital/book.html",
-            "description": "Book an appointment with our doctors"
+            "url": "/book.html",
+            "description": "Book an appointment with our doctors",
+            "icons": [{ "src": "images/icon-book.png", "sizes": "96x96" }]
         },
         {
             "name": "Call Hospital",
             "url": "tel:+919925450425",
             "description": "Call Adinath Hospital directly"
+        },
+        {
+            "name": "WhatsApp Us",
+            "url": "https://wa.me/919925450425",
+            "description": "Chat with us on WhatsApp"
         }
-    ]
+    ],
+    "related_applications": [],
+    "prefer_related_applications": false
 }
 

@@ -8,7 +8,7 @@
 
 ## 🎬 INTRO (30 seconds)
 
-**[Show: Homepage at https://main.d2a0i6erg1hmca.amplifyapp.com/]**
+**[Show: Homepage at https://adinathhealth.com/]**
 
 > "Welcome to Adinath Hospital's new digital platform. I'm going to walk you through all the features we've built to make healthcare more accessible for our patients and easier for our staff."
 >

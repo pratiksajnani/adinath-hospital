@@ -5,7 +5,7 @@ Mid-size hospital website in Ahmedabad, India. Hospital Management System (HMS) 
 
 ## Repository
 - GitHub: https://github.com/pratiksajnani/adinath-hospital
-- Live URL: https://main.d2a0i6erg1hmca.amplifyapp.com/
+- Live URL: https://adinathhealth.com/
 - Hosting: AWS Amplify (auto-deploys from main branch)
 
 ## Tech Stack
