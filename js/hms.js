@@ -300,7 +300,15 @@ const HMS = {
     users: {
         getAll() { return JSON.parse(localStorage.getItem('hms_users') || '[]'); },
         get(id) { return this.getAll().find(u => u.id === id); },
-        getByEmail(email) { return this.getAll().find(u => u.email.toLowerCase() === email.toLowerCase()); },
+        getByEmail(email) { return this.getAll().find(u => u.email && u.email.toLowerCase() === email.toLowerCase()); },
+        getByUsername(username) { return this.getAll().find(u => u.username && u.username.toLowerCase() === username.toLowerCase()); },
+        getByEmailOrUsername(identifier) {
+            const lower = identifier.toLowerCase();
+            return this.getAll().find(u => 
+                (u.email && u.email.toLowerCase() === lower) || 
+                (u.username && u.username.toLowerCase() === lower)
+            );
+        },
         getByRole(role) { return this.getAll().filter(u => u.role === role); },
         getDoctors() { return this.getAll().filter(u => u.role === 'doctor'); },
         getStaff() { return this.getAll().filter(u => u.role !== 'doctor' && u.role !== 'admin'); },
@@ -347,10 +355,11 @@ const HMS = {
     auth: {
         currentUser: null,
         
-        login(email, password) {
-            const user = HMS.users.getByEmail(email);
+        login(identifier, password) {
+            // Support login by email OR username
+            const user = HMS.users.getByEmailOrUsername(identifier);
             if (!user) {
-                return { error: 'User not found' };
+                return { error: 'User not found. Check your email or username.' };
             }
             if (user.password !== password) {
                 return { error: 'Incorrect password' };

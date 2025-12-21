@@ -23,6 +23,36 @@
         
         .dashboard { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
         
+        /* Auth Check Overlay */
+        .auth-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #1e1b4b, #312e81);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .auth-box {
+            background: white;
+            border-radius: 24px;
+            padding: 48px;
+            text-align: center;
+            max-width: 400px;
+        }
+        .auth-box .icon { font-size: 4rem; margin-bottom: 16px; }
+        .auth-box h2 { margin-bottom: 8px; }
+        .auth-box p { color: var(--text-light); margin-bottom: 24px; }
+        .auth-box .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
         /* Sidebar */
         .sidebar {
             background: linear-gradient(180deg, #7c3aed 0%, #5b21b6 100%);
@@ -31,10 +61,21 @@
             position: fixed;
             width: 260px;
             height: 100vh;
+            overflow-y: auto;
         }
         .sidebar-header { margin-bottom: 32px; }
         .sidebar-header h1 { font-size: 1.25rem; margin-bottom: 4px; }
         .sidebar-header p { opacity: 0.8; font-size: 0.85rem; }
+        .admin-badge {
+            display: inline-block;
+            background: var(--warning);
+            color: #1e293b;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-top: 8px;
+        }
         .sidebar-nav a {
             display: flex;
             align-items: center;
@@ -47,12 +88,64 @@
             transition: all 0.2s;
         }
         .sidebar-nav a:hover, .sidebar-nav a.active { background: rgba(255,255,255,0.15); }
-        .sidebar-footer { position: absolute; bottom: 24px; left: 24px; right: 24px; }
+        .sidebar-footer { 
+            position: absolute; 
+            bottom: 24px; 
+            left: 24px; 
+            right: 24px; 
+        }
+        .sidebar-footer a {
+            display: block;
+            color: white;
+            opacity: 0.8;
+            text-decoration: none;
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+        .sidebar-footer a:hover { opacity: 1; }
         
         /* Main */
         .main { margin-left: 260px; padding: 32px; }
-        .main-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .main-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
         .main-header h2 { font-size: 1.75rem; }
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        /* User Menu */
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+        }
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .user-info { text-align: left; }
+        .user-info .name { font-weight: 600; font-size: 0.9rem; }
+        .user-info .role { font-size: 0.75rem; color: var(--text-light); }
         
         /* Stats */
         .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; margin-bottom: 32px; }
@@ -84,6 +177,7 @@
             justify-content: space-between;
             align-items: center;
         }
+        .card-header h3 { font-size: 1.1rem; }
         .card-body { padding: 24px; }
         
         /* Table */
@@ -122,36 +216,19 @@
             border: none;
             transition: all 0.2s;
             font-size: 0.9rem;
+            text-decoration: none;
         }
         .btn-primary { background: var(--primary); color: white; }
-        .btn-outline { background: white; border: 2px solid var(--border); }
+        .btn-primary:hover { background: #6d28d9; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-outline { background: white; border: 2px solid var(--border); color: var(--text); }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
         .btn-sm { padding: 8px 14px; font-size: 0.85rem; }
         
-        /* Activity */
-        .activity-list { max-height: 400px; overflow-y: auto; }
-        .activity-item {
-            display: flex;
-            gap: 12px;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-        }
-        .activity-item:last-child { border-bottom: none; }
-        .activity-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            background: var(--bg);
-        }
-        .activity-content { flex: 1; }
-        .activity-text { margin-bottom: 4px; }
-        .activity-time { font-size: 0.8rem; color: var(--text-light); }
-        
         /* Quick Actions */
-        .quick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 24px; }
+        .quick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .quick-btn {
             padding: 20px;
             background: var(--bg);
@@ -160,10 +237,67 @@
             cursor: pointer;
             transition: all 0.2s;
             border: 2px solid transparent;
+            text-decoration: none;
+            color: var(--text);
         }
         .quick-btn:hover { border-color: var(--primary); }
         .quick-btn .icon { font-size: 1.5rem; margin-bottom: 8px; }
         .quick-btn span { font-size: 0.85rem; display: block; }
+        .quick-btn.highlight { border-color: var(--warning); background: #fffbeb; }
+        
+        /* Status badges */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-pending { background: #fef3c7; color: #b45309; }
+        .status-confirmed { background: #dbeafe; color: #1d4ed8; }
+        .status-waiting { background: #fce7f3; color: #be185d; }
+        .status-completed { background: #dcfce7; color: #16a34a; }
+        .status-cancelled { background: #fee2e2; color: #dc2626; }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--bg);
+            padding: 4px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+        }
+        .tab {
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: all 0.2s;
+        }
+        .tab:hover { color: var(--text); }
+        .tab.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        /* Tab content */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* Security indicator */
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
         
         @media (max-width: 1200px) {
             .stats-grid { grid-template-columns: repeat(3, 1fr); }
@@ -174,224 +308,353 @@
             .sidebar { display: none; }
             .main { margin-left: 0; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .main-header { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
 <body>
-    <div class="dashboard">
+    <!-- Auth Check Overlay -->
+    <div class="auth-overlay" id="authOverlay">
+        <div class="auth-box">
+            <div class="icon">🔐</div>
+            <h2>Admin Access Required</h2>
+            <p>Please login with your admin credentials to access this dashboard.</p>
+            <a href="../../login.html?role=admin" class="btn">Login as Admin</a>
+        </div>
+    </div>
+
+    <div class="dashboard" id="dashboard" style="display: none;">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h1>🏥 Adinath Hospital</h1>
                 <p>Admin Portal</p>
+                <span class="admin-badge">🛡️ ADMIN</span>
             </div>
             
             <nav class="sidebar-nav">
-                <a href="#" class="active"><span>📊</span> Overview</a>
-                <a href="manage.html"><span>👥</span> Manage Users</a>
-                <a href="../doctor/index.html"><span>👨‍⚕️</span> Doctor View</a>
-                <a href="#appointments"><span>📅</span> Appointments</a>
-                <a href="#patients"><span>👥</span> All Patients</a>
+                <a href="#" class="active" onclick="showTab('overview')"><span>📊</span> Overview</a>
+                <a href="#" onclick="showTab('appointments')"><span>📅</span> Appointments</a>
+                <a href="#" onclick="showTab('patients')"><span>👥</span> All Patients</a>
+                <a href="#" onclick="showTab('staff')"><span>👤</span> Staff & Doctors</a>
                 <a href="../../store/index.html"><span>💊</span> Medical Store</a>
-                <a href="#staff"><span>👤</span> Staff</a>
-                <a href="#reports"><span>📈</span> Reports</a>
-                <a href="#settings"><span>⚙️</span> Settings</a>
+                <a href="#" onclick="showTab('settings')"><span>⚙️</span> Settings</a>
             </nav>
             
             <div class="sidebar-footer">
-                <a href="../../index.html" style="color: white; opacity: 0.8; text-decoration: none;">🏠 Back to Website</a>
+                <a href="../../docs/send-registration-links.html">📲 Send Doctor Registrations</a>
+                <a href="../../index.html">🏠 Back to Website</a>
+                <a href="#" onclick="logout()" style="color: #fca5a5;">🚪 Logout</a>
             </div>
         </aside>
         
         <!-- Main -->
         <main class="main">
             <div class="main-header">
-                <h2>👋 Welcome, Admin</h2>
                 <div>
+                    <h2>👋 Welcome, <span id="adminName">Admin</span></h2>
+                    <span class="security-badge" id="securityBadge">🔐 Secured</span>
+                </div>
+                <div class="header-actions">
                     <span id="currentDate"></span>
-                    <button class="btn btn-outline btn-sm" onclick="HMS.reset(); location.reload();">🔄 Reset Demo</button>
-                </div>
-            </div>
-            
-            <!-- Stats -->
-            <div class="stats-grid">
-                <div class="stat-card highlight">
-                    <div class="icon">📅</div>
-                    <div class="value" id="statAppointments">0</div>
-                    <div class="label">Today's Appointments</div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon">👥</div>
-                    <div class="value" id="statPatients">0</div>
-                    <div class="label">Total Patients</div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon">💊</div>
-                    <div class="value" id="statSales">₹0</div>
-                    <div class="label">Today's Sales</div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon">⚠️</div>
-                    <div class="value" id="statLowStock">0</div>
-                    <div class="label">Low Stock Items</div>
-                </div>
-                <div class="stat-card">
-                    <div class="icon">✅</div>
-                    <div class="value" id="statCompleted">0</div>
-                    <div class="label">Completed Today</div>
-                </div>
-            </div>
-            
-            <!-- Content Sections -->
-            <div class="section-grid">
-                <!-- Main Section -->
-                <div>
-                    <!-- Today's Appointments -->
-                    <div class="card" style="margin-bottom: 24px;">
-                        <div class="card-header">
-                            <h3>📅 Today's Appointments</h3>
-                            <button class="btn btn-primary btn-sm" onclick="location.href='../../book.html'">+ New Appointment</button>
-                        </div>
-                        <div class="card-body" style="padding: 0;">
-                            <table id="appointmentsTable">
-                                <thead>
-                                    <tr>
-                                        <th>Time</th>
-                                        <th>Patient</th>
-                                        <th>Doctor</th>
-                                        <th>Reason</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="appointmentsBody">
-                                    <!-- Loaded dynamically -->
-                                </tbody>
-                            </table>
+                    <div class="user-menu" onclick="toggleUserMenu()">
+                        <div class="user-avatar" id="userAvatar">PS</div>
+                        <div class="user-info">
+                            <div class="name" id="userName">Pratik Sajnani</div>
+                            <div class="role">Site Administrator</div>
                         </div>
                     </div>
-                    
-                    <!-- All Patients -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>👥 Recent Patients</h3>
-                            <input type="text" id="patientSearch" placeholder="Search patients..." style="padding: 8px 12px; border: 2px solid var(--border); border-radius: 8px;">
-                        </div>
-                        <div class="card-body" style="padding: 0;">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Age</th>
-                                        <th>Phone</th>
-                                        <th>Visits</th>
-                                        <th>Registered</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="patientsBody">
-                                    <!-- Loaded dynamically -->
-                                </tbody>
-                            </table>
-                        </div>
+                </div>
+            </div>
+            
+            <!-- Overview Tab -->
+            <div class="tab-content active" id="tab-overview">
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card highlight">
+                        <div class="icon">📅</div>
+                        <div class="value" id="statAppointments">0</div>
+                        <div class="label">Today's Appointments</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">👥</div>
+                        <div class="value" id="statPatients">0</div>
+                        <div class="label">Total Patients</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">💊</div>
+                        <div class="value" id="statSales">₹0</div>
+                        <div class="label">Today's Sales</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">👨‍⚕️</div>
+                        <div class="value">2</div>
+                        <div class="label">Active Doctors</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">✅</div>
+                        <div class="value" id="statCompleted">0</div>
+                        <div class="label">Completed Today</div>
                     </div>
                 </div>
                 
-                <!-- Sidebar Section -->
-                <div>
-                    <!-- Alerts -->
-                    <div class="card" style="margin-bottom: 24px;">
-                        <div class="card-header">
-                            <h3>🔔 Alerts</h3>
+                <!-- Content Sections -->
+                <div class="section-grid">
+                    <div>
+                        <!-- Today's Appointments -->
+                        <div class="card" style="margin-bottom: 24px;">
+                            <div class="card-header">
+                                <h3>📅 Today's Appointments</h3>
+                                <a href="../../book.html" class="btn btn-primary btn-sm">+ New Appointment</a>
+                            </div>
+                            <div class="card-body" style="padding: 0;">
+                                <table id="appointmentsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Time</th>
+                                            <th>Patient</th>
+                                            <th>Doctor</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="appointmentsBody">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="alert-list" id="alertsList">
-                                <!-- Loaded dynamically -->
+                        
+                        <!-- Recent Patients -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>👥 Recent Patients</h3>
+                                <input type="text" id="patientSearch" placeholder="Search..." 
+                                       style="padding: 8px 12px; border: 2px solid var(--border); border-radius: 8px; width: 200px;">
+                            </div>
+                            <div class="card-body" style="padding: 0; max-height: 300px; overflow-y: auto;">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Phone</th>
+                                            <th>Visits</th>
+                                            <th>Registered</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="patientsBody">
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Quick Actions -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>⚡ Quick Actions</h3>
+                    <!-- Sidebar Section -->
+                    <div>
+                        <!-- Quick Actions -->
+                        <div class="card" style="margin-bottom: 24px;">
+                            <div class="card-header">
+                                <h3>⚡ Quick Actions</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="quick-grid">
+                                    <a href="../../book.html" class="quick-btn">
+                                        <div class="icon">📅</div>
+                                        <span>New Appointment</span>
+                                    </a>
+                                    <a href="../../forms/patient-intake.html" class="quick-btn">
+                                        <div class="icon">👤</div>
+                                        <span>Patient Form</span>
+                                    </a>
+                                    <a href="../../store/index.html" class="quick-btn">
+                                        <div class="icon">💊</div>
+                                        <span>Medical Store</span>
+                                    </a>
+                                    <a href="../../docs/send-registration-links.html" class="quick-btn highlight">
+                                        <div class="icon">📲</div>
+                                        <span>Doctor Links</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="quick-grid">
-                                <div class="quick-btn" onclick="location.href='../../book.html'">
-                                    <div class="icon">📅</div>
-                                    <span>New Appointment</span>
+                        
+                        <!-- Alerts -->
+                        <div class="card" style="margin-bottom: 24px;">
+                            <div class="card-header">
+                                <h3>🔔 Alerts</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert-list" id="alertsList">
                                 </div>
-                                <div class="quick-btn" onclick="addPatient()">
-                                    <div class="icon">👤</div>
-                                    <span>Add Patient</span>
+                            </div>
+                        </div>
+                        
+                        <!-- System Status -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>🖥️ System Status</h3>
+                            </div>
+                            <div class="card-body">
+                                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                                    <div style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%;"></div>
+                                    <span>Website Online</span>
                                 </div>
-                                <div class="quick-btn" onclick="location.href='../../store/index.html'">
-                                    <div class="icon">💊</div>
-                                    <span>Medical Store</span>
+                                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                                    <div style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%;"></div>
+                                    <span>Booking System Active</span>
                                 </div>
-                                <div class="quick-btn" onclick="sendBulkSMS()">
-                                    <div class="icon">📱</div>
-                                    <span>Send Reminders</span>
-                                </div>
-                                <div class="quick-btn" onclick="location.href='send-registration.html'" style="border: 2px solid #f59e0b;">
-                                    <div class="icon">📲</div>
-                                    <span>Doctor Registration</span>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div style="width: 10px; height: 10px; background: #f59e0b; border-radius: 50%;"></div>
+                                    <span>SMS: Demo Mode</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Activity -->
-                    <div class="card" style="margin-top: 24px;">
-                        <div class="card-header">
-                            <h3>📝 Recent Activity</h3>
+                </div>
+            </div>
+            
+            <!-- Staff Tab -->
+            <div class="tab-content" id="tab-staff">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>👨‍⚕️ Doctors & Staff</h3>
+                    </div>
+                    <div class="card-body">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Dr. Ashok Sajnani</strong></td>
+                                    <td>Orthopedic Surgeon</td>
+                                    <td>drsajnani@gmail.com</td>
+                                    <td><span class="status-badge status-pending">Pending Registration</span></td>
+                                    <td><a href="../../docs/send-registration-links.html" class="btn btn-warning btn-sm">📲 Send Link</a></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dr. Sunita Sajnani</strong></td>
+                                    <td>OB-GYN Specialist</td>
+                                    <td>sunita.sajnani9@gmail.com</td>
+                                    <td><span class="status-badge status-pending">Pending Registration</span></td>
+                                    <td><a href="../../docs/send-registration-links.html" class="btn btn-warning btn-sm">📲 Send Link</a></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Pratik Sajnani</strong></td>
+                                    <td>Site Administrator</td>
+                                    <td>pratik.sajnani@gmail.com</td>
+                                    <td><span class="status-badge status-completed">Active</span></td>
+                                    <td><span style="color: var(--text-light);">You</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Tab -->
+            <div class="tab-content" id="tab-settings">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>⚙️ Admin Settings</h3>
+                    </div>
+                    <div class="card-body">
+                        <h4 style="margin-bottom: 16px;">🔐 Security Settings</h4>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #f0fdf4; border-radius: 12px; margin-bottom: 12px;">
+                            <div>
+                                <strong>Two-Factor Authentication</strong>
+                                <p style="color: var(--text-light); font-size: 0.85rem;">Extra security for your account</p>
+                            </div>
+                            <span class="security-badge" id="twoFAStatus">🔐 Enabled</span>
                         </div>
-                        <div class="card-body">
-                            <div class="activity-list">
-                                <div class="activity-item">
-                                    <div class="activity-icon">📅</div>
-                                    <div class="activity-content">
-                                        <div class="activity-text">New appointment booked</div>
-                                        <div class="activity-time">2 minutes ago</div>
-                                    </div>
-                                </div>
-                                <div class="activity-item">
-                                    <div class="activity-icon">💊</div>
-                                    <div class="activity-content">
-                                        <div class="activity-text">Sale recorded - ₹450</div>
-                                        <div class="activity-time">15 minutes ago</div>
-                                    </div>
-                                </div>
-                                <div class="activity-item">
-                                    <div class="activity-icon">✅</div>
-                                    <div class="activity-content">
-                                        <div class="activity-text">Appointment completed</div>
-                                        <div class="activity-time">1 hour ago</div>
-                                    </div>
-                                </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--bg); border-radius: 12px; margin-bottom: 12px;">
+                            <div>
+                                <strong>Session Timeout</strong>
+                                <p style="color: var(--text-light); font-size: 0.85rem;">Auto logout after inactivity</p>
+                            </div>
+                            <select style="padding: 8px 12px; border: 2px solid var(--border); border-radius: 8px;">
+                                <option>30 minutes</option>
+                                <option selected>1 hour</option>
+                                <option>4 hours</option>
+                            </select>
+                        </div>
+                        
+                        <h4 style="margin: 32px 0 16px;">🏥 Hospital Settings</h4>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Hospital Name</label>
+                                <input type="text" value="Adinath Hospital" style="width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 8px;">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Contact Phone</label>
+                                <input type="text" value="+91 99254 50425" style="width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 8px;">
                             </div>
                         </div>
+                        
+                        <button class="btn btn-primary" style="margin-top: 24px;">💾 Save Settings</button>
                     </div>
                 </div>
             </div>
         </main>
     </div>
     
+    <script src="../../js/config.js"></script>
     <script src="../../js/hms.js"></script>
     <script>
+        // Check authentication
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            loadDashboard();
-            
-            document.getElementById('patientSearch').addEventListener('input', (e) => {
-                const results = HMS.patients.search(e.target.value);
-                renderPatients(results);
-            });
+            checkAuth();
         });
         
+        function checkAuth() {
+            const isLoggedIn = localStorage.getItem('hms_logged_in') === 'true';
+            const role = localStorage.getItem('hms_role');
+            const adminRegistered = localStorage.getItem('admin_registered');
+            
+            // Allow access if logged in as admin or if admin is registered
+            if (isLoggedIn && (role === 'admin' || adminRegistered)) {
+                document.getElementById('authOverlay').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'grid';
+                
+                // Load admin data
+                const adminData = JSON.parse(localStorage.getItem('admin_data') || '{}');
+                if (adminData.name) {
+                    document.getElementById('adminName').textContent = adminData.name.split(' ')[0];
+                    document.getElementById('userName').textContent = adminData.name;
+                    document.getElementById('userAvatar').textContent = adminData.name.split(' ').map(n => n[0]).join('');
+                }
+                
+                // Show security method
+                const securityMethod = localStorage.getItem('admin_security_method');
+                if (securityMethod) {
+                    document.getElementById('securityBadge').innerHTML = `🔐 ${securityMethod}`;
+                    document.getElementById('twoFAStatus').innerHTML = `🔐 ${securityMethod}`;
+                }
+                
+                loadDashboard();
+            } else {
+                // Check if coming from login
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('demo') === 'true') {
+                    // Demo access
+                    localStorage.setItem('hms_logged_in', 'true');
+                    localStorage.setItem('hms_role', 'admin');
+                    location.reload();
+                }
+            }
+            
+            document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-IN', { 
+                weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
+            });
+        }
+        
         function loadDashboard() {
-            // Stats
             const today = new Date().toISOString().split('T')[0];
             const appointments = HMS.appointments.getByDate(today);
             const patients = HMS.patients.getAll();
@@ -400,38 +663,35 @@
             document.getElementById('statAppointments').textContent = appointments.length;
             document.getElementById('statPatients').textContent = patients.length;
             document.getElementById('statSales').textContent = HMS.utils.formatCurrency(HMS.sales.getTodayTotal());
-            document.getElementById('statLowStock').textContent = lowStock.length;
             document.getElementById('statCompleted').textContent = appointments.filter(a => a.status === 'completed').length;
             
-            // Appointments table
             renderAppointments(appointments);
-            
-            // Patients table
             renderPatients(patients);
-            
-            // Alerts
             renderAlerts(lowStock);
+            
+            document.getElementById('patientSearch').addEventListener('input', (e) => {
+                const results = HMS.patients.search(e.target.value);
+                renderPatients(results);
+            });
         }
         
         function renderAppointments(appointments) {
             const tbody = document.getElementById('appointmentsBody');
             if (appointments.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px;">No appointments today</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px; color: var(--text-light);">No appointments today</td></tr>';
                 return;
             }
             
             tbody.innerHTML = appointments.map(apt => `
                 <tr>
-                    <td><strong>${apt.time}</strong></td>
-                    <td>${apt.patientName}</td>
+                    <td><strong>${apt.time || '--'}</strong></td>
+                    <td>${apt.patientName || 'Unknown'}</td>
                     <td>${apt.doctor === 'ashok' ? 'Dr. Ashok' : 'Dr. Sunita'}</td>
-                    <td>${apt.reason}</td>
-                    <td><span class="status-badge status-${apt.status}" style="padding: 4px 10px; border-radius: 12px; font-size: 0.75rem;">${apt.status}</span></td>
+                    <td><span class="status-badge status-${apt.status}">${apt.status}</span></td>
                     <td>
                         <select onchange="updateStatus('${apt.id}', this.value)" style="padding: 6px; border-radius: 6px; border: 1px solid var(--border);">
                             <option value="pending" ${apt.status === 'pending' ? 'selected' : ''}>Pending</option>
                             <option value="confirmed" ${apt.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
-                            <option value="waiting" ${apt.status === 'waiting' ? 'selected' : ''}>Waiting</option>
                             <option value="completed" ${apt.status === 'completed' ? 'selected' : ''}>Completed</option>
                             <option value="cancelled" ${apt.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
                         </select>
@@ -442,13 +702,16 @@
         
         function renderPatients(patients) {
             const tbody = document.getElementById('patientsBody');
-            tbody.innerHTML = patients.map(p => `
+            if (patients.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: var(--text-light);">No patients found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = patients.slice(0, 10).map(p => `
                 <tr>
-                    <td><strong>${p.id}</strong></td>
-                    <td>${p.name}</td>
-                    <td>${p.age}</td>
-                    <td><a href="tel:${p.phone}">${p.phone}</a></td>
-                    <td>${p.visits}</td>
+                    <td><strong>${p.name}</strong></td>
+                    <td><a href="tel:${p.phone}">${p.phone || '--'}</a></td>
+                    <td>${p.visits || 0}</td>
                     <td>${HMS.utils.formatDate(p.createdAt)}</td>
                 </tr>
             `).join('');
@@ -465,7 +728,7 @@
                             <div class="icon">⚠️</div>
                             <div class="content">
                                 <div class="title">${item.name}</div>
-                                <div class="desc">Only ${item.stock} ${item.unit} left (min: ${item.reorderLevel})</div>
+                                <div class="desc">Only ${item.stock} left</div>
                             </div>
                         </div>
                     `;
@@ -478,8 +741,8 @@
                     <div class="alert-item info">
                         <div class="icon">📅</div>
                         <div class="content">
-                            <div class="title">${pending.length} Pending Appointments</div>
-                            <div class="desc">Confirm or call patients</div>
+                            <div class="title">${pending.length} Pending</div>
+                            <div class="desc">Appointments need confirmation</div>
                         </div>
                     </div>
                 `;
@@ -493,32 +756,29 @@
             loadDashboard();
         }
         
-        function addPatient() {
-            const name = prompt('Patient Name:');
-            if (!name) return;
-            const phone = prompt('Phone Number:');
-            const age = prompt('Age:');
-            const gender = prompt('Gender (male/female):');
+        function showTab(tabName) {
+            // Update nav
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            event.target.closest('a').classList.add('active');
             
-            HMS.patients.add({ name, phone, age: parseInt(age), gender, address: 'Ahmedabad' });
-            loadDashboard();
-            alert('✅ Patient added!');
+            // Show tab content
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            const tabEl = document.getElementById('tab-' + tabName);
+            if (tabEl) tabEl.classList.add('active');
+            else document.getElementById('tab-overview').classList.add('active');
         }
         
-        function sendBulkSMS() {
-            const pending = HMS.appointments.getByDate(new Date().toISOString().split('T')[0]).filter(a => a.status === 'pending');
-            alert(`📱 Would send reminders to ${pending.length} patients with pending appointments.`);
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('hms_logged_in');
+                localStorage.removeItem('hms_role');
+                window.location.href = '../../login.html';
+            }
+        }
+        
+        function toggleUserMenu() {
+            alert('User menu coming soon!');
         }
     </script>
-    
-    <style>
-        .status-pending { background: #fef3c7; color: #b45309; }
-        .status-confirmed { background: #dbeafe; color: #1d4ed8; }
-        .status-waiting { background: #fce7f3; color: #be185d; }
-        .status-completed { background: #dcfce7; color: #16a34a; }
-        .status-cancelled { background: #fee2e2; color: #dc2626; }
-    </style>
-<script>if(typeof initFeedbackWidget==="function")initFeedbackWidget("admin");</script>
 </body>
 </html>
-
