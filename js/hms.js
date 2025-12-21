@@ -75,61 +75,25 @@ const HMS = {
                 active: true,
                 createdAt: '2025-01-01'
             },
-            // Staff - TO BE FILLED WITH REAL DATA
-            // Placeholder: Add actual nurse details when available
-            /*{
-                id: 'U004',
-                email: 'nurse@adinathhospital.com',
-                password: 'staff123',
-                name: '[Nurse Name]',
-                nameGu: '[નર્સ નામ]',
-                nameHi: '[नर्स नाम]',
-                role: 'nurse',
-                department: 'General',
-                permissions: ['patients', 'appointments', 'send_patient_link'],
-                photo: '',
-                phone: '',
-                preferredLanguage: 'gu',
-                shift: 'morning',
-                active: true,
-                createdAt: '2025-01-15'
-            },*/
+            // Staff
+            // Receptionist - Real staff
             {
-                id: 'U005',
-                email: 'receptionist@adinathhospital.com',
+                id: 'U004',
+                email: 'reception@adinathhospital.com',
                 password: 'staff123',
                 name: 'Poonam',
                 nameGu: 'પૂનમ',
                 nameHi: 'पूनम',
                 role: 'receptionist',
-                gender: 'male',
                 department: 'Front Desk',
                 permissions: ['appointments', 'patients', 'send_patient_link', 'queue'],
                 photo: '',
-                phone: '', // TO BE FILLED
-                preferredLanguage: 'gu',
-                shift: 'morning',
-                active: true,
-                createdAt: '2025-01-15'
-            },
-            // Placeholder: Add actual pharmacist details when available
-            /*{
-                id: 'U006',
-                email: 'pharmacist@adinathhospital.com',
-                password: 'staff123',
-                name: '[Pharmacist Name]',
-                nameGu: '[ફાર્માસિસ્ટ નામ]',
-                nameHi: '[फार्मासिस्ट नाम]',
-                role: 'pharmacist',
-                department: 'Medical Store',
-                permissions: ['inventory', 'sales', 'prescriptions', 'queue'],
-                photo: '',
-                phone: '',
+                phone: '9925450425', // Hospital main number
                 preferredLanguage: 'gu',
                 shift: 'full-day',
                 active: true,
-                createdAt: '2025-01-15'
-            }*/
+                createdAt: '2025-01-01'
+            }
         ];
 
         // Staff roles configuration
@@ -147,25 +111,15 @@ const HMS = {
         localStorage.setItem('hms_users', JSON.stringify(users));
         localStorage.setItem('hms_staff_roles', JSON.stringify(staffRoles));
 
-        // Sample patients (demo data - will be replaced with real patients)
-        const patients = [
-            // Demo patient entries for testing - real patients will be added via booking
-        ];
+        // Empty patient list - real patients will be added as they register
+        const patients = [];
 
-        // Sample appointments (demo data - will be replaced with real appointments)
+        // Empty appointments - will be created through booking
         const today = new Date().toISOString().split('T')[0];
-        const appointments = [
-            // Demo appointment entries - real appointments will be added via booking form
-        ];
+        const appointments = [];
 
-        // Sample prescriptions
-        const prescriptions = [
-            { id: 'RX001', patientId: 'P001', patientName: 'Rajesh Patel', doctor: 'ashok', date: '2025-12-15', diagnosis: 'Osteoarthritis - Knee', medicines: [
-                { name: 'Glucosamine Sulfate 500mg', dosage: '1-0-1', duration: '30 days' },
-                { name: 'Diclofenac 50mg', dosage: '0-0-1', duration: '7 days' },
-                { name: 'Calcium + Vitamin D3', dosage: '0-1-0', duration: '30 days' }
-            ], advice: 'Avoid stairs, apply ice pack, continue physiotherapy' },
-        ];
+        // Empty prescriptions - will be created by doctors
+        const prescriptions = [];
 
         // Sample inventory
         const inventory = [

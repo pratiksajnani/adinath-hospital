@@ -204,13 +204,17 @@
             </div>
             
             <div class="login-form">
-                <div class="demo-note">
-                    <strong>🎯 Demo Accounts:</strong><br>
+                <div class="demo-note" id="demoNote">
+                    <strong>🔐 Login Accounts:</strong><br>
                     • Admin: pratik.sajnani@gmail.com<br>
                     • Dr. Ashok: drsajnani@gmail.com<br>
                     • Dr. Sunita: sunita.sajnani9@gmail.com<br>
-                    • Staff: Poonam (Receptionist)<br>
-                    <small>Password: any (demo mode)</small>
+                    • Staff: poonam@adinathhospital.com<br>
+                    <small id="modeIndicator">⚠️ Demo Mode - Any password works</small>
+                </div>
+                
+                <div id="errorMessage" style="display: none; background: #fee2e2; color: #991b1b; padding: 12px; border-radius: 8px; margin-bottom: 16px; text-align: center;">
+                    Invalid email or password
                 </div>
                 
                 <form id="loginForm">
@@ -224,12 +228,12 @@
                     
                     <div class="form-group">
                         <label>Username / Phone</label>
-                        <input type="text" id="username" placeholder="Enter username or phone" value="demo">
+                        <input type="text" id="username" placeholder="Enter email or phone" value="">
                     </div>
                     
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" id="password" placeholder="Enter password" value="demo123">
+                        <input type="password" id="password" placeholder="Enter password" value="">
                     </div>
                     
                     <button type="submit" class="btn btn-primary">
@@ -303,33 +307,78 @@
         switchRole('doctor');
         
         // Form submit
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Store login state
-            const doctor = document.getElementById('doctorSelect').value;
-            localStorage.setItem('hms_logged_in', 'true');
-            localStorage.setItem('hms_role', currentRole);
-            localStorage.setItem('hms_doctor', doctor);
+            const email = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMessage');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
             
-            // Redirect based on role
-            if (currentRole === 'doctor') {
+            // Show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '⏳ Logging in...';
+            errorDiv.style.display = 'none';
+            
+            try {
+                // Try Supabase auth first, falls back to demo mode
+                const { data, error } = await SupabaseAuth.signIn(email, password);
+                
+                if (error) {
+                    errorDiv.textContent = error.message;
+                    errorDiv.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '🔓 Login to Dashboard';
+                    return;
+                }
+                
+                // Determine role
+                const role = data.profile?.role || data.user?.role || currentRole;
                 const doctor = document.getElementById('doctorSelect').value;
-                window.location.href = `portal/doctor/simple.html?doctor=${doctor}`;
-            } else if (currentRole === 'staff') {
-                window.location.href = 'portal/staff/index.html';
-            } else {
-                window.location.href = 'portal/admin/index.html';
+                
+                // Store login state
+                localStorage.setItem('hms_logged_in', 'true');
+                localStorage.setItem('hms_role', role);
+                localStorage.setItem('hms_doctor', doctor);
+                localStorage.setItem('hms_user_email', email);
+                
+                // Redirect based on role
+                if (role === 'doctor') {
+                    window.location.href = `portal/doctor/simple.html?doctor=${doctor}`;
+                } else if (role === 'staff' || role === 'receptionist' || role === 'nurse') {
+                    window.location.href = 'portal/staff/index.html';
+                } else if (role === 'admin') {
+                    window.location.href = 'portal/admin/index.html';
+                } else {
+                    window.location.href = 'portal/patient/index.html';
+                }
+            } catch (err) {
+                console.error('Login error:', err);
+                errorDiv.textContent = 'Login failed. Please try again.';
+                errorDiv.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '🔓 Login to Dashboard';
             }
         });
     </script>
-<script src="js/i18n.js"></script>
+<!-- Supabase SDK (only loads if needed) -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/i18n.js"></script>
     <script>
         function setLang(lang) {
             if (typeof I18N !== 'undefined') {
                 I18N.setLanguage(lang);
             }
         }
+        
+        // Check Supabase mode on load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof SupabaseAuth !== 'undefined' && SupabaseAuth.isConfigured()) {
+                document.getElementById('modeIndicator').innerHTML = '✅ Secure Mode - Real authentication';
+                document.getElementById('modeIndicator').style.color = '#166534';
+            }
+        });
     </script>
 </body>
 </html>

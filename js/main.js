@@ -35,12 +35,14 @@ function fixBaseUrls() {
 function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/adinath-hospital/sw.js')
+            const BASE_URL = typeof CONFIG !== 'undefined' ? CONFIG.BASE_URL : '';
+            const swPath = BASE_URL + '/sw.js';
+            navigator.serviceWorker.register(swPath)
                 .then(registration => {
                     console.log('SW registered:', registration.scope);
                 })
                 .catch(error => {
-                    console.log('SW registration failed:', error);
+                    console.warn('SW registration failed:', error);
                 });
         });
     }
