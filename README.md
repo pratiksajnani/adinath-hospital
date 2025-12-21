@@ -1,11 +1,20 @@
 # 🏥 Adinath Hospital Website
 
-[![Tests](https://github.com/pratiksajnani/adinath-hospital/actions/workflows/test.yml/badge.svg)](https://github.com/pratiksajnani/adinath-hospital/actions/workflows/test.yml)
-[![E2E Tests](https://github.com/pratiksajnani/adinath-hospital/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/pratiksajnani/adinath-hospital/actions)
-[![Links](https://img.shields.io/badge/links-verified-brightgreen)](https://adinathhealth.com)
+<!-- Status Badges -->
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fadinathhealth.com&label=adinathhealth.com)](https://adinathhealth.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Fadinathhealth.com)](https://adinathhealth.com)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org)
+
+<!-- Code Quality Badges -->
+[![ESLint](https://img.shields.io/badge/ESLint-enabled-4B32C3?logo=eslint)](https://eslint.org)
+[![Prettier](https://img.shields.io/badge/Prettier-enabled-F7B93E?logo=prettier)](https://prettier.io)
+[![Jest](https://img.shields.io/badge/Jest-218%20tests-C21325?logo=jest)](https://jestjs.io)
+[![Playwright](https://img.shields.io/badge/Playwright-E2E-2EAD33?logo=playwright)](https://playwright.dev)
+[![Security](https://img.shields.io/badge/Security-eslint--plugin--security-green?logo=shield)](https://github.com/nodesecurity/eslint-plugin-security)
+
+<!-- Database & Hosting -->
+[![Supabase](https://img.shields.io/badge/Database-Supabase-3ECF8E?logo=supabase)](https://supabase.com)
+[![AWS Amplify](https://img.shields.io/badge/Hosting-AWS%20Amplify-FF9900?logo=awsamplify)](https://aws.amazon.com/amplify/)
 
 Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Management System.
 
@@ -123,11 +132,50 @@ Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Mana
 
 ---
 
+## 🔧 Code Quality
+
+### Quality Tools
+
+| Tool | Purpose | Command |
+|------|---------|---------|
+| **ESLint** | JavaScript linting & security | `npm run lint` |
+| **Prettier** | Code formatting | `npm run format` |
+| **Jest** | Unit testing (139 tests) | `npm run test:unit` |
+| **Playwright** | E2E testing | `npm run test:e2e` |
+| **Security Plugin** | Security vulnerability detection | Built into ESLint |
+
+### Run Quality Checks
+
+```bash
+# Full quality check (lint + format check + tests)
+npm run quality
+
+# Auto-fix linting and formatting issues
+npm run quality:fix
+
+# Generate reports
+npm run analyze
+```
+
+### Quality Metrics
+
+| Metric | Status | Details |
+|--------|--------|---------|
+| Unit Tests | ✅ 218 passing | 7 test suites |
+| ESLint | ✅ Configured | Security rules enabled |
+| Prettier | ✅ Configured | Consistent formatting |
+| Security | ✅ Enabled | eslint-plugin-security |
+
+---
+
 ## 🛠️ Development
 
 ### Local Development
 
 ```bash
+# Install dependencies
+npm install
+
 # Start local server (Python)
 cd /path/to/adinath-hospital
 python3 -m http.server 8080

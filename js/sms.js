@@ -10,15 +10,15 @@ const SMS = {
     // Twilio configuration (add your credentials)
     twilio: {
         accountSid: '', // Your Twilio Account SID
-        authToken: '',  // Your Twilio Auth Token
+        authToken: '', // Your Twilio Auth Token
         fromNumber: '', // Your Twilio phone number
     },
     
     // MSG91 configuration (recommended for India)
     msg91: {
-        authKey: '',    // Your MSG91 Auth Key
+        authKey: '', // Your MSG91 Auth Key
         senderId: 'ADNHSP',
-        route: '4',     // Transactional
+        route: '4', // Transactional
         dltTemplateId: '' // DLT registered template ID
     },
     
@@ -41,8 +41,8 @@ const SMS = {
     async send(to, message) {
         // Normalize phone number
         let phone = to.toString().replace(/\D/g, '');
-        if (phone.length === 10) phone = '91' + phone;
-        if (!phone.startsWith('91')) phone = '91' + phone;
+        if (phone.length === 10) {phone = '91' + phone;}
+        if (!phone.startsWith('91')) {phone = '91' + phone;}
         
         console.log(`📱 SMS to +${phone}: ${message}`);
         

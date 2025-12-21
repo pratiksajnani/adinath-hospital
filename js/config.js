@@ -153,7 +153,7 @@ const CONFIG = {
 
 // Helper to build URLs
 function buildUrl(path) {
-    if (path.startsWith('http')) return path;
+    if (path.startsWith('http')) {return path;}
     const base = CONFIG.BASE_URL;
     if (path.startsWith('/')) {
         return base + path;

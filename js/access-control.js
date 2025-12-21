@@ -92,7 +92,7 @@ const AccessControl = {
     // Get current user role
     getCurrentRole() {
         const isLoggedIn = localStorage.getItem('hms_logged_in') === 'true';
-        if (!isLoggedIn) return null;
+        if (!isLoggedIn) {return null;}
         return localStorage.getItem('hms_role');
     },
     
@@ -116,13 +116,13 @@ const AccessControl = {
         }
         
         // Default to public if no rule found
-        if (!rule) return true;
+        if (!rule) {return true;}
         
         // Public pages
-        if (rule === 'public') return true;
+        if (rule === 'public') {return true;}
         
         // Authenticated pages
-        if (rule === 'authenticated') return !!role;
+        if (rule === 'authenticated') {return !!role;}
         
         // Role-specific pages
         if (Array.isArray(rule)) {
@@ -285,4 +285,9 @@ if (document.readyState === 'loading') {
 
 // Export for use in other scripts
 window.AccessControl = AccessControl;
+
+// Export for Node.js/Jest testing
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AccessControl;
+}
 

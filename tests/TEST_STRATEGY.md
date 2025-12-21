@@ -2,21 +2,20 @@
 
 ## Test Accounts
 
-### Admin
-- **Email:** pratik.sajnani@gmail.com
-- **Password:** 1234
-- **Role:** Site Administrator
+> ⚠️ **Security Notice:** Test credentials are stored in environment variables.
+> See `.env.test.example` for the required variables.
 
-### Doctors
-- **Dr. Ashok Sajnani:** drsajnani@gmail.com / doctor123
-- **Dr. Sunita Sajnani:** sunita.sajnani9@gmail.com / doctor123
-
-### Staff
-- **Poonam (Receptionist):** reception@adinathhealth.com / staff123
+### Account Types
+| Role | Email | Auth Method |
+|------|-------|-------------|
+| Admin | pratik.sajnani@gmail.com | Password / Google |
+| Doctor | drsajnani@gmail.com | Google Sign-In |
+| Doctor | sunita.sajnani9@gmail.com | Google Sign-In |
+| Staff | reception@adinathhealth.com | Password |
 
 ### Test Patients (Created during testing)
-- **Test Patient 1:** 9876500001 / Ramesh Kumar
-- **Test Patient 2:** 9876500002 / Priya Sharma
+- Phone numbers: 98765xxxxx (use sequential numbers)
+- Names: Generic test names
 
 ---
 

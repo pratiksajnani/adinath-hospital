@@ -207,7 +207,7 @@ const I18N = {
     
     // Set language
     setLanguage(lang) {
-        if (!['en', 'hi', 'gu'].includes(lang)) return;
+        if (!['en', 'hi', 'gu'].includes(lang)) {return;}
         this.currentLanguage = lang;
         localStorage.setItem('hms_language', lang);
         this.applyTranslations();

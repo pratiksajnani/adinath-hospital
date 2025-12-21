@@ -142,14 +142,19 @@ console.log('Patient link:', link);
 
 ---
 
-## 🔐 LOGIN CREDENTIALS (Demo)
+## 🔐 LOGIN SYSTEM
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | pratik.sajnani@gmail.com | 1234 |
-| Doctor | drsajnani@gmail.com | doctor123 |
-| Doctor | sunita.sajnani9@gmail.com | doctor123 |
-| Staff | reception@adinathhealth.com | staff123 |
+> ⚠️ **Security:** Real credentials are not stored in this repository.
+> See SECURITY.md for credential management policies.
+
+| Role | Email | Auth Method |
+|------|-------|-------------|
+| Admin | pratik.sajnani@gmail.com | Password / Google |
+| Doctor | drsajnani@gmail.com | Google Sign-In |
+| Doctor | sunita.sajnani9@gmail.com | Google Sign-In |
+| Staff | reception@adinathhealth.com | Password |
+
+**For testing:** Use the onboarding flow or contact the admin for test credentials.
 
 ---
 

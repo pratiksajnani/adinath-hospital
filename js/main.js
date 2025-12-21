@@ -113,7 +113,7 @@ function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
-            if (href === '#') return;
+            if (href === '#') {return;}
             
             const target = document.querySelector(href);
             if (target) {
@@ -134,7 +134,7 @@ function initSmoothScroll() {
 // Header background on scroll
 function initHeaderScroll() {
     const header = document.querySelector('.header');
-    if (!header) return;
+    if (!header) {return;}
     
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
@@ -222,7 +222,7 @@ function validateForm(form) {
     const phoneField = form.querySelector('input[type="tel"]');
     if (phoneField && phoneField.value) {
         const phoneRegex = /^[6-9]\d{9}$/;
-        const cleanPhone = phoneField.value.replace(/[\s\-\+91]/g, '');
+        const cleanPhone = phoneField.value.replace(/[\s\-+91]/g, '');
         if (!phoneRegex.test(cleanPhone)) {
             isValid = false;
             phoneField.classList.add('error');

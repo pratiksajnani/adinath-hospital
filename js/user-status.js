@@ -125,7 +125,7 @@ function updateUserStatusWidget() {
     const menuRole = document.getElementById('menu-user-role');
     const portalLink = document.getElementById('menu-portal-link');
     
-    if (!icon || !name) return;
+    if (!icon || !name) {return;}
     
     if (isLoggedIn && role) {
         // Logged in state
@@ -152,10 +152,10 @@ function updateUserStatusWidget() {
         name.textContent = displayName;
         name.style.color = roleColors[role] || '#1e293b';
         
-        if (guestMenu) guestMenu.style.display = 'none';
-        if (loggedInMenu) loggedInMenu.style.display = 'block';
-        if (menuName) menuName.textContent = userName || 'User';
-        if (menuRole) menuRole.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+        if (guestMenu) {guestMenu.style.display = 'none';}
+        if (loggedInMenu) {loggedInMenu.style.display = 'block';}
+        if (menuName) {menuName.textContent = userName || 'User';}
+        if (menuRole) {menuRole.textContent = role.charAt(0).toUpperCase() + role.slice(1);}
         
         // Set portal link
         const basePath = getBasePath();
@@ -166,7 +166,7 @@ function updateUserStatusWidget() {
             'receptionist': basePath + 'portal/staff/index.html',
             'patient': basePath + 'portal/patient/index.html'
         };
-        if (portalLink) portalLink.href = portalLinks[role] || basePath + 'portal/index.html';
+        if (portalLink) {portalLink.href = portalLinks[role] || basePath + 'portal/index.html';}
         
     } else {
         // Guest state
@@ -174,8 +174,8 @@ function updateUserStatusWidget() {
         name.textContent = 'Guest';
         name.style.color = '#64748b';
         
-        if (guestMenu) guestMenu.style.display = 'block';
-        if (loggedInMenu) loggedInMenu.style.display = 'none';
+        if (guestMenu) {guestMenu.style.display = 'block';}
+        if (loggedInMenu) {loggedInMenu.style.display = 'none';}
     }
 }
 

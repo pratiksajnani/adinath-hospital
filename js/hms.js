@@ -205,7 +205,7 @@ const HMS = {
             const index = appointments.findIndex(a => a.id === id);
             if (index !== -1) {
                 appointments[index].status = status;
-                if (notes) appointments[index].notes = notes;
+                if (notes) {appointments[index].notes = notes;}
                 localStorage.setItem('hms_appointments', JSON.stringify(appointments));
             }
         },
@@ -388,7 +388,7 @@ const HMS = {
         },
         
         getCurrentUser() {
-            if (this.currentUser) return this.currentUser;
+            if (this.currentUser) {return this.currentUser;}
             const stored = localStorage.getItem('hms_current_user');
             if (stored) {
                 this.currentUser = JSON.parse(stored);
@@ -403,8 +403,8 @@ const HMS = {
         
         hasPermission(permission) {
             const user = this.getCurrentUser();
-            if (!user) return false;
-            if (user.permissions.includes('all')) return true;
+            if (!user) {return false;}
+            if (user.permissions.includes('all')) {return true;}
             return user.permissions.includes(permission);
         },
         
@@ -423,7 +423,7 @@ const HMS = {
             userData.active = false; // Pending approval
             userData.password = userData.password || 'temp123';
             const result = HMS.users.add(userData);
-            if (result.error) return result;
+            if (result.error) {return result;}
             return { success: true, message: 'Account created. Pending admin approval.', user: result };
         }
     },
@@ -499,7 +499,7 @@ const HMS = {
         
         generate(templateKey, data, language = 'en') {
             let template = this.templates[templateKey]?.[language] || this.templates[templateKey]?.['en'];
-            if (!template) return null;
+            if (!template) {return null;}
             
             Object.keys(data).forEach(key => {
                 template = template.replace(new RegExp(`{${key}}`, 'g'), data[key]);
@@ -558,7 +558,7 @@ const HMS = {
         
         notifyDoctor(doctorId, type, data) {
             const doctor = HMS.users.get(doctorId);
-            if (!doctor) return;
+            if (!doctor) {return;}
             
             const message = this.formatNotification(type, data, doctor.preferredLanguage || 'en');
             
@@ -625,9 +625,9 @@ const HMS = {
         validate(token) {
             const links = this.getAll();
             const link = links.find(l => l.token === token);
-            if (!link) return { valid: false, error: 'Invalid link' };
-            if (link.used) return { valid: false, error: 'Link already used' };
-            if (new Date(link.expiresAt) < new Date()) return { valid: false, error: 'Link expired' };
+            if (!link) {return { valid: false, error: 'Invalid link' };}
+            if (link.used) {return { valid: false, error: 'Link already used' };}
+            if (new Date(link.expiresAt) < new Date()) {return { valid: false, error: 'Link expired' };}
             return { valid: true, link };
         },
         
@@ -758,7 +758,7 @@ const HMS = {
             if (index !== -1) {
                 items[index].status = status;
                 items[index].updatedAt = new Date().toISOString();
-                if (note) items[index].resolutionNote = note;
+                if (note) {items[index].resolutionNote = note;}
                 localStorage.setItem('hms_feedback', JSON.stringify(items));
             }
         },
@@ -877,7 +877,7 @@ function initFeedbackWidget(role = 'visitor') {
     document.body.appendChild(modal);
     
     btn.onclick = () => { modal.style.display = 'flex'; };
-    modal.onclick = (e) => { if (e.target === modal) closeFeedbackModal(); };
+    modal.onclick = (e) => { if (e.target === modal) {closeFeedbackModal();} };
     
     document.getElementById('feedback-form').onsubmit = (e) => {
         e.preventDefault();
@@ -1048,4 +1048,9 @@ setTimeout(() => HMS.tokens.cleanup(), 5000);
 
 // Initialize on load
 HMS.init();
+
+// Export for Node.js/Jest testing
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = HMS;
+}
 

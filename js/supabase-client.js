@@ -40,7 +40,7 @@ const SupabaseAuth = {
     // Get current session
     async getSession() {
         const supabase = getSupabase();
-        if (!supabase) return null;
+        if (!supabase) {return null;}
         
         const { data: { session } } = await supabase.auth.getSession();
         return session;
@@ -49,7 +49,7 @@ const SupabaseAuth = {
     // Get current user
     async getCurrentUser() {
         const session = await this.getSession();
-        if (!session) return null;
+        if (!session) {return null;}
         
         // Get user profile from our users table
         const supabase = getSupabase();
@@ -81,7 +81,7 @@ const SupabaseAuth = {
             }
         });
 
-        if (authError) return { error: authError };
+        if (authError) {return { error: authError };}
 
         // Create profile in users table
         if (authData.user) {
@@ -118,7 +118,7 @@ const SupabaseAuth = {
             password
         });
 
-        if (error) return { error };
+        if (error) {return { error };}
 
         // Get user profile
         const profile = await this.getCurrentUser();
@@ -204,7 +204,7 @@ const SupabaseAuth = {
     async isAuthenticated() {
         // Check Supabase session
         const session = await this.getSession();
-        if (session) return true;
+        if (session) {return true;}
 
         // Check demo mode
         const demoUser = localStorage.getItem('hms_demo_user');
@@ -215,7 +215,7 @@ const SupabaseAuth = {
     async getUserRole() {
         // Try Supabase first
         const user = await this.getCurrentUser();
-        if (user) return user.role;
+        if (user) {return user.role;}
 
         // Check demo mode
         const demoUser = localStorage.getItem('hms_demo_user');
@@ -271,7 +271,7 @@ const SupabaseDB = {
             .select()
             .single();
 
-        if (error) return { error };
+        if (error) {return { error };}
         return { data: result };
     },
 
@@ -295,7 +295,7 @@ const SupabaseDB = {
             .select()
             .single();
 
-        if (error) return { error };
+        if (error) {return { error };}
         return { data: result };
     },
 
@@ -314,7 +314,7 @@ const SupabaseDB = {
             .delete()
             .eq('id', id);
 
-        if (error) return { error };
+        if (error) {return { error };}
         return { success: true };
     }
 };
@@ -333,7 +333,7 @@ const SupabaseAppointments = {
 
     async getByDoctor(doctorId, date = null) {
         const filters = { doctor_id: doctorId };
-        if (date) filters.date = date;
+        if (date) {filters.date = date;}
         return SupabaseDB.fetch('appointments', filters);
     },
 

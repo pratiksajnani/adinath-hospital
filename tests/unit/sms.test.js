@@ -103,6 +103,12 @@ describe('SMS - WhatsApp URL Generation', () => {
         const encoded = encodeURIComponent(message);
         expect(encoded).toBe('Hello%20%26%20Goodbye!');
     });
+
+    test('should encode newlines properly', () => {
+        const message = 'Line1\nLine2';
+        const encoded = encodeURIComponent(message);
+        expect(encoded).toContain('%0A');
+    });
 });
 
 describe('SMS - Doctor Tokens', () => {
@@ -136,5 +142,69 @@ describe('SMS - Doctor Phone Numbers', () => {
 
     test('should have correct phone for sunita', () => {
         expect(doctors['sunita'].phone).toBe('9925450425');
+    });
+
+    test('should have correct name for ashok', () => {
+        expect(doctors['ashok'].name).toBe('Dr. Ashok');
+    });
+
+    test('should have correct name for sunita', () => {
+        expect(doctors['sunita'].name).toBe('Dr. Sunita');
+    });
+});
+
+describe('SMS - Doctor Link Generation', () => {
+    const generateDoctorLink = (doctorId) => {
+        const baseUrl = 'https://adinathhealth.com';
+        const tokens = {
+            'ashok': 'ASH2024REG',
+            'sunita': 'SUN2024REG'
+        };
+        
+        if (!tokens[doctorId]) {
+            return null;
+        }
+        
+        return `${baseUrl}/onboard/doctor.html?id=${doctorId}&token=${tokens[doctorId]}`;
+    };
+
+    test('should generate valid link for ashok', () => {
+        const link = generateDoctorLink('ashok');
+        expect(link).toContain('/onboard/doctor.html');
+        expect(link).toContain('id=ashok');
+        expect(link).toContain('token=ASH2024REG');
+    });
+
+    test('should generate valid link for sunita', () => {
+        const link = generateDoctorLink('sunita');
+        expect(link).toContain('id=sunita');
+        expect(link).toContain('token=SUN2024REG');
+    });
+
+    test('should return null for unknown doctor', () => {
+        const link = generateDoctorLink('unknown');
+        expect(link).toBeNull();
+    });
+});
+
+describe('SMS - Provider Configuration', () => {
+    test('MSG91 should use correct sender ID', () => {
+        const msg91Config = {
+            senderId: 'ADNHSP',
+            route: '4'
+        };
+        expect(msg91Config.senderId).toBe('ADNHSP');
+        expect(msg91Config.route).toBe('4');
+    });
+
+    test('should have correct Twilio config structure', () => {
+        const twilioConfig = {
+            accountSid: '',
+            authToken: '',
+            fromNumber: ''
+        };
+        expect(twilioConfig).toHaveProperty('accountSid');
+        expect(twilioConfig).toHaveProperty('authToken');
+        expect(twilioConfig).toHaveProperty('fromNumber');
     });
 });

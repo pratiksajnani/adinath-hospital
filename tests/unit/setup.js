@@ -1,44 +1,59 @@
 /**
  * Jest Setup File
- * Configures the test environment
+ * Global mocks and setup for unit tests
  */
 
 // Mock localStorage
-const localStorageMock = {
-  store: {},
-  getItem(key) {
-    return this.store[key] || null;
-  },
-  setItem(key, value) {
-    this.store[key] = String(value);
-  },
-  removeItem(key) {
-    delete this.store[key];
-  },
-  clear() {
-    this.store = {};
-  },
-  get length() {
-    return Object.keys(this.store).length;
-  },
-  key(index) {
-    return Object.keys(this.store)[index] || null;
-  }
-};
+const localStorageMock = (() => {
+    let store = {};
+    return {
+        getItem: key => store[key] || null,
+        setItem: (key, value) => { store[key] = String(value); },
+        removeItem: key => { delete store[key]; },
+        clear: () => { store = {}; },
+        get length() { return Object.keys(store).length; },
+        key: i => Object.keys(store)[i] || null
+    };
+})();
 
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock
+Object.defineProperty(global, 'localStorage', {
+    value: localStorageMock,
+    writable: true
 });
 
-// Mock console.warn to prevent noise in tests
+// Mock sessionStorage
+Object.defineProperty(global, 'sessionStorage', {
+    value: localStorageMock,
+    writable: true
+});
+
+// Mock fetch
+global.fetch = jest.fn(() =>
+    Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({}),
+        text: () => Promise.resolve(''),
+    })
+);
+
+// Mock console methods for cleaner test output
 global.console = {
-  ...console,
-  warn: jest.fn(),
-  log: jest.fn(),
+    ...console,
+    log: jest.fn(),
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
 };
 
-// Clear localStorage before each test
+// Reset mocks before each test
 beforeEach(() => {
-  localStorage.clear();
+    localStorage.clear();
+    sessionStorage.clear();
+    jest.clearAllMocks();
 });
 
+// Clean up after all tests
+afterAll(() => {
+    jest.restoreAllMocks();
+});

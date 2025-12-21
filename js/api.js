@@ -263,7 +263,7 @@ const API = {
         // Open WhatsApp with message (fallback for SMS)
         send(phone, message) {
             let cleanPhone = phone.toString().replace(/\D/g, '');
-            if (cleanPhone.length === 10) cleanPhone = '91' + cleanPhone;
+            if (cleanPhone.length === 10) {cleanPhone = '91' + cleanPhone;}
             
             const url = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
