@@ -146,7 +146,7 @@ console.log('Patient link:', link);
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | pratik.sajnani@gmail.com | admin123 |
+| Admin | pratik.sajnani@gmail.com | 1234 |
 | Doctor | drsajnani@gmail.com | doctor123 |
 | Doctor | sunita.sajnani9@gmail.com | doctor123 |
 | Staff | reception@adinathhealth.com | staff123 |

@@ -194,6 +194,48 @@
             color: var(--staff);
             font-size: 14px;
         }
+        .ui-mockup {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 14px;
+        }
+        .ui-mockup .mock-header {
+            background: var(--staff);
+            color: white;
+            padding: 10px 16px;
+            margin: -16px -16px 12px -16px;
+            border-radius: 12px 12px 0 0;
+            font-weight: 600;
+        }
+        .ui-mockup .mock-btn {
+            display: inline-block;
+            background: var(--staff);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .ui-mockup .mock-queue-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid var(--staff);
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .ui-mockup .mock-token {
+            background: var(--staff);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 16px;
+        }
         
         .tip {
             background: #ecfdf5;
@@ -526,7 +568,20 @@
                     <h3 data-lang="en">Show QR Code (Alternative)</h3>
                     <p data-lang="en">Display the QR code for the patient to scan if they're present</p>
                     <div class="screenshot">
-                        <div class="screenshot-placeholder">📱 QR Code will appear here for patient to scan</div>
+                        <div class="ui-mockup">
+                            <div class="mock-header">📲 Patient Signup Link</div>
+                            <div style="text-align: center; padding: 16px 0;">
+                                <div style="width: 120px; height: 120px; background: white; margin: 0 auto 12px; border: 2px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <div style="font-size: 60px;">📱</div>
+                                </div>
+                                <div style="font-weight: 600; margin-bottom: 8px;">QR Code for Patient</div>
+                                <div style="font-size: 12px; color: #64748b; margin-bottom: 12px;">Patient scans this to fill their details</div>
+                                <div style="display: flex; gap: 8px; justify-content: center;">
+                                    <span class="mock-btn" style="font-size: 12px;">📱 WhatsApp</span>
+                                    <span class="mock-btn" style="font-size: 12px; background: #64748b;">📋 Copy Link</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
