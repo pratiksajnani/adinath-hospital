@@ -262,3 +262,21 @@ function getUrlParams() {
     return Object.fromEntries(params.entries());
 }
 
+
+// ============================================
+// FAQ ACCORDION
+// ============================================
+function toggleFAQ(button) {
+    const faqItem = button.parentElement;
+    const wasActive = faqItem.classList.contains('active');
+    
+    // Close all other FAQs
+    document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Toggle current FAQ
+    if (!wasActive) {
+        faqItem.classList.add('active');
+    }
+}
