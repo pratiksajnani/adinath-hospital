@@ -424,6 +424,17 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
     display: none !important;
 }
 
+/* Right-aligned dropdown for Help menu */
+.dropdown-right {
+    left: auto;
+    right: 0;
+    transform: translateX(0) translateY(10px);
+}
+
+.nav-dropdown:hover .dropdown-right {
+    transform: translateX(0) translateY(0);
+}
+
 /* Mobile Dropdown State */
 @media (max-width: 900px) {
     .dropdown-menu {
@@ -1880,6 +1891,21 @@ body.large-text-mode .btn {
 .star-rating {
     display: flex;
     gap: 8px;
+    font-size: 2rem;
+    margin: 20px 0;
+}
+
+.star-rating span {
+    cursor: pointer;
+    color: var(--gray-300);
+    transition: color 0.2s ease;
+}
+
+.star-rating span:hover,
+.star-rating span.active {
+    color: #fbbf24;
+}
+
     font-size: 2rem;
     margin: 20px 0;
 }

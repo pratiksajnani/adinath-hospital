@@ -10,6 +10,17 @@ Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Mana
 
 ## 📋 DEMO GUIDES
 
+### 🎬 Demo Video
+
+| Resource | Link |
+|----------|------|
+| **Video Script** | [docs/VIDEO_SCRIPT.md](docs/VIDEO_SCRIPT.md) |
+| Record with | [Loom](https://loom.com) (free) or QuickTime |
+
+> 📹 **To create the demo video:** Follow the script in VIDEO_SCRIPT.md, record your screen using Loom, then share the link here.
+
+---
+
 ### 🔐 Site Admin Demo
 
 | Resource | Link |
