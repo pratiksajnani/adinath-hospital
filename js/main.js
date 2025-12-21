@@ -280,3 +280,17 @@ function toggleFAQ(button) {
         faqItem.classList.add('active');
     }
 }
+
+// Export for Node.js/Jest testing
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        fixBaseUrls,
+        registerServiceWorker,
+        initMobileMenu,
+        initDropdowns,
+        initSmoothScroll,
+        initHeaderScroll,
+        initAnimations,
+        toggleFAQ
+    };
+}

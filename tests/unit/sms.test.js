@@ -3,208 +3,220 @@
  * Tests SMS templates and phone number normalization
  */
 
-describe('SMS - Phone Number Normalization', () => {
-    test('should normalize 10-digit Indian phone numbers', () => {
-        // Test the normalization logic
-        const normalize = (phone) => {
-            let p = phone.toString().replace(/\D/g, '');
-            if (p.length === 10) p = '91' + p;
-            if (!p.startsWith('91')) p = '91' + p;
-            return p;
-        };
+// Mock window.open before loading module
+const mockOpen = jest.fn();
+window.open = mockOpen;
 
-        expect(normalize('9925450425')).toBe('919925450425');
-        expect(normalize('+919925450425')).toBe('919925450425');
-        expect(normalize('919925450425')).toBe('919925450425');
-        expect(normalize('99254-50425')).toBe('919925450425');
-        expect(normalize('99 254 504 25')).toBe('919925450425');
+// Set up window.location
+Object.defineProperty(window, 'location', {
+    value: { origin: 'https://adinathhealth.com' },
+    writable: true,
+    configurable: true
+});
+
+// Mock fetch
+global.fetch = jest.fn();
+
+// Load SMS module
+const SMS = require('../../js/sms.js');
+
+beforeEach(() => {
+    mockOpen.mockClear();
+    fetch.mockClear();
+    SMS.provider = 'whatsapp';
+});
+
+describe('SMS Module Structure', () => {
+    test('should have provider property', () => {
+        expect(SMS.provider).toBeDefined();
     });
 
-    test('should handle international numbers', () => {
-        const normalize = (phone) => {
-            let p = phone.toString().replace(/\D/g, '');
-            if (p.length === 10) p = '91' + p;
-            return p;
-        };
+    test('should have templates object', () => {
+        expect(SMS.templates).toBeDefined();
+    });
 
-        // 10 digit number gets +91
-        expect(normalize('1234567890')).toBe('911234567890');
+    test('should have send function', () => {
+        expect(typeof SMS.send).toBe('function');
+    });
+
+    test('should have sendViaWhatsApp function', () => {
+        expect(typeof SMS.sendViaWhatsApp).toBe('function');
+    });
+
+    test('should have generateDoctorLink function', () => {
+        expect(typeof SMS.generateDoctorLink).toBe('function');
+    });
+
+    test('should have sendDoctorRegistrationSMS function', () => {
+        expect(typeof SMS.sendDoctorRegistrationSMS).toBe('function');
+    });
+});
+
+describe('SMS - Phone Number Normalization', () => {
+    test('should normalize 10-digit phone', async () => {
+        await SMS.send('9925450425', 'Test message');
+        expect(mockOpen).toHaveBeenCalledWith(
+            expect.stringContaining('919925450425'),
+            '_blank'
+        );
+    });
+
+    test('should handle phone with +91 prefix', async () => {
+        await SMS.send('+919925450425', 'Test');
+        expect(mockOpen).toHaveBeenCalledWith(
+            expect.stringContaining('919925450425'),
+            '_blank'
+        );
+    });
+
+    test('should strip non-numeric characters', async () => {
+        await SMS.send('99254-50425', 'Test');
+        expect(mockOpen).toHaveBeenCalledWith(
+            expect.stringContaining('919925450425'),
+            '_blank'
+        );
+    });
+
+    test('should handle phone with spaces', async () => {
+        await SMS.send('99 254 504 25', 'Test');
+        expect(mockOpen).toHaveBeenCalledWith(
+            expect.stringContaining('919925450425'),
+            '_blank'
+        );
     });
 });
 
 describe('SMS - Templates', () => {
-    // Template format tests
-    const templates = {
-        doctorRegistration: (name, link) => 
-            `Namaste ${name}! Welcome to Adinath Hospital digital system. Please complete your registration: ${link} - Adinath Hospital`,
-        
-        appointmentConfirm: (patientName, doctorName, date, time) =>
-            `Dear ${patientName}, your appointment with ${doctorName} is confirmed for ${date} at ${time}. Adinath Hospital, Shahibaug. Call: 9925450425`,
-        
-        appointmentReminder: (patientName, doctorName, time) =>
-            `Reminder: ${patientName}, your appointment with ${doctorName} is in 1 hour at ${time}. Adinath Hospital. Reply CONFIRM or call 9925450425`,
-        
-        prescriptionReady: (patientName) =>
-            `Dear ${patientName}, your prescription is ready for pickup at Adinath Hospital pharmacy. Timings: 11AM-7PM. Call: 9925450425`
-    };
-
-    test('doctorRegistration should include name and link', () => {
-        const message = templates.doctorRegistration('Dr. Ashok', 'https://example.com/register');
-        expect(message).toContain('Dr. Ashok');
-        expect(message).toContain('https://example.com/register');
-        expect(message).toContain('Adinath Hospital');
+    test('doctorRegistration should format correctly', () => {
+        const msg = SMS.templates.doctorRegistration('Dr. Ashok', 'https://example.com/reg');
+        expect(msg).toContain('Dr. Ashok');
+        expect(msg).toContain('https://example.com/reg');
+        expect(msg).toContain('Adinath Hospital');
     });
 
     test('appointmentConfirm should include all details', () => {
-        const message = templates.appointmentConfirm(
-            'Ramesh Kumar', 
-            'Dr. Ashok', 
-            '2025-12-25', 
-            '11:00 AM'
+        const msg = SMS.templates.appointmentConfirm('Ramesh', 'Dr. Ashok', '2025-12-25', '11:00 AM');
+        expect(msg).toContain('Ramesh');
+        expect(msg).toContain('Dr. Ashok');
+        expect(msg).toContain('2025-12-25');
+        expect(msg).toContain('11:00 AM');
+    });
+
+    test('appointmentReminder should include reminder context', () => {
+        const msg = SMS.templates.appointmentReminder('Ramesh', 'Dr. Ashok', '11:00 AM');
+        expect(msg).toContain('Reminder');
+        expect(msg).toContain('1 hour');
+    });
+
+    test('prescriptionReady should mention pharmacy', () => {
+        const msg = SMS.templates.prescriptionReady('Ramesh');
+        expect(msg).toContain('Ramesh');
+        expect(msg).toContain('prescription');
+        expect(msg).toContain('pharmacy');
+    });
+});
+
+describe('SMS - WhatsApp Fallback', () => {
+    test('sendViaWhatsApp should return success', () => {
+        const result = SMS.sendViaWhatsApp('919925450425', 'Test');
+        expect(result.success).toBe(true);
+        expect(result.method).toBe('whatsapp');
+    });
+
+    test('sendViaWhatsApp should construct correct URL', () => {
+        SMS.sendViaWhatsApp('919925450425', 'Hello World');
+        expect(mockOpen).toHaveBeenCalledWith(
+            'https://wa.me/919925450425?text=Hello%20World',
+            '_blank'
         );
-        expect(message).toContain('Ramesh Kumar');
-        expect(message).toContain('Dr. Ashok');
-        expect(message).toContain('2025-12-25');
-        expect(message).toContain('11:00 AM');
-        expect(message).toContain('9925450425');
     });
 
-    test('appointmentReminder should include reminder info', () => {
-        const message = templates.appointmentReminder(
-            'Ramesh Kumar', 
-            'Dr. Ashok', 
-            '11:00 AM'
+    test('should properly encode special characters', () => {
+        SMS.sendViaWhatsApp('919925450425', 'Hello & Goodbye!');
+        expect(mockOpen).toHaveBeenCalledWith(
+            expect.stringContaining('Hello%20%26%20Goodbye!'),
+            '_blank'
         );
-        expect(message).toContain('Reminder');
-        expect(message).toContain('Ramesh Kumar');
-        expect(message).toContain('Dr. Ashok');
-        expect(message).toContain('1 hour');
-    });
-
-    test('prescriptionReady should include patient name', () => {
-        const message = templates.prescriptionReady('Ramesh Kumar');
-        expect(message).toContain('Ramesh Kumar');
-        expect(message).toContain('prescription');
-        expect(message).toContain('pharmacy');
-    });
-});
-
-describe('SMS - WhatsApp URL Generation', () => {
-    test('should generate valid WhatsApp URL', () => {
-        const phone = '919925450425';
-        const message = 'Hello World';
-        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        
-        expect(url).toBe('https://wa.me/919925450425?text=Hello%20World');
-    });
-
-    test('should encode special characters properly', () => {
-        const message = 'Hello & Goodbye!';
-        const encoded = encodeURIComponent(message);
-        expect(encoded).toBe('Hello%20%26%20Goodbye!');
-    });
-
-    test('should encode newlines properly', () => {
-        const message = 'Line1\nLine2';
-        const encoded = encodeURIComponent(message);
-        expect(encoded).toContain('%0A');
-    });
-});
-
-describe('SMS - Doctor Tokens', () => {
-    const tokens = {
-        'ashok': 'ASH2024REG',
-        'sunita': 'SUN2024REG'
-    };
-
-    test('should have valid token for ashok', () => {
-        expect(tokens['ashok']).toBe('ASH2024REG');
-    });
-
-    test('should have valid token for sunita', () => {
-        expect(tokens['sunita']).toBe('SUN2024REG');
-    });
-
-    test('should return undefined for unknown doctor', () => {
-        expect(tokens['unknown']).toBeUndefined();
-    });
-});
-
-describe('SMS - Doctor Phone Numbers', () => {
-    const doctors = {
-        'ashok': { name: 'Dr. Ashok', phone: '9824066854' },
-        'sunita': { name: 'Dr. Sunita', phone: '9925450425' }
-    };
-
-    test('should have correct phone for ashok', () => {
-        expect(doctors['ashok'].phone).toBe('9824066854');
-    });
-
-    test('should have correct phone for sunita', () => {
-        expect(doctors['sunita'].phone).toBe('9925450425');
-    });
-
-    test('should have correct name for ashok', () => {
-        expect(doctors['ashok'].name).toBe('Dr. Ashok');
-    });
-
-    test('should have correct name for sunita', () => {
-        expect(doctors['sunita'].name).toBe('Dr. Sunita');
     });
 });
 
 describe('SMS - Doctor Link Generation', () => {
-    const generateDoctorLink = (doctorId) => {
-        const baseUrl = 'https://adinathhealth.com';
-        const tokens = {
-            'ashok': 'ASH2024REG',
-            'sunita': 'SUN2024REG'
-        };
-        
-        if (!tokens[doctorId]) {
-            return null;
-        }
-        
-        return `${baseUrl}/onboard/doctor.html?id=${doctorId}&token=${tokens[doctorId]}`;
-    };
-
     test('should generate valid link for ashok', () => {
-        const link = generateDoctorLink('ashok');
+        const link = SMS.generateDoctorLink('ashok');
         expect(link).toContain('/onboard/doctor.html');
         expect(link).toContain('id=ashok');
         expect(link).toContain('token=ASH2024REG');
     });
 
     test('should generate valid link for sunita', () => {
-        const link = generateDoctorLink('sunita');
+        const link = SMS.generateDoctorLink('sunita');
         expect(link).toContain('id=sunita');
         expect(link).toContain('token=SUN2024REG');
     });
 
     test('should return null for unknown doctor', () => {
-        const link = generateDoctorLink('unknown');
+        const link = SMS.generateDoctorLink('unknown');
         expect(link).toBeNull();
     });
 });
 
-describe('SMS - Provider Configuration', () => {
-    test('MSG91 should use correct sender ID', () => {
-        const msg91Config = {
-            senderId: 'ADNHSP',
-            route: '4'
-        };
-        expect(msg91Config.senderId).toBe('ADNHSP');
-        expect(msg91Config.route).toBe('4');
+describe('SMS - Doctor Registration SMS', () => {
+    test('should send to correct phone for ashok', async () => {
+        await SMS.sendDoctorRegistrationSMS('ashok');
+        expect(mockOpen).toHaveBeenCalledWith(
+            expect.stringContaining('919824066854'),
+            '_blank'
+        );
     });
 
-    test('should have correct Twilio config structure', () => {
-        const twilioConfig = {
-            accountSid: '',
-            authToken: '',
-            fromNumber: ''
-        };
-        expect(twilioConfig).toHaveProperty('accountSid');
-        expect(twilioConfig).toHaveProperty('authToken');
-        expect(twilioConfig).toHaveProperty('fromNumber');
+    test('should send to correct phone for sunita', async () => {
+        await SMS.sendDoctorRegistrationSMS('sunita');
+        expect(mockOpen).toHaveBeenCalledWith(
+            expect.stringContaining('919925450425'),
+            '_blank'
+        );
+    });
+
+    test('should return false for unknown doctor', async () => {
+        const result = await SMS.sendDoctorRegistrationSMS('unknown');
+        expect(result).toBe(false);
     });
 });
+
+describe('SMS - Configuration', () => {
+    test('should have MSG91 config with correct sender ID', () => {
+        expect(SMS.msg91).toBeDefined();
+        expect(SMS.msg91.senderId).toBe('ADNHSP');
+    });
+
+    test('should have Twilio config structure', () => {
+        expect(SMS.twilio).toBeDefined();
+        expect(SMS.twilio).toHaveProperty('accountSid');
+        expect(SMS.twilio).toHaveProperty('authToken');
+        expect(SMS.twilio).toHaveProperty('fromNumber');
+    });
+
+    test('should have all required templates', () => {
+        expect(typeof SMS.templates.doctorRegistration).toBe('function');
+        expect(typeof SMS.templates.appointmentConfirm).toBe('function');
+        expect(typeof SMS.templates.appointmentReminder).toBe('function');
+        expect(typeof SMS.templates.prescriptionReady).toBe('function');
+    });
+});
+
+describe('SMS - Provider Fallback', () => {
+    test('should fallback to WhatsApp when Twilio not configured', async () => {
+        SMS.provider = 'twilio';
+        SMS.twilio.accountSid = '';
+        await SMS.send('9925450425', 'Test');
+        expect(mockOpen).toHaveBeenCalled();
+    });
+
+    test('should fallback to WhatsApp when MSG91 not configured', async () => {
+        SMS.provider = 'msg91';
+        SMS.msg91.authKey = '';
+        await SMS.send('9925450425', 'Test');
+        expect(mockOpen).toHaveBeenCalled();
+    });
+});
+

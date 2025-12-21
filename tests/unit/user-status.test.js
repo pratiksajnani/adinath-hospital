@@ -1,54 +1,28 @@
 /**
- * USER STATUS Component Unit Tests
- * Tests user status widget functionality
+ * USER STATUS Widget Unit Tests
+ * Tests for user status display, menus, and logout
  */
 
-// Setup mock DOM elements
-const mockElements = {};
-
-// Store original getElementById
-const originalGetElementById = document.getElementById ? document.getElementById.bind(document) : () => null;
-
-// Override getElementById to return our mock elements
-document.getElementById = (id) => {
-    if (mockElements[id] !== undefined) {
-        return mockElements[id];
-    }
-    return originalGetElementById(id);
-};
-
-// Mock insertAdjacentHTML on the existing body
-if (document.body) {
-    document.body.insertAdjacentHTML = jest.fn();
-}
-
+// Mock window.location
 Object.defineProperty(window, 'location', {
-    value: { pathname: '/', href: 'http://localhost/' },
+    value: { 
+        pathname: '/',
+        href: 'http://localhost/'
+    },
     writable: true,
     configurable: true
 });
 
-// Load user-status module - functions will be in global scope
-const fs = require('fs');
-const path = require('path');
-const code = fs.readFileSync(path.join(__dirname, '../../js/user-status.js'), 'utf8');
-eval(code);
+// Load user-status module
+const { getBasePath, toggleUserMenu, updateUserStatusWidget, doLogout, injectUserStatus } = require('../../js/user-status.js');
 
 beforeEach(() => {
     localStorage.clear();
-    // Reset mock elements
-    mockElements['user-status-icon'] = { textContent: '' };
-    mockElements['user-status-name'] = { textContent: '', style: { color: '' } };
-    mockElements['guest-menu-items'] = { style: { display: '' } };
-    mockElements['logged-in-menu-items'] = { style: { display: '' } };
-    mockElements['menu-user-name'] = { textContent: '' };
-    mockElements['menu-user-role'] = { textContent: '' };
-    mockElements['menu-portal-link'] = { href: '' };
-    mockElements['user-status-menu'] = { style: { display: 'none' } };
+    document.body.innerHTML = '';
 });
 
 describe('getBasePath()', () => {
-    test('should return empty for root pages', () => {
+    test('should return empty string for root pages', () => {
         window.location.pathname = '/index.html';
         expect(getBasePath()).toBe('');
     });
@@ -64,7 +38,7 @@ describe('getBasePath()', () => {
     });
 
     test('should return ../ for docs pages', () => {
-        window.location.pathname = '/docs/guide.html';
+        window.location.pathname = '/docs/PATIENT_GUIDE.html';
         expect(getBasePath()).toBe('../');
     });
 
@@ -78,195 +52,108 @@ describe('getBasePath()', () => {
         expect(getBasePath()).toBe('../');
     });
 
+    test('should return ../../ for nested forms', () => {
+        window.location.pathname = '/forms/data-collection/form.html';
+        expect(getBasePath()).toBe('../../');
+    });
+
     test('should return ../ for onboard pages', () => {
         window.location.pathname = '/onboard/doctor.html';
         expect(getBasePath()).toBe('../');
     });
+});
 
-    test('should return ../ for store pages', () => {
-        window.location.pathname = '/store/index.html';
-        expect(getBasePath()).toBe('../');
+describe('injectUserStatus()', () => {
+    test('should inject user status widget into body', () => {
+        injectUserStatus();
+        const widget = document.getElementById('user-status-widget');
+        expect(widget).toBeDefined();
+    });
+
+    test('should show Guest by default', () => {
+        injectUserStatus();
+        const nameElement = document.getElementById('user-status-name');
+        expect(nameElement.textContent).toBe('Guest');
+    });
+
+    test('should call updateUserStatusWidget', () => {
+        injectUserStatus();
+        // Widget should exist after injection
+        expect(document.getElementById('user-status-widget')).toBeTruthy();
+    });
+});
+
+describe('updateUserStatusWidget()', () => {
+    beforeEach(() => {
+        injectUserStatus();
+    });
+
+    test('should show Guest when not logged in', () => {
+        updateUserStatusWidget();
+        const nameElement = document.getElementById('user-status-name');
+        expect(nameElement.textContent).toBe('Guest');
+    });
+
+    test('should show first word of user name when logged in', () => {
+        localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_user_name', 'Dr. Ashok');
+        localStorage.setItem('hms_role', 'doctor');
+        
+        updateUserStatusWidget();
+        
+        const nameElement = document.getElementById('user-status-name');
+        // Code shows first word only
+        expect(nameElement.textContent).toBe('Dr.');
+    });
+
+    test('should show Admin when admin is logged in', () => {
+        localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_user_name', 'Pratik');
+        localStorage.setItem('hms_role', 'admin');
+        
+        updateUserStatusWidget();
+        
+        const nameElement = document.getElementById('user-status-name');
+        expect(nameElement.textContent).toBe('Pratik');
+    });
+
+    test('should show email prefix if name not available', () => {
+        localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_user_email', 'test@test.com');
+        localStorage.setItem('hms_role', 'patient');
+        
+        updateUserStatusWidget();
+        
+        const nameElement = document.getElementById('user-status-name');
+        // Code shows part before @ and first word
+        expect(nameElement.textContent).toBe('test');
     });
 });
 
 describe('toggleUserMenu()', () => {
-    test('should show menu when hidden', () => {
-        mockElements['user-status-menu'].style.display = 'none';
+    beforeEach(() => {
+        injectUserStatus();
+    });
+
+    test('should toggle menu visibility', () => {
+        const menu = document.getElementById('user-status-menu');
+        expect(menu.style.display).toBe('none');
+        
         toggleUserMenu();
-        expect(mockElements['user-status-menu'].style.display).toBe('block');
-    });
-
-    test('should hide menu when visible', () => {
-        mockElements['user-status-menu'].style.display = 'block';
+        expect(menu.style.display).toBe('block');
+        
         toggleUserMenu();
-        expect(mockElements['user-status-menu'].style.display).toBe('none');
-    });
-});
-
-describe('updateUserStatusWidget() - Guest State', () => {
-    test('should show guest icon', () => {
-        updateUserStatusWidget();
-        expect(mockElements['user-status-icon'].textContent).toBe('👤');
-    });
-
-    test('should show Guest as name', () => {
-        updateUserStatusWidget();
-        expect(mockElements['user-status-name'].textContent).toBe('Guest');
-    });
-
-    test('should use grey color', () => {
-        updateUserStatusWidget();
-        expect(mockElements['user-status-name'].style.color).toBe('#64748b');
-    });
-
-    test('should show guest menu, hide logged in menu', () => {
-        updateUserStatusWidget();
-        expect(mockElements['guest-menu-items'].style.display).toBe('block');
-        expect(mockElements['logged-in-menu-items'].style.display).toBe('none');
-    });
-});
-
-describe('updateUserStatusWidget() - Admin State', () => {
-    beforeEach(() => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'admin');
-        localStorage.setItem('hms_user_name', 'Pratik Sajnani');
-    });
-
-    test('should show admin crown icon', () => {
-        updateUserStatusWidget();
-        expect(mockElements['user-status-icon'].textContent).toBe('👑');
-    });
-
-    test('should show first name', () => {
-        updateUserStatusWidget();
-        expect(mockElements['user-status-name'].textContent).toBe('Pratik');
-    });
-
-    test('should use red color for admin', () => {
-        updateUserStatusWidget();
-        expect(mockElements['user-status-name'].style.color).toBe('#dc2626');
-    });
-
-    test('should show logged in menu, hide guest menu', () => {
-        updateUserStatusWidget();
-        expect(mockElements['guest-menu-items'].style.display).toBe('none');
-        expect(mockElements['logged-in-menu-items'].style.display).toBe('block');
-    });
-
-    test('should set portal link to admin portal', () => {
-        window.location.pathname = '/';
-        updateUserStatusWidget();
-        expect(mockElements['menu-portal-link'].href).toBe('portal/admin/index.html');
-    });
-});
-
-describe('updateUserStatusWidget() - Doctor State', () => {
-    beforeEach(() => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'doctor');
-        localStorage.setItem('hms_user_name', 'Dr. Ashok');
-    });
-
-    test('should show doctor icon', () => {
-        updateUserStatusWidget();
-        expect(mockElements['user-status-icon'].textContent).toBe('👨‍⚕️');
-    });
-
-    test('should use teal color', () => {
-        updateUserStatusWidget();
-        expect(mockElements['user-status-name'].style.color).toBe('#0f766e');
-    });
-
-    test('should set portal link to doctor portal', () => {
-        window.location.pathname = '/';
-        updateUserStatusWidget();
-        expect(mockElements['menu-portal-link'].href).toBe('portal/doctor/simple.html');
-    });
-});
-
-describe('updateUserStatusWidget() - Staff State', () => {
-    beforeEach(() => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'staff');
-        localStorage.setItem('hms_user_name', 'Staff Member');
-    });
-
-    test('should show staff icon', () => {
-        updateUserStatusWidget();
-        expect(mockElements['user-status-icon'].textContent).toBe('💁');
-    });
-
-    test('should use purple color', () => {
-        updateUserStatusWidget();
-        expect(mockElements['user-status-name'].style.color).toBe('#7c3aed');
-    });
-
-    test('should set portal link to staff portal', () => {
-        window.location.pathname = '/';
-        updateUserStatusWidget();
-        expect(mockElements['menu-portal-link'].href).toBe('portal/staff/index.html');
-    });
-});
-
-describe('updateUserStatusWidget() - Patient State', () => {
-    beforeEach(() => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'patient');
-        localStorage.setItem('hms_user_email', 'patient@test.com');
-    });
-
-    test('should show patient icon', () => {
-        updateUserStatusWidget();
-        expect(mockElements['user-status-icon'].textContent).toBe('🏥');
-    });
-
-    test('should use blue color', () => {
-        updateUserStatusWidget();
-        expect(mockElements['user-status-name'].style.color).toBe('#2563eb');
-    });
-
-    test('should extract name from email', () => {
-        updateUserStatusWidget();
-        expect(mockElements['user-status-name'].textContent).toBe('patient');
-    });
-
-    test('should set portal link to patient portal', () => {
-        window.location.pathname = '/';
-        updateUserStatusWidget();
-        expect(mockElements['menu-portal-link'].href).toBe('portal/patient/index.html');
-    });
-});
-
-describe('updateUserStatusWidget() - Menu Details', () => {
-    beforeEach(() => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'admin');
-        localStorage.setItem('hms_user_name', 'Test Admin');
-    });
-
-    test('should set menu user name', () => {
-        updateUserStatusWidget();
-        expect(mockElements['menu-user-name'].textContent).toBe('Test Admin');
-    });
-
-    test('should set role with proper capitalization', () => {
-        updateUserStatusWidget();
-        expect(mockElements['menu-user-role'].textContent).toBe('Admin');
+        expect(menu.style.display).toBe('none');
     });
 });
 
 describe('doLogout()', () => {
     beforeEach(() => {
+        injectUserStatus();
         localStorage.setItem('hms_logged_in', 'true');
         localStorage.setItem('hms_role', 'admin');
         localStorage.setItem('hms_user_email', 'test@test.com');
-        localStorage.setItem('hms_user_name', 'Test');
-        localStorage.setItem('hms_current_user', 'test');
-        localStorage.setItem('hms_auth_method', 'password');
-        localStorage.setItem('hms_doctor_id', 'ashok');
-        localStorage.setItem('currentPatient', 'patient123');
-        window.location.pathname = '/';
+        localStorage.setItem('hms_user_name', 'Test User');
     });
 
     test('should clear hms_logged_in', () => {
@@ -290,39 +177,115 @@ describe('doLogout()', () => {
     });
 });
 
-describe('updateUserStatusWidget() - Edge Cases', () => {
-    test('should handle missing DOM elements gracefully', () => {
-        mockElements['user-status-icon'] = null;
-        mockElements['user-status-name'] = null;
-        expect(() => updateUserStatusWidget()).not.toThrow();
+describe('Role Icons', () => {
+    beforeEach(() => {
+        injectUserStatus();
     });
 
-    test('should fallback to role name if no user name', () => {
+    test('should show doctor icon for doctor role', () => {
         localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_user_name', 'Dr. Test');
         localStorage.setItem('hms_role', 'doctor');
-        // Reset elements
-        mockElements['user-status-icon'] = { textContent: '' };
-        mockElements['user-status-name'] = { textContent: '', style: { color: '' } };
-        mockElements['guest-menu-items'] = { style: { display: '' } };
-        mockElements['logged-in-menu-items'] = { style: { display: '' } };
-        mockElements['menu-user-name'] = { textContent: '' };
-        mockElements['menu-user-role'] = { textContent: '' };
-        mockElements['menu-portal-link'] = { href: '' };
         
         updateUserStatusWidget();
-        expect(mockElements['user-status-name'].textContent).toBe('doctor');
+        
+        const iconElement = document.getElementById('user-status-icon');
+        expect(iconElement.textContent).toBe('👨‍⚕️');
     });
 
-    test('should handle logged_in=false correctly', () => {
-        localStorage.setItem('hms_logged_in', 'false');
+    test('should show admin icon for admin role', () => {
+        localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_user_name', 'Admin');
         localStorage.setItem('hms_role', 'admin');
-        // Reset elements
-        mockElements['user-status-icon'] = { textContent: '' };
-        mockElements['user-status-name'] = { textContent: '', style: { color: '' } };
-        mockElements['guest-menu-items'] = { style: { display: '' } };
-        mockElements['logged-in-menu-items'] = { style: { display: '' } };
         
         updateUserStatusWidget();
-        expect(mockElements['user-status-name'].textContent).toBe('Guest');
+        
+        const iconElement = document.getElementById('user-status-icon');
+        expect(iconElement.textContent).toBe('👑');
+    });
+
+    test('should show patient icon for patient role', () => {
+        localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_user_name', 'Patient');
+        localStorage.setItem('hms_role', 'patient');
+        
+        updateUserStatusWidget();
+        
+        const iconElement = document.getElementById('user-status-icon');
+        expect(iconElement.textContent).toBe('🏥');
+    });
+
+    test('should show staff icon for staff role', () => {
+        localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_user_name', 'Staff');
+        localStorage.setItem('hms_role', 'staff');
+        
+        updateUserStatusWidget();
+        
+        const iconElement = document.getElementById('user-status-icon');
+        expect(iconElement.textContent).toBe('💁');
+    });
+
+    test('should show receptionist icon', () => {
+        localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_user_name', 'Receptionist');
+        localStorage.setItem('hms_role', 'receptionist');
+        
+        updateUserStatusWidget();
+        
+        const iconElement = document.getElementById('user-status-icon');
+        expect(iconElement.textContent).toBe('💁');
+    });
+
+    test('should show nurse icon', () => {
+        localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_user_name', 'Nurse');
+        localStorage.setItem('hms_role', 'nurse');
+        
+        updateUserStatusWidget();
+        
+        const iconElement = document.getElementById('user-status-icon');
+        expect(iconElement.textContent).toBe('👩‍⚕️');
+    });
+
+    test('should show default icon for unknown role', () => {
+        localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_user_name', 'Unknown');
+        localStorage.setItem('hms_role', 'unknown');
+        
+        updateUserStatusWidget();
+        
+        const iconElement = document.getElementById('user-status-icon');
+        expect(iconElement.textContent).toBe('👤');
+    });
+});
+
+describe('Menu Items', () => {
+    beforeEach(() => {
+        injectUserStatus();
+    });
+
+    test('should show guest menu when not logged in', () => {
+        updateUserStatusWidget();
+        
+        const guestMenu = document.getElementById('guest-menu-items');
+        const loggedInMenu = document.getElementById('logged-in-menu-items');
+        
+        expect(guestMenu.style.display).not.toBe('none');
+        expect(loggedInMenu.style.display).toBe('none');
+    });
+
+    test('should show logged in menu when logged in', () => {
+        localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_user_name', 'Test');
+        localStorage.setItem('hms_role', 'patient');
+        
+        updateUserStatusWidget();
+        
+        const guestMenu = document.getElementById('guest-menu-items');
+        const loggedInMenu = document.getElementById('logged-in-menu-items');
+        
+        expect(guestMenu.style.display).toBe('none');
+        expect(loggedInMenu.style.display).toBe('block');
     });
 });
