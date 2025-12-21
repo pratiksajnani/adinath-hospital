@@ -115,7 +115,7 @@
     <!-- Header / Navigation -->
     <header class="header">
         <div class="container">
-            <a href="/" class="logo">
+            <a href="index.html" class="logo">
                 <span class="logo-icon">🏥</span>
                 <div class="logo-text">
                     <span class="logo-name" data-i18n="hospital_name">Adinath Hospital</span>
@@ -135,9 +135,10 @@
                 <div class="nav-dropdown">
                     <a href="#services" class="dropdown-trigger">Services <span class="dropdown-arrow">▾</span></a>
                     <div class="dropdown-menu">
-                        <a href="#services">🦴 Orthopedic Care</a>
-                        <a href="#services">👶 OB-GYN Services</a>
-                        <a href="#yoga">🧘 Yoga Classes</a>
+                        <a href="services/orthopedic.html">🦴 Orthopedic Care</a>
+                        <a href="services/gynecology.html">👶 OB-GYN Services</a>
+                        <a href="services/yoga.html">🧘 Yoga Classes</a>
+                        <a href="store.html">💊 Pharmacy & Medicines</a>
                         <a href="#expect">📋 What to Expect</a>
                     </div>
                 </div>
@@ -153,7 +154,8 @@
                 
                 <a href="#gallery" data-i18n="nav_gallery">Gallery</a>
                 <a href="#contact" data-i18n="nav_contact">Contact</a>
-                <a href="/book.html" class="btn btn-primary btn-sm" data-i18n="nav_book">Book Appointment</a>
+                <a href="store.html" class="btn btn-outline btn-sm">💊 Medicines</a>
+                <a href="book.html" class="btn btn-primary btn-sm" data-i18n="nav_book">📅 Book</a>
             </nav>
         </div>
     </header>
@@ -187,7 +189,7 @@
                     </div>
                 </div>
                 <div class="hero-cta">
-                    <a href="/book.html" class="btn btn-primary btn-lg" data-i18n="cta_book">📅 Book Appointment</a>
+                    <a href="book.html" class="btn btn-primary btn-lg" data-i18n="cta_book">📅 Book Appointment</a>
                     <a href="tel:+919925450425" class="btn btn-secondary btn-lg" data-i18n="cta_call">📞 Call Now</a>
                 </div>
                 <div class="hero-info">
@@ -298,6 +300,24 @@
                     <a href="#dr-sunita" class="btn btn-outline" data-i18n="learn_more">Learn More →</a>
                 </div>
                 
+                <!-- Pharmacy & Medicines -->
+                <div class="service-category pharmacy">
+                    <div class="category-header">
+                        <span class="category-icon">💊</span>
+                        <h3>Pharmacy & Medicines</h3>
+                        <p>In-house Medical Store</p>
+                    </div>
+                    <ul class="service-list">
+                        <li>Prescription Medicines</li>
+                        <li>OTC Health Products</li>
+                        <li>Orthopedic Supports & Braces</li>
+                        <li>WhatsApp Ordering</li>
+                        <li>Home Delivery Available</li>
+                        <li>Genuine Products Only</li>
+                    </ul>
+                    <a href="store.html" class="btn btn-outline">Order Medicines →</a>
+                </div>
+                
                 <!-- Facilities -->
                 <div class="service-category facilities">
                     <div class="category-header">
@@ -310,7 +330,7 @@
                         <li data-i18n="facility_2">Latest X-Ray Machine</li>
                         <li data-i18n="facility_3">AC Private Rooms</li>
                         <li data-i18n="facility_4">Comfortable Patient Beds</li>
-                        <li data-i18n="facility_5">In-house Pharmacy</li>
+                        <li data-i18n="facility_5">Diagnostic Services</li>
                         <li data-i18n="facility_6">24/7 Nursing Care</li>
                     </ul>
                 </div>
@@ -330,8 +350,7 @@
                 <!-- Dr. Ashok -->
                 <div class="doctor-card" id="dr-ashok">
                     <div class="doctor-image">
-                        <div class="doctor-placeholder">👨‍⚕️</div>
-                        <!-- <img src="images/dr-ashok.jpg" alt="Dr. Ashok Sajnani"> -->
+                        <img src="images/1723730611450.jpeg" alt="Dr. Ashok Sajnani - M.S. Ortho" style="width: 100%; height: 280px; object-fit: cover; object-position: center top; border-radius: var(--radius-lg);">
                     </div>
                     <div class="doctor-content">
                         <h3>Dr. Ashok Sajnani</h3>
@@ -358,15 +377,14 @@
                             <a href="https://www.linkedin.com/in/ashok-sajnani-11937322/" target="_blank" class="linkedin-link">💼 LinkedIn</a>
                         </div>
                         
-                        <a href="/book.html?doctor=ashok" class="btn btn-primary" data-i18n="book_with">Book Appointment</a>
+                        <a href="book.html?doctor=ashok" class="btn btn-primary" data-i18n="book_with">Book Appointment</a>
                     </div>
                 </div>
                 
                 <!-- Dr. Sunita -->
                 <div class="doctor-card" id="dr-sunita">
                     <div class="doctor-image">
-                        <div class="doctor-placeholder">👩‍⚕️</div>
-                        <!-- <img src="images/dr-sunita.jpg" alt="Dr. Sunita Sajnani"> -->
+                        <img src="images/1516926564161.jpeg" alt="Dr. Sunita Sajnani - MD OB-GYN" style="width: 100%; height: 280px; object-fit: cover; object-position: center top; border-radius: var(--radius-lg);">
                     </div>
                     <div class="doctor-content">
                         <h3>Dr. Sunita Sajnani</h3>
@@ -397,7 +415,7 @@
                             <a href="https://www.linkedin.com/in/dr-sunita-sajnani-6b81b384/" target="_blank" class="linkedin-link">💼 LinkedIn</a>
                         </div>
                         
-                        <a href="/book.html?doctor=sunita" class="btn btn-primary" data-i18n="book_with">Book Appointment</a>
+                        <a href="book.html?doctor=sunita" class="btn btn-primary" data-i18n="book_with">Book Appointment</a>
                     </div>
                 </div>
             </div>
@@ -417,8 +435,7 @@
                 <div class="expect-step">
                     <div class="step-number">1</div>
                     <div class="step-image">
-                        <img src="images/hospital-entrance.jpg" alt="Hospital Entrance" onerror="this.style.display='none'">
-                        <div class="step-placeholder">🏥</div>
+                        <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&q=80" alt="Hospital Entrance" style="width:100%;height:150px;object-fit:cover;border-radius:12px;">
                     </div>
                     <h3 data-i18n="step1_title">Arrive & Check-in</h3>
                     <p data-i18n="step1_desc">Find us at Shukan Mall, 2nd Floor. Our friendly staff will greet you and complete a quick registration.</p>
@@ -427,8 +444,7 @@
                 <div class="expect-step">
                     <div class="step-number">2</div>
                     <div class="step-image">
-                        <img src="images/waiting-area.jpg" alt="Waiting Area" onerror="this.style.display='none'">
-                        <div class="step-placeholder">🪑</div>
+                        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&q=80" alt="Waiting Area" style="width:100%;height:150px;object-fit:cover;border-radius:12px;">
                     </div>
                     <h3 data-i18n="step2_title">Comfortable Waiting</h3>
                     <p data-i18n="step2_desc">Relax in our clean, air-conditioned waiting area. We respect your time and minimize wait times.</p>
@@ -437,8 +453,7 @@
                 <div class="expect-step">
                     <div class="step-number">3</div>
                     <div class="step-image">
-                        <img src="images/consultation.jpg" alt="Doctor Consultation" onerror="this.style.display='none'">
-                        <div class="step-placeholder">👨‍⚕️</div>
+                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&q=80" alt="Doctor Consultation" style="width:100%;height:150px;object-fit:cover;border-radius:12px;">
                     </div>
                     <h3 data-i18n="step3_title">Personal Consultation</h3>
                     <p data-i18n="step3_desc">One-on-one time with your doctor. We listen carefully, explain clearly, and answer all your questions.</p>
@@ -447,8 +462,7 @@
                 <div class="expect-step">
                     <div class="step-number">4</div>
                     <div class="step-image">
-                        <img src="images/treatment.jpg" alt="Treatment" onerror="this.style.display='none'">
-                        <div class="step-placeholder">💊</div>
+                        <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?w=400&q=80" alt="Treatment" style="width:100%;height:150px;object-fit:cover;border-radius:12px;">
                     </div>
                     <h3 data-i18n="step4_title">Treatment & Care Plan</h3>
                     <p data-i18n="step4_desc">Receive your personalized treatment plan with clear instructions. Follow-up appointments scheduled as needed.</p>
@@ -456,7 +470,7 @@
             </div>
             
             <div class="expect-cta">
-                <a href="/book.html" class="btn btn-primary btn-lg" data-i18n="book_first">📅 Book Your First Visit</a>
+                <a href="book.html" class="btn btn-primary btn-lg" data-i18n="book_first">📅 Book Your First Visit</a>
             </div>
         </div>
     </section>
@@ -471,7 +485,7 @@
             </div>
             
             <div class="actions-grid">
-                <a href="/book.html" class="action-card">
+                <a href="book.html" class="action-card">
                     <div class="action-icon">📅</div>
                     <h3>Book Appointment</h3>
                     <p>Schedule a visit with Dr. Ashok or Dr. Sunita</p>
@@ -485,7 +499,7 @@
                     <span class="action-arrow">→</span>
                 </a>
                 
-                <a href="/store.html" class="action-card">
+                <a href="store.html" class="action-card">
                     <div class="action-icon">🏪</div>
                     <h3>Medical Store</h3>
                     <p>View available medicines & health products</p>
@@ -506,7 +520,7 @@
                     <span class="action-arrow">→</span>
                 </a>
                 
-                <a href="https://maps.app.goo.gl/shukanmall" class="action-card" target="_blank">
+                <a href="https://www.google.com/maps/search/Shukan+Mall+Shahibaug+Ahmedabad" class="action-card" target="_blank">
                     <div class="action-icon">📍</div>
                     <h3>Get Directions</h3>
                     <p>Navigate to Shukan Mall, 2nd Floor</p>
@@ -526,28 +540,23 @@
             
             <div class="gallery-grid">
                 <div class="gallery-item large">
-                    <img src="images/hospital-signboard.jpg" alt="Adinath Hospital Signboard" onerror="this.parentElement.classList.add('placeholder')">
-                    <div class="gallery-placeholder">🏥<br>Hospital Entrance</div>
-                    <div class="gallery-caption">આદિનાથ હોસ્પિટલ - Find us easily!</div>
+                    <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80" alt="Modern Hospital Building" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="gallery-caption">Modern Healthcare Facility</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="images/consultation-room.jpg" alt="Consultation Room" onerror="this.parentElement.classList.add('placeholder')">
-                    <div class="gallery-placeholder">👨‍⚕️<br>Consultation</div>
-                    <div class="gallery-caption">Modern Consultation Rooms</div>
+                    <img src="images/D5A41C52-D4B2-4362-9705-8E1EB3AA76AC_1_105_c.jpeg" alt="Dr. Ashok consulting with patients" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="gallery-caption">Personalized Consultations</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="images/operation-theatre.jpg" alt="Operation Theatre" onerror="this.parentElement.classList.add('placeholder')">
-                    <div class="gallery-placeholder">🏥<br>OT</div>
-                    <div class="gallery-caption">Well-equipped Operation Theatre</div>
+                    <img src="https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=600&q=80" alt="Operation Theatre" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="gallery-caption">Advanced Operation Theatre</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="images/patient-room.jpg" alt="Patient Room" onerror="this.parentElement.classList.add('placeholder')">
-                    <div class="gallery-placeholder">🛏️<br>Rooms</div>
-                    <div class="gallery-caption">AC Private Rooms</div>
+                    <img src="https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=600&q=80" alt="Patient Room" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="gallery-caption">Comfortable Private Rooms</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="images/rotary-event.jpg" alt="Community Event" onerror="this.parentElement.classList.add('placeholder')">
-                    <div class="gallery-placeholder">🤝<br>Community</div>
+                    <img src="images/FB3EB535-BEED-42D0-9A62-4CB399D21AFD.jpeg" alt="Rotary Club of Ahmedabad Chandkheda" style="width: 100%; height: 100%; object-fit: cover;">
                     <div class="gallery-caption">Rotary Club Community Service</div>
                 </div>
             </div>
@@ -572,10 +581,10 @@
                         <li data-i18n="yoga_3">🧠 Stress Management & Meditation</li>
                         <li data-i18n="yoga_4">👧 Special Sessions for Adolescents</li>
                     </ul>
-                    <a href="/book.html?service=yoga" class="btn btn-primary" data-i18n="yoga_join">Join Yoga Classes</a>
+                    <a href="book.html?service=yoga" class="btn btn-primary" data-i18n="yoga_join">Join Yoga Classes</a>
                 </div>
                 <div class="yoga-image">
-                    <div class="yoga-placeholder">🧘‍♀️</div>
+                    <img src="images/414A642D-102C-4F92-A4BE-48D6F7B13AD4_4_5005_c.jpeg" alt="Dr. Sunita leading outdoor yoga class" style="width: 100%; height: 400px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);">
                 </div>
             </div>
         </div>
@@ -611,7 +620,7 @@
                     <span class="blog-icon">📝</span>
                     <h4>Why Joint Preservation Matters</h4>
                     <p>My 35 years of experience have taught me that prevention is always better than replacement...</p>
-                    <a href="#" class="read-more">Read More →</a>
+                    <a href="services/orthopedic.html" class="read-more">Read More →</a>
                 </div>
             </div>
         </div>
@@ -706,7 +715,7 @@
                     </div>
                     
                     <div class="contact-cta">
-                        <a href="/book.html" class="btn btn-primary btn-lg" data-i18n="book_appointment">📅 Book Appointment</a>
+                        <a href="book.html" class="btn btn-primary btn-lg" data-i18n="book_appointment">📅 Book Appointment</a>
                     </div>
                 </div>
                 
@@ -720,7 +729,7 @@
                         loading="lazy"
                         title="Adinath Hospital Location - Shukan Mall, Shahibaug, Ahmedabad">
                     </iframe>
-                    <a href="https://maps.app.goo.gl/3H3WJ6" target="_blank" class="map-directions-link">
+                    <a href="https://www.google.com/maps/search/Shukan+Mall+Shahibaug+Ahmedabad" target="_blank" class="map-directions-link">
                         📍 Get Directions on Google Maps
                     </a>
                 </div>
@@ -745,9 +754,9 @@
                         Specialized Orthopedic and Gynecology care with modern facilities.
                     </p>
                     <div class="social-links">
-                        <a href="#" aria-label="Instagram">📷</a>
-                        <a href="#" aria-label="Facebook">📘</a>
-                        <a href="#" aria-label="YouTube">📺</a>
+                        <a href="https://instagram.com" target="_blank" aria-label="Instagram">📷</a>
+                        <a href="https://facebook.com" target="_blank" aria-label="Facebook">📘</a>
+                        <a href="https://youtube.com" target="_blank" aria-label="YouTube">📺</a>
                     </div>
                 </div>
                 
@@ -756,23 +765,24 @@
                     <a href="#services">Services</a>
                     <a href="#doctors">Our Doctors</a>
                     <a href="#yoga">Yoga Classes</a>
-                    <a href="/book.html">Book Appointment</a>
+                    <a href="book.html">Book Appointment</a>
                     <a href="#contact">Contact Us</a>
                 </div>
                 
                 <div class="footer-links">
                     <h4>Services</h4>
-                    <a href="#dr-ashok">Orthopedic Care</a>
-                    <a href="#dr-sunita">Gynecology</a>
-                    <a href="#yoga">Yoga & Wellness</a>
-                    <a href="#corner">Health Videos</a>
+                    <a href="services/orthopedic.html">Orthopedic Care</a>
+                    <a href="services/gynecology.html">Gynecology</a>
+                    <a href="services/yoga.html">Yoga & Wellness</a>
+                    <a href="store.html">Pharmacy & Medicines</a>
                 </div>
                 
                 <div class="footer-links">
-                    <h4>For Staff</h4>
-                    <a href="/login.html">Doctor Login</a>
-                    <a href="/login.html">Staff Login</a>
-                    <a href="/login.html">Admin Login</a>
+                    <h4>Portals</h4>
+                    <a href="portal/patient/index.html">Patient Portal</a>
+                    <a href="login.html">Doctor Login</a>
+                    <a href="login.html">Staff Login</a>
+                    <a href="portal/index.html">All Portals</a>
                 </div>
             </div>
             
@@ -783,6 +793,8 @@
         </div>
     </footer>
 
+    <script src="js/config.js"></script>
+    <script src="js/hms.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
 </body>

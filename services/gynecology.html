@@ -93,18 +93,24 @@
 <body>
     <header class="header">
         <div class="container header-content">
-            <a href="/" class="logo">
+            <a href="../index.html" class="logo">
                 <span class="logo-icon">🏥</span>
                 <div class="logo-text">
                     <span class="logo-name">Adinath Hospital</span>
                     <span class="logo-tagline">Care with Compassion</span>
                 </div>
             </a>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <nav class="nav">
-                <a href="/">Home</a>
-                <a href="/#services">Services</a>
-                <a href="/#doctors">Doctors</a>
-                <a href="/book.html" class="btn btn-primary btn-sm">Book Appointment</a>
+                <a href="../index.html">Home</a>
+                <a href="../index.html#services">Services</a>
+                <a href="../index.html#doctors">Doctors</a>
+                <a href="../index.html#contact">Contact</a>
+                <a href="../book.html" class="btn btn-primary btn-sm">Book Appointment</a>
             </nav>
         </div>
     </header>
@@ -115,7 +121,7 @@
                 <span class="hero-badge">👶 Women's Health</span>
                 <h1>Complete Women's Healthcare</h1>
                 <p>Compassionate, comprehensive gynecological and obstetric care for women at every stage of life.</p>
-                <a href="/book.html?doctor=sunita" class="btn btn-lg" style="background: white; color: #be185d;">Book Consultation</a>
+                <a href="../book.html?doctor=sunita" class="btn btn-lg" style="background: white; color: #be185d;">Book Consultation</a>
             </div>
         </section>
 
@@ -185,12 +191,12 @@
                         <div class="yoga-cta">
                             <h3>🧘 Also Offering: Yoga Classes</h3>
                             <p>Join Dr. Sunita's holistic yoga program designed for women of all ages - including prenatal, postnatal, and therapeutic yoga.</p>
-                            <a href="/services/yoga.html" class="btn" style="background: white; color: var(--primary);">Learn About Yoga Classes</a>
+                            <a href="yoga.html" class="btn" style="background: white; color: var(--primary);">Learn About Yoga Classes</a>
                         </div>
                     </div>
 
                     <div class="doctor-sidebar">
-                        <div class="doctor-photo">👩‍⚕️</div>
+                        <img src="../images/1516926564161.jpeg" alt="Dr. Sunita Sajnani" style="width: 100%; height: 200px; object-fit: cover; object-position: top; border-radius: var(--radius-lg); margin-bottom: 20px;">
                         <h3>Dr. Sunita Sajnani</h3>
                         <p class="specialty">MD Obstetrics & Gynecology</p>
                         <span class="experience">30+ Years Experience</span>
@@ -205,7 +211,7 @@
                             </ul>
                         </div>
                         
-                        <a href="/book.html?doctor=sunita" class="btn btn-primary" style="width: 100%;">📅 Book Appointment</a>
+                        <a href="../book.html?doctor=sunita" class="btn btn-primary" style="width: 100%;">📅 Book Appointment</a>
                         <a href="tel:+919925450425" class="btn btn-outline" style="width: 100%; margin-top: 12px;">📞 Call: 99254 50425</a>
                     </div>
                 </div>
@@ -216,12 +222,13 @@
             <div class="container">
                 <h2>Your Health Matters</h2>
                 <p style="color: var(--gray-600); margin-bottom: 24px;">Schedule a consultation in a comfortable, private environment.</p>
-                <a href="/book.html?doctor=sunita" class="btn btn-primary btn-lg">📅 Book Appointment</a>
+                <a href="../book.html?doctor=sunita" class="btn btn-primary btn-lg">📅 Book Appointment</a>
             </div>
         </section>
     </main>
 
     <script src="../js/config.js"></script>
+    <script src="../js/i18n.js"></script>
     <script src="../js/main.js"></script>
 </body>
 </html>

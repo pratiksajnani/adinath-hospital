@@ -322,7 +322,7 @@
                 <a href="#sales"><span class="icon">💰</span> Sales</a>
                 <a href="#patients"><span class="icon">👥</span> Patient Queue</a>
                 <a href="#print"><span class="icon">🖨️</span> Print Queue</a>
-                <a href="/"><span class="icon">🏥</span> Hospital Site</a>
+                <a href="../index.html"><span class="icon">🏥</span> Hospital Site</a>
             </nav>
         </aside>
         
@@ -566,6 +566,9 @@
         </main>
     </div>
     
+    <script src="../js/config.js"></script>
+    <script src="../js/hms.js"></script>
+    <script src="../js/main.js"></script>
     <script>
         // Set today's date
         document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-IN', {
@@ -574,6 +577,62 @@
             month: 'long',
             day: 'numeric'
         });
+        
+        // Initialize dashboard with real data
+        function initStoreDashboard() {
+            // Update stats from HMS
+            document.getElementById('todaySales').textContent = HMS.sales.getTodayTotal().toLocaleString();
+            document.getElementById('lowStock').textContent = HMS.inventory.getLowStock().length;
+            
+            // Load inventory
+            loadInventory();
+            
+            // Load recent sales
+            loadRecentSales();
+        }
+        
+        function loadInventory() {
+            const inventory = HMS.inventory.getAll();
+            const tbody = document.getElementById('inventoryTable');
+            tbody.innerHTML = inventory.map(item => `
+                <tr>
+                    <td><strong>${item.name}</strong></td>
+                    <td>${item.category}</td>
+                    <td class="${item.stock <= item.reorderLevel ? 'stock-low' : 'stock-ok'}">${item.stock} ${item.unit}</td>
+                    <td>₹${item.price}</td>
+                    <td>
+                        <button class="btn-print" onclick="updateStock('${item.id}', 1, 'add')">+</button>
+                        <button class="btn-print" onclick="updateStock('${item.id}', 1, 'subtract')">−</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function loadRecentSales() {
+            const sales = HMS.sales.getAll().slice(-5).reverse();
+            const salesList = document.getElementById('recentSales');
+            if (sales.length === 0) {
+                salesList.innerHTML = '<li style="padding: 20px; text-align: center; color: var(--gray-500);">No sales yet today</li>';
+                return;
+            }
+            salesList.innerHTML = sales.map(sale => `
+                <li class="sale-item">
+                    <div class="sale-info">
+                        <div class="items">${sale.items.map(i => i.name).join(', ')}</div>
+                        <div class="time">${sale.time || 'Today'} • ${sale.paymentMethod.toUpperCase()}</div>
+                    </div>
+                    <div class="sale-amount">₹${sale.total}</div>
+                </li>
+            `).join('');
+        }
+        
+        function updateStock(id, qty, operation) {
+            HMS.inventory.updateStock(id, qty, operation);
+            loadInventory();
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initStoreDashboard);
         
         // Cart functionality
         let cart = [];
@@ -627,29 +686,20 @@
             
             const total = cart.reduce((sum, item) => sum + item.total, 0);
             const method = document.getElementById('paymentMethod').value;
+            const patientName = prompt('Patient Name (or leave empty for Walk-in):', 'Walk-in');
             
-            // Add to recent sales
-            const salesList = document.getElementById('recentSales');
-            const newSale = document.createElement('li');
-            newSale.className = 'sale-item';
-            newSale.innerHTML = `
-                <div class="sale-info">
-                    <div class="items">${cart.map(i => i.name).join(', ')}</div>
-                    <div class="time">Just now • ${method.toUpperCase()}</div>
-                </div>
-                <div class="sale-amount">₹${total}</div>
-            `;
-            salesList.insertBefore(newSale, salesList.firstChild);
+            // Save to HMS
+            HMS.sales.add({
+                patientName: patientName || 'Walk-in',
+                items: cart,
+                total: total,
+                paymentMethod: method
+            });
             
-            // Update stats
-            const currentSales = parseInt(document.getElementById('todaySales').textContent.replace(',', ''));
-            document.getElementById('todaySales').textContent = (currentSales + total).toLocaleString();
-            document.getElementById('patientsServed').textContent = 
-                parseInt(document.getElementById('patientsServed').textContent) + 1;
-            
-            // Clear cart
+            // Clear cart and refresh
             cart = [];
             updateCart();
+            initStoreDashboard();
             
             alert('✅ Sale completed! Total: ₹' + total);
         }

@@ -78,18 +78,24 @@
 <body>
     <header class="header">
         <div class="container header-content">
-            <a href="/" class="logo">
+            <a href="../index.html" class="logo">
                 <span class="logo-icon">🏥</span>
                 <div class="logo-text">
                     <span class="logo-name">Adinath Hospital</span>
                     <span class="logo-tagline">Care with Compassion</span>
                 </div>
             </a>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <nav class="nav">
-                <a href="/">Home</a>
-                <a href="/#services">Services</a>
-                <a href="/#doctors">Doctors</a>
-                <a href="/book.html" class="btn btn-primary btn-sm">Book Appointment</a>
+                <a href="../index.html">Home</a>
+                <a href="../index.html#services">Services</a>
+                <a href="../index.html#doctors">Doctors</a>
+                <a href="../index.html#contact">Contact</a>
+                <a href="../book.html" class="btn btn-primary btn-sm">Book Appointment</a>
             </nav>
         </div>
     </header>
@@ -100,7 +106,7 @@
                 <span class="hero-badge">🦴 Orthopedic Care</span>
                 <h1>Joint Preservation & Orthopedic Excellence</h1>
                 <p>Conservative treatment approaches that preserve your natural joints and restore mobility without unnecessary surgery.</p>
-                <a href="/book.html?doctor=ashok" class="btn btn-primary btn-lg">Book Consultation</a>
+                <a href="../book.html?doctor=ashok" class="btn btn-primary btn-lg">Book Consultation</a>
             </div>
         </section>
 
@@ -169,7 +175,7 @@
                     </div>
 
                     <div class="doctor-sidebar">
-                        <div class="doctor-photo">👨‍⚕️</div>
+                        <img src="../images/1723730611450.jpeg" alt="Dr. Ashok Sajnani" style="width: 100%; height: 200px; object-fit: cover; object-position: top; border-radius: var(--radius-lg); margin-bottom: 20px;">
                         <h3>Dr. Ashok Sajnani</h3>
                         <p class="specialty">Consultant Orthopedic & Joint Surgeon</p>
                         <span class="experience">35+ Years Experience</span>
@@ -183,7 +189,7 @@
                             </ul>
                         </div>
                         
-                        <a href="/book.html?doctor=ashok" class="btn btn-primary" style="width: 100%;">📅 Book Appointment</a>
+                        <a href="../book.html?doctor=ashok" class="btn btn-primary" style="width: 100%;">📅 Book Appointment</a>
                         <a href="tel:+919925450425" class="btn btn-outline" style="width: 100%; margin-top: 12px;">📞 Call: 99254 50425</a>
                     </div>
                 </div>
@@ -194,12 +200,13 @@
             <div class="container">
                 <h2>Ready to Take the First Step?</h2>
                 <p style="color: var(--gray-600); margin-bottom: 24px;">Don't let joint pain hold you back. Schedule a consultation today.</p>
-                <a href="/book.html?doctor=ashok" class="btn btn-primary btn-lg">📅 Book Appointment</a>
+                <a href="../book.html?doctor=ashok" class="btn btn-primary btn-lg">📅 Book Appointment</a>
             </div>
         </section>
     </main>
 
     <script src="../js/config.js"></script>
+    <script src="../js/i18n.js"></script>
     <script src="../js/main.js"></script>
 </body>
 </html>

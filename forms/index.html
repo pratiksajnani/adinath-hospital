@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Forms | Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #f8fafc 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            color: #0f766e;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+        
+        .forms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+        
+        .form-card .icon {
+            background: linear-gradient(135deg, #0f766e, #14b8a6);
+            color: white;
+            font-size: 3rem;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .form-card .content {
+            padding: 24px;
+        }
+        
+        .form-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+        
+        .form-card p {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+        
+        .form-card .langs {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .lang-badge {
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        .form-card .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #0f766e;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            margin-top: 16px;
+            transition: all 0.2s;
+        }
+        
+        .form-card:hover .btn {
+            background: #0d6960;
+        }
+        
+        .quick-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .quick-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: #1e293b;
+        }
+        
+        .quick-btn:hover {
+            border-color: #0f766e;
+            color: #0f766e;
+        }
+        
+        .category {
+            margin-bottom: 40px;
+        }
+        
+        .category h2 {
+            color: #0f766e;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Hospital Forms</h1>
+            <p>Printable forms in English, Hindi & Gujarati</p>
+        </div>
+        
+        <div class="category">
+            <h2>📋 Patient Forms</h2>
+            <div class="forms-grid">
+                <a href="patient-intake.html" class="form-card">
+                    <div class="icon">📝</div>
+                    <div class="content">
+                        <h3>Patient Registration</h3>
+                        <p>New patient intake form with personal details, medical history, and emergency contacts.</p>
+                        <div class="langs">
+                            <span class="lang-badge">English</span>
+                            <span class="lang-badge">ગુજરાતી</span>
+                        </div>
+                        <div class="btn">Open Form →</div>
+                    </div>
+                </a>
+                
+                <a href="consent.html" class="form-card">
+                    <div class="icon">✍️</div>
+                    <div class="content">
+                        <h3>Consent Form</h3>
+                        <p>Informed consent for procedures, surgeries, and treatments with patient acknowledgment.</p>
+                        <div class="langs">
+                            <span class="lang-badge">English</span>
+                            <span class="lang-badge">ગુજરાતી</span>
+                        </div>
+                        <div class="btn">Open Form →</div>
+                    </div>
+                </a>
+                
+                <a href="feedback.html" class="form-card">
+                    <div class="icon">⭐</div>
+                    <div class="content">
+                        <h3>Feedback Form</h3>
+                        <p>Patient satisfaction survey to improve our services and care quality.</p>
+                        <div class="langs">
+                            <span class="lang-badge">English</span>
+                            <span class="lang-badge">ગુજરાતી</span>
+                        </div>
+                        <div class="btn">Open Form →</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="category">
+            <h2>💊 Medical Forms</h2>
+            <div class="forms-grid">
+                <a href="prescription.html" class="form-card">
+                    <div class="icon">℞</div>
+                    <div class="content">
+                        <h3>Prescription Pad</h3>
+                        <p>Digital prescription form for doctors with editable fields and print support.</p>
+                        <div class="langs">
+                            <span class="lang-badge">English</span>
+                        </div>
+                        <div class="btn">Open Form →</div>
+                    </div>
+                </a>
+                
+                <a href="discharge.html" class="form-card">
+                    <div class="icon">🏥</div>
+                    <div class="content">
+                        <h3>Discharge Summary</h3>
+                        <p>Patient discharge form with treatment summary, medications, and follow-up instructions.</p>
+                        <div class="langs">
+                            <span class="lang-badge">English</span>
+                            <span class="lang-badge">ગુજરાતી</span>
+                        </div>
+                        <div class="btn">Open Form →</div>
+                    </div>
+                </a>
+                
+                <a href="referral.html" class="form-card">
+                    <div class="icon">📤</div>
+                    <div class="content">
+                        <h3>Referral Letter</h3>
+                        <p>Specialist referral form with patient history and consultation notes.</p>
+                        <div class="langs">
+                            <span class="lang-badge">English</span>
+                        </div>
+                        <div class="btn">Open Form →</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="category">
+            <h2>🧘 Yoga & Wellness</h2>
+            <div class="forms-grid">
+                <a href="yoga-registration.html" class="form-card">
+                    <div class="icon">🧘</div>
+                    <div class="content">
+                        <h3>Yoga Class Registration</h3>
+                        <p>Enrollment form for Dr. Sunita's yoga program with health screening questions.</p>
+                        <div class="langs">
+                            <span class="lang-badge">English</span>
+                            <span class="lang-badge">ગુજરાતી</span>
+                        </div>
+                        <div class="btn">Open Form →</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <a href="../index.html" class="quick-btn">🏠 Back to Home</a>
+            <a href="../book.html" class="quick-btn">📅 Book Appointment</a>
+            <a href="../portal/index.html" class="quick-btn">👤 Patient Portal</a>
+            <a href="../login.html" class="quick-btn">🔐 Staff Login</a>
+        </div>
+    </div>
+</body>
+</html>
+

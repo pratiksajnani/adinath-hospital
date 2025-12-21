@@ -1,0 +1,43 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - echo "Adinath Hospital - Building for production..."
+    build:
+      commands:
+        - echo "Static site - no build required"
+  artifacts:
+    baseDirectory: /
+    files:
+      - '**/*'
+  cache:
+    paths: []
+
+# Custom headers for security and caching
+customHeaders:
+  - pattern: '**/*'
+    headers:
+      - key: 'X-Frame-Options'
+        value: 'SAMEORIGIN'
+      - key: 'X-Content-Type-Options'
+        value: 'nosniff'
+      - key: 'X-XSS-Protection'
+        value: '1; mode=block'
+  - pattern: '*.html'
+    headers:
+      - key: 'Cache-Control'
+        value: 'no-cache'
+  - pattern: '/js/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'max-age=31536000'
+  - pattern: '/css/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'max-age=31536000'
+  - pattern: '/images/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'max-age=31536000'
+

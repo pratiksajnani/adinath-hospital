@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal | Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .portal-hub {
+            max-width: 800px;
+            text-align: center;
+        }
+        .portal-hub h1 {
+            font-size: 3rem;
+            margin-bottom: 8px;
+        }
+        .portal-hub p {
+            color: #64748b;
+            margin-bottom: 48px;
+        }
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .portal-card {
+            background: white;
+            padding: 40px 24px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .portal-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+        .portal-card .icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+        .portal-card h3 {
+            margin-bottom: 8px;
+            font-size: 1.25rem;
+        }
+        .portal-card p {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 0;
+        }
+        .back-link {
+            margin-top: 40px;
+        }
+        .back-link a {
+            color: #0f766e;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        @media (max-width: 768px) {
+            .portal-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="portal-hub">
+        <h1>🏥</h1>
+        <h1>Adinath Hospital Portals</h1>
+        <p>Select your portal to continue</p>
+        
+        <div class="portal-grid">
+            <a href="patient/index.html" class="portal-card">
+                <div class="icon">👤</div>
+                <h3>Patient Portal</h3>
+                <p>View appointments, prescriptions, and health records</p>
+            </a>
+            
+            <a href="doctor/simple.html" class="portal-card">
+                <div class="icon">👨‍⚕️</div>
+                <h3>Doctor Dashboard</h3>
+                <p>Simple view for Dr. Ashok (large text, easy buttons)</p>
+            </a>
+            
+            <a href="doctor/simple.html?doctor=sunita" class="portal-card">
+                <div class="icon">👩‍⚕️</div>
+                <h3>Dr. Sunita Dashboard</h3>
+                <p>Simple view for Dr. Sunita (OB-GYN)</p>
+            </a>
+        </div>
+        
+        <div class="portal-grid" style="margin-top: 24px;">
+            <a href="staff/index.html" class="portal-card">
+                <div class="icon">💁</div>
+                <h3>Staff Portal</h3>
+                <p>Receptionist, nurse - send patient links, manage queue</p>
+            </a>
+            
+            <a href="admin/index.html" class="portal-card">
+                <div class="icon">🔐</div>
+                <h3>Admin Portal</h3>
+                <p>Hospital overview, reports, and settings</p>
+            </a>
+            
+            <a href="doctor/index.html" class="portal-card">
+                <div class="icon">📊</div>
+                <h3>Advanced Doctor View</h3>
+                <p>Full dashboard with all features</p>
+            </a>
+        </div>
+        
+        <div class="portal-grid" style="margin-top: 24px;">
+            <a href="../store/index.html" class="portal-card">
+                <div class="icon">💊</div>
+                <h3>Medical Store</h3>
+                <p>Inventory, sales, and print queue</p>
+            </a>
+            
+            <a href="../forms/index.html" class="portal-card">
+                <div class="icon">📋</div>
+                <h3>Printable Forms</h3>
+                <p>Patient intake, consent, prescriptions</p>
+            </a>
+            
+            <a href="../book.html" class="portal-card">
+                <div class="icon">📅</div>
+                <h3>Book Appointment</h3>
+                <p>Schedule a visit with our doctors</p>
+            </a>
+        </div>
+        
+        <div class="portal-grid" style="margin-top: 24px;">
+            <a href="../index.html" class="portal-card">
+                <div class="icon">🏠</div>
+                <h3>Main Website</h3>
+                <p>Return to the public website</p>
+            </a>
+        </div>
+        
+        <div class="back-link">
+            <a href="../index.html">← Back to Main Website</a>
+        </div>
+    </div>
+</body>
+</html>

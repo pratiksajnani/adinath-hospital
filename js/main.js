@@ -3,6 +3,7 @@
 // ============================================
 
 document.addEventListener('DOMContentLoaded', () => {
+    fixBaseUrls();
     initMobileMenu();
     initDropdowns();
     initSmoothScroll();
@@ -10,6 +11,25 @@ document.addEventListener('DOMContentLoaded', () => {
     initAnimations();
     registerServiceWorker();
 });
+
+// Fix all internal links to use BASE_URL
+function fixBaseUrls() {
+    const BASE_URL = typeof CONFIG !== 'undefined' ? CONFIG.BASE_URL : '';
+    
+    // Fix all internal links that start with /
+    document.querySelectorAll('a[href^="/"]').forEach(link => {
+        const href = link.getAttribute('href');
+        // Don't modify external links or already fixed links
+        if (!href.startsWith('http') && !href.startsWith(BASE_URL)) {
+            link.setAttribute('href', BASE_URL + href);
+        }
+    });
+    
+    // Fix logo link
+    document.querySelectorAll('a.logo[href="/"]').forEach(link => {
+        link.setAttribute('href', BASE_URL + '/');
+    });
+}
 
 // Register Service Worker for PWA
 function registerServiceWorker() {

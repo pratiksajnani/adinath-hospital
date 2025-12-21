@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consent Form | Adinath Hospital</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        @media print {
+            body { font-size: 11pt; }
+            .no-print { display: none !important; }
+            @page { margin: 1cm; }
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.5;
+            color: #1e293b;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #0f766e;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #0f766e;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            color: #64748b;
+            font-size: 11px;
+        }
+        
+        .form-title {
+            background: #dc2626;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+        
+        .lang-section h3 {
+            color: #0f766e;
+            font-size: 13px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .lang-section p {
+            font-size: 12px;
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+        
+        .patient-details {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            flex: 1;
+        }
+        
+        .detail-item label {
+            display: block;
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        .detail-item .value {
+            border-bottom: 1px solid #cbd5e1;
+            min-height: 25px;
+            padding: 5px 0;
+            font-weight: 500;
+        }
+        
+        .consent-points {
+            margin: 20px 0;
+        }
+        
+        .consent-point {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #0f766e;
+        }
+        
+        .consent-point input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-top: 2px;
+        }
+        
+        .consent-point .text {
+            flex: 1;
+        }
+        
+        .consent-point .en {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .consent-point .gu {
+            font-size: 11px;
+            color: #64748b;
+        }
+        
+        .declaration {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        
+        .declaration h4 {
+            color: #b45309;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .declaration p {
+            font-size: 12px;
+        }
+        
+        .signature-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+            padding-top: 20px;
+        }
+        
+        .signature-box {
+            text-align: center;
+        }
+        
+        .signature-line {
+            border-top: 1px solid #1e293b;
+            margin-top: 60px;
+            padding-top: 8px;
+            font-size: 11px;
+            color: #64748b;
+        }
+        
+        .witness-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+        }
+        
+        .witness-section h4 {
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .print-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0f766e;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .procedure-select {
+            padding: 10px;
+            font-size: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏥 ADINATH HOSPITAL</h1>
+        <p>2nd Floor, Shukan Mall, Shahibaug Road, Ahmedabad - 380004</p>
+        <p>Phone: +91 99254 50425</p>
+    </div>
+    
+    <div class="form-title">
+        INFORMED CONSENT FORM / સૂચિત સંમતિ ફોર્મ
+    </div>
+    
+    <div class="no-print" style="margin-bottom: 20px;">
+        <label style="font-size: 12px; color: #64748b;">Select Procedure Type:</label>
+        <select class="procedure-select" id="procedureType" onchange="updateProcedure()">
+            <option value="general">General Treatment / સામાન્ય સારવાર</option>
+            <option value="surgery">Surgery / સર્જરી</option>
+            <option value="injection">Joint Injection / સાંધામાં ઇન્જેક્શન</option>
+            <option value="delivery">Delivery / પ્રસૂતિ</option>
+            <option value="minor">Minor Procedure / નાની પ્રક્રિયા</option>
+        </select>
+    </div>
+    
+    <div class="patient-details">
+        <div class="detail-row">
+            <div class="detail-item" style="flex: 2;">
+                <label>Patient Name / દર્દીનું નામ</label>
+                <div class="value" contenteditable="true">_________________________________</div>
+            </div>
+            <div class="detail-item">
+                <label>Age / ઉંમર</label>
+                <div class="value" contenteditable="true">______</div>
+            </div>
+            <div class="detail-item">
+                <label>Gender / લિંગ</label>
+                <div class="value" contenteditable="true">______</div>
+            </div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-item">
+                <label>Patient ID / દર્દી ID</label>
+                <div class="value" contenteditable="true">_______________</div>
+            </div>
+            <div class="detail-item">
+                <label>Date / તારીખ</label>
+                <div class="value" id="consentDate"></div>
+            </div>
+            <div class="detail-item">
+                <label>Doctor / ડૉક્ટર</label>
+                <div class="value" contenteditable="true">Dr. _______________</div>
+            </div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-item">
+                <label>Procedure / પ્રક્રિયા</label>
+                <div class="value" contenteditable="true" id="procedureName">_________________________________</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="consent-points">
+        <div class="consent-point">
+            <input type="checkbox" checked>
+            <div class="text">
+                <div class="en">I have been explained the nature of my condition/illness and the proposed treatment/procedure in a language I understand.</div>
+                <div class="gu">મને મારી સ્થિતિ/બીમારી અને પ્રસ્તાવિત સારવાર/પ્રક્રિયા વિશે મને સમજાય તેવી ભાષામાં સમજાવવામાં આવ્યું છે.</div>
+            </div>
+        </div>
+        
+        <div class="consent-point">
+            <input type="checkbox" checked>
+            <div class="text">
+                <div class="en">I understand the risks, benefits, and alternatives to the proposed treatment. I have had the opportunity to ask questions.</div>
+                <div class="gu">હું પ્રસ્તાવિત સારવારના જોખમો, ફાયદાઓ અને વિકલ્પો સમજું છું. મને પ્રશ્નો પૂછવાની તક મળી છે.</div>
+            </div>
+        </div>
+        
+        <div class="consent-point">
+            <input type="checkbox" checked>
+            <div class="text">
+                <div class="en">I understand that no guarantee has been given about the results of the treatment/surgery.</div>
+                <div class="gu">હું સમજું છું કે સારવાર/સર્જરીના પરિણામો વિશે કોઈ ગેરંટી આપવામાં આવી નથી.</div>
+            </div>
+        </div>
+        
+        <div class="consent-point">
+            <input type="checkbox" checked>
+            <div class="text">
+                <div class="en">I consent to the administration of anesthesia as deemed necessary by the anesthetist.</div>
+                <div class="gu">એનેસ્થેટિસ્ટ દ્વારા જરૂરી માનવામાં આવે તે મુજબ એનેસ્થેસિયા આપવા માટે હું સંમતિ આપું છું.</div>
+            </div>
+        </div>
+        
+        <div class="consent-point">
+            <input type="checkbox" checked>
+            <div class="text">
+                <div class="en">I consent to any additional procedures that may become necessary during the course of the operation.</div>
+                <div class="gu">ઓપરેશન દરમિયાન જરૂરી બની શકે તેવી કોઈપણ વધારાની પ્રક્રિયાઓ માટે હું સંમતિ આપું છું.</div>
+            </div>
+        </div>
+        
+        <div class="consent-point">
+            <input type="checkbox">
+            <div class="text">
+                <div class="en">I consent to blood transfusion if deemed necessary by the treating doctor.</div>
+                <div class="gu">સારવાર કરતા ડૉક્ટર દ્વારા જરૂરી માનવામાં આવે તો બ્લડ ટ્રાન્સફ્યુઝન માટે હું સંમતિ આપું છું.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="declaration">
+        <h4>DECLARATION / ઘોષણા</h4>
+        <p><strong>English:</strong> I hereby confirm that I have read and understood this consent form, or it has been read and explained to me. I give my voluntary consent for the proposed treatment/procedure. I am signing this form of my own free will.</p>
+        <br>
+        <p><strong>ગુજરાતી:</strong> હું આથી ખાતરી આપું છું કે મેં આ સંમતિ ફોર્મ વાંચ્યું અને સમજ્યું છે, અથવા તે મને વાંચી અને સમજાવવામાં આવ્યું છે. હું પ્રસ્તાવિત સારવાર/પ્રક્રિયા માટે મારી સ્વૈચ્છિક સંમતિ આપું છું. હું મારી પોતાની મરજીથી આ ફોર્મ પર સહી કરું છું.</p>
+    </div>
+    
+    <div class="signature-section">
+        <div class="signature-box">
+            <div class="signature-line">
+                Patient's Signature / દર્દીની સહી<br>
+                <span style="font-size: 10px;">(or Guardian if patient is minor)</span>
+            </div>
+        </div>
+        <div class="signature-box">
+            <div class="signature-line">
+                Name & Relationship / નામ અને સંબંધ<br>
+                <span style="font-size: 10px;">(if signed by guardian)</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="witness-section">
+        <h4>WITNESS / સાક્ષી</h4>
+        <div class="detail-row">
+            <div class="detail-item">
+                <label>Witness Name / સાક્ષીનું નામ</label>
+                <div class="value" contenteditable="true">_________________________________</div>
+            </div>
+            <div class="detail-item">
+                <label>Signature / સહી</label>
+                <div class="value">_________________</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="signature-section" style="margin-top: 30px;">
+        <div class="signature-box">
+            <div class="signature-line">
+                Doctor's Signature / ડૉક્ટરની સહી
+            </div>
+        </div>
+        <div class="signature-box">
+            <div class="signature-line">
+                Date & Time / તારીખ અને સમય
+            </div>
+        </div>
+    </div>
+    
+    <button class="print-btn no-print" onclick="window.print()">🖨️ Print Form</button>
+    
+    <script>
+        document.getElementById('consentDate').textContent = new Date().toLocaleDateString('en-IN', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+        
+        function updateProcedure() {
+            const type = document.getElementById('procedureType').value;
+            const procedures = {
+                general: 'General Medical Treatment',
+                surgery: 'Surgical Procedure - _______________',
+                injection: 'Intra-articular Injection',
+                delivery: 'Delivery / Cesarean Section',
+                minor: 'Minor Surgical Procedure'
+            };
+            document.getElementById('procedureName').textContent = procedures[type];
+        }
+    </script>
+</body>
+</html>
+

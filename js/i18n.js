@@ -1,285 +1,222 @@
 // ============================================
-// ADINATH HOSPITAL - INTERNATIONALIZATION
-// Supports: English (en), Hindi (hi), Gujarati (gu)
+// ADINATH HOSPITAL - Internationalization (i18n)
+// Full multilingual support: English, Hindi, Gujarati
 // ============================================
 
-const translations = {
-    en: {
-        // Navigation
-        nav_home: 'Home',
-        nav_services: 'Services',
-        nav_doctors: 'Our Doctors',
-        nav_yoga: 'Yoga Classes',
-        nav_gallery: 'Gallery',
-        nav_contact: 'Contact',
-        nav_book: 'Book Appointment',
+const I18N = {
+    currentLanguage: 'en',
+    
+    // Complete translations
+    translations: {
+        // ===== NAVIGATION =====
+        nav_home: { en: 'Home', hi: 'होम', gu: 'હોમ' },
+        nav_services: { en: 'Services', hi: 'सेवाएं', gu: 'સેવાઓ' },
+        nav_doctors: { en: 'Doctors', hi: 'डॉक्टर', gu: 'ડોક્ટર્સ' },
+        nav_gallery: { en: 'Gallery', hi: 'गैलरी', gu: 'ગેલેરી' },
+        nav_contact: { en: 'Contact', hi: 'संपर्क', gu: 'સંપર્ક' },
+        nav_book: { en: 'Book Appointment', hi: 'अपॉइंटमेंट बुक करें', gu: 'એપોઇન્ટમેન્ટ બુક કરો' },
+        nav_pharmacy: { en: 'Pharmacy', hi: 'फार्मेसी', gu: 'ફાર્મસી' },
         
-        // Header
-        hospital_name: 'Adinath Hospital',
-        tagline: 'Care with Compassion',
+        // ===== HERO SECTION =====
+        hero_tagline: { en: 'Care with Compassion', hi: 'करुणा के साथ देखभाल', gu: 'કરુણા સાથે સંભાળ' },
+        hero_title: { en: 'Your Health, Our Priority', hi: 'आपका स्वास्थ्य, हमारी प्राथमिकता', gu: 'તમારું સ્વાસ્થ્ય, અમારી પ્રાથમિકતા' },
+        hero_subtitle: { en: 'Expert orthopedic and gynecology care with 35+ years of experience', hi: '35+ वर्षों के अनुभव के साथ विशेषज्ञ हड्डी और स्त्री रोग देखभाल', gu: '35+ વર્ષના અનુભવ સાથે નિષ્ણાત ઓર્થોપેડિક અને સ્ત્રીરોગ સંભાળ' },
         
-        // Hero
-        hero_badge: 'Trusted Since 1990 • 35+ Years of Excellence',
-        hero_title_1: 'Expert Healthcare',
-        hero_title_2: 'Close to Home',
-        hero_subtitle: 'Specialized Orthopedic & Gynecology care with modern facilities and personalized attention. Your health is our priority.',
-        feature_ortho: 'Orthopedic Care',
-        feature_gyn: 'OB-GYN Services',
-        feature_yoga: 'Yoga Classes',
-        cta_book: '📅 Book Appointment',
-        cta_call: '📞 Call Now',
-        hours_label: 'OPD Hours',
-        hours_value: '11:00 AM - 7:00 PM',
-        location_label: 'Location',
-        location_value: 'Shahibaug, Ahmedabad',
+        // ===== SERVICES =====
+        services_tag: { en: 'Our Services', hi: 'हमारी सेवाएं', gu: 'અમારી સેવાઓ' },
+        services_title: { en: 'Comprehensive Healthcare Services', hi: 'व्यापक स्वास्थ्य सेवाएं', gu: 'વ્યાપક આરોગ્ય સેવાઓ' },
+        services_subtitle: { en: 'Expert care across multiple specialties', hi: 'विभिन्न विशेषताओं में विशेषज्ञ देखभाल', gu: 'વિવિધ વિશેષતાઓમાં નિષ્ણાત સંભાળ' },
         
-        // Doctors
-        dr_ashok_title: 'Orthopedic Surgeon',
-        dr_sunita_title: 'OB-GYN Specialist',
-        dr_ashok_full_title: 'Consultant Orthopedic & Joint Surgeon',
-        dr_sunita_full_title: 'MD Obstetrics & Gynecology',
-        dr_ashok_exp: '35+ Years of Experience',
-        dr_sunita_exp: '30+ Years of Experience',
-        special_interest: 'Special Interests',
-        book_with: 'Book Appointment',
+        // Orthopedic
+        ortho_title: { en: 'Orthopedic Services', hi: 'हड्डी रोग सेवाएं', gu: 'ઓર્થોપેડિક સેવાઓ' },
+        ortho_doctor: { en: 'Dr. Ashok Sajnani', hi: 'डॉ. अशोक सजनानी', gu: 'ડૉ. અશોક સજનાની' },
+        ortho_1: { en: 'Joint Preservation & Conservation', hi: 'जोड़ों का संरक्षण', gu: 'સાંધાનું જાળવણ અને સંરક્ષણ' },
+        ortho_2: { en: 'Non-Surgical Knee Treatment', hi: 'बिना सर्जरी घुटने का इलाज', gu: 'સર્જરી વિના ઘૂંટણની સારવાર' },
+        ortho_3: { en: 'Orthobiology Treatments', hi: 'ऑर्थोबायोलॉजी उपचार', gu: 'ઓર્થોબાયોલોજી સારવાર' },
+        ortho_4: { en: 'Fracture Management', hi: 'फ्रैक्चर प्रबंधन', gu: 'ફ્રેક્ચર મેનેજમેન્ટ' },
+        ortho_5: { en: 'Sports Injuries', hi: 'खेल चोटें', gu: 'રમત-ગમતની ઇજાઓ' },
+        ortho_6: { en: 'Arthritis Care', hi: 'गठिया देखभाल', gu: 'આર્થરાઈટિસ સંભાળ' },
         
-        // Stats
-        stat_years: 'Years Experience',
-        stat_patients: 'Happy Patients',
-        stat_surgeries: 'Successful Surgeries',
-        stat_care: 'Patient Support',
+        // Gynecology
+        gyn_title: { en: 'OB-GYN Services', hi: 'प्रसूति-स्त्री रोग सेवाएं', gu: 'પ્રસૂતિ-સ્ત્રીરોગ સેવાઓ' },
+        gyn_doctor: { en: 'Dr. Sunita Sajnani', hi: 'डॉ. सुनीता सजनानी', gu: 'ડૉ. સુનિતા સજનાની' },
+        gyn_1: { en: 'Obstetrics & Delivery Care', hi: 'प्रसूति और प्रसव देखभाल', gu: 'પ્રસૂતિ અને ડિલિવરી સંભાળ' },
+        gyn_2: { en: 'Gynecology Consultations', hi: 'स्त्री रोग परामर्श', gu: 'સ્ત્રીરોગ પરામર્શ' },
+        gyn_3: { en: 'Adolescent Gynecology', hi: 'किशोर स्त्री रोग', gu: 'કિશોર સ્ત્રીરોગ' },
+        gyn_4: { en: 'Adolescent Education', hi: 'किशोर शिक्षा', gu: 'કિશોર શિક્ષણ' },
+        gyn_5: { en: 'Cosmetic Gynecology', hi: 'कॉस्मेटिक स्त्री रोग', gu: 'કોસ્મેટિક સ્ત્રીરોગ' },
+        gyn_6: { en: 'Women\'s Wellness', hi: 'महिला स्वास्थ्य', gu: 'મહિલા સ્વાસ્થ્ય' },
         
-        // Services
-        services_tag: 'Our Services',
-        services_title: 'Comprehensive Healthcare Services',
-        services_subtitle: 'Expert care across multiple specialties with modern facilities',
-        ortho_title: 'Orthopedic Services',
-        ortho_doctor: 'Dr. Ashok Sajnani',
-        ortho_1: 'Joint Preservation & Conservation',
-        ortho_2: 'Non-Surgical Knee Treatment',
-        ortho_3: 'Orthobiology Treatments',
-        ortho_4: 'Fracture Management',
-        ortho_5: 'Sports Injuries',
-        ortho_6: 'Arthritis Care',
-        gyn_title: 'OB-GYN Services',
-        gyn_doctor: 'Dr. Sunita Sajnani',
-        gyn_1: 'Obstetrics & Delivery Care',
-        gyn_2: 'Gynecology Consultations',
-        gyn_3: 'Adolescent Gynecology',
-        gyn_4: 'Adolescent Education Programs',
-        gyn_5: 'Cosmetic Gynecology',
-        gyn_6: "Women's Wellness",
-        facilities_title: 'Our Facilities',
-        facilities_subtitle: 'Modern & Comfortable',
-        facility_1: 'Modern Operation Theatre with IITV',
-        facility_2: 'Latest X-Ray Machine',
-        facility_3: 'AC Private Rooms',
-        facility_4: 'Comfortable Patient Beds',
-        facility_5: 'In-house Pharmacy',
-        facility_6: '24/7 Nursing Care',
-        learn_more: 'Learn More →',
+        // Facilities
+        facilities_title: { en: 'Our Facilities', hi: 'हमारी सुविधाएं', gu: 'અમારી સુવિધાઓ' },
+        facilities_subtitle: { en: 'Modern & Comfortable', hi: 'आधुनिक और आरामदायक', gu: 'આધુનિક અને આરામદાયક' },
+        facility_1: { en: 'Modern Operation Theatre with IITV', hi: 'IITV के साथ आधुनिक ऑपरेशन थियेटर', gu: 'IITV સાથે આધુનિક ઓપરેશન થિયેટર' },
+        facility_2: { en: 'Latest X-Ray Machine', hi: 'नवीनतम एक्स-रे मशीन', gu: 'નવીનતમ એક્સ-રે મશીન' },
+        facility_3: { en: 'AC Private Rooms', hi: 'वातानुकूलित निजी कमरे', gu: 'AC પ્રાઇવેટ રૂમ' },
+        facility_4: { en: 'Comfortable Patient Beds', hi: 'आरामदायक रोगी बिस्तर', gu: 'આરામદાયક પેશન્ટ બેડ' },
+        facility_5: { en: 'Diagnostic Services', hi: 'नैदानिक सेवाएं', gu: 'ડાયગ્નોસ્ટિક સેવાઓ' },
+        facility_6: { en: '24/7 Nursing Care', hi: '24/7 नर्सिंग देखभाल', gu: '24/7 નર્સિંગ સંભાળ' },
         
-        // Doctors Section
-        doctors_tag: 'Meet Our Doctors',
-        doctors_title: 'Expert Care, Personal Touch',
-        spec_ortho: 'Orthopedics',
-        spec_joint: 'Joint Surgery',
-        spec_orthobio: 'Orthobiology',
-        spec_obgyn: 'OB-GYN',
-        spec_adolescent: 'Adolescent Care',
-        spec_cosmetic: 'Cosmetic GYN',
-        ashok_int_1: 'Non-surgical preservation of knee joints',
-        ashok_int_2: 'Conservation and preservation of joints',
-        ashok_int_3: 'Orthobiology treatments',
-        sunita_int_1: 'Adolescent Gynecology',
-        sunita_int_2: 'Adolescent Education Programs',
-        sunita_int_3: 'Cosmetic Gynecology',
+        // ===== BOOKING =====
+        book_title: { en: 'Book Appointment', hi: 'अपॉइंटमेंट बुक करें', gu: 'એપોઇન્ટમેન્ટ બુક કરો' },
+        book_subtitle: { en: 'Schedule your visit with our expert doctors', hi: 'हमारे विशेषज्ञ डॉक्टरों के साथ अपनी मुलाकात शेड्यूल करें', gu: 'અમારા નિષ્ણાત ડોક્ટરો સાથે તમારી મુલાકાત શેડ્યૂલ કરો' },
+        select_doctor: { en: 'Select Doctor', hi: 'डॉक्टर चुनें', gu: 'ડોક્ટર પસંદ કરો' },
+        select_date: { en: 'Select Date', hi: 'तारीख चुनें', gu: 'તારીખ પસંદ કરો' },
+        select_time: { en: 'Select Time', hi: 'समय चुनें', gu: 'સમય પસંદ કરો' },
+        your_name: { en: 'Your Name', hi: 'आपका नाम', gu: 'તમારું નામ' },
+        phone_number: { en: 'Phone Number', hi: 'फोन नंबर', gu: 'ફોન નંબર' },
+        reason_visit: { en: 'Reason for Visit', hi: 'मिलने का कारण', gu: 'મુલાકાતનું કારણ' },
+        submit: { en: 'Submit', hi: 'जमा करें', gu: 'સબમિટ કરો' },
         
-        // Yoga
-        yoga_tag: 'Wellness Program',
-        yoga_title: 'Yoga Classes by Dr. Sunita',
-        yoga_desc: 'Join our holistic yoga program designed for all ages and fitness levels. Dr. Sunita combines traditional yoga practices with modern wellness techniques for complete mind-body health.',
-        yoga_1: '🧘 Prenatal & Postnatal Yoga',
-        yoga_2: '💪 Therapeutic Yoga for Pain Relief',
-        yoga_3: '🧠 Stress Management & Meditation',
-        yoga_4: '👧 Special Sessions for Adolescents',
-        yoga_join: 'Join Yoga Classes',
+        // ===== PATIENT PORTAL =====
+        patient_login: { en: 'Patient Login', hi: 'पेशेंट लॉगिन', gu: 'પેશન્ટ લૉગિન' },
+        my_appointments: { en: 'My Appointments', hi: 'मेरी अपॉइंटमेंट्स', gu: 'મારી એપોઇન્ટમેન્ટ્સ' },
+        my_prescriptions: { en: 'My Prescriptions', hi: 'मेरे प्रिस्क्रिप्शन', gu: 'મારા પ્રિસ્ક્રિપ્શન' },
+        my_profile: { en: 'My Profile', hi: 'मेरी प्रोफाइल', gu: 'મારી પ્રોફાઇલ' },
         
-        // Corner
-        corner_tag: "Dr. Ashok's Corner",
-        corner_title: 'Health Insights & Videos',
-        corner_desc: 'Expert opinions, health tips, and educational videos from Dr. Ashok',
+        // ===== STAFF INTERFACE =====
+        send_signup_link: { en: 'Send Signup Link', hi: 'साइनअप लिंक भेजें', gu: 'સાઇનઅપ લિંક મોકલો' },
+        patient_phone: { en: 'Patient Phone', hi: 'पेशेंट फोन', gu: 'પેશન્ટ ફોન' },
+        patient_name: { en: 'Patient Name', hi: 'पेशेंट का नाम', gu: 'પેશન્ટનું નામ' },
+        send_via_sms: { en: 'Send via SMS', hi: 'SMS से भेजें', gu: 'SMS દ્વારા મોકલો' },
+        send_via_whatsapp: { en: 'Send via WhatsApp', hi: 'WhatsApp से भेजें', gu: 'WhatsApp દ્વારા મોકલો' },
+        link_sent: { en: 'Link sent successfully!', hi: 'लिंक सफलतापूर्वक भेजा गया!', gu: 'લિંક સફળતાપૂર્વક મોકલાયો!' },
         
-        // Testimonials
-        testimonials_tag: 'Patient Stories',
-        testimonials_title: 'What Our Patients Say',
+        // ===== DOCTOR INTERFACE =====
+        todays_patients: { en: 'Today\'s Patients', hi: 'आज के मरीज', gu: 'આજના દર્દીઓ' },
+        write_prescription: { en: 'Write Prescription', hi: 'प्रिस्क्रिप्शन लिखें', gu: 'પ્રિસ્ક્રિપ્શન લખો' },
+        send_reminder: { en: 'Send Reminder', hi: 'रिमाइंडर भेजें', gu: 'રીમાઇન્ડર મોકલો' },
+        view_history: { en: 'View History', hi: 'इतिहास देखें', gu: 'હિસ્ટ્રી જુઓ' },
+        upload_images: { en: 'Upload Images', hi: 'इमेज अपलोड करें', gu: 'ઇમેજ અપલોડ કરો' },
         
-        // Contact
-        contact_tag: 'Get in Touch',
-        contact_title: 'Visit Us Today',
-        address_label: 'Address',
-        phone_label: 'Phone',
-        hours_full: 'Monday - Saturday: 11:00 AM - 7:00 PM\nSunday: By Appointment',
-        book_appointment: '📅 Book Appointment'
+        // ===== COMMON =====
+        welcome: { en: 'Welcome', hi: 'स्वागत है', gu: 'સ્વાગત છે' },
+        logout: { en: 'Logout', hi: 'लॉगआउट', gu: 'લૉગઆઉટ' },
+        save: { en: 'Save', hi: 'सेव करें', gu: 'સેવ કરો' },
+        cancel: { en: 'Cancel', hi: 'रद्द करें', gu: 'રદ કરો' },
+        confirm: { en: 'Confirm', hi: 'पुष्टि करें', gu: 'કન્ફર્મ કરો' },
+        loading: { en: 'Loading...', hi: 'लोड हो रहा है...', gu: 'લોડ થઈ રહ્યું છે...' },
+        success: { en: 'Success!', hi: 'सफल!', gu: 'સફળ!' },
+        error: { en: 'Error', hi: 'त्रुटि', gu: 'ભૂલ' },
+        yes: { en: 'Yes', hi: 'हां', gu: 'હા' },
+        no: { en: 'No', hi: 'नहीं', gu: 'ના' },
+        back: { en: 'Back', hi: 'वापस', gu: 'પાછા' },
+        next: { en: 'Next', hi: 'आगे', gu: 'આગળ' },
+        
+        // ===== DAYS & TIMES =====
+        monday: { en: 'Monday', hi: 'सोमवार', gu: 'સોમવાર' },
+        tuesday: { en: 'Tuesday', hi: 'मंगलवार', gu: 'મંગળવાર' },
+        wednesday: { en: 'Wednesday', hi: 'बुधवार', gu: 'બુધવાર' },
+        thursday: { en: 'Thursday', hi: 'गुरुवार', gu: 'ગુરુવાર' },
+        friday: { en: 'Friday', hi: 'शुक्रवार', gu: 'શુક્રવાર' },
+        saturday: { en: 'Saturday', hi: 'शनिवार', gu: 'શનિવાર' },
+        sunday: { en: 'Sunday', hi: 'रविवार', gu: 'રવિવાર' },
+        morning: { en: 'Morning', hi: 'सुबह', gu: 'સવારે' },
+        afternoon: { en: 'Afternoon', hi: 'दोपहर', gu: 'બપોરે' },
+        evening: { en: 'Evening', hi: 'शाम', gu: 'સાંજે' },
+        
+        // ===== MEDICAL TERMS =====
+        prescription: { en: 'Prescription', hi: 'प्रिस्क्रिप्शन', gu: 'પ્રિસ્ક્રિપ્શન' },
+        medicine: { en: 'Medicine', hi: 'दवाई', gu: 'દવા' },
+        dosage: { en: 'Dosage', hi: 'खुराक', gu: 'ડોઝ' },
+        duration: { en: 'Duration', hi: 'अवधि', gu: 'સમયગાળો' },
+        diagnosis: { en: 'Diagnosis', hi: 'निदान', gu: 'નિદાન' },
+        advice: { en: 'Advice', hi: 'सलाह', gu: 'સલાહ' },
+        followup: { en: 'Follow-up', hi: 'फॉलो-अप', gu: 'ફોલો-અપ' },
+        
+        // ===== CONTACT =====
+        call_us: { en: 'Call Us', hi: 'कॉल करें', gu: 'કૉલ કરો' },
+        whatsapp_us: { en: 'WhatsApp Us', hi: 'WhatsApp करें', gu: 'WhatsApp કરો' },
+        email_us: { en: 'Email Us', hi: 'ईमेल करें', gu: 'ઈમેલ કરો' },
+        visit_us: { en: 'Visit Us', hi: 'मिलने आएं', gu: 'મળવા આવો' },
+        working_hours: { en: 'Working Hours', hi: 'कार्य समय', gu: 'કાર્ય સમય' },
+        
+        // ===== FOOTER =====
+        copyright: { en: '© 2025 Adinath Hospital. All rights reserved.', hi: '© 2025 आदिनाथ हॉस्पिटल। सर्वाधिकार सुरक्षित।', gu: '© 2025 આદિનાથ હોસ્પિટલ. સર્વાધિકાર સુરક્ષિત.' },
+        made_with_love: { en: 'Made with ❤️ in Ahmedabad', hi: 'अहमदाबाद में ❤️ से बनाया', gu: 'અમદાવાદમાં ❤️ થી બનાવેલ' }
     },
     
-    hi: {
-        // Navigation
-        nav_home: 'होम',
-        nav_services: 'सेवाएं',
-        nav_doctors: 'हमारे डॉक्टर',
-        nav_yoga: 'योग कक्षाएं',
-        nav_gallery: 'गैलरी',
-        nav_contact: 'संपर्क',
-        nav_book: 'अपॉइंटमेंट बुक करें',
-        
-        // Header
-        hospital_name: 'आदिनाथ हॉस्पिटल',
-        tagline: 'करुणा के साथ देखभाल',
-        
-        // Hero
-        hero_badge: '1990 से विश्वसनीय • 35+ वर्षों की उत्कृष्टता',
-        hero_title_1: 'विशेषज्ञ स्वास्थ्य सेवा',
-        hero_title_2: 'घर के करीब',
-        hero_subtitle: 'आधुनिक सुविधाओं और व्यक्तिगत ध्यान के साथ विशेष ऑर्थोपेडिक और स्त्री रोग देखभाल। आपका स्वास्थ्य हमारी प्राथमिकता है।',
-        feature_ortho: 'ऑर्थोपेडिक केयर',
-        feature_gyn: 'स्त्री रोग सेवाएं',
-        feature_yoga: 'योग कक्षाएं',
-        cta_book: '📅 अपॉइंटमेंट बुक करें',
-        cta_call: '📞 अभी कॉल करें',
-        hours_label: 'ओपीडी समय',
-        hours_value: 'सुबह 11:00 - शाम 7:00',
-        location_label: 'स्थान',
-        location_value: 'शाहीबाग, अहमदाबाद',
-        
-        // Doctors
-        dr_ashok_title: 'ऑर्थोपेडिक सर्जन',
-        dr_sunita_title: 'स्त्री रोग विशेषज्ञ',
-        dr_ashok_full_title: 'सलाहकार ऑर्थोपेडिक और जॉइंट सर्जन',
-        dr_sunita_full_title: 'एमडी प्रसूति एवं स्त्री रोग',
-        dr_ashok_exp: '35+ वर्षों का अनुभव',
-        dr_sunita_exp: '30+ वर्षों का अनुभव',
-        special_interest: 'विशेष रुचियां',
-        book_with: 'अपॉइंटमेंट बुक करें',
-        
-        // Stats
-        stat_years: 'वर्षों का अनुभव',
-        stat_patients: 'खुश मरीज',
-        stat_surgeries: 'सफल सर्जरी',
-        stat_care: 'रोगी सहायता',
-        
-        // Services
-        services_tag: 'हमारी सेवाएं',
-        services_title: 'व्यापक स्वास्थ्य सेवाएं',
-        services_subtitle: 'आधुनिक सुविधाओं के साथ कई विशेषताओं में विशेषज्ञ देखभाल',
-        learn_more: 'और जानें →',
-        
-        // Contact
-        contact_tag: 'संपर्क करें',
-        contact_title: 'आज हमसे मिलें',
-        book_appointment: '📅 अपॉइंटमेंट बुक करें'
+    // Initialize language
+    init() {
+        // Check user preference or browser language
+        const saved = localStorage.getItem('hms_language');
+        if (saved) {
+            this.currentLanguage = saved;
+        } else {
+            // Detect from browser
+            const browserLang = navigator.language.split('-')[0];
+            if (['hi', 'gu'].includes(browserLang)) {
+                this.currentLanguage = browserLang;
+            }
+        }
+        this.applyTranslations();
     },
     
-    gu: {
-        // Navigation
-        nav_home: 'હોમ',
-        nav_services: 'સેવાઓ',
-        nav_doctors: 'અમારા ડૉક્ટર',
-        nav_yoga: 'યોગ વર્ગો',
-        nav_gallery: 'ગેલેરી',
-        nav_contact: 'સંપર્ક',
-        nav_book: 'એપોઇન્ટમેન્ટ બુક કરો',
+    // Set language
+    setLanguage(lang) {
+        if (!['en', 'hi', 'gu'].includes(lang)) return;
+        this.currentLanguage = lang;
+        localStorage.setItem('hms_language', lang);
+        this.applyTranslations();
+        document.documentElement.lang = lang;
+    },
+    
+    // Get translation
+    t(key, lang = null) {
+        const translation = this.translations[key];
+        if (!translation) return key;
+        return translation[lang || this.currentLanguage] || translation['en'] || key;
+    },
+    
+    // Apply translations to page
+    applyTranslations() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            el.textContent = this.t(key);
+        });
         
-        // Header
-        hospital_name: 'આદિનાથ હોસ્પિટલ',
-        tagline: 'કરુણા સાથે સંભાળ',
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            el.placeholder = this.t(key);
+        });
         
-        // Hero
-        hero_badge: '1990 થી વિશ્વસનીય • 35+ વર્ષની શ્રેષ્ઠતા',
-        hero_title_1: 'નિષ્ણાત આરોગ્ય સંભાળ',
-        hero_title_2: 'ઘરની નજીક',
-        hero_subtitle: 'આધુનિક સુવિધાઓ અને વ્યક્તિગત ધ્યાન સાથે વિશેષ ઓર્થોપેડિક અને સ્ત્રીરોગ સંભાળ. તમારું સ્વાસ્થ્ય અમારી પ્રાથમિકતા છે.',
-        feature_ortho: 'ઓર્થોપેડિક સંભાળ',
-        feature_gyn: 'સ્ત્રીરોગ સેવાઓ',
-        feature_yoga: 'યોગ વર્ગો',
-        cta_book: '📅 એપોઇન્ટમેન્ટ બુક કરો',
-        cta_call: '📞 હમણાં કૉલ કરો',
-        hours_label: 'ઓપીડી સમય',
-        hours_value: 'સવારે 11:00 - સાંજે 7:00',
-        location_label: 'સ્થાન',
-        location_value: 'શાહીબાગ, અમદાવાદ',
-        
-        // Doctors
-        dr_ashok_title: 'ઓર્થોપેડિક સર્જન',
-        dr_sunita_title: 'સ્ત્રીરોગ નિષ્ણાત',
-        special_interest: 'વિશેષ રુચિઓ',
-        book_with: 'એપોઇન્ટમેન્ટ બુક કરો',
-        
-        // Stats
-        stat_years: 'વર્ષોનો અનુભવ',
-        stat_patients: 'ખુશ દર્દીઓ',
-        stat_surgeries: 'સફળ સર્જરી',
-        stat_care: 'દર્દી સહાય',
-        
-        // Services
-        services_tag: 'અમારી સેવાઓ',
-        services_title: 'વ્યાપક આરોગ્ય સેવાઓ',
-        learn_more: 'વધુ જાણો →',
-        
-        // Contact
-        contact_tag: 'સંપર્ક કરો',
-        contact_title: 'આજે અમને મળો',
-        book_appointment: '📅 એપોઇન્ટમેન્ટ બુક કરો'
+        // Update language selector if exists
+        const langBtns = document.querySelectorAll('[data-lang]');
+        langBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.lang === this.currentLanguage);
+        });
+    },
+    
+    // Format date in current language
+    formatDate(date, options = {}) {
+        const locales = { en: 'en-IN', hi: 'hi-IN', gu: 'gu-IN' };
+        return new Date(date).toLocaleDateString(locales[this.currentLanguage], {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            ...options
+        });
+    },
+    
+    // Get language name
+    getLanguageName(code) {
+        const names = { en: 'English', hi: 'हिंदी', gu: 'ગુજરાતી' };
+        return names[code] || code;
+    },
+    
+    // Translate dynamic content (for staff entering in one language, others reading in another)
+    async translateText(text, fromLang, toLang) {
+        // In production, this would use a translation API (Google Translate, etc.)
+        // For now, return the original text with a note
+        console.log(`Translation request: ${fromLang} → ${toLang}: ${text}`);
+        return text; // Would be translated in production
     }
 };
 
-// Current language
-let currentLang = localStorage.getItem('adinath_lang') || 'en';
+// Initialize on load
+document.addEventListener('DOMContentLoaded', () => I18N.init());
 
-// Initialize i18n
-function initI18n() {
-    // Set initial language
-    setLanguage(currentLang);
-    
-    // Add click handlers to language buttons
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const lang = btn.dataset.lang;
-            setLanguage(lang);
-        });
-    });
+// Export for use in other modules
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = I18N;
 }
-
-// Set language
-function setLanguage(lang) {
-    if (!translations[lang]) return;
-    
-    currentLang = lang;
-    localStorage.setItem('adinath_lang', lang);
-    
-    // Update body attribute for font
-    document.body.setAttribute('data-lang', lang);
-    
-    // Update active button
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
-    });
-    
-    // Translate all elements with data-i18n
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.dataset.i18n;
-        const translation = translations[lang][key] || translations.en[key];
-        if (translation) {
-            el.textContent = translation;
-        }
-    });
-}
-
-// Get translation
-function t(key) {
-    return translations[currentLang][key] || translations.en[key] || key;
-}
-
-// Initialize on DOM load
-document.addEventListener('DOMContentLoaded', initI18n);
-

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescription | Adinath Hospital</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        @media print {
+            body { font-size: 11pt; }
+            .no-print { display: none !important; }
+            @page { margin: 0.5cm; size: A5; }
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.4;
+            color: #1e293b;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            background: #f8fafc;
+        }
+        
+        .prescription {
+            background: white;
+            border: 2px solid #0f766e;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .rx-header {
+            background: linear-gradient(135deg, #0f766e, #0d6960);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .hospital-info h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        
+        .hospital-info p {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+        
+        .doctor-info {
+            text-align: right;
+        }
+        
+        .doctor-info h2 {
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+        
+        .doctor-info p {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+        
+        .patient-info {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+            padding: 15px 20px;
+            background: #f0fdf4;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .patient-info .field {
+            font-size: 13px;
+        }
+        
+        .patient-info label {
+            display: block;
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+        
+        .patient-info .value {
+            font-weight: 600;
+            color: #1e293b;
+            min-height: 20px;
+            border-bottom: 1px dotted #cbd5e1;
+        }
+        
+        .rx-symbol {
+            font-size: 48px;
+            color: #0f766e;
+            font-family: serif;
+            font-weight: bold;
+            padding: 15px 20px 0;
+        }
+        
+        .rx-body {
+            padding: 0 20px 20px;
+            min-height: 300px;
+        }
+        
+        .medicine-list {
+            margin-top: 10px;
+        }
+        
+        .medicine-item {
+            display: grid;
+            grid-template-columns: 30px 1fr 120px 80px;
+            gap: 10px;
+            padding: 12px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            align-items: start;
+        }
+        
+        .medicine-item:last-child {
+            border-bottom: none;
+        }
+        
+        .med-number {
+            background: #0f766e;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .med-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .med-dosage {
+            font-size: 13px;
+            color: #0f766e;
+            font-weight: 500;
+        }
+        
+        .med-duration {
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        .advice-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #e2e8f0;
+        }
+        
+        .advice-section h4 {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        
+        .advice-section p {
+            font-size: 13px;
+            color: #1e293b;
+            background: #fef3c7;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        
+        .rx-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .followup {
+            font-size: 13px;
+        }
+        
+        .followup label {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+        
+        .followup .value {
+            font-weight: 600;
+            color: #0f766e;
+        }
+        
+        .signature {
+            text-align: right;
+        }
+        
+        .signature-line {
+            border-top: 1px solid #1e293b;
+            padding-top: 5px;
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 30px;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: #0f766e;
+            color: white;
+        }
+        
+        .btn-outline {
+            background: white;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .editable {
+            cursor: text;
+            min-height: 20px;
+        }
+        
+        .editable:hover {
+            background: #f0fdf4;
+        }
+        
+        .editable:focus {
+            outline: 2px solid #0f766e;
+            outline-offset: 2px;
+        }
+        
+        .add-med-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            background: transparent;
+            color: #64748b;
+            cursor: pointer;
+            width: 100%;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .add-med-btn:hover {
+            border-color: #0f766e;
+            color: #0f766e;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls no-print">
+        <button class="btn btn-primary" onclick="window.print()">🖨️ Print Prescription</button>
+        <button class="btn btn-outline" onclick="savePrescription()">💾 Save to System</button>
+        <button class="btn btn-outline" onclick="sendToPatient()">📱 Send to Patient</button>
+        <select class="btn btn-outline" id="doctorSelect" onchange="selectDoctor(this.value)">
+            <option value="ashok">Dr. Ashok Sajnani</option>
+            <option value="sunita">Dr. Sunita Sajnani</option>
+        </select>
+    </div>
+
+    <div class="prescription">
+        <div class="rx-header">
+            <div class="hospital-info">
+                <h1>🏥 ADINATH HOSPITAL</h1>
+                <p>2nd Floor, Shukan Mall, Shahibaug Road</p>
+                <p>Ahmedabad - 380004 | Ph: +91 99254 50425</p>
+            </div>
+            <div class="doctor-info" id="doctorInfo">
+                <h2>Dr. Ashok Sajnani</h2>
+                <p>M.S. (Ortho), D.Ortho</p>
+                <p>Orthopedic Surgeon</p>
+                <p>35+ Years Experience</p>
+            </div>
+        </div>
+        
+        <div class="patient-info">
+            <div class="field">
+                <label>Patient Name / દર્દીનું નામ</label>
+                <div class="value editable" contenteditable="true" id="patientName">_____________</div>
+            </div>
+            <div class="field">
+                <label>Age / ઉંમર</label>
+                <div class="value editable" contenteditable="true" id="patientAge">___</div>
+            </div>
+            <div class="field">
+                <label>Date / તારીખ</label>
+                <div class="value" id="rxDate"></div>
+            </div>
+        </div>
+        
+        <div class="rx-symbol">℞</div>
+        
+        <div class="rx-body">
+            <div class="medicine-list" id="medicineList">
+                <div class="medicine-item">
+                    <div class="med-number">1</div>
+                    <div>
+                        <div class="med-name editable" contenteditable="true">Tab. Paracetamol 500mg</div>
+                    </div>
+                    <div class="med-dosage editable" contenteditable="true">1-0-1</div>
+                    <div class="med-duration editable" contenteditable="true">5 days</div>
+                </div>
+                <div class="medicine-item">
+                    <div class="med-number">2</div>
+                    <div>
+                        <div class="med-name editable" contenteditable="true">Tab. Calcium + D3</div>
+                    </div>
+                    <div class="med-dosage editable" contenteditable="true">0-1-0</div>
+                    <div class="med-duration editable" contenteditable="true">30 days</div>
+                </div>
+            </div>
+            
+            <button class="add-med-btn no-print" onclick="addMedicine()">
+                <span>+</span> Add Medicine
+            </button>
+            
+            <div class="advice-section">
+                <h4>Advice / સલાહ</h4>
+                <p class="editable" contenteditable="true" id="advice">
+                    Rest for 2 days. Apply ice pack. Avoid stairs. Follow-up if pain persists.
+                </p>
+            </div>
+        </div>
+        
+        <div class="rx-footer">
+            <div class="followup">
+                <label>Follow-up / ફોલો-અપ</label>
+                <div class="value editable" contenteditable="true" id="followup">After 1 week</div>
+            </div>
+            <div class="signature">
+                <div class="signature-line">
+                    Doctor's Signature / ડૉક્ટરની સહી
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Set today's date
+        document.getElementById('rxDate').textContent = new Date().toLocaleDateString('en-IN', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        });
+        
+        let medicineCount = 2;
+        
+        function addMedicine() {
+            medicineCount++;
+            const list = document.getElementById('medicineList');
+            const item = document.createElement('div');
+            item.className = 'medicine-item';
+            item.innerHTML = `
+                <div class="med-number">${medicineCount}</div>
+                <div>
+                    <div class="med-name editable" contenteditable="true">Medicine name</div>
+                </div>
+                <div class="med-dosage editable" contenteditable="true">Dosage</div>
+                <div class="med-duration editable" contenteditable="true">Duration</div>
+            `;
+            list.appendChild(item);
+        }
+        
+        function selectDoctor(doctor) {
+            const info = document.getElementById('doctorInfo');
+            if (doctor === 'ashok') {
+                info.innerHTML = `
+                    <h2>Dr. Ashok Sajnani</h2>
+                    <p>M.S. (Ortho), D.Ortho</p>
+                    <p>Orthopedic Surgeon</p>
+                    <p>35+ Years Experience</p>
+                `;
+            } else {
+                info.innerHTML = `
+                    <h2>Dr. Sunita Sajnani</h2>
+                    <p>M.D. (OB-GYN)</p>
+                    <p>Obstetrician & Gynecologist</p>
+                    <p>30+ Years Experience</p>
+                `;
+            }
+        }
+        
+        function savePrescription() {
+            const rx = {
+                patientName: document.getElementById('patientName').textContent,
+                patientAge: document.getElementById('patientAge').textContent,
+                date: document.getElementById('rxDate').textContent,
+                doctor: document.getElementById('doctorSelect').value,
+                medicines: [],
+                advice: document.getElementById('advice').textContent,
+                followup: document.getElementById('followup').textContent
+            };
+            
+            document.querySelectorAll('.medicine-item').forEach(item => {
+                rx.medicines.push({
+                    name: item.querySelector('.med-name').textContent,
+                    dosage: item.querySelector('.med-dosage').textContent,
+                    duration: item.querySelector('.med-duration').textContent
+                });
+            });
+            
+            console.log('Prescription saved:', rx);
+            alert('✅ Prescription saved to system!');
+        }
+        
+        function sendToPatient() {
+            const name = document.getElementById('patientName').textContent;
+            const message = `Your prescription from Adinath Hospital is ready. Please collect from pharmacy. - Dr. ${document.getElementById('doctorSelect').value === 'ashok' ? 'Ashok' : 'Sunita'} Sajnani`;
+            alert(`📱 SMS would be sent to patient:\n\n"${message}"`);
+        }
+    </script>
+</body>
+</html>
+

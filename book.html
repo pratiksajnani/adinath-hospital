@@ -389,18 +389,23 @@
     <!-- Header -->
     <header class="header">
         <div class="container header-content">
-            <a href="/" class="logo">
+            <a href="index.html" class="logo">
                 <span class="logo-icon">🏥</span>
                 <div class="logo-text">
                     <span class="logo-name">Adinath Hospital</span>
                     <span class="logo-tagline">Care with Compassion</span>
                 </div>
             </a>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <nav class="nav">
-                <a href="/">Home</a>
-                <a href="/#services">Services</a>
-                <a href="/#doctors">Doctors</a>
-                <a href="/#contact">Contact</a>
+                <a href="index.html">Home</a>
+                <a href="index.html#services">Services</a>
+                <a href="index.html#doctors">Doctors</a>
+                <a href="index.html#contact">Contact</a>
             </nav>
         </div>
     </header>
@@ -547,7 +552,7 @@
                 <div class="confirmation-details" id="confirmationDetails">
                     <!-- Filled by JavaScript -->
                 </div>
-                <a href="/" class="btn btn-primary">← Back to Home</a>
+                <a href="index.html" class="btn btn-primary">← Back to Home</a>
             </div>
             
             <!-- Hospital Info -->
@@ -588,6 +593,8 @@
     </main>
 
     <script src="js/config.js"></script>
+    <script src="js/hms.js"></script>
+    <script src="js/main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('appointmentForm');
@@ -601,10 +608,21 @@
             // Pre-select doctor from URL
             const params = new URLSearchParams(window.location.search);
             const doctorParam = params.get('doctor');
+            const serviceParam = params.get('service');
+            
             if (doctorParam === 'ashok') {
                 document.getElementById('dr-ashok').checked = true;
             } else if (doctorParam === 'sunita') {
                 document.getElementById('dr-sunita').checked = true;
+            }
+            
+            // Handle service param
+            if (serviceParam === 'yoga') {
+                document.getElementById('dr-sunita').checked = true;
+                document.getElementById('reason').value = 'I would like to join yoga classes';
+                // Update page title
+                document.querySelector('.booking-header h1').textContent = '🧘 Join Yoga Classes';
+                document.querySelector('.booking-header p').textContent = 'Register for Dr. Sunita\'s yoga program';
             }
             
             // Form submission
@@ -614,12 +632,38 @@
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
                 
+                // Check if patient exists, else create
+                let patient = HMS.patients.getAll().find(p => p.phone.includes(data.phone));
+                if (!patient) {
+                    patient = HMS.patients.add({
+                        name: data.name,
+                        phone: data.phone,
+                        age: parseInt(data.age) || 0,
+                        gender: data.gender || 'other',
+                        address: ''
+                    });
+                } else {
+                    // Update visit count
+                    HMS.patients.update(patient.id, { visits: patient.visits + 1 });
+                }
+                
+                // Create appointment
+                const appointment = HMS.appointments.add({
+                    patientId: patient.id,
+                    patientName: data.name,
+                    doctor: data.doctor === 'Dr. Ashok Sajnani' ? 'ashok' : 'sunita',
+                    date: data.date,
+                    time: data.time,
+                    reason: data.reason || 'General consultation'
+                });
+                
                 // Show confirmation
                 document.getElementById('bookingForm').style.display = 'none';
                 const confirmation = document.getElementById('confirmationSection');
                 confirmation.classList.add('show');
                 
                 document.getElementById('confirmationDetails').innerHTML = `
+                    <p><span>Booking ID</span><strong>${appointment.id}</strong></p>
                     <p><span>Doctor</span><strong>${data.doctor}</strong></p>
                     <p><span>Date</span><strong>${new Date(data.date).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</strong></p>
                     <p><span>Time</span><strong>${data.time}</strong></p>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yoga Classes | Dr. Sunita Sajnani | Adinath Hospital</title>
+    <meta name="description" content="Holistic yoga classes by Dr. Sunita Sajnani - Prenatal, postnatal, therapeutic yoga, stress management and special sessions for adolescents in Ahmedabad.">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <style>
+        .yoga-page { padding-top: 100px; }
+        .yoga-hero {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        .yoga-hero h1 { color: white; margin-bottom: 16px; }
+        .yoga-hero p { opacity: 0.9; max-width: 600px; margin: 0 auto 24px; }
+        .yoga-content { padding: 80px 0; }
+        .yoga-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+        .class-card {
+            background: white;
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+        }
+        .class-card h3 { margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+        .class-card p { color: var(--gray-600); margin-bottom: 16px; }
+        .class-meta { display: flex; gap: 24px; font-size: 0.9rem; color: var(--gray-500); }
+        .class-meta span { display: flex; align-items: center; gap: 6px; }
+        .schedule-card {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            position: sticky;
+            top: 120px;
+        }
+        .schedule-card h3 { margin-bottom: 24px; }
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        .schedule-item:last-child { border-bottom: none; }
+        .schedule-item .day { font-weight: 600; }
+        .schedule-item .time { color: var(--gray-600); }
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 60px 0;
+        }
+        .benefit-card {
+            text-align: center;
+            padding: 32px;
+            background: var(--gray-50);
+            border-radius: var(--radius-lg);
+        }
+        .benefit-card .icon { font-size: 3rem; margin-bottom: 16px; }
+        .benefit-card h4 { margin-bottom: 8px; }
+        .benefit-card p { font-size: 0.9rem; color: var(--gray-600); }
+        @media (max-width: 900px) {
+            .yoga-grid { grid-template-columns: 1fr; }
+            .schedule-card { position: static; }
+            .benefits-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <a href="../index.html" class="logo">
+                <span class="logo-icon">🏥</span>
+                <div class="logo-text">
+                    <span class="logo-name">Adinath Hospital</span>
+                    <span class="logo-tagline">Care with Compassion</span>
+                </div>
+            </a>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav class="nav">
+                <a href="../index.html">Home</a>
+                <a href="../index.html#services">Services</a>
+                <a href="../index.html#doctors">Doctors</a>
+                <a href="../index.html#contact">Contact</a>
+                <a href="../book.html" class="btn btn-primary btn-sm">Book Appointment</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="yoga-page">
+        <section class="yoga-hero">
+            <div class="container">
+                <span class="hero-badge" style="background: rgba(255,255,255,0.2); color: white;">🧘 Wellness Program</span>
+                <h1>Yoga Classes by Dr. Sunita</h1>
+                <p>Holistic yoga program designed for all ages and fitness levels. Combining traditional yoga practices with modern wellness techniques.</p>
+                <a href="https://wa.me/919925450425?text=Hi, I'm interested in joining yoga classes" class="btn btn-lg" style="background: white; color: #059669;" target="_blank">Join Classes via WhatsApp</a>
+            </div>
+        </section>
+
+        <!-- Yoga Photos Gallery -->
+        <section style="padding: 60px 0; background: var(--gray-50);">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 32px;">📸 Our Yoga Sessions</h2>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                    <img src="../images/414A642D-102C-4F92-A4BE-48D6F7B13AD4_4_5005_c.jpeg" alt="Dr. Sunita teaching outdoor yoga" style="width: 100%; height: 250px; object-fit: cover; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <img src="../images/4C5A0533-589B-4577-845D-83ABB43D705F_4_5005_c.jpeg" alt="Dr. Sunita leading yoga class" style="width: 100%; height: 250px; object-fit: cover; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <img src="../images/A14B413A-1E64-4267-BC4C-0866E31513EC_4_5005_c.jpeg" alt="Yoga instruction session" style="width: 100%; height: 250px; object-fit: cover; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                </div>
+                <p style="text-align: center; margin-top: 20px; color: var(--gray-600);">Outdoor rooftop yoga sessions in a peaceful, natural setting</p>
+            </div>
+        </section>
+
+        <section class="yoga-content">
+            <div class="container">
+                <div class="yoga-grid">
+                    <div>
+                        <h2 style="margin-bottom: 32px;">Available Classes</h2>
+                        
+                        <div class="class-card">
+                            <h3><span>🤰</span> Prenatal & Postnatal Yoga</h3>
+                            <p>Gentle yoga designed specifically for expecting and new mothers. Safe exercises to maintain fitness, reduce stress, and prepare for childbirth.</p>
+                            <div class="class-meta">
+                                <span>⏱️ 45 mins</span>
+                                <span>👥 Small groups</span>
+                            </div>
+                        </div>
+                        
+                        <div class="class-card">
+                            <h3><span>💪</span> Therapeutic Yoga for Pain Relief</h3>
+                            <p>Targeted yoga sequences for back pain, joint stiffness, and chronic conditions. Works alongside orthopedic treatment for holistic recovery.</p>
+                            <div class="class-meta">
+                                <span>⏱️ 60 mins</span>
+                                <span>👥 Individual attention</span>
+                            </div>
+                        </div>
+                        
+                        <div class="class-card">
+                            <h3><span>🧠</span> Stress Management & Meditation</h3>
+                            <p>Breathing exercises, meditation, and relaxation techniques to manage stress, anxiety, and improve mental wellness.</p>
+                            <div class="class-meta">
+                                <span>⏱️ 45 mins</span>
+                                <span>👥 All levels</span>
+                            </div>
+                        </div>
+                        
+                        <div class="class-card">
+                            <h3><span>👧</span> Special Sessions for Adolescents</h3>
+                            <p>Age-appropriate yoga and wellness education for teenagers. Focus on physical development, posture, and healthy habits.</p>
+                            <div class="class-meta">
+                                <span>⏱️ 45 mins</span>
+                                <span>👥 Teen-friendly</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="schedule-card">
+                            <h3>📅 Class Schedule</h3>
+                            <div class="schedule-item">
+                                <span class="day">Monday</span>
+                                <span class="time">6:00 AM - 7:00 AM</span>
+                            </div>
+                            <div class="schedule-item">
+                                <span class="day">Wednesday</span>
+                                <span class="time">6:00 AM - 7:00 AM</span>
+                            </div>
+                            <div class="schedule-item">
+                                <span class="day">Friday</span>
+                                <span class="time">6:00 AM - 7:00 AM</span>
+                            </div>
+                            <div class="schedule-item">
+                                <span class="day">Saturday</span>
+                                <span class="time">7:00 AM - 8:00 AM</span>
+                            </div>
+                            
+                            <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid rgba(0,0,0,0.1);">
+                                <p style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 16px;">
+                                    📍 <strong>Location:</strong> Adinath Hospital, Shukan Mall, 2nd Floor
+                                </p>
+                                <p style="font-size: 0.9rem; color: var(--gray-600); margin-bottom: 24px;">
+                                    💰 <strong>Fees:</strong> Contact for pricing
+                                </p>
+                                <a href="https://wa.me/919925450425?text=Hi, I want to join yoga classes. Please share the schedule and fees." class="btn btn-primary" style="width: 100%;" target="_blank">
+                                    📱 Enquire on WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="icon">🌟</div>
+                        <h4>Expert Guidance</h4>
+                        <p>Led by Dr. Sunita with 30+ years of medical experience</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="icon">🏥</div>
+                        <h4>Medical Integration</h4>
+                        <p>Yoga combined with medical expertise for best results</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="icon">👥</div>
+                        <h4>Small Groups</h4>
+                        <p>Personal attention in comfortable, small group settings</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
+

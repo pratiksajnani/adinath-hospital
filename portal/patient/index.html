@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Portal | Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../../images/favicon.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0f766e;
+            --primary-light: #14b8a6;
+            --bg: #f0fdfa;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+        }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+        
+        /* Header */
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 1.25rem; display: flex; align-items: center; gap: 10px; }
+        .header nav a { color: white; text-decoration: none; margin-left: 24px; opacity: 0.9; }
+        .header nav a:hover { opacity: 1; }
+        
+        /* Container */
+        .container { max-width: 1000px; margin: 0 auto; padding: 32px; }
+        
+        /* Welcome Section */
+        .welcome {
+            background: linear-gradient(135deg, var(--primary), #0d6960);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        .welcome h2 { font-size: 2rem; margin-bottom: 8px; }
+        .welcome p { opacity: 0.9; margin-bottom: 24px; }
+        .welcome-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        
+        /* Auth Section */
+        .auth-section { display: none; }
+        .auth-section.active { display: block; }
+        
+        .auth-card {
+            background: var(--card);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            max-width: 450px;
+            margin: 60px auto;
+            overflow: hidden;
+        }
+        .auth-header {
+            background: var(--primary);
+            color: white;
+            padding: 32px;
+            text-align: center;
+        }
+        .auth-header h2 { margin-bottom: 8px; }
+        .auth-body { padding: 32px; }
+        
+        /* Dashboard Section */
+        .dashboard-section { display: none; }
+        .dashboard-section.active { display: block; }
+        
+        /* Cards */
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-header h3 { font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        .card-body { padding: 24px; }
+        
+        /* Grid */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        
+        /* Form */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #0d6960; }
+        .btn-white { background: white; color: var(--primary); }
+        .btn-outline { background: transparent; border: 2px solid white; color: white; }
+        .btn-outline:hover { background: rgba(255,255,255,0.1); }
+        .btn-block { width: 100%; }
+        .btn-success { background: var(--success); color: white; }
+        
+        /* Appointment Cards */
+        .appointment-card {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+        .appointment-card:hover { border-color: var(--primary); }
+        .apt-date {
+            background: var(--primary);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 70px;
+        }
+        .apt-date .day { font-size: 1.5rem; font-weight: 700; }
+        .apt-date .month { font-size: 0.75rem; text-transform: uppercase; }
+        .apt-info { flex: 1; }
+        .apt-info h4 { margin-bottom: 4px; }
+        .apt-info p { color: var(--text-light); font-size: 0.9rem; margin-bottom: 4px; }
+        .apt-status {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+        .status-pending { background: #fef3c7; color: #b45309; }
+        .status-confirmed { background: #dbeafe; color: #1d4ed8; }
+        .status-completed { background: #dcfce7; color: #16a34a; }
+        
+        /* Prescription Cards */
+        .rx-card {
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        .rx-header { display: flex; justify-content: space-between; margin-bottom: 16px; }
+        .rx-header h4 { color: var(--primary); }
+        .rx-meds { background: var(--bg); padding: 16px; border-radius: 10px; }
+        .rx-meds li { padding: 8px 0; border-bottom: 1px dashed var(--border); list-style: none; }
+        .rx-meds li:last-child { border-bottom: none; }
+        
+        /* Profile Info */
+        .profile-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .profile-item label { display: block; font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; margin-bottom: 4px; }
+        .profile-item span { font-size: 1.1rem; font-weight: 500; }
+        
+        /* Empty State */
+        .empty-state { text-align: center; padding: 60px; color: var(--text-light); }
+        .empty-state .icon { font-size: 4rem; margin-bottom: 16px; opacity: 0.5; }
+        
+        /* Quick Actions */
+        .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+        .quick-action {
+            background: var(--card);
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        .quick-action:hover { border-color: var(--primary); transform: translateY(-2px); }
+        .quick-action .icon { font-size: 2rem; margin-bottom: 12px; }
+        .quick-action span { color: var(--text-light); font-size: 0.9rem; }
+        
+        @media (max-width: 768px) {
+            .grid-2, .quick-actions { grid-template-columns: 1fr; }
+            .header { flex-direction: column; gap: 16px; }
+            .header nav { display: flex; gap: 16px; }
+            .header nav a { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1>🏥 Adinath Hospital - Patient Portal</h1>
+        <nav>
+            <a href="../../index.html">🏠 Home</a>
+            <a href="../../book.html">📅 Book Appointment</a>
+            <a href="../../store.html">💊 Pharmacy</a>
+            <a href="#" onclick="logout()" id="logoutBtn" style="display: none;">🚪 Logout</a>
+        </nav>
+    </header>
+    
+    <!-- Auth Section -->
+    <section class="auth-section active" id="authSection">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>🔐 Patient Login</h2>
+                <p>Access your appointments and prescriptions</p>
+            </div>
+            <div class="auth-body">
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="loginPhone" placeholder="Enter your phone number" maxlength="10">
+                </div>
+                <div class="form-group">
+                    <label>Name (as registered)</label>
+                    <input type="text" id="loginName" placeholder="Enter your name">
+                </div>
+                <button class="btn btn-primary btn-block" onclick="patientLogin()">
+                    Login →
+                </button>
+                
+                <p style="text-align: center; margin-top: 24px; color: var(--text-light);">
+                    New patient? <a href="../../book.html" style="color: var(--primary); font-weight: 500;">Book your first appointment</a>
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Dashboard Section -->
+    <section class="dashboard-section" id="dashboardSection">
+        <div class="container">
+            <!-- Welcome Banner -->
+            <div class="welcome">
+                <h2>👋 Welcome, <span id="patientNameDisplay">Patient</span>!</h2>
+                <p>Manage your health journey with Adinath Hospital</p>
+                <div class="welcome-actions">
+                    <a href="../../book.html" class="btn btn-white">📅 Book New Appointment</a>
+                    <a href="../../store.html" class="btn btn-outline">💊 Order Medicines</a>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <div class="quick-action" onclick="location.href='../../book.html'">
+                    <div class="icon">📅</div>
+                    <span>Book Appointment</span>
+                </div>
+                <div class="quick-action" onclick="location.href='../../store.html'">
+                    <div class="icon">💊</div>
+                    <span>Order Medicines</span>
+                </div>
+                <div class="quick-action" onclick="showSection('prescriptions')">
+                    <div class="icon">📋</div>
+                    <span>My Prescriptions</span>
+                </div>
+                <div class="quick-action" onclick="contactWhatsApp()">
+                    <div class="icon">💬</div>
+                    <span>WhatsApp Us</span>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="grid-2">
+                <!-- Upcoming Appointments -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📅 My Appointments</h3>
+                    </div>
+                    <div class="card-body" id="appointmentsList">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Profile -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>👤 My Profile</h3>
+                        <button class="btn" style="padding: 8px 16px; font-size: 0.85rem;" onclick="editProfile()">Edit</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="profile-grid" id="profileInfo">
+                            <!-- Loaded dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Prescriptions -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>📋 Recent Prescriptions</h3>
+                </div>
+                <div class="card-body" id="prescriptionsList">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <script src="../../js/hms.js"></script>
+    <script>
+        let currentPatient = null;
+        
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedPatient = localStorage.getItem('currentPatient');
+            if (savedPatient) {
+                currentPatient = JSON.parse(savedPatient);
+                showDashboard();
+            }
+        });
+        
+        function patientLogin() {
+            const phone = document.getElementById('loginPhone').value.trim();
+            const name = document.getElementById('loginName').value.trim();
+            
+            if (!phone || !name) {
+                alert('Please enter both phone number and name');
+                return;
+            }
+            
+            // Search for patient
+            let patient = HMS.patients.getAll().find(p => 
+                p.phone.includes(phone) && p.name.toLowerCase().includes(name.toLowerCase())
+            );
+            
+            // If not found, create new patient
+            if (!patient) {
+                if (confirm('Patient not found. Would you like to register?')) {
+                    const age = prompt('Enter your age:');
+                    const gender = prompt('Enter gender (male/female):');
+                    patient = HMS.patients.add({ name, phone, age: parseInt(age) || 0, gender: gender || 'other', address: '' });
+                } else {
+                    return;
+                }
+            }
+            
+            currentPatient = patient;
+            localStorage.setItem('currentPatient', JSON.stringify(patient));
+            showDashboard();
+        }
+        
+        function showDashboard() {
+            document.getElementById('authSection').classList.remove('active');
+            document.getElementById('dashboardSection').classList.add('active');
+            document.getElementById('logoutBtn').style.display = 'inline';
+            document.getElementById('patientNameDisplay').textContent = currentPatient.name.split(' ')[0];
+            
+            loadDashboardData();
+        }
+        
+        function loadDashboardData() {
+            // Load profile
+            const profileHtml = `
+                <div class="profile-item">
+                    <label>Patient ID</label>
+                    <span>${currentPatient.id}</span>
+                </div>
+                <div class="profile-item">
+                    <label>Full Name</label>
+                    <span>${currentPatient.name}</span>
+                </div>
+                <div class="profile-item">
+                    <label>Phone</label>
+                    <span>${currentPatient.phone}</span>
+                </div>
+                <div class="profile-item">
+                    <label>Age</label>
+                    <span>${currentPatient.age} years</span>
+                </div>
+                <div class="profile-item">
+                    <label>Gender</label>
+                    <span style="text-transform: capitalize;">${currentPatient.gender}</span>
+                </div>
+                <div class="profile-item">
+                    <label>Total Visits</label>
+                    <span>${currentPatient.visits}</span>
+                </div>
+            `;
+            document.getElementById('profileInfo').innerHTML = profileHtml;
+            
+            // Load appointments
+            const appointments = HMS.appointments.getByPatient(currentPatient.id);
+            const aptContainer = document.getElementById('appointmentsList');
+            
+            if (appointments.length === 0) {
+                aptContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📅</div>
+                        <p>No appointments yet</p>
+                        <a href="../../book.html" class="btn btn-primary" style="margin-top: 16px;">Book Your First Appointment</a>
+                    </div>
+                `;
+            } else {
+                aptContainer.innerHTML = appointments.map(apt => {
+                    const date = new Date(apt.date);
+                    return `
+                        <div class="appointment-card">
+                            <div class="apt-date">
+                                <div class="day">${date.getDate()}</div>
+                                <div class="month">${date.toLocaleString('en', { month: 'short' })}</div>
+                            </div>
+                            <div class="apt-info">
+                                <h4>${apt.doctor === 'ashok' ? 'Dr. Ashok Sajnani' : 'Dr. Sunita Sajnani'}</h4>
+                                <p>🕐 ${apt.time}</p>
+                                <p>📋 ${apt.reason}</p>
+                            </div>
+                            <span class="apt-status status-${apt.status}">${apt.status}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            // Load prescriptions
+            const prescriptions = HMS.prescriptions.getByPatient(currentPatient.id);
+            const rxContainer = document.getElementById('prescriptionsList');
+            
+            if (prescriptions.length === 0) {
+                rxContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📋</div>
+                        <p>No prescriptions yet</p>
+                    </div>
+                `;
+            } else {
+                rxContainer.innerHTML = prescriptions.map(rx => `
+                    <div class="rx-card">
+                        <div class="rx-header">
+                            <div>
+                                <h4>${rx.diagnosis}</h4>
+                                <p style="color: var(--text-light); font-size: 0.9rem;">
+                                    ${rx.doctor === 'ashok' ? 'Dr. Ashok Sajnani' : 'Dr. Sunita Sajnani'} • ${HMS.utils.formatDate(rx.date)}
+                                </p>
+                            </div>
+                            <button class="btn btn-primary" style="padding: 8px 16px;" onclick="printRx('${rx.id}')">🖨️ Print</button>
+                        </div>
+                        <div class="rx-meds">
+                            <ul>
+                                ${rx.medicines.map(m => `<li><strong>${m.name}</strong> - ${m.dosage} for ${m.duration}</li>`).join('')}
+                            </ul>
+                        </div>
+                        ${rx.advice ? `<p style="margin-top: 12px; padding: 12px; background: #fef3c7; border-radius: 8px;"><strong>Advice:</strong> ${rx.advice}</p>` : ''}
+                    </div>
+                `).join('');
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('currentPatient');
+            currentPatient = null;
+            document.getElementById('authSection').classList.add('active');
+            document.getElementById('dashboardSection').classList.remove('active');
+            document.getElementById('logoutBtn').style.display = 'none';
+        }
+        
+        function editProfile() {
+            alert('Profile editing coming soon! Please contact the hospital for updates.');
+        }
+        
+        function printRx(id) {
+            alert('🖨️ Prescription ready to print!\n\nCollect from medical store.');
+        }
+        
+        function contactWhatsApp() {
+            window.open('https://wa.me/919925450425?text=Hi, I am ' + currentPatient.name + ' (ID: ' + currentPatient.id + '). I need assistance.', '_blank');
+        }
+    </script>
+</body>
+</html>
+

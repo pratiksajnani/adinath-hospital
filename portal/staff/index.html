@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard | Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../../images/favicon.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --success: #22c55e;
+            --bg: #f8fafc;
+        }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); min-height: 100vh; }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 1.5rem; }
+        .header .user { display: flex; align-items: center; gap: 12px; }
+        
+        .main { max-width: 1200px; margin: 0 auto; padding: 30px; }
+        
+        .welcome-banner {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .welcome-banner h2 { font-size: 1.75rem; color: #1e293b; margin-bottom: 5px; }
+        .welcome-banner p { color: #64748b; }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .quick-action {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .quick-action:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        .quick-action .icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .quick-action h3 { font-size: 1.1rem; color: #1e293b; margin-bottom: 5px; }
+        .quick-action p { font-size: 0.9rem; color: #64748b; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-header h3 { font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        .card-body { padding: 24px; }
+        
+        /* Send Link Form */
+        .send-link-form { display: grid; gap: 16px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #374151; }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+        }
+        .form-group input:focus { outline: none; border-color: var(--primary); }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-outline { background: white; border: 2px solid #e2e8f0; }
+        .btn-block { width: 100%; }
+        
+        .send-options { display: flex; gap: 12px; margin-top: 16px; }
+        
+        /* Link Result */
+        .link-result {
+            display: none;
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        .link-result.show { display: block; }
+        .link-result h4 { color: #16a34a; margin-bottom: 10px; }
+        .link-url {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            word-break: break-all;
+            margin-bottom: 12px;
+        }
+        .qr-container { text-align: center; margin-top: 15px; }
+        .qr-container canvas { border: 4px solid white; border-radius: 8px; }
+        
+        /* Queue */
+        .queue-list { list-style: none; }
+        .queue-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .queue-item:last-child { border-bottom: none; }
+        .queue-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .queue-info { flex: 1; }
+        .queue-info .name { font-weight: 600; }
+        .queue-info .detail { font-size: 0.9rem; color: #64748b; }
+        .queue-status { font-size: 0.85rem; padding: 6px 14px; border-radius: 20px; }
+        .queue-status.waiting { background: #fef3c7; color: #b45309; }
+        .queue-status.called { background: #dcfce7; color: #16a34a; }
+        
+        /* Language Selector */
+        .lang-selector { display: flex; gap: 8px; }
+        .lang-btn {
+            padding: 8px 14px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .lang-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        @media (max-width: 768px) {
+            .quick-actions { grid-template-columns: repeat(2, 1fr); }
+            .grid-2 { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>🏥 Adinath Hospital - Staff Portal</h1>
+        <div class="user">
+            <div class="lang-selector">
+                <button class="lang-btn" onclick="setLang('en')">EN</button>
+                <button class="lang-btn active" onclick="setLang('gu')">ગુ</button>
+                <button class="lang-btn" onclick="setLang('hi')">हि</button>
+            </div>
+            <span>👤 Priya Patel (Receptionist)</span>
+        </div>
+    </header>
+    
+    <main class="main">
+        <div class="welcome-banner">
+            <div>
+                <h2>👋 Welcome, Priya!</h2>
+                <p id="todayDate">Today is loading...</p>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-size: 2rem; font-weight: 700; color: var(--primary);" id="waitingCount">0</div>
+                <div style="color: #64748b;">Patients Waiting</div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="quick-action" onclick="location.href='../../book.html'">
+                <div class="icon">📅</div>
+                <h3>New Appointment</h3>
+                <p>Book patient visit</p>
+            </div>
+            <div class="quick-action" onclick="showSendLink()">
+                <div class="icon">📱</div>
+                <h3>Send Signup Link</h3>
+                <p>SMS link to patient</p>
+            </div>
+            <div class="quick-action" onclick="location.href='../../forms/patient-intake.html'">
+                <div class="icon">📝</div>
+                <h3>Patient Form</h3>
+                <p>Print registration</p>
+            </div>
+            <div class="quick-action" onclick="location.href='../../store/index.html'">
+                <div class="icon">💊</div>
+                <h3>Medical Store</h3>
+                <p>Pharmacy & prints</p>
+            </div>
+        </div>
+        
+        <div class="grid-2">
+            <!-- Send Patient Link -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>📱 Send Patient Signup Link</h3>
+                </div>
+                <div class="card-body">
+                    <form class="send-link-form" id="sendLinkForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Patient Name / દર્દીનું નામ</label>
+                                <input type="text" id="linkPatientName" placeholder="Enter patient name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number / ફોન નંબર</label>
+                                <input type="tel" id="linkPatientPhone" placeholder="10-digit mobile" maxlength="10" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Consulting Doctor / ડૉક્ટર</label>
+                            <select id="linkDoctor">
+                                <option value="ashok">Dr. Ashok Sajnani (Orthopedic)</option>
+                                <option value="sunita">Dr. Sunita Sajnani (OB-GYN)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>SMS Language / SMS ભાષા</label>
+                            <select id="linkLanguage">
+                                <option value="gu">ગુજરાતી (Gujarati)</option>
+                                <option value="hi">हिंदी (Hindi)</option>
+                                <option value="en">English</option>
+                            </select>
+                        </div>
+                        <div class="send-options">
+                            <button type="button" class="btn btn-primary" onclick="sendViaSMS()">
+                                📱 Send SMS
+                            </button>
+                            <button type="button" class="btn btn-success" onclick="sendViaWhatsApp()">
+                                💬 Send WhatsApp
+                            </button>
+                            <button type="button" class="btn btn-outline" onclick="showQR()">
+                                📷 Show QR
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="link-result" id="linkResult">
+                        <h4>✅ Link Generated!</h4>
+                        <div class="link-url" id="generatedLink"></div>
+                        <div class="qr-container" id="qrContainer"></div>
+                        <p style="color: #64748b; font-size: 0.9rem; margin-top: 10px;">
+                            Patient can scan this QR or click the link to register.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Today's Queue -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>👥 Today's Patient Queue</h3>
+                    <button class="btn btn-outline" style="padding: 8px 16px;" onclick="refreshQueue()">🔄 Refresh</button>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <ul class="queue-list" id="queueList">
+                        <!-- Loaded dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Links Sent -->
+        <div class="card" style="margin-top: 24px;">
+            <div class="card-header">
+                <h3>📤 Recently Sent Links</h3>
+            </div>
+            <div class="card-body">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #e2e8f0;">
+                            <th style="text-align: left; padding: 12px;">Patient</th>
+                            <th style="text-align: left; padding: 12px;">Phone</th>
+                            <th style="text-align: left; padding: 12px;">Sent At</th>
+                            <th style="text-align: left; padding: 12px;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentLinks">
+                        <tr>
+                            <td style="padding: 12px; color: #64748b;" colspan="4">No links sent yet today</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    
+    <script src="../../js/hms.js"></script>
+    <script>
+        // Set today's date
+        document.getElementById('todayDate').textContent = 'Today is ' + new Date().toLocaleDateString('en-IN', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+        
+        // Load queue
+        function refreshQueue() {
+            const today = new Date().toISOString().split('T')[0];
+            const appointments = HMS.appointments.getByDate(today);
+            const waiting = appointments.filter(a => ['pending', 'confirmed', 'waiting'].includes(a.status));
+            
+            document.getElementById('waitingCount').textContent = waiting.length;
+            
+            const list = document.getElementById('queueList');
+            if (waiting.length === 0) {
+                list.innerHTML = '<li style="padding: 30px; text-align: center; color: #64748b;">No patients waiting</li>';
+                return;
+            }
+            
+            list.innerHTML = waiting.map((apt, i) => `
+                <li class="queue-item">
+                    <div class="queue-number">${i + 1}</div>
+                    <div class="queue-info">
+                        <div class="name">${apt.patientName}</div>
+                        <div class="detail">${apt.time} • ${apt.doctor === 'ashok' ? 'Dr. Ashok' : 'Dr. Sunita'}</div>
+                    </div>
+                    <span class="queue-status ${apt.status === 'waiting' ? 'called' : 'waiting'}">
+                        ${apt.status === 'waiting' ? 'In Room' : 'Waiting'}
+                    </span>
+                </li>
+            `).join('');
+        }
+        
+        // Generate and send link
+        function generateLink() {
+            const name = document.getElementById('linkPatientName').value;
+            const phone = document.getElementById('linkPatientPhone').value;
+            const doctor = document.getElementById('linkDoctor').value;
+            
+            if (!name || !phone) {
+                alert('Please enter patient name and phone number');
+                return null;
+            }
+            
+            const link = HMS.patientLinks.generate({ name, phone }, 'U005'); // Staff ID
+            return { link, name, phone, doctor };
+        }
+        
+        function sendViaSMS() {
+            const data = generateLink();
+            if (!data) return;
+            
+            const lang = document.getElementById('linkLanguage').value;
+            const message = HMS.smsTemplates.generate('patient_signup_link', {
+                link: data.link.url,
+                doctor: data.doctor === 'ashok' ? 'Ashok Sajnani' : 'Sunita Sajnani'
+            }, lang);
+            
+            HMS.notifications.sendSMS(data.phone, message, lang);
+            showLinkResult(data.link);
+            
+            alert(`📱 SMS sent to ${data.phone}!\n\nMessage:\n"${message}"`);
+            addToRecentLinks(data);
+        }
+        
+        function sendViaWhatsApp() {
+            const data = generateLink();
+            if (!data) return;
+            
+            const lang = document.getElementById('linkLanguage').value;
+            const message = HMS.smsTemplates.generate('patient_signup_link', {
+                link: data.link.url,
+                doctor: data.doctor === 'ashok' ? 'Ashok Sajnani' : 'Sunita Sajnani'
+            }, lang);
+            
+            const waUrl = `https://wa.me/91${data.phone}?text=${encodeURIComponent(message)}`;
+            window.open(waUrl, '_blank');
+            
+            showLinkResult(data.link);
+            addToRecentLinks(data);
+        }
+        
+        function showQR() {
+            const data = generateLink();
+            if (!data) return;
+            
+            showLinkResult(data.link);
+        }
+        
+        function showLinkResult(link) {
+            document.getElementById('generatedLink').textContent = link.url;
+            document.getElementById('linkResult').classList.add('show');
+            
+            // Generate QR code (using simple text for now - would use QRCode.js in production)
+            document.getElementById('qrContainer').innerHTML = `
+                <div style="background: #f1f5f9; padding: 40px; border-radius: 12px; display: inline-block;">
+                    <div style="font-size: 4rem;">📱</div>
+                    <div style="font-size: 0.9rem; color: #64748b; margin-top: 10px;">
+                        QR Code would appear here<br>
+                        <small>(Install QRCode.js for actual QR)</small>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function addToRecentLinks(data) {
+            const tbody = document.getElementById('recentLinks');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td style="padding: 12px;">${data.name}</td>
+                <td style="padding: 12px;">${data.phone}</td>
+                <td style="padding: 12px;">${new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</td>
+                <td style="padding: 12px;"><span style="color: #22c55e;">✓ Sent</span></td>
+            `;
+            
+            if (tbody.children[0].textContent.includes('No links')) {
+                tbody.innerHTML = '';
+            }
+            tbody.insertBefore(row, tbody.firstChild);
+        }
+        
+        function setLang(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase().includes(lang.substring(0, 2)));
+            });
+            if (typeof I18N !== 'undefined') {
+                I18N.setLanguage(lang);
+            }
+        }
+        
+        // Initialize
+        refreshQueue();
+    </script>
+</body>
+</html>
+
