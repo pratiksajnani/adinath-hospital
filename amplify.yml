@@ -113,6 +113,12 @@ customRules:
   - source: /portal/admin/manage/
     target: /portal/admin/manage.html
     status: '200'
+  - source: /portal/admin/send-registration
+    target: /portal/admin/send-registration.html
+    status: '200'
+  - source: /portal/admin/send-registration/
+    target: /portal/admin/send-registration.html
+    status: '200'
   - source: /portal/doctor
     target: /portal/doctor/index.html
     status: '200'

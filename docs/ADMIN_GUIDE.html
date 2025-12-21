@@ -694,6 +694,39 @@
             </div>
         </section>
         
+        <!-- Quick Admin Links -->
+        <div class="section" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: white;">
+            <h2 style="color: white;"><span class="emoji">🔗</span> Quick Admin Links</h2>
+            <p style="opacity: 0.9; margin-bottom: 24px;">All essential admin pages in one place</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                <a href="../onboard/admin.html?token=ADMIN2024SECURE" style="display: block; padding: 16px; background: rgba(255,255,255,0.1); border-radius: 8px; color: white; text-decoration: none; text-align: center;">
+                    🔐 Admin Setup
+                </a>
+                <a href="../login.html" style="display: block; padding: 16px; background: rgba(255,255,255,0.1); border-radius: 8px; color: white; text-decoration: none; text-align: center;">
+                    🚪 Login Page
+                </a>
+                <a href="../portal/admin/index.html" style="display: block; padding: 16px; background: rgba(255,255,255,0.1); border-radius: 8px; color: white; text-decoration: none; text-align: center;">
+                    📊 Admin Dashboard
+                </a>
+                <a href="send-registration-links.html" style="display: block; padding: 16px; background: rgba(255,255,255,0.1); border-radius: 8px; color: white; text-decoration: none; text-align: center;">
+                    📲 Registration Links
+                </a>
+                <a href="../clear-cache.html" style="display: block; padding: 16px; background: rgba(255,255,255,0.1); border-radius: 8px; color: white; text-decoration: none; text-align: center;">
+                    🧹 Clear Cache
+                </a>
+                <a href="test-matrix.html" style="display: block; padding: 16px; background: rgba(255,255,255,0.1); border-radius: 8px; color: white; text-decoration: none; text-align: center;">
+                    🧪 Test Matrix
+                </a>
+                <a href="../store/index.html" style="display: block; padding: 16px; background: rgba(255,255,255,0.1); border-radius: 8px; color: white; text-decoration: none; text-align: center;">
+                    💊 Store Dashboard
+                </a>
+                <a href="../forms/index.html" style="display: block; padding: 16px; background: rgba(255,255,255,0.1); border-radius: 8px; color: white; text-decoration: none; text-align: center;">
+                    📋 Printable Forms
+                </a>
+            </div>
+        </div>
+        
         <!-- Technical Resources -->
         <div class="section">
             <h2><span class="emoji">🛠️</span> Technical Resources</h2>
@@ -703,6 +736,44 @@
                 <a href="https://github.com/pratiksajnani/adinath-hospital" class="btn btn-outline">📂 GitHub Repository</a>
                 <a href="SUPABASE_SETUP.md" class="btn btn-outline">🔐 Auth Setup</a>
                 <a href="../tests/TEST_STRATEGY.md" class="btn btn-outline">🧪 Test Strategy</a>
+            </div>
+        </div>
+        
+        <!-- Testing Checklist -->
+        <div class="section">
+            <h2><span class="emoji">✅</span> Admin Testing Checklist</h2>
+            <p class="section-subtitle">Verify all admin features work correctly</p>
+            
+            <div style="background: var(--bg); padding: 20px; border-radius: 8px;">
+                <h4 style="margin-bottom: 12px;">Registration & Login</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">☐ Admin setup page loads correctly</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">☐ Can set password with strength indicator</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">☐ 2FA options display (Passkey, Authenticator, SMS)</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">☐ Gmail login works with pratik.sajnani@gmail.com</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">☐ Phone OTP login works</li>
+                    <li style="padding: 8px 0;">☐ Magic link login works</li>
+                </ul>
+            </div>
+            
+            <div style="background: var(--bg); padding: 20px; border-radius: 8px; margin-top: 16px;">
+                <h4 style="margin-bottom: 12px;">Dashboard Features</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">☐ Dashboard shows today's stats</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">☐ User management section loads</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">☐ Hospital settings form works</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">☐ Security badge shows 2FA status</li>
+                    <li style="padding: 8px 0;">☐ Logout works and redirects to login</li>
+                </ul>
+            </div>
+            
+            <div style="background: var(--bg); padding: 20px; border-radius: 8px; margin-top: 16px;">
+                <h4 style="margin-bottom: 12px;">Doctor Registration Links</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">☐ Dr. Ashok link opens registration page</li>
+                    <li style="padding: 8px 0; border-bottom: 1px solid var(--border);">☐ Dr. Sunita link opens registration page</li>
+                    <li style="padding: 8px 0;">☐ WhatsApp share buttons work</li>
+                </ul>
             </div>
         </div>
         
