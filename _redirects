@@ -2,7 +2,13 @@
 
 # Admin onboarding (preserve query params)
 /onboard/admin /onboard/admin.html 200
+/onboard/admin/ /onboard/admin.html 200
 /onboard/doctor /onboard/doctor.html 200
+/onboard/doctor/ /onboard/doctor.html 200
+/onboard/staff /onboard/staff.html 200
+/onboard/staff/ /onboard/staff.html 200
+/onboard/patient /onboard/patient.html 200
+/onboard/patient/ /onboard/patient.html 200
 
 # Main pages
 /login /login.html 200
