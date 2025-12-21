@@ -8,6 +8,17 @@ Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Mana
 
 ---
 
+## 📱 SMS-READY LINKS (Copy & Send to Phone)
+
+| Role | TinyURL | Send This Link |
+|------|---------|----------------|
+| 👨‍⚕️ **Doctor** | https://tinyurl.com/doctor-demo | `Send to Dr. Ashok / Dr. Sunita` |
+| 👩‍💼 **Staff** | https://tinyurl.com/staff-demo | `Send to Poonam (Receptionist)` |
+| 👨‍👩‍👧 **Patient** | https://tinyurl.com/2xj66x22 | `Send to any patient` |
+| 🔧 **Admin** | https://tinyurl.com/siteadmin-demo | `Send to Pratik (Site Admin)` |
+
+---
+
 ## 📋 DEMO GUIDES
 
 ### 🎬 Demo Video
@@ -21,27 +32,38 @@ Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Mana
 
 ---
 
-### 🔐 Site Admin Demo
-
-| Resource | Link |
-|----------|------|
-| **TinyURL** | **https://tinyurl.com/siteadmin-demo** |
-| Full Guide (HTML) | [docs/SITEADMIN_DEMO.html](docs/SITEADMIN_DEMO.html) |
-| Full Guide (MD) | [docs/SITEADMIN_DEMO.md](docs/SITEADMIN_DEMO.md) |
-
-### 📱 Patient Demo
-
-| Resource | Link |
-|----------|------|
-| **TinyURL** | https://tinyurl.com/2xj66x22 |
-| Full Guide | [docs/PATIENT_DEMO.html](docs/PATIENT_DEMO.html) |
-
-### 👨‍⚕️ Doctor Demo
+### 👨‍⚕️ Doctor Demo Guide
 
 | Resource | Link |
 |----------|------|
 | **TinyURL** | https://tinyurl.com/doctor-demo |
 | Full Guide | [docs/doctor-demo-guide.html](docs/doctor-demo-guide.html) |
+| CRUD Operations | View appointments, Write prescriptions, Update status, Send messages |
+
+### 👩‍💼 Staff Demo Guide
+
+| Resource | Link |
+|----------|------|
+| **TinyURL** | https://tinyurl.com/staff-demo |
+| Full Guide | [docs/staff-demo-guide.html](docs/staff-demo-guide.html) |
+| CRUD Operations | Register patients, Book appointments, Send SMS/WhatsApp, Show QR |
+
+### 👨‍👩‍👧 Patient Demo Guide
+
+| Resource | Link |
+|----------|------|
+| **TinyURL** | https://tinyurl.com/2xj66x22 |
+| Full Guide | [docs/PATIENT_DEMO.html](docs/PATIENT_DEMO.html) |
+| CRUD Operations | Book appointment, View appointments, View prescriptions, Update profile |
+
+### 🔧 Site Admin Demo Guide
+
+| Resource | Link |
+|----------|------|
+| **TinyURL** | https://tinyurl.com/siteadmin-demo |
+| Full Guide (HTML) | [docs/SITEADMIN_DEMO.html](docs/SITEADMIN_DEMO.html) |
+| Full Guide (MD) | [docs/SITEADMIN_DEMO.md](docs/SITEADMIN_DEMO.md) |
+| CRUD Operations | Full access to all data, Manage appointments, Manage patients, Reset demo
 
 ---
 
