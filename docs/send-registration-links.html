@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Registration Links | Adinath Hospital Admin</title>
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: white;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header .logo { font-size: 3rem; margin-bottom: 16px; }
+        .header h1 { font-size: 2rem; margin-bottom: 8px; }
+        .header p { opacity: 0.8; }
+        
+        .admin-badge {
+            display: inline-block;
+            background: #f59e0b;
+            color: #1e293b;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 24px;
+            color: #1e293b;
+        }
+        
+        .card h2 {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .doctor-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .doctor-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #0d9488;
+        }
+        
+        .doctor-info {
+            flex: 1;
+        }
+        
+        .doctor-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .doctor-specialty {
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+        
+        .doctor-email {
+            font-size: 0.9rem;
+            color: #0d9488;
+            font-weight: 500;
+        }
+        
+        .link-box {
+            background: #e0f2fe;
+            border: 2px solid #0ea5e9;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        
+        .link-box label {
+            display: block;
+            font-size: 0.85rem;
+            color: #0369a1;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .link-input-group {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .link-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #bae6fd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: monospace;
+            background: white;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-copy {
+            background: #0ea5e9;
+            color: white;
+        }
+        .btn-copy:hover {
+            background: #0284c7;
+        }
+        
+        .btn-whatsapp {
+            background: #25d366;
+            color: white;
+        }
+        .btn-whatsapp:hover {
+            background: #1da851;
+        }
+        
+        .btn-sms {
+            background: #6366f1;
+            color: white;
+        }
+        .btn-sms:hover {
+            background: #4f46e5;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .status-registered {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+        .back-link:hover {
+            opacity: 1;
+        }
+        
+        .message-preview {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: #166534;
+            white-space: pre-wrap;
+        }
+        
+        .copied-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #166534;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+            z-index: 100;
+        }
+        
+        @media (max-width: 600px) {
+            .doctor-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            .action-buttons {
+                justify-content: center;
+            }
+            .link-input-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🏥</div>
+            <span class="admin-badge">🔐 Admin Only</span>
+            <h1>Send Registration Links</h1>
+            <p>Send secure registration links to doctors via WhatsApp or SMS</p>
+        </div>
+        
+        <!-- Dr. Ashok -->
+        <div class="card">
+            <h2>👨‍⚕️ Dr. Ashok Sajnani</h2>
+            
+            <div class="doctor-card">
+                <img src="../images/dr-ashok-sajnani.jpg" alt="Dr. Ashok Sajnani" class="doctor-avatar">
+                <div class="doctor-info">
+                    <div class="doctor-name">Dr. Ashok Sajnani</div>
+                    <div class="doctor-specialty">M.S. (Ortho) - Orthopedic & Joint Surgeon</div>
+                    <div class="doctor-email">📧 drsajnani@gmail.com</div>
+                </div>
+                <span class="status-badge status-pending" id="ashokStatus">⏳ Pending</span>
+            </div>
+            
+            <div class="link-box">
+                <label>📎 Registration Link</label>
+                <div class="link-input-group">
+                    <input type="text" class="link-input" id="ashokLink" value="https://adinathhealth.com/onboard/doctor.html?id=ashok&token=ASH2024REG" readonly>
+                    <button class="btn btn-copy" onclick="copyLink('ashok')">📋 Copy</button>
+                </div>
+            </div>
+            
+            <div class="message-preview" id="ashokMessage">
+🏥 Adinath Hospital
+
+नमस्ते Dr. Ashok! 🙏
+
+Your doctor portal account is ready for setup.
+
+👉 Click here to register:
+https://adinathhealth.com/onboard/doctor.html?id=ashok&token=ASH2024REG
+
+Your login email: drsajnani@gmail.com
+
+- Pratik (Site Admin)</div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-whatsapp" onclick="sendWhatsApp('ashok')">
+                    📱 Send via WhatsApp
+                </button>
+                <button class="btn btn-sms" onclick="sendSMS('ashok')">
+                    ✉️ Copy SMS Text
+                </button>
+            </div>
+        </div>
+        
+        <!-- Dr. Sunita -->
+        <div class="card">
+            <h2>👩‍⚕️ Dr. Sunita Sajnani</h2>
+            
+            <div class="doctor-card">
+                <img src="../images/dr-sunita-sajnani.jpg" alt="Dr. Sunita Sajnani" class="doctor-avatar">
+                <div class="doctor-info">
+                    <div class="doctor-name">Dr. Sunita Sajnani</div>
+                    <div class="doctor-specialty">M.D. (OB-GYN) - Obstetrics & Gynecology</div>
+                    <div class="doctor-email">📧 sunita.sajnani9@gmail.com</div>
+                </div>
+                <span class="status-badge status-pending" id="sunitaStatus">⏳ Pending</span>
+            </div>
+            
+            <div class="link-box">
+                <label>📎 Registration Link</label>
+                <div class="link-input-group">
+                    <input type="text" class="link-input" id="sunitaLink" value="https://adinathhealth.com/onboard/doctor.html?id=sunita&token=SUN2024REG" readonly>
+                    <button class="btn btn-copy" onclick="copyLink('sunita')">📋 Copy</button>
+                </div>
+            </div>
+            
+            <div class="message-preview" id="sunitaMessage">
+🏥 Adinath Hospital
+
+नमस्ते Dr. Sunita! 🙏
+
+Your doctor portal account is ready for setup.
+
+👉 Click here to register:
+https://adinathhealth.com/onboard/doctor.html?id=sunita&token=SUN2024REG
+
+Your login email: sunita.sajnani9@gmail.com
+
+- Pratik (Site Admin)</div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-whatsapp" onclick="sendWhatsApp('sunita')">
+                    📱 Send via WhatsApp
+                </button>
+                <button class="btn btn-sms" onclick="sendSMS('sunita')">
+                    ✉️ Copy SMS Text
+                </button>
+            </div>
+        </div>
+        
+        <a href="../portal/admin/index.html" class="back-link">← Back to Admin Dashboard</a>
+    </div>
+    
+    <div class="copied-toast" id="copiedToast">✅ Copied to clipboard!</div>
+    
+    <script>
+        const doctors = {
+            ashok: {
+                name: 'Dr. Ashok',
+                phone: '919824066854',
+                link: 'https://adinathhealth.com/onboard/doctor.html?id=ashok&token=ASH2024REG',
+                email: 'drsajnani@gmail.com'
+            },
+            sunita: {
+                name: 'Dr. Sunita',
+                phone: '919925450425',
+                link: 'https://adinathhealth.com/onboard/doctor.html?id=sunita&token=SUN2024REG',
+                email: 'sunita.sajnani9@gmail.com'
+            }
+        };
+        
+        function copyLink(doctorId) {
+            const link = document.getElementById(doctorId + 'Link').value;
+            navigator.clipboard.writeText(link).then(() => {
+                showToast();
+            });
+        }
+        
+        function sendWhatsApp(doctorId) {
+            const doctor = doctors[doctorId];
+            const message = document.getElementById(doctorId + 'Message').textContent;
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${doctor.phone}?text=${encodedMessage}`, '_blank');
+        }
+        
+        function sendSMS(doctorId) {
+            const message = document.getElementById(doctorId + 'Message').textContent;
+            navigator.clipboard.writeText(message).then(() => {
+                showToast();
+                alert('SMS text copied! You can now paste it in your SMS app.');
+            });
+        }
+        
+        function showToast() {
+            const toast = document.getElementById('copiedToast');
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
+

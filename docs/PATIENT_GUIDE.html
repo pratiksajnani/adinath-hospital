@@ -178,6 +178,89 @@
             color: var(--text-light);
             font-size: 14px;
         }
+        .ui-mockup {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 14px;
+        }
+        .ui-mockup .mock-header {
+            background: var(--primary);
+            color: white;
+            padding: 10px 16px;
+            margin: -16px -16px 12px -16px;
+            border-radius: 12px 12px 0 0;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .ui-mockup .mock-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .ui-mockup .mock-btn.highlight {
+            box-shadow: 0 0 0 3px rgba(15,118,110,0.4);
+            position: relative;
+        }
+        .ui-mockup .mock-btn.highlight::after {
+            content: "👆 Click here";
+            position: absolute;
+            bottom: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: #dc2626;
+            white-space: nowrap;
+        }
+        .ui-mockup .mock-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            margin: 6px 0;
+            background: white;
+        }
+        .ui-mockup .mock-input.focus {
+            border-color: var(--primary);
+        }
+        .ui-mockup .mock-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            background: white;
+        }
+        .ui-mockup .mock-label {
+            font-weight: 600;
+            color: #374151;
+            font-size: 12px;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .ui-mockup .mock-success {
+            background: #d1fae5;
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        .ui-mockup .mock-success .icon { font-size: 2rem; }
+        .arrow-pointer {
+            color: #dc2626;
+            font-weight: bold;
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
         
         .tip {
             background: #ecfdf5;
@@ -486,7 +569,17 @@
                     <p data-lang="hi">होमपेज या मेनू में "अपॉइंटमेंट बुक करें" बटन पर क्लिक करें</p>
                     <p data-lang="gu">હોમપેજ અથવા મેનુમાં "એપોઇન્ટમેન્ટ બુક કરો" બટન પર ક્લિક કરો</p>
                     <div class="screenshot">
-                        <div class="screenshot-placeholder">📸 Screenshot: Homepage with Book button highlighted</div>
+                        <div class="ui-mockup">
+                            <div class="mock-header">
+                                <span>🏥 Adinath Hospital</span>
+                                <span style="font-size: 12px;">Menu ☰</span>
+                            </div>
+                            <div style="text-align: center; padding: 20px 0;">
+                                <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Expert Healthcare Close to Home</div>
+                                <div style="color: #64748b; margin-bottom: 16px;">Orthopedic & Gynecology Care</div>
+                                <span class="mock-btn highlight">📅 Book Appointment</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -501,7 +594,20 @@
                     <p data-lang="hi">डॉ. अशोक सजनानी (हड्डी रोग) या डॉ. सुनीता सजनानी (स्त्री रोग) में से चुनें</p>
                     <p data-lang="gu">ડૉ. અશોક સજનાની (ઓર્થોપેડિક) અથવા ડૉ. સુનિતા સજનાની (OB-GYN) વચ્ચે પસંદ કરો</p>
                     <div class="screenshot">
-                        <div class="screenshot-placeholder">📸 Screenshot: Doctor selection dropdown</div>
+                        <div class="ui-mockup">
+                            <div class="mock-header">📅 Book Appointment</div>
+                            <div class="mock-label">Select Doctor</div>
+                            <div class="mock-select">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>👨‍⚕️ Dr. Ashok Sajnani - Orthopedic</span>
+                                    <span>▼</span>
+                                </div>
+                            </div>
+                            <div style="background: white; border: 1px solid #e2e8f0; border-radius: 6px; margin-top: -4px; padding: 8px;">
+                                <div style="padding: 8px; border-bottom: 1px solid #e2e8f0;">👨‍⚕️ Dr. Ashok Sajnani - Orthopedic ✓</div>
+                                <div style="padding: 8px;">👩‍⚕️ Dr. Sunita Sajnani - OB-GYN</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -536,7 +642,18 @@
                     <p data-lang="hi">अपना नाम, फोन नंबर और मिलने का कारण भरें</p>
                     <p data-lang="gu">તમારું નામ, ફોન નંબર અને મુલાકાતનું કારણ ભરો</p>
                     <div class="screenshot">
-                        <div class="screenshot-placeholder">📸 Screenshot: Patient details form</div>
+                        <div class="ui-mockup">
+                            <div class="mock-header">📋 Your Details</div>
+                            <div class="mock-label">Full Name *</div>
+                            <div class="mock-input focus">Rajesh Patel</div>
+                            <div class="mock-label">Phone Number *</div>
+                            <div class="mock-input">+91 98765 43210</div>
+                            <div class="mock-label">Reason for Visit</div>
+                            <div class="mock-input" style="height: 60px;">Knee pain for 2 weeks...</div>
+                            <div style="margin-top: 12px;">
+                                <span class="mock-btn" style="width: 100%; text-align: center; display: block;">✅ Confirm Booking</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -551,7 +668,18 @@
                     <p data-lang="hi">सबमिट पर क्लिक करें और SMS/WhatsApp के माध्यम से पुष्टि प्राप्त करें</p>
                     <p data-lang="gu">સબમિટ પર ક્લિક કરો અને SMS/WhatsApp દ્વારા પુષ્ટિ મેળવો</p>
                     <div class="screenshot">
-                        <div class="screenshot-placeholder">📸 Screenshot: Confirmation message</div>
+                        <div class="ui-mockup">
+                            <div class="mock-success">
+                                <div class="icon">✅</div>
+                                <div style="font-size: 18px; font-weight: 700; color: #065f46; margin: 8px 0;">Appointment Confirmed!</div>
+                                <div style="color: #047857; margin-bottom: 12px;">
+                                    📅 Monday, Dec 23, 2025<br>
+                                    🕐 11:30 AM<br>
+                                    👨‍⚕️ Dr. Ashok Sajnani
+                                </div>
+                                <div style="font-size: 12px; color: #065f46;">📱 SMS confirmation sent to your phone</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -603,7 +731,17 @@
                     <p data-lang="hi">सभी अपॉइंटमेंट स्थिति के साथ देखें (पुष्टि, लंबित, पूर्ण)</p>
                     <p data-lang="gu">તમામ એપોઇન્ટમેન્ટ સ્થિતિ સાથે જુઓ (પુષ્ટિ, બાકી, પૂર્ણ)</p>
                     <div class="screenshot">
-                        <div class="screenshot-placeholder">📸 Screenshot: Appointments list view</div>
+                        <div class="ui-mockup">
+                            <div class="mock-header">📅 My Appointments</div>
+                            <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 12px; border-radius: 0 8px 8px 0; margin-bottom: 8px;">
+                                <div style="font-weight: 600;">✅ Upcoming: Dec 23, 2025 - 11:30 AM</div>
+                                <div style="color: #64748b; font-size: 13px;">Dr. Ashok Sajnani • Orthopedic</div>
+                            </div>
+                            <div style="background: #f1f5f9; padding: 12px; border-radius: 8px;">
+                                <div style="font-weight: 600; color: #64748b;">✓ Completed: Dec 10, 2025</div>
+                                <div style="color: #94a3b8; font-size: 13px;">Dr. Ashok Sajnani • Knee checkup</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

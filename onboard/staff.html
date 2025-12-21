@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Registration | Adinath Hospital</title>
+    <title>Staff Registration | Adinath Hospital</title>
     <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -29,17 +29,17 @@
             margin-bottom: 30px;
         }
         .header .icon { font-size: 60px; margin-bottom: 12px; }
-        .header h1 { color: #1e40af; font-size: 24px; }
+        .header h1 { color: #7c3aed; font-size: 24px; }
         .header p { color: #64748b; margin-top: 8px; }
         
         .invite-info {
-            background: #dbeafe;
+            background: #ede9fe;
             border-radius: 12px;
             padding: 16px;
             margin-bottom: 24px;
             text-align: center;
         }
-        .invite-info .name { font-size: 20px; font-weight: bold; color: #1e40af; }
+        .invite-info .name { font-size: 20px; font-weight: bold; color: #7c3aed; }
         
         .form-group {
             margin-bottom: 20px;
@@ -50,17 +50,16 @@
             font-weight: 600;
             color: #334155;
         }
-        .form-group input, .form-group select, .form-group textarea {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 14px;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
             font-size: 16px;
-            transition: border-color 0.2s;
         }
         .form-group input:focus, .form-group select:focus {
             outline: none;
-            border-color: #3b82f6;
+            border-color: #7c3aed;
         }
         
         .form-row {
@@ -72,16 +71,15 @@
         .btn {
             width: 100%;
             padding: 16px;
-            background: #1e40af;
+            background: #7c3aed;
             color: white;
             border: none;
             border-radius: 10px;
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
         }
-        .btn:hover { background: #1e3a8a; }
+        .btn:hover { background: #6d28d9; }
         
         .success {
             text-align: center;
@@ -89,12 +87,11 @@
         }
         .success .icon { font-size: 80px; margin-bottom: 20px; }
         .success h2 { color: #166534; margin-bottom: 12px; }
-        .success p { color: #64748b; }
         .success a {
             display: inline-block;
             margin-top: 20px;
             padding: 12px 24px;
-            background: #1e40af;
+            background: #7c3aed;
             color: white;
             text-decoration: none;
             border-radius: 8px;
@@ -111,18 +108,16 @@
         
         @media (max-width: 480px) {
             .form-row { grid-template-columns: 1fr; }
-            .container { padding: 24px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Registration Form -->
         <div id="form-section">
             <div class="header">
-                <div class="icon">👨‍⚕️</div>
-                <h1>Doctor Registration</h1>
-                <p>Complete your registration to join Adinath Hospital</p>
+                <div class="icon">👥</div>
+                <h1>Staff Registration</h1>
+                <p>Join the Adinath Hospital team</p>
             </div>
             
             <div class="invite-info" id="invite-info">
@@ -149,26 +144,26 @@
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label>Specialty *</label>
-                    <select id="specialty" required>
-                        <option value="">Select specialty</option>
-                        <option value="orthopedic">Orthopedic Surgery</option>
-                        <option value="gynecology">Obstetrics & Gynecology</option>
-                        <option value="general">General Medicine</option>
-                        <option value="pediatrics">Pediatrics</option>
-                        <option value="visiting">Visiting Consultant</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>Qualifications</label>
-                    <input type="text" id="qualifications" placeholder="e.g., M.S. (Ortho), D.Ortho">
-                </div>
-                
-                <div class="form-group">
-                    <label>Years of Experience</label>
-                    <input type="number" id="experience" min="0" placeholder="e.g., 15">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Role *</label>
+                        <select id="staff-role" required>
+                            <option value="">Select role</option>
+                            <option value="receptionist">Receptionist</option>
+                            <option value="nurse">Nurse</option>
+                            <option value="pharmacist">Pharmacist</option>
+                            <option value="admin">Admin Staff</option>
+                            <option value="helper">Helper</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Shift</label>
+                        <select id="shift">
+                            <option value="morning">Morning (8 AM - 2 PM)</option>
+                            <option value="afternoon">Afternoon (2 PM - 8 PM)</option>
+                            <option value="full">Full Day</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <div class="form-row">
@@ -182,16 +177,23 @@
                     </div>
                 </div>
                 
+                <div class="form-group">
+                    <label>Preferred Language</label>
+                    <select id="language">
+                        <option value="gu">ગુજરાતી (Gujarati)</option>
+                        <option value="hi">हिंदी (Hindi)</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                
                 <button type="submit" class="btn">Complete Registration</button>
             </form>
         </div>
         
-        <!-- Success Message -->
         <div class="success" id="success-section">
             <div class="icon">✅</div>
             <h2>Registration Complete!</h2>
-            <p>Welcome to Adinath Hospital, Doctor!</p>
-            <p style="margin-top: 12px;">You can now login to your dashboard.</p>
+            <p>Welcome to the Adinath Hospital team!</p>
             <a href="../login.html">Go to Login</a>
         </div>
     </div>
@@ -199,11 +201,9 @@
     <script src="../js/config.js"></script>
     <script src="../js/hms.js"></script>
     <script>
-        // Get token from URL
         const params = new URLSearchParams(window.location.search);
         const token = params.get('token');
         
-        // Load invite info
         function loadInvite() {
             if (!token) {
                 document.getElementById('invite-info').innerHTML = '<p style="color:#991b1b;">Invalid or missing invite token</p>';
@@ -227,12 +227,11 @@
             document.getElementById('name').value = invite.name || '';
             document.getElementById('phone').value = invite.phone || '';
             document.getElementById('email').value = invite.email || '';
-            if (invite.specialty) {
-                document.getElementById('specialty').value = invite.specialty;
+            if (invite.staffRole) {
+                document.getElementById('staff-role').value = invite.staffRole;
             }
         }
         
-        // Handle form submission
         document.getElementById('register-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -245,23 +244,21 @@
                 return;
             }
             
-            // Create user
+            const staffRole = document.getElementById('staff-role').value;
             const user = {
-                id: 'DOC' + Date.now().toString(36).toUpperCase(),
+                id: 'STF' + Date.now().toString(36).toUpperCase(),
                 email: document.getElementById('email').value,
                 password: password,
                 name: document.getElementById('name').value,
                 phone: document.getElementById('phone').value,
-                role: 'doctor',
-                specialty: document.getElementById('specialty').value,
-                qualifications: document.getElementById('qualifications').value,
-                experience: document.getElementById('experience').value,
-                permissions: ['patients', 'appointments', 'prescriptions'],
+                role: staffRole,
+                shift: document.getElementById('shift').value,
+                preferredLanguage: document.getElementById('language').value,
+                permissions: ['appointments', 'patients', 'queue'],
                 active: true,
                 createdAt: new Date().toISOString()
             };
             
-            // Save user
             if (HMS.users) {
                 HMS.users.add(user);
             } else {
@@ -270,7 +267,6 @@
                 localStorage.setItem('hms_users', JSON.stringify(users));
             }
             
-            // Mark invite as used
             if (token) {
                 const invites = JSON.parse(localStorage.getItem('hms_invites') || '[]');
                 const invite = invites.find(i => i.id === token);
@@ -281,13 +277,12 @@
                 }
             }
             
-            // Show success
             document.getElementById('form-section').style.display = 'none';
             document.getElementById('success-section').style.display = 'block';
         });
         
-        // Initialize
         loadInvite();
     </script>
 </body>
 </html>
+

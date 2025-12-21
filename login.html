@@ -356,11 +356,7 @@
             </div>
             
             <div class="login-form">
-                <!-- Demo note -->
-                <div class="demo-note" id="demoNote">
-                    <strong>🔐 Demo Mode</strong><br>
-                    <small>Use demo credentials or try Google/Phone login</small>
-                </div>
+                <!-- Production mode - no demo note shown -->
                 
                 <div id="successMessage" class="success-message"></div>
                 <div id="errorMessage" class="error-message"></div>
@@ -496,12 +492,7 @@
             ]
         };
         
-        // Demo credentials for testing
-        const demoCredentials = {
-            doctor: { email: 'drsajnani@gmail.com', password: 'doctor123' },
-            staff: { email: 'receptionist@adinathhospital.com', password: 'staff123' },
-            admin: { email: 'pratik.sajnani@gmail.com', password: 'admin123' }
-        };
+        // Production credentials (no demo display)
         
         function switchRole(role) {
             currentRole = role;
@@ -527,12 +518,7 @@
                 `).join('')}
             `;
             
-            // Update demo hint
-            const creds = demoCredentials[role];
-            document.getElementById('demoNote').innerHTML = `
-                <strong>🔐 Demo: ${role.charAt(0).toUpperCase() + role.slice(1)}</strong><br>
-                <small>Email: ${creds.email} | Password: ${creds.password}</small>
-            `;
+            // No demo hint in production mode
         }
         
         // Initialize

@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Management | Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../../images/favicon.svg">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #f1f5f9;
+            min-height: 100vh;
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, #dc2626, #f97316);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .admin-header h1 { font-size: 24px; }
+        .admin-header a { color: white; text-decoration: none; }
+        
+        .admin-nav {
+            background: #1e293b;
+            padding: 0 20px;
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+        }
+        .admin-nav a {
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 16px 20px;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .admin-nav a:hover { color: white; background: rgba(255,255,255,0.1); }
+        .admin-nav a.active { color: white; border-bottom-color: #f97316; }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 12px 24px;
+            border: none;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+        .tab-btn:hover { background: #e2e8f0; }
+        .tab-btn.active { background: #dc2626; color: white; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .card h2 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .card h3 {
+            color: #475569;
+            margin: 20px 0 12px;
+        }
+        
+        .invite-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .invite-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .invite-card.doctor { border-color: #3b82f6; }
+        .invite-card.staff { border-color: #8b5cf6; }
+        .invite-card.patient { border-color: #10b981; }
+        
+        .invite-card .icon { font-size: 48px; margin-bottom: 12px; }
+        .invite-card h4 { color: #1e293b; margin-bottom: 8px; }
+        .invite-card p { color: #64748b; font-size: 14px; margin-bottom: 16px; }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: #dc2626; color: white; }
+        .btn-primary:hover { background: #b91c1c; }
+        .btn-blue { background: #3b82f6; color: white; }
+        .btn-purple { background: #8b5cf6; color: white; }
+        .btn-green { background: #10b981; color: white; }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #e2e8f0;
+            color: #64748b;
+        }
+        .btn-outline:hover { background: #f8fafc; }
+        .btn-sm { padding: 8px 16px; font-size: 14px; }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #334155;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #dc2626;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        
+        .link-box {
+            background: #f1f5f9;
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .link-box input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .link-box button {
+            padding: 8px 16px;
+            background: #1e293b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .qr-container {
+            text-align: center;
+            padding: 20px;
+        }
+        #qrcode { margin: 0 auto; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th { background: #f8fafc; font-weight: 600; color: #475569; }
+        tr:hover { background: #fafafa; }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-active { background: #dcfce7; color: #166534; }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-inactive { background: #fee2e2; color: #991b1b; }
+        
+        .actions { display: flex; gap: 8px; }
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .action-btn.edit { background: #dbeafe; color: #1e40af; }
+        .action-btn.delete { background: #fee2e2; color: #991b1b; }
+        .action-btn.view { background: #f0fdf4; color: #166534; }
+        
+        .upload-zone {
+            border: 3px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .upload-zone:hover { border-color: #dc2626; background: #fef2f2; }
+        .upload-zone .icon { font-size: 48px; color: #94a3b8; }
+        .upload-zone p { color: #64748b; margin-top: 12px; }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .content-item {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        .content-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 8px;
+        }
+        .content-item .name {
+            font-size: 14px;
+            color: #334155;
+            word-break: break-all;
+        }
+        
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #64748b;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-card .number { font-size: 32px; font-weight: bold; color: #1e293b; }
+        .stat-card .label { color: #64748b; font-size: 14px; }
+        
+        @media (max-width: 768px) {
+            .admin-nav { flex-wrap: nowrap; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div>
+            <h1>🔧 Admin Management</h1>
+            <small>Adinath Hospital Control Panel</small>
+        </div>
+        <div>
+            <a href="../../index.html">← Back to Site</a>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="admin-nav">
+        <a href="index.html">📊 Dashboard</a>
+        <a href="manage.html" class="active">👥 Manage</a>
+        <a href="../../store/index.html">💊 Store</a>
+        <a href="../../forms/index.html">📋 Forms</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="number" id="stat-users">0</div>
+                <div class="label">Total Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="stat-patients">0</div>
+                <div class="label">Patients</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="stat-pending">0</div>
+                <div class="label">Pending Invites</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="stat-content">0</div>
+                <div class="label">Uploaded Files</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="invites">📨 Send Invites</button>
+            <button class="tab-btn" data-tab="users">👥 Manage Users</button>
+            <button class="tab-btn" data-tab="patients">🏥 Patient Files</button>
+            <button class="tab-btn" data-tab="content">📁 Content Upload</button>
+        </div>
+
+        <!-- Tab: Send Invites -->
+        <div id="invites" class="tab-content active">
+            <div class="card">
+                <h2>📨 Send Registration Invites</h2>
+                <p style="color: #64748b; margin-bottom: 20px;">Generate invite links for new users to register on the system.</p>
+                
+                <div class="invite-grid">
+                    <!-- Doctor Invite -->
+                    <div class="invite-card doctor">
+                        <div class="icon">👨‍⚕️</div>
+                        <h4>Invite Doctor</h4>
+                        <p>Send registration link to a new doctor</p>
+                        <button class="btn btn-blue" onclick="showInviteModal('doctor')">Generate Invite</button>
+                    </div>
+                    
+                    <!-- Staff Invite -->
+                    <div class="invite-card staff">
+                        <div class="icon">👥</div>
+                        <h4>Invite Staff</h4>
+                        <p>Send registration link to receptionist, nurse, etc.</p>
+                        <button class="btn btn-purple" onclick="showInviteModal('staff')">Generate Invite</button>
+                    </div>
+                    
+                    <!-- Patient Invite -->
+                    <div class="invite-card patient">
+                        <div class="icon">🏥</div>
+                        <h4>Invite Patient</h4>
+                        <p>Send registration link to a patient</p>
+                        <button class="btn btn-green" onclick="showInviteModal('patient')">Generate Invite</button>
+                    </div>
+                </div>
+
+                <h3>📋 Pending Invites</h3>
+                <table id="invites-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Phone/Email</th>
+                            <th>Created</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Manage Users -->
+        <div id="users" class="tab-content">
+            <div class="card">
+                <h2>👥 All Users</h2>
+                
+                <div class="search-bar">
+                    <input type="text" id="user-search" placeholder="Search by name, email, or phone...">
+                    <select id="user-filter">
+                        <option value="">All Roles</option>
+                        <option value="admin">Admin</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="staff">Staff</option>
+                        <option value="patient">Patient</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="showAddUserModal()">+ Add User</button>
+                </div>
+                
+                <table id="users-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Patient Files -->
+        <div id="patients" class="tab-content">
+            <div class="card">
+                <h2>🏥 Patient Files Management</h2>
+                
+                <div class="search-bar">
+                    <input type="text" id="patient-search" placeholder="Search patients by name or phone...">
+                    <button class="btn btn-primary" onclick="showAddPatientModal()">+ Add Patient</button>
+                </div>
+                
+                <table id="patients-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Age/Gender</th>
+                            <th>Last Visit</th>
+                            <th>Appointments</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Content Upload -->
+        <div id="content" class="tab-content">
+            <div class="card">
+                <h2>📁 Content Management</h2>
+                
+                <div class="upload-zone" onclick="document.getElementById('file-upload').click()">
+                    <div class="icon">📤</div>
+                    <p><strong>Click to upload</strong> or drag and drop</p>
+                    <p style="font-size: 12px;">Images, PDFs, Videos (max 10MB)</p>
+                    <input type="file" id="file-upload" hidden multiple accept="image/*,video/*,.pdf">
+                </div>
+
+                <h3>📷 Hospital Photos</h3>
+                <div class="content-grid" id="photos-grid">
+                    <!-- Populated by JS -->
+                </div>
+
+                <h3>🎥 Videos</h3>
+                <div class="content-grid" id="videos-grid">
+                    <!-- Populated by JS -->
+                </div>
+
+                <h3>📄 Documents</h3>
+                <div class="content-grid" id="docs-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invite Modal -->
+    <div class="modal" id="invite-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="invite-modal-title">Generate Invite</h3>
+                <button class="modal-close" onclick="closeModal('invite-modal')">&times;</button>
+            </div>
+            
+            <form id="invite-form">
+                <input type="hidden" id="invite-role" value="">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Name *</label>
+                        <input type="text" id="invite-name" required placeholder="Full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone *</label>
+                        <input type="tel" id="invite-phone" required placeholder="+91 9876543210">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email (optional)</label>
+                    <input type="email" id="invite-email" placeholder="email@example.com">
+                </div>
+                
+                <div class="form-group" id="staff-role-group" style="display: none;">
+                    <label>Staff Role</label>
+                    <select id="invite-staff-role">
+                        <option value="receptionist">Receptionist</option>
+                        <option value="nurse">Nurse</option>
+                        <option value="pharmacist">Pharmacist</option>
+                        <option value="admin">Admin Staff</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="doctor-specialty-group" style="display: none;">
+                    <label>Specialty</label>
+                    <select id="invite-doctor-specialty">
+                        <option value="general">General Physician</option>
+                        <option value="orthopedic">Orthopedic</option>
+                        <option value="gynecology">Gynecology</option>
+                        <option value="visiting">Visiting Doctor</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Generate Invite Link</button>
+            </form>
+            
+            <div id="invite-result" style="display: none; margin-top: 20px;">
+                <h4>✅ Invite Created!</h4>
+                <div class="link-box">
+                    <input type="text" id="invite-link" readonly>
+                    <button onclick="copyInviteLink()">📋 Copy</button>
+                </div>
+                <div class="qr-container">
+                    <div id="invite-qr"></div>
+                </div>
+                <div style="display: flex; gap: 12px; margin-top: 16px;">
+                    <button class="btn btn-green" style="flex:1" onclick="sendViaSMS()">📱 Send SMS</button>
+                    <button class="btn btn-green" style="flex:1" onclick="sendViaWhatsApp()">💬 WhatsApp</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient Modal -->
+    <div class="modal" id="patient-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="patient-modal-title">Patient Details</h3>
+                <button class="modal-close" onclick="closeModal('patient-modal')">&times;</button>
+            </div>
+            
+            <form id="patient-form">
+                <input type="hidden" id="patient-id" value="">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Name *</label>
+                        <input type="text" id="patient-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone *</label>
+                        <input type="tel" id="patient-phone" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" id="patient-age" min="0" max="120">
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select id="patient-gender">
+                            <option value="">Select</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea id="patient-address" rows="2"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Medical Notes</label>
+                    <textarea id="patient-notes" rows="3" placeholder="Allergies, conditions, etc."></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 12px;">
+                    <button type="submit" class="btn btn-primary" style="flex:1">Save Patient</button>
+                    <button type="button" class="btn btn-outline" onclick="closeModal('patient-modal')">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../js/config.js"></script>
+    <script src="../../js/hms.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script>
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Load stats
+        function loadStats() {
+            const users = HMS.users ? HMS.users.getAll() : [];
+            const patients = HMS.patients ? HMS.patients.getAll() : [];
+            const invites = JSON.parse(localStorage.getItem('hms_invites') || '[]');
+            
+            document.getElementById('stat-users').textContent = users.length;
+            document.getElementById('stat-patients').textContent = patients.length;
+            document.getElementById('stat-pending').textContent = invites.filter(i => i.status === 'pending').length;
+            document.getElementById('stat-content').textContent = '12'; // Placeholder
+        }
+
+        // Load users table
+        function loadUsersTable() {
+            const users = HMS.users ? HMS.users.getAll() : [];
+            const tbody = document.querySelector('#users-table tbody');
+            tbody.innerHTML = '';
+            
+            users.forEach(user => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${user.name || 'N/A'}</strong></td>
+                    <td>${user.email || '-'}</td>
+                    <td>${user.phone || '-'}</td>
+                    <td><span class="status-badge status-active">${user.role || 'user'}</span></td>
+                    <td><span class="status-badge ${user.active !== false ? 'status-active' : 'status-inactive'}">${user.active !== false ? 'Active' : 'Inactive'}</span></td>
+                    <td class="actions">
+                        <button class="action-btn edit" onclick="editUser('${user.id}')">Edit</button>
+                        <button class="action-btn delete" onclick="deleteUser('${user.id}')">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Load patients table
+        function loadPatientsTable() {
+            const patients = HMS.patients ? HMS.patients.getAll() : [];
+            const tbody = document.querySelector('#patients-table tbody');
+            tbody.innerHTML = '';
+            
+            patients.forEach(patient => {
+                const appointments = HMS.appointments ? HMS.appointments.getByPatient(patient.id) : [];
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><code>${patient.id}</code></td>
+                    <td><strong>${patient.name || 'N/A'}</strong></td>
+                    <td>${patient.phone || '-'}</td>
+                    <td>${patient.age || '-'} / ${patient.gender || '-'}</td>
+                    <td>${patient.lastVisit || '-'}</td>
+                    <td>${appointments.length}</td>
+                    <td class="actions">
+                        <button class="action-btn view" onclick="viewPatient('${patient.id}')">View</button>
+                        <button class="action-btn edit" onclick="editPatient('${patient.id}')">Edit</button>
+                        <button class="action-btn delete" onclick="deletePatient('${patient.id}')">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Load invites table
+        function loadInvitesTable() {
+            const invites = JSON.parse(localStorage.getItem('hms_invites') || '[]');
+            const tbody = document.querySelector('#invites-table tbody');
+            tbody.innerHTML = '';
+            
+            if (invites.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#64748b;">No pending invites</td></tr>';
+                return;
+            }
+            
+            invites.forEach(invite => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${invite.name}</strong></td>
+                    <td><span class="status-badge">${invite.role}</span></td>
+                    <td>${invite.phone || invite.email || '-'}</td>
+                    <td>${new Date(invite.createdAt).toLocaleDateString()}</td>
+                    <td><span class="status-badge ${invite.status === 'pending' ? 'status-pending' : 'status-active'}">${invite.status}</span></td>
+                    <td class="actions">
+                        <button class="action-btn view" onclick="resendInvite('${invite.id}')">Resend</button>
+                        <button class="action-btn delete" onclick="deleteInvite('${invite.id}')">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Show invite modal
+        function showInviteModal(role) {
+            document.getElementById('invite-role').value = role;
+            document.getElementById('invite-modal-title').textContent = `Invite ${role.charAt(0).toUpperCase() + role.slice(1)}`;
+            document.getElementById('invite-form').reset();
+            document.getElementById('invite-result').style.display = 'none';
+            
+            // Show/hide role-specific fields
+            document.getElementById('staff-role-group').style.display = role === 'staff' ? 'block' : 'none';
+            document.getElementById('doctor-specialty-group').style.display = role === 'doctor' ? 'block' : 'none';
+            
+            document.getElementById('invite-modal').classList.add('active');
+        }
+
+        // Generate invite
+        document.getElementById('invite-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const role = document.getElementById('invite-role').value;
+            const name = document.getElementById('invite-name').value;
+            const phone = document.getElementById('invite-phone').value;
+            const email = document.getElementById('invite-email').value;
+            
+            // Generate unique invite token
+            const token = 'INV' + Date.now().toString(36).toUpperCase();
+            
+            // Create invite record
+            const invite = {
+                id: token,
+                role: role,
+                name: name,
+                phone: phone,
+                email: email,
+                staffRole: role === 'staff' ? document.getElementById('invite-staff-role').value : null,
+                specialty: role === 'doctor' ? document.getElementById('invite-doctor-specialty').value : null,
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            };
+            
+            // Save invite
+            const invites = JSON.parse(localStorage.getItem('hms_invites') || '[]');
+            invites.push(invite);
+            localStorage.setItem('hms_invites', JSON.stringify(invites));
+            
+            // Generate link
+            const baseUrl = window.location.origin;
+            const inviteLink = `${baseUrl}/onboard/${role}.html?token=${token}`;
+            document.getElementById('invite-link').value = inviteLink;
+            
+            // Generate QR code
+            const qrContainer = document.getElementById('invite-qr');
+            qrContainer.innerHTML = '';
+            new QRCode(qrContainer, {
+                text: inviteLink,
+                width: 150,
+                height: 150
+            });
+            
+            // Store current invite for sending
+            window.currentInvite = { ...invite, link: inviteLink };
+            
+            // Show result
+            document.getElementById('invite-result').style.display = 'block';
+            
+            // Refresh table
+            loadInvitesTable();
+            loadStats();
+        });
+
+        // Copy invite link
+        function copyInviteLink() {
+            const input = document.getElementById('invite-link');
+            input.select();
+            document.execCommand('copy');
+            alert('Link copied to clipboard!');
+        }
+
+        // Send via SMS
+        function sendViaSMS() {
+            if (window.currentInvite && window.currentInvite.phone) {
+                alert(`SMS would be sent to ${window.currentInvite.phone}:\n\nHi ${window.currentInvite.name}, you're invited to join Adinath Hospital. Register here: ${window.currentInvite.link}`);
+            }
+        }
+
+        // Send via WhatsApp
+        function sendViaWhatsApp() {
+            if (window.currentInvite) {
+                const phone = window.currentInvite.phone.replace(/\D/g, '');
+                const message = encodeURIComponent(`Hi ${window.currentInvite.name}! You're invited to join Adinath Hospital. Please register using this link:\n\n${window.currentInvite.link}`);
+                window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+            }
+        }
+
+        // Show patient modal
+        function showAddPatientModal() {
+            document.getElementById('patient-modal-title').textContent = 'Add New Patient';
+            document.getElementById('patient-form').reset();
+            document.getElementById('patient-id').value = '';
+            document.getElementById('patient-modal').classList.add('active');
+        }
+
+        function editPatient(id) {
+            const patient = HMS.patients.get(id);
+            if (patient) {
+                document.getElementById('patient-modal-title').textContent = 'Edit Patient';
+                document.getElementById('patient-id').value = patient.id;
+                document.getElementById('patient-name').value = patient.name || '';
+                document.getElementById('patient-phone').value = patient.phone || '';
+                document.getElementById('patient-age').value = patient.age || '';
+                document.getElementById('patient-gender').value = patient.gender || '';
+                document.getElementById('patient-address').value = patient.address || '';
+                document.getElementById('patient-notes').value = patient.notes || '';
+                document.getElementById('patient-modal').classList.add('active');
+            }
+        }
+
+        function viewPatient(id) {
+            const patient = HMS.patients.get(id);
+            if (patient) {
+                alert(`Patient: ${patient.name}\nPhone: ${patient.phone}\nAge: ${patient.age}\nGender: ${patient.gender}\n\nNote: Full patient view coming soon!`);
+            }
+        }
+
+        function deletePatient(id) {
+            if (confirm('Are you sure you want to delete this patient?')) {
+                HMS.patients.delete(id);
+                loadPatientsTable();
+                loadStats();
+            }
+        }
+
+        // Save patient
+        document.getElementById('patient-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('patient-id').value;
+            const data = {
+                name: document.getElementById('patient-name').value,
+                phone: document.getElementById('patient-phone').value,
+                age: document.getElementById('patient-age').value,
+                gender: document.getElementById('patient-gender').value,
+                address: document.getElementById('patient-address').value,
+                notes: document.getElementById('patient-notes').value
+            };
+            
+            if (id) {
+                HMS.patients.update(id, data);
+            } else {
+                HMS.patients.add(data);
+            }
+            
+            closeModal('patient-modal');
+            loadPatientsTable();
+            loadStats();
+        });
+
+        function deleteUser(id) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                HMS.users.delete(id);
+                loadUsersTable();
+                loadStats();
+            }
+        }
+
+        function deleteInvite(id) {
+            if (confirm('Are you sure you want to delete this invite?')) {
+                let invites = JSON.parse(localStorage.getItem('hms_invites') || '[]');
+                invites = invites.filter(i => i.id !== id);
+                localStorage.setItem('hms_invites', JSON.stringify(invites));
+                loadInvitesTable();
+                loadStats();
+            }
+        }
+
+        // Close modal
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        // Search functionality
+        document.getElementById('user-search').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('#users-table tbody tr').forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+
+        document.getElementById('patient-search').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('#patients-table tbody tr').forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+
+        // File upload handling
+        document.getElementById('file-upload').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                console.log('Uploading:', file.name, file.type, file.size);
+                // In production, this would upload to cloud storage
+                alert(`File "${file.name}" would be uploaded. (Cloud storage not configured yet)`);
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            loadUsersTable();
+            loadPatientsTable();
+            loadInvitesTable();
+        });
+    </script>
+</body>
+</html>
+
