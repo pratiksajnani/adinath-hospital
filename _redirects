@@ -10,3 +10,14 @@
 # SPA fallback - send 404s to 404.html
 /*    /404.html    404
 
+# Ensure HTML files are served correctly
+
+/login    /login.html    200
+/portal   /portal/index.html    200
+/forms    /forms/index.html    200
+/store    /store.html    200
+/book     /book.html    200
+
+# SPA fallback - send 404s to 404.html
+/*    /404.html    404
+
