@@ -76,7 +76,7 @@ Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Mana
 | **Site Admin** | pratik.sajnani@gmail.com | admin123 |
 | **Doctor (Dr. Ashok)** | drsajnani@gmail.com | doctor123 |
 | **Doctor (Dr. Sunita)** | sunita.sajnani9@gmail.com | doctor123 |
-| **Receptionist (Poonam)** | receptionist@adinathhospital.com | staff123 |
+| **Receptionist (Poonam)** | poonam@adinathhealth.com | staff123 |
 
 ---
 

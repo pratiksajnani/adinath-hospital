@@ -564,13 +564,78 @@
         function initStoreDashboard() {
             // Update stats from HMS
             document.getElementById('todaySales').textContent = HMS.sales.getTodayTotal().toLocaleString();
-            document.getElementById('lowStock').textContent = HMS.inventory.getLowStock().length;
+            
+            const lowStockItems = HMS.inventory.getLowStock();
+            document.getElementById('lowStock').textContent = lowStockItems.length;
+            document.getElementById('lowStockNote').textContent = lowStockItems.length > 0 ? 'Needs attention' : 'Stock OK';
+            document.getElementById('lowStockNote').style.color = lowStockItems.length > 0 ? '#dc2626' : '#16a34a';
+            
+            // Update queue stats
+            const queue = HMS.queue.getAll();
+            document.getElementById('patientsWaiting').textContent = queue.length + ' currently waiting';
+            document.getElementById('patientsServed').textContent = HMS.sales.getAll().filter(s => s.date === new Date().toISOString().split('T')[0]).length;
+            
+            // Update prescriptions filled
+            const todayRx = HMS.prescriptions.getAll().filter(rx => rx.date === new Date().toISOString().split('T')[0]);
+            document.getElementById('rxFilled').textContent = todayRx.length;
+            
+            // Load queue
+            loadQueue();
             
             // Load inventory
             loadInventory();
             
             // Load recent sales
             loadRecentSales();
+        }
+        
+        function loadQueue() {
+            const queue = HMS.queue.getAll();
+            const queueList = document.getElementById('patientQueue');
+            const emptyQueue = document.getElementById('emptyQueue');
+            
+            if (queue.length === 0) {
+                queueList.style.display = 'none';
+                emptyQueue.style.display = 'block';
+                return;
+            }
+            
+            queueList.style.display = 'block';
+            emptyQueue.style.display = 'none';
+            
+            queueList.innerHTML = queue.map((patient, index) => `
+                <li class="queue-item">
+                    <div class="queue-number">${index + 1}</div>
+                    <div class="queue-info">
+                        <div class="name">${patient.name || 'Patient'}</div>
+                        <div class="purpose">${patient.purpose || 'General'}</div>
+                    </div>
+                    <span class="queue-status ${patient.status || 'waiting'}">${patient.status || 'Waiting'}</span>
+                    <button class="btn-print" onclick="removeFromQueue('${patient.id}')" style="margin-left: 10px;">✓ Done</button>
+                </li>
+            `).join('');
+        }
+        
+        function addPatientToQueue() {
+            const name = prompt('Patient Name:');
+            if (!name) return;
+            const purpose = prompt('Purpose (e.g., Prescription pickup, Medicine purchase):');
+            
+            HMS.queue.add({
+                id: 'Q' + Date.now(),
+                name: name,
+                purpose: purpose || 'General',
+                status: 'waiting'
+            });
+            
+            loadQueue();
+            initStoreDashboard();
+        }
+        
+        function removeFromQueue(id) {
+            HMS.queue.remove(id);
+            loadQueue();
+            initStoreDashboard();
         }
         
         function loadInventory() {
