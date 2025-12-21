@@ -5,7 +5,8 @@
 
 const HMS = {
     // Data version - increment this when changing default users/data
-    DATA_VERSION: '2.0',
+    // v2.1: Fixed login with username support (psaj/1234)
+    DATA_VERSION: '2.1',
     
     // Initialize default data
     init() {
