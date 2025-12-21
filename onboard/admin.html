@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration | Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #7c3aed;
+            --primary-dark: #6d28d9;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --bg: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 32px;
+        }
+        .header .logo { font-size: 4rem; margin-bottom: 16px; }
+        .header h1 { font-size: 1.75rem; margin-bottom: 8px; }
+        .header p { opacity: 0.8; }
+        .header .badge {
+            display: inline-block;
+            background: var(--warning);
+            color: #1e293b;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-top: 12px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+        .card-header h2 { font-size: 1.25rem; margin-bottom: 4px; }
+        .card-header p { opacity: 0.9; font-size: 0.9rem; }
+        
+        .card-body {
+            padding: 32px;
+        }
+        
+        /* Steps indicator */
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 32px;
+        }
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            background: #e2e8f0;
+            color: #64748b;
+        }
+        .step.active {
+            background: var(--primary);
+            color: white;
+        }
+        .step.completed {
+            background: var(--success);
+            color: white;
+        }
+        .step-line {
+            width: 40px;
+            height: 3px;
+            background: #e2e8f0;
+            align-self: center;
+        }
+        .step-line.active {
+            background: var(--success);
+        }
+        
+        /* Form */
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .form-group input:disabled {
+            background: #f8fafc;
+            color: #64748b;
+        }
+        .form-group small {
+            color: #64748b;
+            font-size: 0.85rem;
+            margin-top: 6px;
+            display: block;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        .btn-primary:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-outline {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            margin-top: 12px;
+        }
+        
+        /* Security options */
+        .security-options {
+            margin: 24px 0;
+        }
+        .security-option {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .security-option:hover {
+            border-color: var(--primary);
+            background: #faf5ff;
+        }
+        .security-option.selected {
+            border-color: var(--primary);
+            background: #faf5ff;
+        }
+        .security-option.selected::after {
+            content: '✓';
+            margin-left: auto;
+            background: var(--success);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .security-icon {
+            font-size: 2rem;
+        }
+        .security-info h4 {
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        .security-info p {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        .security-badge {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .badge-recommended {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .badge-secure {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        /* 2FA Setup */
+        .twofa-setup {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .qr-placeholder {
+            width: 180px;
+            height: 180px;
+            background: #f1f5f9;
+            border-radius: 16px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+        .backup-codes {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+        .backup-codes h4 {
+            color: #92400e;
+            margin-bottom: 12px;
+        }
+        .codes-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        .code {
+            font-family: monospace;
+            font-size: 1rem;
+            padding: 8px;
+            background: white;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        /* OTP Input */
+        .otp-inputs {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin: 24px 0;
+        }
+        .otp-inputs input {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+        }
+        .otp-inputs input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        /* Passkey */
+        .passkey-info {
+            background: #f0fdf4;
+            border: 2px solid #86efac;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .passkey-info .icon {
+            font-size: 4rem;
+            margin-bottom: 12px;
+        }
+        
+        /* Success */
+        .success-state {
+            text-align: center;
+            padding: 40px 0;
+        }
+        .success-state .icon {
+            font-size: 5rem;
+            margin-bottom: 16px;
+        }
+        .success-state h2 {
+            color: var(--success);
+            margin-bottom: 12px;
+        }
+        .success-state p {
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+        
+        /* Error */
+        .error-message {
+            background: #fef2f2;
+            color: #991b1b;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        /* Invalid Link */
+        .invalid-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .invalid-state .icon { font-size: 4rem; margin-bottom: 16px; }
+        
+        /* Hidden steps */
+        .step-content { display: none; }
+        .step-content.active { display: block; }
+        
+        @media (max-width: 500px) {
+            .codes-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🔐</div>
+            <h1>Admin Registration</h1>
+            <p>Adinath Hospital Management System</p>
+            <span class="badge">🛡️ SECURE SETUP</span>
+        </div>
+        
+        <div class="card" id="registrationCard">
+            <div class="card-header">
+                <h2>Welcome, Site Administrator</h2>
+                <p>Complete setup with enhanced security</p>
+            </div>
+            
+            <div class="card-body">
+                <!-- Steps Indicator -->
+                <div class="steps">
+                    <div class="step active" id="step1Indicator">1</div>
+                    <div class="step-line" id="line1"></div>
+                    <div class="step" id="step2Indicator">2</div>
+                    <div class="step-line" id="line2"></div>
+                    <div class="step" id="step3Indicator">3</div>
+                </div>
+                
+                <div class="error-message" id="errorMessage"></div>
+                
+                <!-- Step 1: Basic Info -->
+                <div class="step-content active" id="step1">
+                    <h3 style="margin-bottom: 24px; text-align: center;">📋 Verify Your Details</h3>
+                    
+                    <div class="form-group">
+                        <label>📧 Admin Email</label>
+                        <input type="email" id="email" value="pratik.sajnani@gmail.com" readonly>
+                        <small>This is your login ID</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>👤 Full Name</label>
+                        <input type="text" id="name" value="Pratik Sajnani" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>📱 Phone Number</label>
+                        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                        <small>For 2FA and emergency alerts</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🔑 Create Password</label>
+                        <input type="password" id="password" placeholder="Min 8 characters, 1 number" required minlength="8">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>🔑 Confirm Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Re-enter password" required>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="goToStep(2)">
+                        Continue to Security Setup →
+                    </button>
+                </div>
+                
+                <!-- Step 2: Security Setup -->
+                <div class="step-content" id="step2">
+                    <h3 style="margin-bottom: 8px; text-align: center;">🛡️ Choose Security Method</h3>
+                    <p style="text-align: center; color: #64748b; margin-bottom: 24px;">Add an extra layer of protection to your admin account</p>
+                    
+                    <div class="security-options">
+                        <div class="security-option" onclick="selectSecurity('passkey')" id="optPasskey">
+                            <div class="security-icon">🔐</div>
+                            <div class="security-info">
+                                <h4>Passkey (Face ID / Touch ID) <span class="security-badge badge-recommended">Recommended</span></h4>
+                                <p>Use your device's biometric authentication</p>
+                            </div>
+                        </div>
+                        
+                        <div class="security-option" onclick="selectSecurity('totp')" id="optTOTP">
+                            <div class="security-icon">📱</div>
+                            <div class="security-info">
+                                <h4>Authenticator App <span class="security-badge badge-secure">Secure</span></h4>
+                                <p>Use Google Authenticator, Microsoft Authenticator, etc.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="security-option" onclick="selectSecurity('sms')" id="optSMS">
+                            <div class="security-icon">💬</div>
+                            <div class="security-info">
+                                <h4>SMS OTP</h4>
+                                <p>Receive one-time codes via SMS</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="setupSecurity()" id="btnSetupSecurity" disabled>
+                        Setup Selected Method →
+                    </button>
+                    <button class="btn btn-outline" onclick="goToStep(1)">
+                        ← Back
+                    </button>
+                </div>
+                
+                <!-- Step 3A: Passkey Setup -->
+                <div class="step-content" id="step3Passkey">
+                    <h3 style="margin-bottom: 8px; text-align: center;">🔐 Register Passkey</h3>
+                    <p style="text-align: center; color: #64748b; margin-bottom: 24px;">Use Face ID, Touch ID, or Windows Hello</p>
+                    
+                    <div class="passkey-info">
+                        <div class="icon">👆</div>
+                        <h3>Ready to Register</h3>
+                        <p style="margin-top: 8px;">Click the button below and follow your device prompts to register your passkey.</p>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="registerPasskey()" id="btnRegisterPasskey">
+                        🔐 Register Passkey
+                    </button>
+                    <button class="btn btn-outline" onclick="goToStep(2)">
+                        ← Choose Different Method
+                    </button>
+                </div>
+                
+                <!-- Step 3B: TOTP Setup -->
+                <div class="step-content" id="step3TOTP">
+                    <h3 style="margin-bottom: 8px; text-align: center;">📱 Authenticator Setup</h3>
+                    <p style="text-align: center; color: #64748b; margin-bottom: 24px;">Scan this QR code with your authenticator app</p>
+                    
+                    <div class="twofa-setup">
+                        <div class="qr-placeholder" id="qrCode">📲</div>
+                        <p style="font-family: monospace; font-size: 0.9rem; color: #64748b; margin-top: 12px;">
+                            Manual code: <strong id="totpSecret">ADINATH-ADMIN-2FA</strong>
+                        </p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Enter 6-digit code from app</label>
+                        <div class="otp-inputs">
+                            <input type="text" maxlength="1" oninput="moveToNext(this, 0)">
+                            <input type="text" maxlength="1" oninput="moveToNext(this, 1)">
+                            <input type="text" maxlength="1" oninput="moveToNext(this, 2)">
+                            <input type="text" maxlength="1" oninput="moveToNext(this, 3)">
+                            <input type="text" maxlength="1" oninput="moveToNext(this, 4)">
+                            <input type="text" maxlength="1" oninput="moveToNext(this, 5)">
+                        </div>
+                    </div>
+                    
+                    <div class="backup-codes">
+                        <h4>🔑 Backup Codes (Save These!)</h4>
+                        <p style="font-size: 0.85rem; margin-bottom: 12px;">Use these if you lose access to your authenticator</p>
+                        <div class="codes-grid">
+                            <div class="code">ADIN-8472-XKPL</div>
+                            <div class="code">ADIN-3951-MQNZ</div>
+                            <div class="code">ADIN-6284-WRTV</div>
+                            <div class="code">ADIN-1739-BHKC</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="verifyTOTP()" style="margin-top: 24px;">
+                        ✅ Verify & Complete Setup
+                    </button>
+                    <button class="btn btn-outline" onclick="goToStep(2)">
+                        ← Choose Different Method
+                    </button>
+                </div>
+                
+                <!-- Step 3C: SMS Setup -->
+                <div class="step-content" id="step3SMS">
+                    <h3 style="margin-bottom: 8px; text-align: center;">💬 SMS Verification</h3>
+                    <p style="text-align: center; color: #64748b; margin-bottom: 24px;">We'll send a code to your phone</p>
+                    
+                    <div class="passkey-info" style="background: #dbeafe; border-color: #60a5fa;">
+                        <div class="icon">📱</div>
+                        <h3>Sending OTP to</h3>
+                        <p style="font-size: 1.25rem; font-weight: 700; margin-top: 8px;" id="smsPhone">+91 •••••••XXX</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Enter 6-digit OTP</label>
+                        <div class="otp-inputs" id="smsOtpInputs">
+                            <input type="text" maxlength="1" oninput="moveToNextSMS(this, 0)">
+                            <input type="text" maxlength="1" oninput="moveToNextSMS(this, 1)">
+                            <input type="text" maxlength="1" oninput="moveToNextSMS(this, 2)">
+                            <input type="text" maxlength="1" oninput="moveToNextSMS(this, 3)">
+                            <input type="text" maxlength="1" oninput="moveToNextSMS(this, 4)">
+                            <input type="text" maxlength="1" oninput="moveToNextSMS(this, 5)">
+                        </div>
+                    </div>
+                    
+                    <p style="text-align: center; color: #64748b; font-size: 0.9rem;">
+                        Didn't receive? <a href="#" onclick="resendSMS(); return false;" style="color: var(--primary);">Resend OTP</a>
+                    </p>
+                    
+                    <button class="btn btn-primary" onclick="verifySMS()" style="margin-top: 16px;">
+                        ✅ Verify & Complete Setup
+                    </button>
+                    <button class="btn btn-outline" onclick="goToStep(2)">
+                        ← Choose Different Method
+                    </button>
+                </div>
+                
+                <!-- Success State -->
+                <div class="step-content" id="stepSuccess">
+                    <div class="success-state">
+                        <div class="icon">🎉</div>
+                        <h2>Registration Complete!</h2>
+                        <p>Your admin account is now secured with <span id="securityMethodUsed">2FA</span>.</p>
+                        
+                        <div style="background: #f0fdf4; border-radius: 12px; padding: 20px; margin: 24px 0; text-align: left;">
+                            <h4 style="color: #166534; margin-bottom: 12px;">✅ Account Details</h4>
+                            <p><strong>Email:</strong> pratik.sajnani@gmail.com</p>
+                            <p><strong>Role:</strong> Site Administrator</p>
+                            <p><strong>Security:</strong> <span id="securityType">Enabled</span></p>
+                        </div>
+                        
+                        <a href="../login.html" class="btn btn-primary" style="text-decoration: none;">
+                            🔓 Login to Admin Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Invalid Link Card -->
+        <div class="card" id="invalidCard" style="display: none;">
+            <div class="card-body">
+                <div class="invalid-state">
+                    <div class="icon">⚠️</div>
+                    <h2 style="color: #991b1b;">Invalid or Expired Link</h2>
+                    <p style="color: #64748b;">This registration link is not valid or has already been used.</p>
+                    <a href="../index.html" style="color: var(--primary);">← Back to Website</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let selectedSecurity = null;
+        
+        // Validate token
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+        const validToken = 'ADMIN2024SECURE';
+        
+        if (token !== validToken) {
+            document.getElementById('registrationCard').style.display = 'none';
+            document.getElementById('invalidCard').style.display = 'block';
+        }
+        
+        function goToStep(step) {
+            // Validate step 1
+            if (step === 2) {
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                const phone = document.getElementById('phone').value;
+                
+                if (password.length < 8) {
+                    showError('Password must be at least 8 characters');
+                    return;
+                }
+                if (password !== confirmPassword) {
+                    showError('Passwords do not match');
+                    return;
+                }
+                if (phone.length < 10) {
+                    showError('Please enter a valid phone number');
+                    return;
+                }
+            }
+            
+            hideError();
+            
+            // Update step indicators
+            for (let i = 1; i <= 3; i++) {
+                const indicator = document.getElementById(`step${i}Indicator`);
+                indicator.classList.remove('active', 'completed');
+                if (i < step) indicator.classList.add('completed');
+                if (i === step) indicator.classList.add('active');
+            }
+            
+            // Update lines
+            document.getElementById('line1').classList.toggle('active', step > 1);
+            document.getElementById('line2').classList.toggle('active', step > 2);
+            
+            // Show correct step content
+            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+        }
+        
+        function showError(msg) {
+            const el = document.getElementById('errorMessage');
+            el.textContent = msg;
+            el.style.display = 'block';
+        }
+        
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+        
+        function selectSecurity(type) {
+            selectedSecurity = type;
+            
+            // Update UI
+            document.querySelectorAll('.security-option').forEach(el => el.classList.remove('selected'));
+            document.getElementById(`opt${type.toUpperCase()}`).classList.add('selected');
+            document.getElementById('btnSetupSecurity').disabled = false;
+        }
+        
+        function setupSecurity() {
+            // Hide step 2, show appropriate step 3
+            document.getElementById('step2').classList.remove('active');
+            
+            if (selectedSecurity === 'passkey') {
+                document.getElementById('step3Passkey').classList.add('active');
+            } else if (selectedSecurity === 'totp') {
+                document.getElementById('step3TOTP').classList.add('active');
+                generateTOTPSecret();
+            } else if (selectedSecurity === 'sms') {
+                document.getElementById('step3SMS').classList.add('active');
+                sendSMSCode();
+            }
+            
+            // Update indicators
+            document.getElementById('step2Indicator').classList.remove('active');
+            document.getElementById('step2Indicator').classList.add('completed');
+            document.getElementById('step3Indicator').classList.add('active');
+            document.getElementById('line2').classList.add('active');
+        }
+        
+        // Passkey Registration
+        async function registerPasskey() {
+            const btn = document.getElementById('btnRegisterPasskey');
+            btn.disabled = true;
+            btn.innerHTML = '⏳ Registering...';
+            
+            try {
+                // Check if WebAuthn is supported
+                if (!window.PublicKeyCredential) {
+                    throw new Error('Passkeys are not supported on this device');
+                }
+                
+                // Create credential options (in production, this would come from server)
+                const publicKeyCredentialCreationOptions = {
+                    challenge: new Uint8Array(32),
+                    rp: {
+                        name: "Adinath Hospital",
+                        id: window.location.hostname
+                    },
+                    user: {
+                        id: new Uint8Array(16),
+                        name: "pratik.sajnani@gmail.com",
+                        displayName: "Pratik Sajnani (Admin)"
+                    },
+                    pubKeyCredParams: [
+                        { alg: -7, type: "public-key" },
+                        { alg: -257, type: "public-key" }
+                    ],
+                    authenticatorSelection: {
+                        authenticatorAttachment: "platform",
+                        userVerification: "required"
+                    },
+                    timeout: 60000,
+                    attestation: "none"
+                };
+                
+                // Fill challenge with random values
+                crypto.getRandomValues(publicKeyCredentialCreationOptions.challenge);
+                crypto.getRandomValues(publicKeyCredentialCreationOptions.user.id);
+                
+                // Create credential
+                const credential = await navigator.credentials.create({
+                    publicKey: publicKeyCredentialCreationOptions
+                });
+                
+                // In production, send credential to server
+                console.log('Passkey registered:', credential);
+                
+                // Save to local storage (demo)
+                localStorage.setItem('admin_passkey_registered', 'true');
+                localStorage.setItem('admin_security_method', 'passkey');
+                
+                completeRegistration('Passkey (Biometric)');
+            } catch (error) {
+                console.error('Passkey error:', error);
+                btn.disabled = false;
+                btn.innerHTML = '🔐 Register Passkey';
+                
+                if (error.name === 'NotAllowedError') {
+                    showError('Passkey registration was cancelled. Please try again.');
+                } else {
+                    showError('Passkey not supported. Please choose another method.');
+                }
+            }
+        }
+        
+        // TOTP
+        function generateTOTPSecret() {
+            // Generate a random secret (in production, this would be server-generated)
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            let secret = '';
+            for (let i = 0; i < 16; i++) {
+                secret += chars[Math.floor(Math.random() * chars.length)];
+            }
+            document.getElementById('totpSecret').textContent = secret;
+            
+            // In production, generate actual QR code
+            document.getElementById('qrCode').innerHTML = '📲<br><small style="font-size:0.8rem;">Scan with app</small>';
+        }
+        
+        function moveToNext(input, index) {
+            if (input.value.length === 1 && index < 5) {
+                const inputs = document.querySelectorAll('#step3TOTP .otp-inputs input');
+                inputs[index + 1].focus();
+            }
+        }
+        
+        function verifyTOTP() {
+            const inputs = document.querySelectorAll('#step3TOTP .otp-inputs input');
+            let code = '';
+            inputs.forEach(input => code += input.value);
+            
+            if (code.length !== 6) {
+                showError('Please enter all 6 digits');
+                return;
+            }
+            
+            // In production, verify with server
+            localStorage.setItem('admin_totp_registered', 'true');
+            localStorage.setItem('admin_security_method', 'totp');
+            
+            completeRegistration('Authenticator App (TOTP)');
+        }
+        
+        // SMS
+        function sendSMSCode() {
+            const phone = document.getElementById('phone').value;
+            const masked = phone.slice(0, -3).replace(/./g, '•') + phone.slice(-3);
+            document.getElementById('smsPhone').textContent = '+91 ' + masked;
+            
+            // In production, actually send SMS
+            console.log('Sending OTP to:', phone);
+        }
+        
+        function moveToNextSMS(input, index) {
+            if (input.value.length === 1 && index < 5) {
+                const inputs = document.querySelectorAll('#smsOtpInputs input');
+                inputs[index + 1].focus();
+            }
+        }
+        
+        function resendSMS() {
+            alert('OTP resent! (Demo mode)');
+        }
+        
+        function verifySMS() {
+            const inputs = document.querySelectorAll('#smsOtpInputs input');
+            let code = '';
+            inputs.forEach(input => code += input.value);
+            
+            if (code.length !== 6) {
+                showError('Please enter all 6 digits');
+                return;
+            }
+            
+            // In production, verify with server
+            localStorage.setItem('admin_sms_registered', 'true');
+            localStorage.setItem('admin_security_method', 'sms');
+            
+            completeRegistration('SMS OTP');
+        }
+        
+        function completeRegistration(method) {
+            // Save admin registration
+            const adminData = {
+                email: 'pratik.sajnani@gmail.com',
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                role: 'admin',
+                securityMethod: method,
+                registeredAt: new Date().toISOString()
+            };
+            
+            localStorage.setItem('admin_registered', 'true');
+            localStorage.setItem('admin_data', JSON.stringify(adminData));
+            
+            // Update success message
+            document.getElementById('securityMethodUsed').textContent = method;
+            document.getElementById('securityType').textContent = method;
+            
+            // Show success
+            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('stepSuccess').classList.add('active');
+            
+            // Update all indicators to completed
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById(`step${i}Indicator`).classList.remove('active');
+                document.getElementById(`step${i}Indicator`).classList.add('completed');
+            }
+        }
+    </script>
+</body>
+</html>
+

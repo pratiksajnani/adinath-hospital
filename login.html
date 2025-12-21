@@ -547,10 +547,24 @@
         // ============================================
         // Google OAuth Login
         // ============================================
+        // Allowed Google accounts for each role
+        const allowedGoogleAccounts = {
+            doctor: {
+                'drsajnani@gmail.com': { name: 'Dr. Ashok Sajnani', doctor: 'ashok' },
+                'sunita.sajnani9@gmail.com': { name: 'Dr. Sunita Sajnani', doctor: 'sunita' }
+            },
+            admin: {
+                'pratik.sajnani@gmail.com': { name: 'Pratik Sajnani' }
+            },
+            staff: {
+                // Staff use reception@adinathhealth.com - not Gmail
+            }
+        };
+        
         async function loginWithGoogle() {
             hideMessages();
             
-            // Check if Supabase is configured
+            // Check if Supabase is configured for real OAuth
             if (typeof supabase !== 'undefined' && window.SUPABASE_URL && window.SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
                 try {
                     const { data, error } = await supabase.auth.signInWithOAuth({
@@ -566,19 +580,45 @@
                     showError('Google login failed: ' + err.message);
                 }
             } else {
-                // Demo mode - simulate Google login
-                showSuccess('🔐 Demo Mode: Google OAuth requires Supabase configuration. Using demo login instead.');
+                // Local mode - prompt for Google email and verify
+                const allowedEmails = allowedGoogleAccounts[currentRole] || {};
+                const emailList = Object.keys(allowedEmails);
                 
-                setTimeout(() => {
-                    // Simulate successful Google login with demo data
-                    const email = demoCredentials[currentRole].email;
+                if (emailList.length === 0) {
+                    showError(`Google login not available for ${currentRole}. Please use email/password.`);
+                    return;
+                }
+                
+                // Show Google email prompt
+                const email = prompt(
+                    `🔐 Google Login for ${currentRole.charAt(0).toUpperCase() + currentRole.slice(1)}\n\n` +
+                    `Enter your authorized Gmail address:\n` +
+                    `(${emailList.join(' or ')})`
+                );
+                
+                if (!email) return;
+                
+                const normalizedEmail = email.toLowerCase().trim();
+                
+                if (allowedEmails[normalizedEmail]) {
+                    // Valid Google account
+                    const userData = allowedEmails[normalizedEmail];
+                    
                     localStorage.setItem('hms_logged_in', 'true');
                     localStorage.setItem('hms_role', currentRole);
-                    localStorage.setItem('hms_user_email', email);
+                    localStorage.setItem('hms_user_email', normalizedEmail);
+                    localStorage.setItem('hms_user_name', userData.name);
                     localStorage.setItem('hms_auth_method', 'google');
                     
-                    redirectToPortal(currentRole);
-                }, 1500);
+                    if (userData.doctor) {
+                        localStorage.setItem('hms_doctor_id', userData.doctor);
+                    }
+                    
+                    showSuccess(`✅ Welcome, ${userData.name}! Logging in...`);
+                    setTimeout(() => redirectToPortal(currentRole), 1000);
+                } else {
+                    showError(`❌ Email not authorized for ${currentRole} login.\n\nAllowed: ${emailList.join(', ')}`);
+                }
             }
         }
         

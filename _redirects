@@ -1,22 +1,12 @@
 # Adinath Hospital - AWS Amplify Redirects
-# Direct file access - no rewrites needed for static files
+# Note: Amplify ignores _redirects, use amplify.yml or console for redirects
 
-# Ensure HTML files are served correctly
-/login         /login.html         200
-/book          /book.html          200
-/store         /store.html         200
-/check-status  /check-status.html  200
+# Keep this file for documentation purposes only
+# All redirects should be configured in AWS Amplify Console
+# or in amplify.yml customHeaders section
 
-# Portal routes
-/portal                    /portal/index.html      200
-/portal/patient            /portal/patient/index.html    200
-/portal/doctor             /portal/doctor/index.html     200
-/portal/doctor/simple      /portal/doctor/simple.html    200
-/portal/staff              /portal/staff/index.html      200
-/portal/admin              /portal/admin/index.html      200
-
-# Forms
-/forms                     /forms/index.html       200
-
-# 404 fallback for non-existent pages only
-/*    /404.html    404
+# Clean URLs (for reference):
+# /login      -> /login.html
+# /book       -> /book.html
+# /store      -> /store.html
+# /portal     -> /portal/index.html

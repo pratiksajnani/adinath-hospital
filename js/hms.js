@@ -16,11 +16,12 @@ const HMS = {
     seedData() {
         // Default users (doctors, admin, staff)
         const users = [
-            // Site Admin
+            // Site Admin (Owner)
             {
                 id: 'U001',
+                username: 'psaj',
                 email: 'pratik.sajnani@gmail.com',
-                password: 'admin123', // In production, this would be hashed
+                password: '1234',
                 name: 'Pratik Sajnani',
                 role: 'admin',
                 permissions: ['all'],
@@ -28,7 +29,10 @@ const HMS = {
                 phone: '9925450425',
                 preferredLanguage: 'en',
                 active: true,
-                createdAt: '2025-01-01'
+                createdAt: '2025-01-01',
+                // OAuth providers (for future Google integration)
+                providers: ['password', 'google'],
+                googleId: null // Will be set when Google OAuth is configured
             },
             // Doctors
             {
