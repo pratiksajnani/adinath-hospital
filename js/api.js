@@ -343,6 +343,18 @@ const API = {
             win.document.write(response);
             win.document.close();
         }
+    },
+    
+    // ============================================
+    // HEALTH CHECK
+    // ============================================
+    async healthCheck() {
+        try {
+            const result = await this.request('/health');
+            return result;
+        } catch (error) {
+            return false;
+        }
     }
 };
 
