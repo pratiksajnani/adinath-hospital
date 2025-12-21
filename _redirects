@@ -1,11 +1,5 @@
-# Adinath Hospital - Redirects (for Netlify/Amplify compatibility)
+# Adinath Hospital - AWS Amplify Redirects
+# Note: AWS Amplify may process these differently than Netlify
 
-# Clean URLs without .html extension
-/login      /login.html     200
-/portal     /portal/index.html     200
-/forms      /forms/index.html     200
-/store      /store.html     200
-/book       /book.html      200
-
-# 404 fallback - only for truly non-existent pages
+# 404 fallback for non-existent pages only
 /*    /404.html    404
