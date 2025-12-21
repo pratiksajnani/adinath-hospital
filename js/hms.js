@@ -794,9 +794,97 @@ const HMS = {
         localStorage.removeItem('hms_staff_roles');
         localStorage.removeItem('hms_current_user');
         localStorage.removeItem('hms_logged_in');
+        localStorage.removeItem('hms_feedback');
         this.init();
     }
 };
+
+// Feedback Widget - Add to any page
+function initFeedbackWidget(role = 'visitor') {
+    // Create feedback button
+    const btn = document.createElement('button');
+    btn.innerHTML = '💬 Feedback';
+    btn.id = 'feedback-btn';
+    btn.style.cssText = 'position: fixed; bottom: 80px; left: 20px; z-index: 9999; background: #0d9488; color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2);';
+    
+    // Create modal
+    const modal = document.createElement('div');
+    modal.id = 'feedback-modal';
+    modal.style.cssText = 'display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: center;';
+    modal.innerHTML = `
+        <div style="background: white; border-radius: 16px; padding: 30px; max-width: 450px; width: 90%; max-height: 80vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="margin: 0; color: #0d9488;">💬 Send Feedback</h3>
+                <button onclick="closeFeedbackModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">×</button>
+            </div>
+            <form id="feedback-form">
+                <input type="hidden" id="fb-role" value="${role}">
+                <input type="hidden" id="fb-page" value="${window.location.pathname}">
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Type</label>
+                    <select id="fb-type" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                        <option value="bug">🐛 Bug / Problem</option>
+                        <option value="feature">💡 Feature Request</option>
+                        <option value="question">❓ Question</option>
+                        <option value="other">📝 Other</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Priority</label>
+                    <select id="fb-priority" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                        <option value="low">🟢 Low</option>
+                        <option value="medium" selected>🟡 Medium</option>
+                        <option value="high">🔴 High</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Description *</label>
+                    <textarea id="fb-description" required rows="4" placeholder="Describe the issue or suggestion..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; resize: vertical;"></textarea>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Your Name (optional)</label>
+                    <input type="text" id="fb-name" placeholder="Your name" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                </div>
+                
+                <button type="submit" style="width: 100%; padding: 12px; background: #0d9488; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Submit Feedback</button>
+            </form>
+            <p style="text-align: center; margin-top: 15px; font-size: 12px; color: #666;">Feedback is logged locally and reviewed by the admin.</p>
+        </div>
+    `;
+    
+    document.body.appendChild(btn);
+    document.body.appendChild(modal);
+    
+    btn.onclick = () => { modal.style.display = 'flex'; };
+    modal.onclick = (e) => { if (e.target === modal) closeFeedbackModal(); };
+    
+    document.getElementById('feedback-form').onsubmit = (e) => {
+        e.preventDefault();
+        const feedback = {
+            role: document.getElementById('fb-role').value,
+            page: document.getElementById('fb-page').value,
+            type: document.getElementById('fb-type').value,
+            priority: document.getElementById('fb-priority').value,
+            description: document.getElementById('fb-description').value,
+            name: document.getElementById('fb-name').value || 'Anonymous',
+            userAgent: navigator.userAgent,
+            screenSize: window.innerWidth + 'x' + window.innerHeight
+        };
+        
+        HMS.feedback.add(feedback);
+        alert('✅ Thank you! Your feedback has been logged.');
+        closeFeedbackModal();
+        document.getElementById('feedback-form').reset();
+    };
+}
+
+function closeFeedbackModal() {
+    document.getElementById('feedback-modal').style.display = 'none';
+}
 
 // Initialize on load
 HMS.init();
