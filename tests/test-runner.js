@@ -149,7 +149,7 @@ const TestRunner = {
         console.log('\n🔐 Testing Authentication...');
         
         // Login as admin
-        const adminLogin = HMS.auth.login('pratik.sajnani@gmail.com', 'admin123');
+        const adminLogin = HMS.auth.login('pratik.sajnani@gmail.com', '1234');
         this.log('Admin login', adminLogin.success === true);
         
         // Check current user
