@@ -548,6 +548,7 @@
         // Google OAuth Login
         // ============================================
         // Allowed Google accounts for each role
+        // Gmail OAuth works for ALL roles - just enter your Gmail
         const allowedGoogleAccounts = {
             doctor: {
                 'drsajnani@gmail.com': { name: 'Dr. Ashok Sajnani', doctor: 'ashok' },
@@ -557,9 +558,13 @@
                 'pratik.sajnani@gmail.com': { name: 'Pratik Sajnani' }
             },
             staff: {
-                // Staff use reception@adinathhealth.com - not Gmail
+                // Any Gmail can be used for staff - they'll be verified in the system
+                '*': { name: 'Staff Member' }
             }
         };
+        
+        // Allow any Gmail for all roles (open OAuth)
+        const ALLOW_ANY_GMAIL = true;
         
         async function loginWithGoogle() {
             hideMessages();
