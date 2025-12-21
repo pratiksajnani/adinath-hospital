@@ -279,6 +279,74 @@ const API = {
     }
 };
 
+// ============================================
+    // INVOICE SERVICE
+    // ============================================
+    invoices: {
+        // Generate invoice
+        async generate(data) {
+            return API.request('/generate-invoice?format=json', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+        },
+        
+        // Generate consultation invoice
+        async consultationInvoice(patientName, doctorName, amount, paymentMethod = 'cash') {
+            return this.generate({
+                patientName,
+                invoiceType: 'consultation',
+                paymentMethod,
+                items: [{
+                    name: `Consultation with ${doctorName}`,
+                    quantity: 1,
+                    price: amount,
+                    gst: 0
+                }]
+            });
+        },
+        
+        // Generate medicine invoice
+        async medicineInvoice(patientName, items, discount = 0, paymentMethod = 'cash') {
+            return this.generate({
+                patientName,
+                invoiceType: 'medicine',
+                paymentMethod,
+                discount,
+                items
+            });
+        },
+        
+        // Generate yoga class invoice
+        async yogaInvoice(patientName, sessions, pricePerSession, paymentMethod = 'cash') {
+            return this.generate({
+                patientName,
+                invoiceType: 'yoga',
+                paymentMethod,
+                items: [{
+                    name: 'Yoga Classes with Dr. Sunita',
+                    quantity: sessions,
+                    price: pricePerSession,
+                    gst: 0
+                }]
+            });
+        },
+        
+        // Open invoice in new window for printing
+        async openInvoice(data) {
+            const response = await API.request('/generate-invoice', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+            
+            // Open in new window
+            const win = window.open('', '_blank');
+            win.document.write(response);
+            win.document.close();
+        }
+    }
+};
+
 // Export for use
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = API;

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .payment-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        
+        .payment-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+        
+        .payment-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .payment-header h1 {
+            color: #0f766e;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .payment-header p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        .amount-display {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 2rem;
+        }
+        
+        .amount-display .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .amount-display .amount {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+        
+        .amount-display .amount::before {
+            content: '₹';
+            font-size: 2rem;
+            vertical-align: top;
+        }
+        
+        .payment-methods {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .payment-method:hover {
+            border-color: #0f766e;
+            background: #f0fdf4;
+        }
+        
+        .payment-method.active {
+            border-color: #0f766e;
+            background: #f0fdf4;
+        }
+        
+        .payment-method .icon {
+            font-size: 2rem;
+        }
+        
+        .payment-method .details h3 {
+            font-size: 1rem;
+            margin: 0;
+            color: #1e293b;
+        }
+        
+        .payment-method .details p {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin: 0.25rem 0 0;
+        }
+        
+        .upi-apps {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .upi-app {
+            padding: 0.5rem 1rem;
+            background: #f1f5f9;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .upi-app:hover {
+            background: #0f766e;
+            color: white;
+        }
+        
+        .qr-section {
+            text-align: center;
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        
+        .qr-section h3 {
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+        
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 1rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .qr-code img, .qr-code canvas {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .or-divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            gap: 1rem;
+        }
+        
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+        
+        .or-divider span {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+        
+        .pay-button {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .pay-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+        }
+        
+        .payment-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .payment-footer p {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+        
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        .success-message {
+            text-align: center;
+            padding: 3rem 2rem;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .success-message h2 {
+            color: #0f766e;
+            margin-bottom: 0.5rem;
+        }
+        
+        .receipt-link {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #0f766e;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🏥</span>
+                <span>Adinath Hospital</span>
+            </a>
+            <a href="index.html" class="btn btn-outline btn-sm">← Back</a>
+        </nav>
+    </header>
+    
+    <main class="payment-container">
+        <div class="payment-card" id="paymentForm">
+            <div class="payment-header">
+                <h1>💳 Complete Payment</h1>
+                <p id="paymentDescription">Consultation Fee</p>
+            </div>
+            
+            <div class="amount-display">
+                <div class="label">Amount to Pay</div>
+                <div class="amount" id="paymentAmount">500</div>
+            </div>
+            
+            <!-- UPI QR Code -->
+            <div class="qr-section" id="qrSection">
+                <h3>📱 Scan & Pay with Any UPI App</h3>
+                <div class="qr-code" id="qrCode"></div>
+                <p style="font-size: 0.85rem; color: #64748b;">
+                    Scan this QR code with PhonePe, GPay, Paytm, or any UPI app
+                </p>
+            </div>
+            
+            <div class="or-divider">
+                <span>OR</span>
+            </div>
+            
+            <!-- Payment Methods -->
+            <div class="payment-methods">
+                <div class="payment-method" onclick="openUPI('phonepe')">
+                    <span class="icon">📲</span>
+                    <div class="details">
+                        <h3>PhonePe</h3>
+                        <p>Pay instantly with PhonePe</p>
+                    </div>
+                </div>
+                
+                <div class="payment-method" onclick="openUPI('gpay')">
+                    <span class="icon">💰</span>
+                    <div class="details">
+                        <h3>Google Pay</h3>
+                        <p>Pay with Google Pay</p>
+                    </div>
+                </div>
+                
+                <div class="payment-method" onclick="openUPI('paytm')">
+                    <span class="icon">💵</span>
+                    <div class="details">
+                        <h3>Paytm</h3>
+                        <p>Pay with Paytm wallet or UPI</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="or-divider">
+                <span>OR PAY WITH CARD</span>
+            </div>
+            
+            <button class="pay-button" onclick="payWithRazorpay()">
+                💳 Pay ₹<span id="btnAmount">500</span> with Card
+            </button>
+            
+            <div class="payment-footer">
+                <p>🔒 Secured by Razorpay | 256-bit SSL Encryption</p>
+                <div class="security-badges">
+                    <span class="badge">✓ PCI DSS Compliant</span>
+                    <span class="badge">✓ 100% Secure</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Success Message -->
+        <div class="payment-card success-message" id="successMessage">
+            <span class="success-icon">✅</span>
+            <h2>Payment Successful!</h2>
+            <p>Thank you for your payment.</p>
+            <p style="margin-top: 1rem;">
+                <strong>Transaction ID:</strong> <span id="txnId">-</span>
+            </p>
+            <a href="#" class="receipt-link" onclick="printReceipt()">📄 Download Receipt</a>
+            <br><br>
+            <a href="index.html" class="btn btn-primary">← Back to Home</a>
+        </div>
+    </main>
+    
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    
+    <!-- Razorpay -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    
+    <script>
+        // Get payment details from URL params
+        const params = new URLSearchParams(window.location.search);
+        const amount = parseFloat(params.get('amount')) || 500;
+        const type = params.get('type') || 'consultation';
+        const description = params.get('description') || 'Hospital Payment';
+        const name = params.get('name') || '';
+        const phone = params.get('phone') || '';
+        const email = params.get('email') || '';
+        
+        // Update display
+        document.getElementById('paymentAmount').textContent = amount;
+        document.getElementById('btnAmount').textContent = amount;
+        document.getElementById('paymentDescription').textContent = description;
+        
+        // Generate UPI QR Code
+        const upiId = 'adinathhospital@upi'; // Replace with actual UPI ID
+        const merchantName = 'Adinath Hospital';
+        const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(description)}`;
+        
+        // Create QR Code
+        const qrContainer = document.getElementById('qrCode');
+        if (window.QRCode) {
+            QRCode.toCanvas(document.createElement('canvas'), upiUrl, { width: 180 }, (error, canvas) => {
+                if (error) {
+                    console.error(error);
+                    qrContainer.innerHTML = '<p style="color: #dc2626;">QR generation failed</p>';
+                } else {
+                    qrContainer.innerHTML = '';
+                    qrContainer.appendChild(canvas);
+                }
+            });
+        }
+        
+        // Open UPI app
+        function openUPI(app) {
+            let url = upiUrl;
+            
+            // Try deep links for specific apps
+            switch(app) {
+                case 'phonepe':
+                    url = `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR`;
+                    break;
+                case 'gpay':
+                    url = `tez://upi/pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR`;
+                    break;
+                case 'paytm':
+                    url = `paytmmp://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR`;
+                    break;
+            }
+            
+            // Try to open app
+            window.location.href = url;
+            
+            // Fallback to generic UPI after 1 second
+            setTimeout(() => {
+                window.location.href = upiUrl;
+            }, 1000);
+        }
+        
+        // Pay with Razorpay
+        async function payWithRazorpay() {
+            try {
+                // Create order via API
+                let orderData;
+                try {
+                    orderData = await API.payments.createOrder(amount, type, description, { name, phone, email });
+                } catch (e) {
+                    console.warn('API not available, using demo mode');
+                    orderData = {
+                        amount: amount,
+                        description: description,
+                        razorpay_key: 'rzp_test_demo', // Demo key
+                        order: { id: 'demo_' + Date.now() }
+                    };
+                }
+                
+                // Open Razorpay checkout
+                const options = {
+                    key: orderData.razorpay_key || 'rzp_test_demo',
+                    amount: amount * 100,
+                    currency: 'INR',
+                    name: 'Adinath Hospital',
+                    description: description,
+                    order_id: orderData.order?.id,
+                    handler: function(response) {
+                        showSuccess(response.razorpay_payment_id || 'TXN' + Date.now());
+                    },
+                    prefill: {
+                        name: name,
+                        email: email,
+                        contact: phone
+                    },
+                    theme: {
+                        color: '#0f766e'
+                    },
+                    modal: {
+                        ondismiss: function() {
+                            console.log('Payment cancelled');
+                        }
+                    }
+                };
+                
+                const rzp = new Razorpay(options);
+                rzp.on('payment.failed', function(response) {
+                    alert('Payment failed: ' + response.error.description);
+                });
+                rzp.open();
+            } catch (error) {
+                console.error('Payment error:', error);
+                alert('Payment initialization failed. Please try again.');
+            }
+        }
+        
+        // Show success message
+        function showSuccess(txnId) {
+            document.getElementById('paymentForm').style.display = 'none';
+            document.getElementById('successMessage').classList.add('show');
+            document.getElementById('txnId').textContent = txnId;
+        }
+        
+        // Print receipt
+        function printReceipt() {
+            window.print();
+        }
+    </script>
+    
+    <script src="js/user-status.js"></script>
+    <script src="js/access-control.js"></script>
+</body>
+</html>
+
