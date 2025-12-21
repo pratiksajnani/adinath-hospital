@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Registration | Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0f766e;
+            --success: #10b981;
+            --bg: linear-gradient(135deg, #0f766e 0%, #134e4a 100%);
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 32px;
+        }
+        .header .logo { font-size: 4rem; margin-bottom: 16px; }
+        .header h1 { font-size: 1.75rem; margin-bottom: 8px; }
+        .header p { opacity: 0.9; }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .doctor-info {
+            background: #f0fdf4;
+            border: 2px solid #86efac;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .doctor-info .name { font-size: 1.5rem; font-weight: 700; color: #166534; }
+        .doctor-info .specialty { color: #15803d; }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .form-group small {
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+        
+        .password-strength {
+            margin-top: 8px;
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.4);
+        }
+        .btn-primary:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .success-message .icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+        .success-message h2 {
+            color: #166534;
+            margin-bottom: 12px;
+        }
+        .success-message p {
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+        .success-message .login-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .error-message {
+            background: #fef2f2;
+            color: #991b1b;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        
+        .invalid-link {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .invalid-link .icon { font-size: 4rem; margin-bottom: 16px; }
+        .invalid-link h2 { color: #991b1b; margin-bottom: 12px; }
+        .invalid-link a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🏥</div>
+            <h1>Adinath Hospital</h1>
+            <p>Doctor Account Setup</p>
+        </div>
+        
+        <div class="card" id="registrationCard">
+            <!-- Doctor info will be populated by JS -->
+            <div class="doctor-info" id="doctorInfo">
+                <div class="name" id="doctorName">Loading...</div>
+                <div class="specialty" id="doctorSpecialty"></div>
+            </div>
+            
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label>📧 Email (Your Login ID)</label>
+                    <input type="email" id="email" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label>📱 Mobile Number</label>
+                    <input type="tel" id="phone" placeholder="Enter your mobile number" required>
+                    <small>We'll send appointment reminders to this number</small>
+                </div>
+                
+                <div class="form-group">
+                    <label>🔑 Create Password</label>
+                    <input type="password" id="password" placeholder="Choose a strong password" required minlength="6">
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="strengthBar"></div>
+                    </div>
+                    <small>At least 6 characters</small>
+                </div>
+                
+                <div class="form-group">
+                    <label>🔑 Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Re-enter password" required>
+                </div>
+                
+                <div class="error-message" id="errorMessage"></div>
+                
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    ✅ Complete Registration
+                </button>
+            </form>
+            
+            <div class="success-message" id="successMessage">
+                <div class="icon">🎉</div>
+                <h2>Registration Complete!</h2>
+                <p>Your account is now active. You can login to access your dashboard.</p>
+                <a href="../login.html" class="login-btn">🔓 Login Now</a>
+            </div>
+        </div>
+        
+        <div class="card invalid-link" id="invalidCard" style="display: none;">
+            <div class="icon">⚠️</div>
+            <h2>Invalid or Expired Link</h2>
+            <p>This registration link is not valid. Please contact the hospital admin.</p>
+            <a href="../index.html">← Back to Website</a>
+        </div>
+    </div>
+    
+    <script src="../js/hms.js"></script>
+    <script>
+        // Parse URL parameters
+        const params = new URLSearchParams(window.location.search);
+        const doctorId = params.get('id');
+        const token = params.get('token');
+        
+        // Valid doctor tokens (in production, this would be server-verified)
+        const validTokens = {
+            'ashok': {
+                token: 'ASH2024REG',
+                name: 'Dr. Ashok Sajnani',
+                specialty: 'Orthopedic & Joint Surgeon',
+                email: 'drsajnani@gmail.com',
+                phone: '+919824066854'
+            },
+            'sunita': {
+                token: 'SUN2024REG',
+                name: 'Dr. Sunita Sajnani',
+                specialty: 'Obstetrics & Gynecology',
+                email: 'sunita.sajnani9@gmail.com',
+                phone: '+919925450425'
+            }
+        };
+        
+        // Check if link is valid
+        const doctor = validTokens[doctorId];
+        if (!doctor || doctor.token !== token) {
+            document.getElementById('registrationCard').style.display = 'none';
+            document.getElementById('invalidCard').style.display = 'block';
+        } else {
+            // Populate doctor info
+            document.getElementById('doctorName').textContent = doctor.name;
+            document.getElementById('doctorSpecialty').textContent = doctor.specialty;
+            document.getElementById('email').value = doctor.email;
+            document.getElementById('phone').value = doctor.phone.replace('+91', '');
+            
+            // Check if already registered
+            if (typeof HMS !== 'undefined') {
+                HMS.init();
+                const existingUser = HMS.users.getByEmail(doctor.email);
+                if (existingUser && existingUser.registered) {
+                    document.getElementById('registrationForm').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('successMessage').innerHTML = `
+                        <div class="icon">✅</div>
+                        <h2>Already Registered</h2>
+                        <p>Your account is already set up. You can login directly.</p>
+                        <a href="../login.html" class="login-btn">🔓 Login Now</a>
+                    `;
+                }
+            }
+        }
+        
+        // Password strength
+        document.getElementById('password').addEventListener('input', function() {
+            const strength = this.value.length;
+            const bar = document.getElementById('strengthBar');
+            if (strength < 6) {
+                bar.style.width = '33%';
+                bar.style.background = '#ef4444';
+            } else if (strength < 10) {
+                bar.style.width = '66%';
+                bar.style.background = '#f59e0b';
+            } else {
+                bar.style.width = '100%';
+                bar.style.background = '#10b981';
+            }
+        });
+        
+        // Form submission
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const phone = document.getElementById('phone').value;
+            const errorEl = document.getElementById('errorMessage');
+            
+            // Validate
+            if (password.length < 6) {
+                errorEl.textContent = 'Password must be at least 6 characters';
+                errorEl.style.display = 'block';
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                errorEl.textContent = 'Passwords do not match';
+                errorEl.style.display = 'block';
+                return;
+            }
+            
+            if (phone.length < 10) {
+                errorEl.textContent = 'Please enter a valid phone number';
+                errorEl.style.display = 'block';
+                return;
+            }
+            
+            // Update user in HMS
+            if (typeof HMS !== 'undefined') {
+                const user = HMS.users.getByEmail(doctor.email);
+                if (user) {
+                    HMS.users.update(user.id, {
+                        password: password, // In production, this would be hashed
+                        phone: '+91' + phone.replace(/\D/g, ''),
+                        registered: true,
+                        registeredAt: new Date().toISOString()
+                    });
+                }
+            }
+            
+            // Show success
+            document.getElementById('registrationForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
+

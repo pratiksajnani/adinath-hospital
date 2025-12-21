@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Registration Links | Admin</title>
+    <link rel="icon" type="image/svg+xml" href="../../images/favicon.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #f8fafc;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #0f766e;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 32px;
+        }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 24px;
+        }
+        .doctor-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+        .doctor-card.sent {
+            border-color: #86efac;
+            background: #f0fdf4;
+        }
+        .doctor-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #0f766e;
+        }
+        .doctor-info {
+            flex: 1;
+        }
+        .doctor-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        .doctor-specialty {
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+        .doctor-contact {
+            font-size: 0.9rem;
+            color: #0f766e;
+        }
+        .doctor-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .status-sent {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status-registered {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .btn-whatsapp {
+            background: #25d366;
+            color: white;
+        }
+        .btn-whatsapp:hover {
+            background: #1da851;
+        }
+        .btn-sms {
+            background: #3b82f6;
+            color: white;
+        }
+        .btn-sms:hover {
+            background: #2563eb;
+        }
+        .btn-copy {
+            background: #e2e8f0;
+            color: #475569;
+        }
+        .btn-copy:hover {
+            background: #cbd5e1;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .link-preview {
+            background: #f1f5f9;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
+            margin-top: 12px;
+        }
+        .back-link {
+            display: inline-block;
+            color: #0f766e;
+            text-decoration: none;
+            margin-bottom: 24px;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .success-toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #10b981;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .note {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 16px;
+            margin-bottom: 24px;
+            border-radius: 0 8px 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Admin Dashboard</a>
+        
+        <h1>📲 Send Doctor Registration Links</h1>
+        <p class="subtitle">Send one-time registration links to doctors to set up their accounts</p>
+        
+        <div class="note">
+            <strong>📝 How it works:</strong><br>
+            1. Click "Send via WhatsApp" to send the registration link<br>
+            2. Doctor clicks the link on their phone<br>
+            3. They set their password and verify their number<br>
+            4. They can now login to the Doctor Dashboard
+        </div>
+        
+        <div class="card">
+            <h2 style="margin-bottom: 24px;">👨‍⚕️ Doctors</h2>
+            
+            <!-- Dr. Ashok -->
+            <div class="doctor-card" id="ashok-card">
+                <img src="../../images/dr-ashok-sajnani.jpg" alt="Dr. Ashok" class="doctor-avatar" 
+                     onerror="this.src='https://ui-avatars.com/api/?name=Ashok+Sajnani&background=0f766e&color=fff&size=80'">
+                <div class="doctor-info">
+                    <div class="doctor-name">Dr. Ashok Sajnani</div>
+                    <div class="doctor-specialty">Orthopedic & Joint Surgeon • 35+ years</div>
+                    <div class="doctor-contact">📧 drsajnani@gmail.com • 📱 +91 98240 66854</div>
+                </div>
+                <span class="doctor-status status-pending" id="ashok-status">⏳ Pending</span>
+            </div>
+            
+            <div class="actions" style="margin-bottom: 24px;">
+                <button class="btn btn-whatsapp" onclick="sendViaWhatsApp('ashok')">
+                    📱 Send via WhatsApp
+                </button>
+                <button class="btn btn-copy" onclick="copyLink('ashok')">
+                    📋 Copy Link
+                </button>
+            </div>
+            <div class="link-preview" id="ashok-link"></div>
+            
+            <hr style="margin: 32px 0; border: none; border-top: 1px solid #e2e8f0;">
+            
+            <!-- Dr. Sunita -->
+            <div class="doctor-card" id="sunita-card">
+                <img src="../../images/dr-sunita-sajnani.jpg" alt="Dr. Sunita" class="doctor-avatar"
+                     onerror="this.src='https://ui-avatars.com/api/?name=Sunita+Sajnani&background=0f766e&color=fff&size=80'">
+                <div class="doctor-info">
+                    <div class="doctor-name">Dr. Sunita Sajnani</div>
+                    <div class="doctor-specialty">Obstetrics & Gynecology • 30+ years</div>
+                    <div class="doctor-contact">📧 sunita.sajnani9@gmail.com • 📱 +91 99254 50425</div>
+                </div>
+                <span class="doctor-status status-pending" id="sunita-status">⏳ Pending</span>
+            </div>
+            
+            <div class="actions" style="margin-bottom: 24px;">
+                <button class="btn btn-whatsapp" onclick="sendViaWhatsApp('sunita')">
+                    📱 Send via WhatsApp
+                </button>
+                <button class="btn btn-copy" onclick="copyLink('sunita')">
+                    📋 Copy Link
+                </button>
+            </div>
+            <div class="link-preview" id="sunita-link"></div>
+        </div>
+    </div>
+    
+    <div class="success-toast" id="toast">✅ Link copied to clipboard!</div>
+    
+    <script src="../../js/hms.js"></script>
+    <script>
+        // Registration tokens
+        const doctors = {
+            'ashok': {
+                name: 'Dr. Ashok',
+                phone: '919824066854',
+                email: 'drsajnani@gmail.com',
+                token: 'ASH2024REG'
+            },
+            'sunita': {
+                name: 'Dr. Sunita',
+                phone: '919925450425',
+                email: 'sunita.sajnani9@gmail.com',
+                token: 'SUN2024REG'
+            }
+        };
+        
+        // Generate links on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const baseUrl = window.location.origin;
+            
+            Object.keys(doctors).forEach(id => {
+                const link = `${baseUrl}/onboard/doctor.html?id=${id}&token=${doctors[id].token}`;
+                document.getElementById(`${id}-link`).textContent = link;
+                
+                // Check registration status
+                if (typeof HMS !== 'undefined') {
+                    HMS.init();
+                    const user = HMS.users.getByEmail(doctors[id].email);
+                    if (user && user.registered) {
+                        document.getElementById(`${id}-status`).textContent = '✅ Registered';
+                        document.getElementById(`${id}-status`).className = 'doctor-status status-registered';
+                        document.getElementById(`${id}-card`).classList.add('sent');
+                    }
+                }
+            });
+        });
+        
+        function getLink(doctorId) {
+            const baseUrl = window.location.origin;
+            return `${baseUrl}/onboard/doctor.html?id=${doctorId}&token=${doctors[doctorId].token}`;
+        }
+        
+        function sendViaWhatsApp(doctorId) {
+            const doctor = doctors[doctorId];
+            const link = getLink(doctorId);
+            const message = `Namaste ${doctor.name}! 🙏
+
+Welcome to Adinath Hospital's digital system.
+
+Please complete your account setup by clicking this link:
+${link}
+
+This will allow you to:
+✅ View appointments
+✅ Access patient records
+✅ Write prescriptions
+✅ Send reminders
+
+- Pratik (Admin)`;
+            
+            const whatsappUrl = `https://wa.me/${doctor.phone}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+            
+            // Update status
+            document.getElementById(`${doctorId}-status`).textContent = '📤 Link Sent';
+            document.getElementById(`${doctorId}-status`).className = 'doctor-status status-sent';
+        }
+        
+        function copyLink(doctorId) {
+            const link = getLink(doctorId);
+            navigator.clipboard.writeText(link).then(() => {
+                const toast = document.getElementById('toast');
+                toast.style.display = 'block';
+                setTimeout(() => { toast.style.display = 'none'; }, 3000);
+            });
+        }
+    </script>
+</body>
+</html>
+

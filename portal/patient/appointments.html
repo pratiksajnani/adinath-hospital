@@ -10,7 +10,7 @@
         body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
         .portal-header { background: linear-gradient(135deg, #0d9488, #0f766e); color: white; padding: 20px; }
         .portal-header h1 { margin: 0; font-size: 24px; }
-        .portal-nav { background: white; padding: 15px 20px; border-bottom: 1px solid #e0e0e0; display: flex; gap: 20px; }
+        .portal-nav { background: white; padding: 15px 20px; border-bottom: 1px solid #e0e0e0; display: flex; gap: 20px; flex-wrap: wrap; }
         .portal-nav a { color: #0d9488; text-decoration: none; font-weight: 500; padding: 8px 16px; border-radius: 20px; }
         .portal-nav a:hover, .portal-nav a.active { background: #e0f2f1; }
         .container { max-width: 900px; margin: 0 auto; padding: 20px; }
@@ -18,7 +18,8 @@
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .card-title { font-size: 18px; font-weight: 600; color: #333; }
         .status { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-        .status.upcoming { background: #dbeafe; color: #1d4ed8; }
+        .status.pending { background: #fef3c7; color: #b45309; }
+        .status.confirmed { background: #dbeafe; color: #1d4ed8; }
         .status.completed { background: #dcfce7; color: #166534; }
         .status.cancelled { background: #fee2e2; color: #dc2626; }
         .appointment-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
@@ -49,54 +50,9 @@
             <a href="../../book.html" class="btn btn-primary">+ Book New</a>
         </div>
 
-        <!-- Upcoming Appointments -->
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">📅 Upcoming Appointment</span>
-                <span class="status upcoming">Upcoming</span>
-            </div>
-            <div class="appointment-details">
-                <div class="detail-item">
-                    <label>Date</label>
-                    <span id="appt-date">Loading...</span>
-                </div>
-                <div class="detail-item">
-                    <label>Time</label>
-                    <span id="appt-time">--</span>
-                </div>
-                <div class="detail-item">
-                    <label>Doctor</label>
-                    <span id="appt-doctor">--</span>
-                </div>
-                <div class="detail-item">
-                    <label>Reason</label>
-                    <span id="appt-reason">--</span>
-                </div>
-            </div>
-            <div style="margin-top: 15px; display: flex; gap: 10px;">
-                <button class="btn btn-outline" onclick="reschedule()">🔄 Reschedule</button>
-                <button class="btn btn-outline" style="border-color: #dc2626; color: #dc2626;" onclick="cancelAppt()">❌ Cancel</button>
-            </div>
-        </div>
-
-        <!-- Past Appointments -->
-        <h3 style="margin-top: 30px; color: #666;">Past Appointments</h3>
-        
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">Dr. Ashok Sajnani</span>
-                <span class="status completed">Completed</span>
-            </div>
-            <div class="appointment-details">
-                <div class="detail-item">
-                    <label>Date</label>
-                    <span>Dec 15, 2024</span>
-                </div>
-                <div class="detail-item">
-                    <label>Reason</label>
-                    <span>Knee Pain Consultation</span>
-                </div>
-            </div>
+        <!-- Appointments list -->
+        <div id="appointments-container">
+            <!-- Loaded dynamically -->
         </div>
 
         <div id="empty-state" class="empty-state" style="display: none;">
@@ -111,30 +67,99 @@
     <script src="../../js/hms.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Check if patient is logged in
+            const savedPatient = localStorage.getItem('currentPatient');
+            if (!savedPatient) {
+                // Redirect to patient portal login
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const currentPatient = JSON.parse(savedPatient);
+            
             // Load appointments from HMS
-            const appointments = HMS.appointments.getAll();
-            const upcoming = appointments.filter(a => new Date(a.date) >= new Date());
+            const appointments = HMS.appointments.getByPatient(currentPatient.id);
+            const container = document.getElementById('appointments-container');
+            const emptyState = document.getElementById('empty-state');
+            
+            if (appointments.length === 0) {
+                container.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            // Sort: upcoming first, then past
+            const now = new Date();
+            const upcoming = appointments.filter(a => new Date(a.date) >= now);
+            const past = appointments.filter(a => new Date(a.date) < now);
+            
+            let html = '';
             
             if (upcoming.length > 0) {
-                const next = upcoming[0];
-                document.getElementById('appt-date').textContent = next.date || 'Not set';
-                document.getElementById('appt-time').textContent = next.time || 'Not set';
-                document.getElementById('appt-doctor').textContent = next.doctor || 'Not set';
-                document.getElementById('appt-reason').textContent = next.reason || 'General';
+                html += '<h3 style="color: #0d9488; margin-bottom: 15px;">Upcoming Appointments</h3>';
+                upcoming.forEach(apt => {
+                    html += renderAppointmentCard(apt, 'upcoming');
+                });
             }
+            
+            if (past.length > 0) {
+                html += '<h3 style="margin-top: 30px; color: #666;">Past Appointments</h3>';
+                past.forEach(apt => {
+                    html += renderAppointmentCard(apt, 'past');
+                });
+            }
+            
+            container.innerHTML = html;
         });
+        
+        function renderAppointmentCard(apt, type) {
+            const date = new Date(apt.date);
+            const dateStr = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+            const doctorName = apt.doctor === 'ashok' ? 'Dr. Ashok Sajnani' : 'Dr. Sunita Sajnani';
+            const statusClass = apt.status || (type === 'past' ? 'completed' : 'pending');
+            
+            return `
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">${doctorName}</span>
+                        <span class="status ${statusClass}">${statusClass}</span>
+                    </div>
+                    <div class="appointment-details">
+                        <div class="detail-item">
+                            <label>Date</label>
+                            <span>${dateStr}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Time</label>
+                            <span>${apt.time || 'Not set'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Reason</label>
+                            <span>${apt.reason || 'General Consultation'}</span>
+                        </div>
+                    </div>
+                    ${type === 'upcoming' ? `
+                    <div style="margin-top: 15px; display: flex; gap: 10px;">
+                        <button class="btn btn-outline" onclick="reschedule('${apt.id}')">🔄 Reschedule</button>
+                        <button class="btn btn-outline" style="border-color: #dc2626; color: #dc2626;" onclick="cancelAppt('${apt.id}')">❌ Cancel</button>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+        }
 
-        function reschedule() {
+        function reschedule(id) {
             alert('Please call +91 99254 50425 to reschedule your appointment.');
         }
 
-        function cancelAppt() {
+        function cancelAppt(id) {
             if (confirm('Are you sure you want to cancel this appointment?')) {
-                alert('Appointment cancelled. Please call +91 99254 50425 if you need to rebook.');
+                HMS.appointments.updateStatus(id, 'cancelled');
+                alert('Appointment cancelled.');
+                location.reload();
             }
         }
     </script>
 <script>if(typeof initFeedbackWidget==="function")initFeedbackWidget("patient");</script>
 </body>
 </html>
-

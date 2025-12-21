@@ -79,7 +79,7 @@ const HMS = {
             // Receptionist - Real staff
             {
                 id: 'U004',
-                email: 'reception@adinathhospital.com',
+                email: 'reception@adinathhealth.com',
                 password: 'staff123',
                 name: 'Poonam',
                 nameGu: 'પૂનમ',
@@ -130,11 +130,8 @@ const HMS = {
             { id: 'M008', name: 'Crepe Bandage 4"', category: 'First Aid', stock: 50, unit: 'rolls', price: 45, reorderLevel: 10 },
         ];
 
-        // Sample sales
-        const sales = [
-            { id: 'S001', date: today, patientName: 'Rajesh Patel', items: [{ name: 'Glucosamine', qty: 30, price: 450 }], total: 450, paymentMethod: 'cash' },
-            { id: 'S002', date: today, patientName: 'Walk-in', items: [{ name: 'Paracetamol', qty: 10, price: 20 }], total: 20, paymentMethod: 'upi' },
-        ];
+        // Empty sales - will be added as transactions occur
+        const sales = [];
 
         // Store all data
         localStorage.setItem('hms_users', JSON.stringify(users));

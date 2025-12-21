@@ -115,7 +115,7 @@ echo "2. Or deploy manually:"
 echo "   ./scripts/deploy.sh"
 echo ""
 echo "3. Set up custom domain (optional):"
-echo "   aws amplify create-domain-association --app-id $APP_ID --domain-name adinathhospital.com"
+echo "   aws amplify create-domain-association --app-id $APP_ID --domain-name adinathhealth.com"
 echo ""
 
 # Save app ID to local config

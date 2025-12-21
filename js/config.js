@@ -48,9 +48,9 @@ const CONFIG = {
             case 'local':
                 return 'http://localhost:3000/api';
             case 'staging':
-                return 'https://api-staging.adinathhospital.com';
+                return 'https://api-staging.adinathhealth.com';
             case 'production':
-                return 'https://api.adinathhospital.com';
+                return 'https://api.adinathhealth.com';
             default:
                 return ''; // No API for static demo
         }

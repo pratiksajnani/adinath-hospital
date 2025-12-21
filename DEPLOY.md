@@ -76,7 +76,7 @@ gh repo edit pratiksajnani/adinath-hospital --visibility private
 ## Custom Domain (Optional)
 
 1. In Amplify Console → Domain Management
-2. Add domain: `adinathhospital.com` (or your domain)
+2. Add domain: `adinathhealth.com`
 3. Follow DNS instructions
 
 ---
