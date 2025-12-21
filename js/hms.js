@@ -706,6 +706,81 @@ const HMS = {
         }
     },
 
+    // Feedback Management - Track issues and suggestions by role
+    feedback: {
+        getAll() { 
+            return JSON.parse(localStorage.getItem('hms_feedback') || '[]'); 
+        },
+        
+        add(feedback) {
+            const items = this.getAll();
+            feedback.id = HMS.utils.generateId('FB');
+            feedback.createdAt = new Date().toISOString();
+            feedback.status = 'open'; // open, in_progress, resolved, closed
+            items.push(feedback);
+            localStorage.setItem('hms_feedback', JSON.stringify(items));
+            console.log('📝 Feedback logged:', feedback);
+            return feedback;
+        },
+        
+        getByRole(role) {
+            return this.getAll().filter(f => f.role === role);
+        },
+        
+        getByStatus(status) {
+            return this.getAll().filter(f => f.status === status);
+        },
+        
+        getOpen() {
+            return this.getAll().filter(f => f.status === 'open' || f.status === 'in_progress');
+        },
+        
+        updateStatus(id, status, note = '') {
+            const items = this.getAll();
+            const index = items.findIndex(f => f.id === id);
+            if (index !== -1) {
+                items[index].status = status;
+                items[index].updatedAt = new Date().toISOString();
+                if (note) items[index].resolutionNote = note;
+                localStorage.setItem('hms_feedback', JSON.stringify(items));
+            }
+        },
+        
+        // Export all feedback as JSON for review
+        export() {
+            const data = this.getAll();
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `adinath-feedback-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+        },
+        
+        // Summary stats
+        stats() {
+            const all = this.getAll();
+            return {
+                total: all.length,
+                open: all.filter(f => f.status === 'open').length,
+                inProgress: all.filter(f => f.status === 'in_progress').length,
+                resolved: all.filter(f => f.status === 'resolved').length,
+                byRole: {
+                    patient: all.filter(f => f.role === 'patient').length,
+                    staff: all.filter(f => f.role === 'staff').length,
+                    doctor: all.filter(f => f.role === 'doctor').length,
+                    admin: all.filter(f => f.role === 'admin').length
+                },
+                byType: {
+                    bug: all.filter(f => f.type === 'bug').length,
+                    feature: all.filter(f => f.type === 'feature').length,
+                    question: all.filter(f => f.type === 'question').length,
+                    other: all.filter(f => f.type === 'other').length
+                }
+            };
+        }
+    },
+
     // Reset all data
     reset() {
         localStorage.removeItem('hms_initialized');

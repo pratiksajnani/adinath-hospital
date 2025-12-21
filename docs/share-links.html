@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Guide Links - Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #0f766e;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --patient: #0f766e;
+            --doctor: #3b82f6;
+            --staff: #8b5cf6;
+            --admin: #dc2626;
+            --whatsapp: #25d366;
+            --sms: #3b82f6;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #134e4a 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .header h1 { font-size: 2rem; margin-bottom: 8px; }
+        .header p { opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .share-grid {
+            display: grid;
+            gap: 24px;
+            margin: 24px 0;
+        }
+        
+        .share-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--patient);
+        }
+        
+        .share-card.doctor { border-left-color: var(--doctor); }
+        .share-card.staff { border-left-color: var(--staff); }
+        .share-card.admin { border-left-color: var(--admin); }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .card-header .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: #ecfdf5;
+        }
+        
+        .share-card.doctor .card-header .icon { background: #dbeafe; }
+        .share-card.staff .card-header .icon { background: #ede9fe; }
+        .share-card.admin .card-header .icon { background: #fee2e2; }
+        
+        .card-header h2 { font-size: 1.25rem; }
+        .card-header p { color: var(--text-light); font-size: 0.9rem; }
+        
+        .link-display {
+            background: var(--bg);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin: 12px 0;
+            word-break: break-all;
+            color: var(--primary);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .link-display:hover {
+            background: #e2e8f0;
+        }
+        
+        .copy-tooltip {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--text);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .link-display.copied .copy-tooltip {
+            opacity: 1;
+        }
+        
+        .phone-input-group {
+            display: flex;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        
+        .phone-input-group input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .phone-input-group input:focus {
+            border-color: var(--primary);
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            flex: 1;
+            min-width: 140px;
+        }
+        
+        .btn-whatsapp {
+            background: var(--whatsapp);
+            color: white;
+        }
+        
+        .btn-whatsapp:hover { background: #1da851; }
+        
+        .btn-sms {
+            background: var(--sms);
+            color: white;
+        }
+        
+        .btn-sms:hover { background: #2563eb; }
+        
+        .btn-copy {
+            background: var(--text);
+            color: white;
+        }
+        
+        .btn-copy:hover { background: #334155; }
+        
+        .btn-qr {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .btn-qr:hover { background: #d97706; }
+        
+        .qr-container {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+        
+        .qr-container.show { display: block; }
+        
+        .qr-container img {
+            max-width: 200px;
+            margin: 0 auto;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+        
+        .message-preview {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin: 12px 0;
+            font-size: 0.9rem;
+        }
+        
+        .message-preview strong {
+            color: var(--primary);
+        }
+        
+        @media (max-width: 600px) {
+            .phone-input-group { flex-direction: column; }
+            .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>📲 Share Guide Links</h1>
+        <p>Send guide links to patients, doctors, and staff via SMS or WhatsApp</p>
+    </header>
+    
+    <div class="container">
+        <!-- Patient Guide -->
+        <div class="share-card patient">
+            <div class="card-header">
+                <div class="icon">👤</div>
+                <div>
+                    <h2>Patient Guide</h2>
+                    <p>For patients to book appointments, view prescriptions, etc.</p>
+                </div>
+            </div>
+            
+            <div class="link-display" onclick="copyLink(this, 'patient')">
+                https://main.d2a0i6erg1hmca.amplifyapp.com/docs/PATIENT_GUIDE.html
+                <span class="copy-tooltip">Copied!</span>
+            </div>
+            
+            <div class="phone-input-group">
+                <input type="tel" id="phone-patient" placeholder="Enter phone number (e.g., 9876543210)" />
+            </div>
+            
+            <div class="message-preview">
+                <strong>Message:</strong> 🏥 Adinath Hospital - Patient Guide | Learn how to book appointments, view prescriptions, and more: [link]
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-whatsapp" onclick="sendWhatsApp('patient')">💬 WhatsApp</button>
+                <button class="btn btn-sms" onclick="sendSMS('patient')">📱 SMS</button>
+                <button class="btn btn-qr" onclick="showQR('patient')">📱 QR Code</button>
+            </div>
+            
+            <div class="qr-container" id="qr-patient">
+                <p>Scan to open Patient Guide:</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://main.d2a0i6erg1hmca.amplifyapp.com/docs/PATIENT_GUIDE.html" alt="Patient Guide QR" />
+            </div>
+        </div>
+        
+        <!-- Doctor Guide -->
+        <div class="share-card doctor">
+            <div class="card-header">
+                <div class="icon">👨‍⚕️</div>
+                <div>
+                    <h2>Doctor Guide</h2>
+                    <p>For doctors to manage patients, write prescriptions, etc.</p>
+                </div>
+            </div>
+            
+            <div class="link-display" onclick="copyLink(this, 'doctor')">
+                https://main.d2a0i6erg1hmca.amplifyapp.com/docs/DOCTOR_GUIDE.html
+                <span class="copy-tooltip">Copied!</span>
+            </div>
+            
+            <div class="phone-input-group">
+                <input type="tel" id="phone-doctor" placeholder="Enter phone number (e.g., 9876543210)" />
+            </div>
+            
+            <div class="message-preview">
+                <strong>Message:</strong> 🏥 Adinath Hospital - Doctor Dashboard Guide | View appointments, write prescriptions, and more: [link]
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-whatsapp" onclick="sendWhatsApp('doctor')">💬 WhatsApp</button>
+                <button class="btn btn-sms" onclick="sendSMS('doctor')">📱 SMS</button>
+                <button class="btn btn-qr" onclick="showQR('doctor')">📱 QR Code</button>
+            </div>
+            
+            <div class="qr-container" id="qr-doctor">
+                <p>Scan to open Doctor Guide:</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://main.d2a0i6erg1hmca.amplifyapp.com/docs/DOCTOR_GUIDE.html" alt="Doctor Guide QR" />
+            </div>
+        </div>
+        
+        <!-- Staff Guide -->
+        <div class="share-card staff">
+            <div class="card-header">
+                <div class="icon">👥</div>
+                <div>
+                    <h2>Staff Guide</h2>
+                    <p>For reception staff to manage queue, register patients, etc.</p>
+                </div>
+            </div>
+            
+            <div class="link-display" onclick="copyLink(this, 'staff')">
+                https://main.d2a0i6erg1hmca.amplifyapp.com/docs/STAFF_GUIDE.html
+                <span class="copy-tooltip">Copied!</span>
+            </div>
+            
+            <div class="phone-input-group">
+                <input type="tel" id="phone-staff" placeholder="Enter phone number (e.g., 9876543210)" />
+            </div>
+            
+            <div class="message-preview">
+                <strong>Message:</strong> 🏥 Adinath Hospital - Staff Dashboard Guide | Manage patients, queue, and store: [link]
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-whatsapp" onclick="sendWhatsApp('staff')">💬 WhatsApp</button>
+                <button class="btn btn-sms" onclick="sendSMS('staff')">📱 SMS</button>
+                <button class="btn btn-qr" onclick="showQR('staff')">📱 QR Code</button>
+            </div>
+            
+            <div class="qr-container" id="qr-staff">
+                <p>Scan to open Staff Guide:</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://main.d2a0i6erg1hmca.amplifyapp.com/docs/STAFF_GUIDE.html" alt="Staff Guide QR" />
+            </div>
+        </div>
+        
+        <!-- Admin Guide -->
+        <div class="share-card admin">
+            <div class="card-header">
+                <div class="icon">🔧</div>
+                <div>
+                    <h2>Admin Guide</h2>
+                    <p>For site administrators to manage users, content, and reports</p>
+                </div>
+            </div>
+            
+            <div class="link-display" onclick="copyLink(this, 'admin')">
+                https://main.d2a0i6erg1hmca.amplifyapp.com/docs/ADMIN_GUIDE.html
+                <span class="copy-tooltip">Copied!</span>
+            </div>
+            
+            <div class="phone-input-group">
+                <input type="tel" id="phone-admin" placeholder="Enter phone number (e.g., 9876543210)" />
+            </div>
+            
+            <div class="message-preview">
+                <strong>Message:</strong> 🏥 Adinath Hospital - Admin Guide | Manage users, content, and system settings: [link]
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-whatsapp" onclick="sendWhatsApp('admin')">💬 WhatsApp</button>
+                <button class="btn btn-sms" onclick="sendSMS('admin')">📱 SMS</button>
+                <button class="btn btn-qr" onclick="showQR('admin')">📱 QR Code</button>
+            </div>
+            
+            <div class="qr-container" id="qr-admin">
+                <p>Scan to open Admin Guide:</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://main.d2a0i6erg1hmca.amplifyapp.com/docs/ADMIN_GUIDE.html" alt="Admin Guide QR" />
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>🏥 Adinath Hospital | Care with Compassion</p>
+        <p style="margin-top: 8px;">
+            <a href="../index.html" style="color: var(--primary);">← Back to Website</a>
+        </p>
+    </footer>
+    
+    <script>
+        const guideUrls = {
+            patient: 'https://main.d2a0i6erg1hmca.amplifyapp.com/docs/PATIENT_GUIDE.html',
+            doctor: 'https://main.d2a0i6erg1hmca.amplifyapp.com/docs/DOCTOR_GUIDE.html',
+            staff: 'https://main.d2a0i6erg1hmca.amplifyapp.com/docs/STAFF_GUIDE.html',
+            admin: 'https://main.d2a0i6erg1hmca.amplifyapp.com/docs/ADMIN_GUIDE.html'
+        };
+        
+        const messages = {
+            patient: '🏥 Adinath Hospital - Patient Guide\n\nLearn how to book appointments, view prescriptions, and more:\n',
+            doctor: '🏥 Adinath Hospital - Doctor Dashboard Guide\n\nView appointments, write prescriptions, and more:\n',
+            staff: '🏥 Adinath Hospital - Staff Dashboard Guide\n\nManage patients, queue, and store operations:\n',
+            admin: '🏥 Adinath Hospital - Admin Guide\n\nManage users, content, and system settings:\n'
+        };
+        
+        function copyLink(element, role) {
+            const url = guideUrls[role];
+            navigator.clipboard.writeText(url).then(() => {
+                element.classList.add('copied');
+                setTimeout(() => element.classList.remove('copied'), 2000);
+            });
+        }
+        
+        function getPhone(role) {
+            const input = document.getElementById('phone-' + role);
+            let phone = input.value.trim();
+            // Remove any non-digit characters
+            phone = phone.replace(/\D/g, '');
+            // Add country code if not present
+            if (phone.length === 10) {
+                phone = '91' + phone;
+            }
+            return phone;
+        }
+        
+        function sendWhatsApp(role) {
+            const phone = getPhone(role);
+            const message = messages[role] + guideUrls[role];
+            const encodedMessage = encodeURIComponent(message);
+            
+            if (phone) {
+                window.open(`https://wa.me/${phone}?text=${encodedMessage}`, '_blank');
+            } else {
+                window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+            }
+        }
+        
+        function sendSMS(role) {
+            const phone = getPhone(role);
+            const message = messages[role] + guideUrls[role];
+            const encodedMessage = encodeURIComponent(message);
+            
+            if (phone) {
+                window.location.href = `sms:+${phone}?body=${encodedMessage}`;
+            } else {
+                window.location.href = `sms:?body=${encodedMessage}`;
+            }
+        }
+        
+        function showQR(role) {
+            const qrContainer = document.getElementById('qr-' + role);
+            qrContainer.classList.toggle('show');
+        }
+    </script>
+</body>
+</html>
+

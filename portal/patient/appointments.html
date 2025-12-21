@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Appointments | Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../../images/favicon.svg">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
+        .portal-header { background: linear-gradient(135deg, #0d9488, #0f766e); color: white; padding: 20px; }
+        .portal-header h1 { margin: 0; font-size: 24px; }
+        .portal-nav { background: white; padding: 15px 20px; border-bottom: 1px solid #e0e0e0; display: flex; gap: 20px; }
+        .portal-nav a { color: #0d9488; text-decoration: none; font-weight: 500; padding: 8px 16px; border-radius: 20px; }
+        .portal-nav a:hover, .portal-nav a.active { background: #e0f2f1; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .card { background: white; border-radius: 12px; padding: 20px; margin: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .card-title { font-size: 18px; font-weight: 600; color: #333; }
+        .status { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .status.upcoming { background: #dbeafe; color: #1d4ed8; }
+        .status.completed { background: #dcfce7; color: #166534; }
+        .status.cancelled { background: #fee2e2; color: #dc2626; }
+        .appointment-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .detail-item label { display: block; font-size: 12px; color: #666; margin-bottom: 3px; }
+        .detail-item span { font-weight: 500; color: #333; }
+        .btn { display: inline-block; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; cursor: pointer; border: none; }
+        .btn-primary { background: #0d9488; color: white; }
+        .btn-outline { border: 2px solid #0d9488; color: #0d9488; background: white; }
+        .empty-state { text-align: center; padding: 60px 20px; color: #666; }
+        .empty-state .icon { font-size: 48px; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="portal-header">
+        <h1>📅 My Appointments</h1>
+    </div>
+    
+    <nav class="portal-nav">
+        <a href="index.html">🏠 Dashboard</a>
+        <a href="appointments.html" class="active">📅 Appointments</a>
+        <a href="prescriptions.html">💊 Prescriptions</a>
+        <a href="../../index.html">← Back to Website</a>
+    </nav>
+
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>Your Appointments</h2>
+            <a href="../../book.html" class="btn btn-primary">+ Book New</a>
+        </div>
+
+        <!-- Upcoming Appointments -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">📅 Upcoming Appointment</span>
+                <span class="status upcoming">Upcoming</span>
+            </div>
+            <div class="appointment-details">
+                <div class="detail-item">
+                    <label>Date</label>
+                    <span id="appt-date">Loading...</span>
+                </div>
+                <div class="detail-item">
+                    <label>Time</label>
+                    <span id="appt-time">--</span>
+                </div>
+                <div class="detail-item">
+                    <label>Doctor</label>
+                    <span id="appt-doctor">--</span>
+                </div>
+                <div class="detail-item">
+                    <label>Reason</label>
+                    <span id="appt-reason">--</span>
+                </div>
+            </div>
+            <div style="margin-top: 15px; display: flex; gap: 10px;">
+                <button class="btn btn-outline" onclick="reschedule()">🔄 Reschedule</button>
+                <button class="btn btn-outline" style="border-color: #dc2626; color: #dc2626;" onclick="cancelAppt()">❌ Cancel</button>
+            </div>
+        </div>
+
+        <!-- Past Appointments -->
+        <h3 style="margin-top: 30px; color: #666;">Past Appointments</h3>
+        
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Dr. Ashok Sajnani</span>
+                <span class="status completed">Completed</span>
+            </div>
+            <div class="appointment-details">
+                <div class="detail-item">
+                    <label>Date</label>
+                    <span>Dec 15, 2024</span>
+                </div>
+                <div class="detail-item">
+                    <label>Reason</label>
+                    <span>Knee Pain Consultation</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <div class="icon">📅</div>
+            <h3>No Appointments Yet</h3>
+            <p>Book your first appointment to get started.</p>
+            <a href="../../book.html" class="btn btn-primary" style="margin-top: 15px;">Book Appointment</a>
+        </div>
+    </div>
+
+    <script src="../../js/config.js"></script>
+    <script src="../../js/hms.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load appointments from HMS
+            const appointments = HMS.appointments.getAll();
+            const upcoming = appointments.filter(a => new Date(a.date) >= new Date());
+            
+            if (upcoming.length > 0) {
+                const next = upcoming[0];
+                document.getElementById('appt-date').textContent = next.date || 'Not set';
+                document.getElementById('appt-time').textContent = next.time || 'Not set';
+                document.getElementById('appt-doctor').textContent = next.doctor || 'Not set';
+                document.getElementById('appt-reason').textContent = next.reason || 'General';
+            }
+        });
+
+        function reschedule() {
+            alert('Please call +91 99254 50425 to reschedule your appointment.');
+        }
+
+        function cancelAppt() {
+            if (confirm('Are you sure you want to cancel this appointment?')) {
+                alert('Appointment cancelled. Please call +91 99254 50425 if you need to rebook.');
+            }
+        }
+    </script>
+</body>
+</html>
+

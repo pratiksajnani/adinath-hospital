@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Matrix - Adinath Hospital</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            background: #0f172a;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+        .header h1 { font-size: 28px; margin-bottom: 8px; }
+        .header p { opacity: 0.9; }
+        
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            color: white;
+        }
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        .stat-card .label { opacity: 0.7; font-size: 14px; }
+        .stat-card.pass { border-left: 4px solid #22c55e; }
+        .stat-card.fail { border-left: 4px solid #ef4444; }
+        .stat-card.pending { border-left: 4px solid #f59e0b; }
+        .stat-card.total { border-left: 4px solid #3b82f6; }
+        
+        .section {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .section h2 {
+            color: white;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #334155;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .test-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .test-table th, .test-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+        .test-table th {
+            background: #334155;
+            color: white;
+            font-weight: 600;
+        }
+        .test-table td {
+            color: #e2e8f0;
+        }
+        .test-table tr:hover {
+            background: #334155;
+        }
+        
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status.pass { background: #166534; color: #86efac; }
+        .status.fail { background: #991b1b; color: #fecaca; }
+        .status.pending { background: #854d0e; color: #fef08a; }
+        .status.skip { background: #334155; color: #94a3b8; }
+        
+        .test-btn {
+            display: inline-block;
+            padding: 6px 14px;
+            background: #3b82f6;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .test-btn:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+        .test-btn.secondary {
+            background: #475569;
+        }
+        
+        .toggle-status {
+            cursor: pointer;
+            padding: 4px 12px;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #334155;
+            color: #94a3b8;
+        }
+        .toggle-status:hover {
+            background: #475569;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .filter-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #334155;
+            color: #94a3b8;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .filter-btn.active {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .last-updated {
+            text-align: right;
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+        
+        .reset-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-bar { grid-template-columns: repeat(2, 1fr); }
+            .test-table { font-size: 14px; }
+            .actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Test Matrix</h1>
+            <p>Site Admin Testing Dashboard - Adinath Hospital</p>
+        </div>
+        
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card pass">
+                <div class="value" id="pass-count">0</div>
+                <div class="label">✅ Passed</div>
+            </div>
+            <div class="stat-card fail">
+                <div class="value" id="fail-count">0</div>
+                <div class="label">❌ Failed</div>
+            </div>
+            <div class="stat-card pending">
+                <div class="value" id="pending-count">0</div>
+                <div class="label">⏳ Pending</div>
+            </div>
+            <div class="stat-card total">
+                <div class="value" id="total-count">0</div>
+                <div class="label">📊 Total Tests</div>
+            </div>
+        </div>
+        
+        <!-- Filter Bar -->
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterTests('all')">All</button>
+            <button class="filter-btn" onclick="filterTests('pass')">✅ Passed</button>
+            <button class="filter-btn" onclick="filterTests('fail')">❌ Failed</button>
+            <button class="filter-btn" onclick="filterTests('pending')">⏳ Pending</button>
+        </div>
+        
+        <!-- Patient Flows -->
+        <div class="section">
+            <h2>👨‍👩‍👧 Patient Flows</h2>
+            <table class="test-table">
+                <thead>
+                    <tr>
+                        <th>Test Case</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-test="patient-book">
+                        <td>📅 Book Appointment (CREATE)</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../book.html" target="_blank" class="test-btn">▶️ Test</a>
+                            <a href="PATIENT_DEMO.html#book" target="_blank" class="test-btn secondary">📖 Guide</a>
+                        </td>
+                    </tr>
+                    <tr data-test="patient-view">
+                        <td>👁️ View Appointments (READ)</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../portal/patient/" target="_blank" class="test-btn">▶️ Test</a>
+                            <a href="PATIENT_DEMO.html#view" target="_blank" class="test-btn secondary">📖 Guide</a>
+                        </td>
+                    </tr>
+                    <tr data-test="patient-language">
+                        <td>🌐 Language Switch (EN/HI/GU)</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="patient-whatsapp">
+                        <td>💬 WhatsApp Booking</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../book.html" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Doctor Flows -->
+        <div class="section">
+            <h2>👨‍⚕️ Doctor Flows</h2>
+            <table class="test-table">
+                <thead>
+                    <tr>
+                        <th>Test Case</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-test="doctor-login">
+                        <td>🔐 Doctor Login</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../login.html" target="_blank" class="test-btn">▶️ Test</a>
+                            <a href="doctor-demo-guide.html" target="_blank" class="test-btn secondary">📖 Guide</a>
+                        </td>
+                    </tr>
+                    <tr data-test="doctor-dashboard">
+                        <td>📊 View Dashboard (READ)</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../portal/doctor/" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="doctor-prescription">
+                        <td>💊 Write Prescription (CREATE)</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../portal/doctor/" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="doctor-status">
+                        <td>✅ Mark Complete (UPDATE)</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../portal/doctor/" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="doctor-simple">
+                        <td>📱 Simple View (Senior-Friendly)</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../portal/doctor/simple.html" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Staff Flows -->
+        <div class="section">
+            <h2>👩‍💼 Staff Flows (Poonam)</h2>
+            <table class="test-table">
+                <thead>
+                    <tr>
+                        <th>Test Case</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-test="staff-login">
+                        <td>🔐 Staff Login</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../login.html" target="_blank" class="test-btn">▶️ Test</a>
+                            <a href="staff-demo-guide.html" target="_blank" class="test-btn secondary">📖 Guide</a>
+                        </td>
+                    </tr>
+                    <tr data-test="staff-queue">
+                        <td>👥 View Patient Queue (READ)</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../portal/staff/" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="staff-sms">
+                        <td>📱 Send Patient Link (SMS)</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../portal/staff/" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="staff-whatsapp">
+                        <td>💬 Send Patient Link (WhatsApp)</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../portal/staff/" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="staff-qr">
+                        <td>📷 Show QR Code</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../portal/staff/" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="staff-gujarati">
+                        <td>🌐 Gujarati Interface</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../portal/staff/" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Admin Flows -->
+        <div class="section">
+            <h2>🔧 Admin Flows</h2>
+            <table class="test-table">
+                <thead>
+                    <tr>
+                        <th>Test Case</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-test="admin-login">
+                        <td>🔐 Admin Login</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../login.html" target="_blank" class="test-btn">▶️ Test</a>
+                            <a href="SITEADMIN_DEMO.html" target="_blank" class="test-btn secondary">📖 Guide</a>
+                        </td>
+                    </tr>
+                    <tr data-test="admin-dashboard">
+                        <td>📊 View Dashboard Stats</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../portal/admin/" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="admin-appointments">
+                        <td>📅 Manage Appointments</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../portal/admin/" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="admin-patients">
+                        <td>👥 Search Patients</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../portal/admin/" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="admin-reset">
+                        <td>🔄 Reset Demo Data</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../portal/admin/" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Store Flows -->
+        <div class="section">
+            <h2>💊 Medical Store Flows</h2>
+            <table class="test-table">
+                <thead>
+                    <tr>
+                        <th>Test Case</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-test="store-public">
+                        <td>🏪 Public Store Page</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../store.html" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="store-dashboard">
+                        <td>📊 Store Staff Dashboard</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../store/index.html" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="store-sale">
+                        <td>💰 Record Sale</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../store/index.html" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="store-inventory">
+                        <td>📦 View Inventory</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../store/index.html" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Forms -->
+        <div class="section">
+            <h2>📄 Printable Forms</h2>
+            <table class="test-table">
+                <thead>
+                    <tr>
+                        <th>Test Case</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-test="form-intake">
+                        <td>📝 Patient Intake Form</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../forms/patient-intake.html" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="form-prescription">
+                        <td>💊 Prescription Form</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../forms/prescription.html" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="form-consent">
+                        <td>✍️ Consent Form</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../forms/consent.html" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Navigation & Links -->
+        <div class="section">
+            <h2>🔗 Navigation & Links</h2>
+            <table class="test-table">
+                <thead>
+                    <tr>
+                        <th>Test Case</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-test="nav-home">
+                        <td>🏠 Homepage Load</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="nav-dropdown">
+                        <td>📂 Dropdown Menus</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="nav-help">
+                        <td>❓ Help Dropdown</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="nav-404">
+                        <td>🚫 404 Page</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../nonexistent-page" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                    <tr data-test="nav-mobile">
+                        <td>📱 Mobile Menu</td>
+                        <td><button class="toggle-status" onclick="toggleStatus(this)">⏳ Pending</button></td>
+                        <td class="actions">
+                            <a href="../" target="_blank" class="test-btn">▶️ Test</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Reset Button -->
+        <div style="text-align: center; margin-top: 30px;">
+            <button class="reset-btn" onclick="resetAll()">🔄 Reset All Test Results</button>
+        </div>
+        
+        <div class="last-updated">
+            Last saved: <span id="last-saved">Never</span>
+        </div>
+    </div>
+    
+    <script>
+        const STORAGE_KEY = 'adinath_test_matrix';
+        
+        // Load saved state
+        function loadState() {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                const state = JSON.parse(saved);
+                document.querySelectorAll('.toggle-status').forEach(btn => {
+                    const testId = btn.closest('tr').dataset.test;
+                    if (state.tests && state.tests[testId]) {
+                        updateButtonState(btn, state.tests[testId]);
+                    }
+                });
+                if (state.lastSaved) {
+                    document.getElementById('last-saved').textContent = new Date(state.lastSaved).toLocaleString();
+                }
+            }
+            updateCounts();
+        }
+        
+        // Save state
+        function saveState() {
+            const tests = {};
+            document.querySelectorAll('.toggle-status').forEach(btn => {
+                const testId = btn.closest('tr').dataset.test;
+                tests[testId] = getButtonStatus(btn);
+            });
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                tests,
+                lastSaved: new Date().toISOString()
+            }));
+            document.getElementById('last-saved').textContent = new Date().toLocaleString();
+        }
+        
+        // Get button status
+        function getButtonStatus(btn) {
+            if (btn.textContent.includes('Pass')) return 'pass';
+            if (btn.textContent.includes('Fail')) return 'fail';
+            return 'pending';
+        }
+        
+        // Update button visual state
+        function updateButtonState(btn, status) {
+            btn.className = 'toggle-status';
+            if (status === 'pass') {
+                btn.textContent = '✅ Pass';
+                btn.classList.add('status', 'pass');
+            } else if (status === 'fail') {
+                btn.textContent = '❌ Fail';
+                btn.classList.add('status', 'fail');
+            } else {
+                btn.textContent = '⏳ Pending';
+            }
+        }
+        
+        // Toggle status on click
+        function toggleStatus(btn) {
+            const current = getButtonStatus(btn);
+            let next;
+            if (current === 'pending') next = 'pass';
+            else if (current === 'pass') next = 'fail';
+            else next = 'pending';
+            
+            updateButtonState(btn, next);
+            saveState();
+            updateCounts();
+        }
+        
+        // Update counts
+        function updateCounts() {
+            let pass = 0, fail = 0, pending = 0;
+            document.querySelectorAll('.toggle-status').forEach(btn => {
+                const status = getButtonStatus(btn);
+                if (status === 'pass') pass++;
+                else if (status === 'fail') fail++;
+                else pending++;
+            });
+            
+            document.getElementById('pass-count').textContent = pass;
+            document.getElementById('fail-count').textContent = fail;
+            document.getElementById('pending-count').textContent = pending;
+            document.getElementById('total-count').textContent = pass + fail + pending;
+        }
+        
+        // Filter tests
+        function filterTests(filter) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('.test-table tbody tr').forEach(row => {
+                const status = getButtonStatus(row.querySelector('.toggle-status'));
+                if (filter === 'all' || status === filter) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        // Reset all
+        function resetAll() {
+            if (confirm('Reset all test results to Pending?')) {
+                document.querySelectorAll('.toggle-status').forEach(btn => {
+                    updateButtonState(btn, 'pending');
+                });
+                saveState();
+                updateCounts();
+            }
+        }
+        
+        // Initialize
+        loadState();
+    </script>
+</body>
+</html>
+

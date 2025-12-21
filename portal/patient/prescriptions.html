@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Prescriptions | Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../../images/favicon.svg">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
+        .portal-header { background: linear-gradient(135deg, #0d9488, #0f766e); color: white; padding: 20px; }
+        .portal-header h1 { margin: 0; font-size: 24px; }
+        .portal-nav { background: white; padding: 15px 20px; border-bottom: 1px solid #e0e0e0; display: flex; gap: 20px; flex-wrap: wrap; }
+        .portal-nav a { color: #0d9488; text-decoration: none; font-weight: 500; padding: 8px 16px; border-radius: 20px; }
+        .portal-nav a:hover, .portal-nav a.active { background: #e0f2f1; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .card { background: white; border-radius: 12px; padding: 20px; margin: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #e0e0e0; }
+        .card-title { font-size: 18px; font-weight: 600; color: #333; }
+        .card-date { font-size: 14px; color: #666; }
+        .rx-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+        .rx-item:last-child { border: none; }
+        .rx-name { font-weight: 500; }
+        .rx-dosage { color: #666; font-size: 14px; }
+        .btn { display: inline-block; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; cursor: pointer; border: none; }
+        .btn-primary { background: #0d9488; color: white; }
+        .btn-outline { border: 2px solid #0d9488; color: #0d9488; background: white; }
+        .btn-whatsapp { background: #25d366; color: white; }
+        .empty-state { text-align: center; padding: 60px 20px; color: #666; }
+        .empty-state .icon { font-size: 48px; margin-bottom: 15px; }
+        .advice-box { background: #f0fdfa; border-left: 4px solid #0d9488; padding: 15px; margin-top: 15px; border-radius: 0 8px 8px 0; }
+    </style>
+</head>
+<body>
+    <div class="portal-header">
+        <h1>💊 My Prescriptions</h1>
+    </div>
+    
+    <nav class="portal-nav">
+        <a href="index.html">🏠 Dashboard</a>
+        <a href="appointments.html">📅 Appointments</a>
+        <a href="prescriptions.html" class="active">💊 Prescriptions</a>
+        <a href="../../index.html">← Back to Website</a>
+    </nav>
+
+    <div class="container">
+        <h2>Your Prescriptions</h2>
+
+        <!-- Latest Prescription -->
+        <div class="card" id="latest-rx">
+            <div class="card-header">
+                <div>
+                    <span class="card-title">Dr. Ashok Sajnani</span>
+                    <span class="card-date" style="display: block; margin-top: 5px;">December 20, 2024</span>
+                </div>
+                <div>
+                    <button class="btn btn-outline" onclick="printRx()">🖨️ Print</button>
+                </div>
+            </div>
+            
+            <div id="rx-list">
+                <div class="rx-item">
+                    <div>
+                        <div class="rx-name">Paracetamol 500mg</div>
+                        <div class="rx-dosage">1 tablet after meals, 3 times a day</div>
+                    </div>
+                    <div>5 days</div>
+                </div>
+                <div class="rx-item">
+                    <div>
+                        <div class="rx-name">Calcium + Vitamin D3</div>
+                        <div class="rx-dosage">1 tablet daily, after breakfast</div>
+                    </div>
+                    <div>30 days</div>
+                </div>
+            </div>
+
+            <div class="advice-box">
+                <strong>Doctor's Advice:</strong><br>
+                Rest for 2-3 days. Apply ice pack on affected area. Avoid stairs. Follow-up if pain persists.
+            </div>
+
+            <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="https://wa.me/919925450425?text=I%20need%20to%20order%20my%20prescription%20medicines" class="btn btn-whatsapp" target="_blank">📲 Order via WhatsApp</a>
+                <a href="../../store.html" class="btn btn-outline">🏪 Visit Store</a>
+            </div>
+        </div>
+
+        <!-- Past Prescriptions -->
+        <h3 style="margin-top: 30px; color: #666;">Past Prescriptions</h3>
+        
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <span class="card-title">Dr. Sunita Sajnani</span>
+                    <span class="card-date" style="display: block; margin-top: 5px;">November 15, 2024</span>
+                </div>
+                <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">View</button>
+            </div>
+        </div>
+
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <div class="icon">💊</div>
+            <h3>No Prescriptions Yet</h3>
+            <p>Your prescriptions will appear here after your consultation.</p>
+        </div>
+    </div>
+
+    <script src="../../js/config.js"></script>
+    <script src="../../js/hms.js"></script>
+    <script>
+        function printRx() {
+            window.print();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load prescriptions from HMS
+            const prescriptions = HMS.prescriptions.getAll();
+            // Display logic here
+        });
+    </script>
+</body>
+</html>
+
