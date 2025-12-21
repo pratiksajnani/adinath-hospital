@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discharge Summary | Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .header { text-align: center; border-bottom: 3px solid #0d9488; padding-bottom: 15px; margin-bottom: 20px; }
+        .hospital-name { font-size: 24px; font-weight: bold; color: #0d9488; }
+        .hospital-info { font-size: 12px; color: #666; margin-top: 5px; }
+        h1 { font-size: 20px; margin: 20px 0; text-align: center; background: #e0f2f1; padding: 10px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .section-title { font-weight: bold; color: #0d9488; margin-bottom: 10px; border-bottom: 1px solid #e0e0e0; padding-bottom: 5px; }
+        .row { display: flex; gap: 20px; margin: 10px 0; }
+        .field { flex: 1; }
+        .field label { display: block; font-size: 12px; color: #666; margin-bottom: 3px; }
+        .field .value { border-bottom: 1px solid #333; min-height: 25px; padding: 3px 0; }
+        .field .value.large { min-height: 60px; border: 1px solid #333; padding: 8px; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        th, td { border: 1px solid #333; padding: 8px; text-align: left; font-size: 13px; }
+        th { background: #f0f0f0; }
+        .signature-section { margin-top: 40px; display: flex; justify-content: space-between; }
+        .signature-box { width: 200px; text-align: center; }
+        .signature-line { border-top: 1px solid #333; margin-top: 50px; padding-top: 5px; font-size: 12px; }
+        .print-btn { position: fixed; bottom: 20px; right: 20px; background: #0d9488; color: white; border: none; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        @media print { .print-btn { display: none; } body { padding: 10px; } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="hospital-name">🏥 ADINATH HOSPITAL</div>
+        <div class="hospital-info">
+            2nd Floor, Shukan Mall, Shahibaug Road, Ahmedabad 380004<br>
+            📞 +91 99254 50425 | Orthopedic & Gynecology Specialists
+        </div>
+    </div>
+
+    <h1>DISCHARGE SUMMARY / ડિસ્ચાર્જ સારાંશ</h1>
+
+    <div class="section">
+        <div class="section-title">PATIENT INFORMATION / દર્દીની માહિતી</div>
+        <div class="row">
+            <div class="field">
+                <label>Patient Name / દર્દીનું નામ</label>
+                <div class="value" contenteditable="true"></div>
+            </div>
+            <div class="field" style="flex: 0.5;">
+                <label>Age / ઉંમર</label>
+                <div class="value" contenteditable="true"></div>
+            </div>
+            <div class="field" style="flex: 0.5;">
+                <label>Gender / લિંગ</label>
+                <div class="value" contenteditable="true"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="field">
+                <label>Address / સરનામું</label>
+                <div class="value" contenteditable="true"></div>
+            </div>
+            <div class="field" style="flex: 0.7;">
+                <label>Phone / ફોન</label>
+                <div class="value" contenteditable="true"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="field" style="flex: 0.5;">
+                <label>Admission Date / દાખલ તારીખ</label>
+                <div class="value" contenteditable="true"></div>
+            </div>
+            <div class="field" style="flex: 0.5;">
+                <label>Discharge Date / રજા તારીખ</label>
+                <div class="value" contenteditable="true"></div>
+            </div>
+            <div class="field" style="flex: 0.5;">
+                <label>Room No. / રૂમ નં.</label>
+                <div class="value" contenteditable="true"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">DIAGNOSIS / નિદાન</div>
+        <div class="field">
+            <div class="value large" contenteditable="true"></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">TREATMENT GIVEN / આપેલી સારવાર</div>
+        <div class="field">
+            <div class="value large" contenteditable="true"></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">DISCHARGE MEDICATIONS / રજા વખતની દવાઓ</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 5%;">#</th>
+                    <th style="width: 35%;">Medicine / દવા</th>
+                    <th style="width: 20%;">Dosage / ડોઝ</th>
+                    <th style="width: 20%;">Frequency / સમય</th>
+                    <th style="width: 20%;">Duration / અવધિ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                <tr><td>2</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                <tr><td>3</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                <tr><td>4</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+                <tr><td>5</td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td><td contenteditable="true"></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-title">ADVICE ON DISCHARGE / રજા વખતની સલાહ</div>
+        <div class="field">
+            <div class="value large" contenteditable="true" style="min-height: 80px;">
+• Rest for _____ days<br>
+• Follow-up on: _____<br>
+• Diet: _____<br>
+• Exercise: _____<br>
+• Warning signs to watch: _____
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">FOLLOW-UP / ફોલો-અપ</div>
+        <div class="row">
+            <div class="field">
+                <label>Follow-up Date / ફોલો-અપ તારીખ</label>
+                <div class="value" contenteditable="true"></div>
+            </div>
+            <div class="field">
+                <label>Consulting Doctor / ડૉક્ટર</label>
+                <div class="value" contenteditable="true"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="signature-section">
+        <div class="signature-box">
+            <div class="signature-line">Patient/Attendant Signature<br>દર્દી/સાથીની સહી</div>
+        </div>
+        <div class="signature-box">
+            <div class="signature-line">Doctor's Signature & Stamp<br>ડૉક્ટરની સહી અને સ્ટેમ્પ</div>
+        </div>
+    </div>
+
+    <button class="print-btn" onclick="window.print()">🖨️ Print</button>
+</body>
+</html>
+

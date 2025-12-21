@@ -1,5 +1,21 @@
 # Adinath Hospital - AWS Amplify Redirects
-# Note: AWS Amplify may process these differently than Netlify
+# Direct file access - no rewrites needed for static files
+
+# Ensure HTML files are served correctly
+/login     /login.html     200
+/book      /book.html      200
+/store     /store.html     200
+
+# Portal routes
+/portal                    /portal/index.html      200
+/portal/patient            /portal/patient/index.html    200
+/portal/doctor             /portal/doctor/index.html     200
+/portal/doctor/simple      /portal/doctor/simple.html    200
+/portal/staff              /portal/staff/index.html      200
+/portal/admin              /portal/admin/index.html      200
+
+# Forms
+/forms                     /forms/index.html       200
 
 # 404 fallback for non-existent pages only
 /*    /404.html    404

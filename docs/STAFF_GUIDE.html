@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Guide - Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #0f766e;
+            --staff: #8b5cf6;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--staff) 0%, #6d28d9 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .header h1 { font-size: 2rem; margin-bottom: 8px; }
+        .header p { opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        
+        .role-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .lang-switch {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        
+        .lang-btn {
+            padding: 6px 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: transparent;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .lang-btn:hover, .lang-btn.active {
+            background: white;
+            color: var(--staff);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .login-info {
+            background: linear-gradient(135deg, #ede9fe 0%, #f5f3ff 100%);
+            border: 2px solid var(--staff);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+        
+        .login-info h3 { color: var(--staff); margin-bottom: 12px; }
+        
+        .credentials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .credential-card {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .credential-card .name { font-weight: 600; margin-bottom: 4px; }
+        .credential-card .email { color: var(--text-light); font-size: 0.9rem; }
+        .credential-card .password { 
+            background: var(--bg); 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-family: monospace;
+            margin-top: 8px;
+        }
+        
+        .section {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 32px;
+            margin: 24px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: var(--staff);
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section h2 .emoji { font-size: 1.75rem; }
+        
+        .section-subtitle {
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+        
+        .crud-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        
+        .crud-create { background: #dcfce7; color: #166534; }
+        .crud-read { background: #dbeafe; color: #1e40af; }
+        .crud-update { background: #fef3c7; color: #92400e; }
+        .crud-delete { background: #fee2e2; color: #991b1b; }
+        
+        .step {
+            display: flex;
+            gap: 16px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .step:last-child { border-bottom: none; }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--staff);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .step-content { flex: 1; }
+        .step-content h3 { margin-bottom: 8px; font-size: 1.1rem; }
+        .step-content p { color: var(--text-light); margin-bottom: 12px; }
+        
+        .screenshot {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 12px 0;
+            text-align: center;
+        }
+        
+        .screenshot-placeholder {
+            background: linear-gradient(135deg, #ede9fe 0%, #f5f3ff 100%);
+            height: 200px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--staff);
+            font-size: 14px;
+        }
+        
+        .tip {
+            background: #ecfdf5;
+            border-left: 4px solid var(--success);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+        
+        .tip-title { font-weight: 600; color: #166534; margin-bottom: 4px; }
+        
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid var(--warning);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+        
+        .warning-title { font-weight: 600; color: #92400e; margin-bottom: 4px; }
+        
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--staff);
+            color: white;
+        }
+        
+        .btn-primary:hover { background: #7c3aed; }
+        
+        .btn-outline {
+            border: 2px solid var(--staff);
+            color: var(--staff);
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            background: var(--staff);
+            color: white;
+        }
+        
+        .toc-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            list-style: none;
+            padding: 0;
+        }
+        
+        .toc-list a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: var(--bg);
+            border-radius: 8px;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .toc-list a:hover {
+            background: var(--staff);
+            color: white;
+        }
+        
+        .contact-card {
+            background: linear-gradient(135deg, var(--staff) 0%, #6d28d9 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 24px 0;
+        }
+        
+        .contact-card h3 { font-size: 1.5rem; margin-bottom: 8px; }
+        .contact-card p { opacity: 0.9; margin-bottom: 20px; }
+        
+        .contact-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: white;
+            color: var(--staff);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+        
+        /* Multi-language */
+        [data-lang] { display: none; }
+        [data-lang="en"] { display: block; }
+        body.lang-hi [data-lang="en"] { display: none; }
+        body.lang-hi [data-lang="hi"] { display: block; }
+        body.lang-gu [data-lang="en"] { display: none; }
+        body.lang-gu [data-lang="gu"] { display: block; }
+        
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.5rem; }
+            .section { padding: 20px; }
+            .step { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="role-badge">👥 Staff Role</div>
+        <h1 data-lang="en">Staff Dashboard Guide</h1>
+        <h1 data-lang="hi">स्टाफ डैशबोर्ड गाइड</h1>
+        <h1 data-lang="gu">સ્ટાફ ડેશબોર્ડ માર્ગદર્શિકા</h1>
+        <p data-lang="en">Complete guide for reception staff to manage patients, appointments, and store operations</p>
+        <p data-lang="hi">मरीजों, अपॉइंटमेंट और स्टोर संचालन प्रबंधित करने के लिए रिसेप्शन स्टाफ की पूर्ण गाइड</p>
+        <p data-lang="gu">દર્દીઓ, એપોઇન્ટમેન્ટ અને સ્ટોર કામગીરી મેનેજ કરવા માટે રિસેપ્શન સ્ટાફની સંપૂર્ણ માર્ગદર્શિકા</p>
+        
+        <div class="lang-switch">
+            <button class="lang-btn active" onclick="setLang('en')">English</button>
+            <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+            <button class="lang-btn" onclick="setLang('gu')">ગુજરાતી</button>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Login Information -->
+        <div class="login-info">
+            <h3>🔐 Login Credentials</h3>
+            <p data-lang="en">Use these credentials to access the Staff Dashboard:</p>
+            <p data-lang="hi">स्टाफ डैशबोर्ड तक पहुंचने के लिए इन क्रेडेंशियल्स का उपयोग करें:</p>
+            <p data-lang="gu">સ્ટાફ ડેશબોર્ડ ઍક્સેસ કરવા આ ક્રેડેન્શિયલ્સનો ઉપયોગ કરો:</p>
+            
+            <div class="credentials">
+                <div class="credential-card">
+                    <div class="name" data-lang="en">Receptionist</div>
+                    <div class="name" data-lang="hi">रिसेप्शनिस्ट</div>
+                    <div class="name" data-lang="gu">રિસેપ્શનિસ્ટ</div>
+                    <div class="email">receptionist@adinathhospital.com</div>
+                    <div class="password">staff123</div>
+                </div>
+            </div>
+            
+            <div class="btn-group" style="margin-top: 16px;">
+                <a href="../login.html" class="btn btn-primary">🔑 Go to Login</a>
+                <a href="../portal/staff/index.html" class="btn btn-outline">📱 Staff Dashboard</a>
+            </div>
+        </div>
+        
+        <!-- Table of Contents -->
+        <nav class="section">
+            <h2 data-lang="en">📋 What You Can Do</h2>
+            <h2 data-lang="hi">📋 आप क्या कर सकते हैं</h2>
+            <h2 data-lang="gu">📋 તમે શું કરી શકો છો</h2>
+            <ul class="toc-list">
+                <li><a href="#register">👤 <span data-lang="en">Register New Patient</span><span data-lang="hi">नया मरीज रजिस्टर</span><span data-lang="gu">નવો દર્દી નોંધણી</span></a></li>
+                <li><a href="#queue">📋 <span data-lang="en">Manage Queue</span><span data-lang="hi">कतार प्रबंधित</span><span data-lang="gu">કતાર મેનેજ</span></a></li>
+                <li><a href="#appointments">📅 <span data-lang="en">View Appointments</span><span data-lang="hi">अपॉइंटमेंट देखें</span><span data-lang="gu">એપોઇન્ટમેન્ટ જુઓ</span></a></li>
+                <li><a href="#send-link">📱 <span data-lang="en">Send Signup Link</span><span data-lang="hi">साइनअप लिंक भेजें</span><span data-lang="gu">સાઇનઅપ લિંક મોકલો</span></a></li>
+                <li><a href="#store">💊 <span data-lang="en">Medical Store</span><span data-lang="hi">मेडिकल स्टोर</span><span data-lang="gu">મેડિકલ સ્ટોર</span></a></li>
+                <li><a href="#print">🖨️ <span data-lang="en">Print Forms</span><span data-lang="hi">फॉर्म प्रिंट</span><span data-lang="gu">ફોર્મ પ્રિન્ટ</span></a></li>
+            </ul>
+        </nav>
+        
+        <!-- SECTION: Register Patient (CREATE) -->
+        <section class="section" id="register">
+            <h2>
+                <span class="emoji">👤</span> 
+                <span data-lang="en">Register New Patient</span>
+                <span data-lang="hi">नया मरीज रजिस्टर करें</span>
+                <span data-lang="gu">નવો દર્દી નોંધણી કરો</span>
+                <span class="crud-tag crud-create">CREATE</span>
+            </h2>
+            <p class="section-subtitle" data-lang="en">Add a new patient to the system</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Click "New Patient"</h3>
+                    <h3 data-lang="hi">"नया मरीज" पर क्लिक करें</h3>
+                    <h3 data-lang="gu">"નવો દર્દી" પર ક્લિક કરો</h3>
+                    <p data-lang="en">Open the patient registration form</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Fill Patient Details</h3>
+                    <h3 data-lang="hi">मरीज विवरण भरें</h3>
+                    <h3 data-lang="gu">દર્દીની વિગતો ભરો</h3>
+                    <p data-lang="en">Enter name, phone, age, gender, and address</p>
+                    <div class="tip">
+                        <div class="tip-title" data-lang="en">💡 Phone Number is Important</div>
+                        <p data-lang="en">Always verify the phone number - it's used for login and communication</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Print Intake Form (Optional)</h3>
+                    <p data-lang="en">Print the patient intake form for detailed medical history</p>
+                    <div class="btn-group">
+                        <a href="../forms/patient-intake.html" class="btn btn-outline">📄 Patient Intake Form</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Save & Create Appointment</h3>
+                    <p data-lang="en">Save the patient and optionally book their first appointment</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECTION: Manage Queue (READ/UPDATE) -->
+        <section class="section" id="queue">
+            <h2>
+                <span class="emoji">📋</span> 
+                <span data-lang="en">Manage Patient Queue</span>
+                <span class="crud-tag crud-read">READ</span>
+                <span class="crud-tag crud-update">UPDATE</span>
+            </h2>
+            <p class="section-subtitle" data-lang="en">Track and manage waiting patients</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3 data-lang="en">View Current Queue</h3>
+                    <p data-lang="en">See all waiting patients with their token numbers</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Call Next Patient</h3>
+                    <p data-lang="en">Click "Call Next" to move the next patient to consultation</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Update Status</h3>
+                    <p data-lang="en">Mark patients as:</p>
+                    <ul style="margin-left: 20px; color: var(--text-light);">
+                        <li>⏳ Waiting</li>
+                        <li>🔄 With Doctor</li>
+                        <li>✅ Completed</li>
+                        <li>💊 At Pharmacy</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECTION: Send Signup Link (CREATE) -->
+        <section class="section" id="send-link">
+            <h2>
+                <span class="emoji">📱</span> 
+                <span data-lang="en">Send Patient Signup Link</span>
+                <span data-lang="hi">मरीज को साइनअप लिंक भेजें</span>
+                <span data-lang="gu">દર્દીને સાઇનઅપ લિંક મોકલો</span>
+                <span class="crud-tag crud-create">CREATE</span>
+            </h2>
+            <p class="section-subtitle" data-lang="en">Allow patients to create their account via SMS/WhatsApp</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Click "Send Signup Link"</h3>
+                    <p data-lang="en">Open the link generator</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Enter Patient's Phone Number</h3>
+                    <p data-lang="en">Type the patient's mobile number</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Choose Send Method</h3>
+                    <p data-lang="en">Select SMS or WhatsApp to send the signup link</p>
+                    <div class="tip">
+                        <div class="tip-title">💡 WhatsApp is Recommended</div>
+                        <p>WhatsApp messages are free and include a QR code image</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Show QR Code (Alternative)</h3>
+                    <p data-lang="en">Display the QR code for the patient to scan if they're present</p>
+                    <div class="screenshot">
+                        <div class="screenshot-placeholder">📱 QR Code will appear here for patient to scan</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECTION: Medical Store (CREATE/READ/UPDATE) -->
+        <section class="section" id="store">
+            <h2>
+                <span class="emoji">💊</span> 
+                <span data-lang="en">Medical Store Operations</span>
+                <span class="crud-tag crud-create">CREATE</span>
+                <span class="crud-tag crud-read">READ</span>
+            </h2>
+            <p class="section-subtitle" data-lang="en">Manage inventory and sales</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3 data-lang="en">View Inventory</h3>
+                    <p data-lang="en">Check available medicines and stock levels</p>
+                    <div class="btn-group">
+                        <a href="../store/index.html" class="btn btn-outline">💊 Store Dashboard</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Process Sale</h3>
+                    <p data-lang="en">Add medicines to cart, apply any discounts, and complete sale</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Record Payment</h3>
+                    <p data-lang="en">Enter payment method (Cash/UPI) and amount received</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Print Bill</h3>
+                    <p data-lang="en">Generate and print receipt for the patient</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECTION: Print Forms -->
+        <section class="section" id="print">
+            <h2>
+                <span class="emoji">🖨️</span> 
+                <span data-lang="en">Print Forms</span>
+            </h2>
+            <p class="section-subtitle" data-lang="en">Quick access to printable forms</p>
+            
+            <div class="btn-group">
+                <a href="../forms/patient-intake.html" class="btn btn-outline">📋 Patient Intake</a>
+                <a href="../forms/prescription.html" class="btn btn-outline">📝 Prescription</a>
+                <a href="../forms/consent.html" class="btn btn-outline">✍️ Consent Form</a>
+                <a href="../forms/index.html" class="btn btn-primary">📄 All Forms</a>
+            </div>
+        </section>
+        
+        <!-- Contact Card -->
+        <div class="contact-card">
+            <h3 data-lang="en">Need Help?</h3>
+            <p data-lang="en">Contact the site administrator for technical issues</p>
+            
+            <div class="contact-buttons">
+                <a href="mailto:pratik.sajnani@gmail.com" class="contact-btn">📧 Email Admin</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>🏥 Adinath Hospital | Staff Dashboard Guide</p>
+        <p style="margin-top: 8px;">
+            <a href="../index.html" style="color: var(--staff);">← Back to Website</a>
+        </p>
+    </footer>
+    
+    <script>
+        function setLang(lang) {
+            document.body.className = 'lang-' + lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if ((lang === 'en' && btn.textContent === 'English') ||
+                    (lang === 'hi' && btn.textContent === 'हिंदी') ||
+                    (lang === 'gu' && btn.textContent === 'ગુજરાતી')) {
+                    btn.classList.add('active');
+                }
+            });
+            localStorage.setItem('staff_guide_lang', lang);
+        }
+        
+        const savedLang = localStorage.getItem('staff_guide_lang');
+        if (savedLang) setLang(savedLang);
+    </script>
+</body>
+</html>
+
