@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Cache | Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        .header {
+            color: white;
+            margin-bottom: 32px;
+        }
+        .header .icon { font-size: 4rem; margin-bottom: 16px; }
+        .header h1 { font-size: 1.75rem; margin-bottom: 8px; }
+        .header p { opacity: 0.9; }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .status {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .status.loading { background: #dbeafe; color: #1d4ed8; }
+        .status.success { background: #dcfce7; color: #166534; }
+        .status.error { background: #fee2e2; color: #991b1b; }
+        
+        .log {
+            text-align: left;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        .log p { margin-bottom: 8px; color: #64748b; }
+        .log p.done { color: #16a34a; }
+        .log p.fail { color: #dc2626; }
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            transition: all 0.2s;
+            margin: 8px;
+        }
+        .btn-primary { background: #7c3aed; color: white; }
+        .btn-primary:hover { background: #6d28d9; }
+        .btn-outline { background: white; border: 2px solid #e2e8f0; color: #1e293b; }
+        
+        .links {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e2e8f0;
+        }
+        .links h3 { margin-bottom: 16px; color: #1e293b; }
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .link-card {
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #1e293b;
+            transition: all 0.2s;
+        }
+        .link-card:hover { background: #f0fdf4; }
+        .link-card .icon { font-size: 1.5rem; margin-bottom: 8px; }
+        .link-card span { display: block; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="icon">🧹</div>
+            <h1>Clear Cache & Test</h1>
+            <p>Remove old cached content</p>
+        </div>
+        
+        <div class="card">
+            <div class="status loading" id="status">🔄 Clearing cache...</div>
+            
+            <div class="log" id="log">
+                <p>Starting cache clear...</p>
+            </div>
+            
+            <button class="btn btn-primary" onclick="clearAllCaches()">🔄 Clear Again</button>
+            <button class="btn btn-outline" onclick="location.reload(true)">🔁 Hard Refresh</button>
+            
+            <div class="links">
+                <h3>✅ Test These Links</h3>
+                <div class="link-grid">
+                    <a href="onboard/admin.html?token=ADMIN2024SECURE" class="link-card">
+                        <div class="icon">🔐</div>
+                        <span>Admin Registration</span>
+                    </a>
+                    <a href="onboard/doctor.html?id=ashok&token=ASH2024REG" class="link-card">
+                        <div class="icon">👨‍⚕️</div>
+                        <span>Dr. Ashok Registration</span>
+                    </a>
+                    <a href="login.html" class="link-card">
+                        <div class="icon">🔓</div>
+                        <span>Login Page</span>
+                    </a>
+                    <a href="portal/admin/index.html" class="link-card">
+                        <div class="icon">📊</div>
+                        <span>Admin Dashboard</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const log = document.getElementById('log');
+        const status = document.getElementById('status');
+        
+        function addLog(message, type = '') {
+            const p = document.createElement('p');
+            p.textContent = message;
+            if (type) p.className = type;
+            log.appendChild(p);
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        async function clearAllCaches() {
+            log.innerHTML = '<p>Starting cache clear...</p>';
+            status.className = 'status loading';
+            status.textContent = '🔄 Clearing cache...';
+            
+            try {
+                // 1. Unregister all service workers
+                addLog('Checking for service workers...');
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    if (registrations.length > 0) {
+                        for (let registration of registrations) {
+                            await registration.unregister();
+                            addLog(`✅ Unregistered SW: ${registration.scope}`, 'done');
+                        }
+                    } else {
+                        addLog('No service workers found');
+                    }
+                }
+                
+                // 2. Clear all caches
+                addLog('Clearing browser caches...');
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    if (cacheNames.length > 0) {
+                        for (let name of cacheNames) {
+                            await caches.delete(name);
+                            addLog(`✅ Deleted cache: ${name}`, 'done');
+                        }
+                    } else {
+                        addLog('No caches found');
+                    }
+                }
+                
+                // 3. Clear localStorage HMS data
+                addLog('Clearing local storage...');
+                const keysToKeep = ['hms_logged_in', 'hms_role', 'hms_user_email'];
+                let cleared = 0;
+                for (let key of Object.keys(localStorage)) {
+                    if (key.startsWith('hms_') && !keysToKeep.includes(key)) {
+                        localStorage.removeItem(key);
+                        cleared++;
+                    }
+                }
+                addLog(`✅ Cleared ${cleared} localStorage items`, 'done');
+                
+                // 4. Success
+                status.className = 'status success';
+                status.textContent = '✅ Cache cleared! Click links below to test.';
+                addLog('🎉 All done! Test the links below.', 'done');
+                
+            } catch (err) {
+                status.className = 'status error';
+                status.textContent = '❌ Error clearing cache';
+                addLog(`Error: ${err.message}`, 'fail');
+            }
+        }
+        
+        // Auto-run on page load
+        clearAllCaches();
+    </script>
+</body>
+</html>
+

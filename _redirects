@@ -12,7 +12,9 @@
 
 # Main pages
 /login /login.html 200
+/login.html /login.html 200
 /book /book.html 200
+/book.html /book.html 200
 /store /store.html 200
 /check-status /check-status.html 200
 
