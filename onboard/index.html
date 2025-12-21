@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration | Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0f766e 0%, #134e4a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        .header {
+            color: white;
+            margin-bottom: 32px;
+        }
+        .header .icon { font-size: 4rem; margin-bottom: 16px; }
+        .header h1 { font-size: 1.75rem; margin-bottom: 8px; }
+        .header p { opacity: 0.9; }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .card h2 { margin-bottom: 24px; color: #1e293b; }
+        
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .role-card {
+            padding: 24px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            text-decoration: none;
+            color: #1e293b;
+            transition: all 0.2s;
+        }
+        .role-card:hover {
+            border-color: #0f766e;
+            background: #f0fdfa;
+        }
+        .role-card .icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .role-card h3 { font-size: 1rem; margin-bottom: 4px; }
+        .role-card p { font-size: 0.8rem; color: #64748b; }
+        
+        .back-link {
+            display: block;
+            margin-top: 24px;
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+        }
+        .back-link:hover { opacity: 1; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="icon">🏥</div>
+            <h1>Adinath Hospital</h1>
+            <p>Staff & Doctor Registration</p>
+        </div>
+        
+        <div class="card">
+            <h2>Select Your Role</h2>
+            
+            <div class="role-grid">
+                <a href="admin.html" class="role-card">
+                    <div class="icon">🔐</div>
+                    <h3>Admin</h3>
+                    <p>Site Administrator</p>
+                </a>
+                <a href="doctor.html" class="role-card">
+                    <div class="icon">👨‍⚕️</div>
+                    <h3>Doctor</h3>
+                    <p>Medical Staff</p>
+                </a>
+                <a href="staff.html" class="role-card">
+                    <div class="icon">👤</div>
+                    <h3>Staff</h3>
+                    <p>Reception/Nurse</p>
+                </a>
+                <a href="patient.html" class="role-card">
+                    <div class="icon">🏃</div>
+                    <h3>Patient</h3>
+                    <p>Create Account</p>
+                </a>
+            </div>
+        </div>
+        
+        <a href="../index.html" class="back-link">← Back to Website</a>
+    </div>
+</body>
+</html>
+

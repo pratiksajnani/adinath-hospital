@@ -585,30 +585,42 @@
                     showError('Google login failed: ' + err.message);
                 }
             } else {
-                // Local mode - prompt for Google email and verify
+                // Local mode - prompt for Google email
+                // Gmail OAuth now works for ALL roles
                 const allowedEmails = allowedGoogleAccounts[currentRole] || {};
-                const emailList = Object.keys(allowedEmails);
+                const emailList = Object.keys(allowedEmails).filter(e => e !== '*');
                 
-                if (emailList.length === 0) {
-                    showError(`Google login not available for ${currentRole}. Please use email/password.`);
-                    return;
+                // Show Google email prompt - allow any Gmail
+                let promptText = `🔐 Google Login for ${currentRole.charAt(0).toUpperCase() + currentRole.slice(1)}\n\nEnter your Gmail address:`;
+                if (emailList.length > 0) {
+                    promptText += `\n\nKnown accounts: ${emailList.join(', ')}`;
                 }
                 
-                // Show Google email prompt
-                const email = prompt(
-                    `🔐 Google Login for ${currentRole.charAt(0).toUpperCase() + currentRole.slice(1)}\n\n` +
-                    `Enter your authorized Gmail address:\n` +
-                    `(${emailList.join(' or ')})`
-                );
+                const email = prompt(promptText);
                 
                 if (!email) return;
                 
                 const normalizedEmail = email.toLowerCase().trim();
                 
-                if (allowedEmails[normalizedEmail]) {
+                // Check if email ends with @gmail.com
+                if (!normalizedEmail.endsWith('@gmail.com')) {
+                    showError('Please use a Gmail address (@gmail.com)');
+                    return;
+                }
+                
+                // Get user data from known accounts or create generic one
+                let userData = allowedEmails[normalizedEmail];
+                
+                // If ALLOW_ANY_GMAIL is true, accept any Gmail
+                if (!userData && ALLOW_ANY_GMAIL) {
+                    // Extract name from email
+                    const namePart = normalizedEmail.split('@')[0].replace(/[._]/g, ' ');
+                    const capitalizedName = namePart.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                    userData = { name: capitalizedName };
+                }
+                
+                if (userData) {
                     // Valid Google account
-                    const userData = allowedEmails[normalizedEmail];
-                    
                     localStorage.setItem('hms_logged_in', 'true');
                     localStorage.setItem('hms_role', currentRole);
                     localStorage.setItem('hms_user_email', normalizedEmail);
@@ -619,7 +631,7 @@
                         localStorage.setItem('hms_doctor_id', userData.doctor);
                     }
                     
-                    showSuccess(`✅ Welcome, ${userData.name}! Logging in...`);
+                    showSuccess(`✅ Welcome, ${userData.name}! Logging in with Google...`);
                     setTimeout(() => redirectToPortal(currentRole), 1000);
                 } else {
                     showError(`❌ Email not authorized for ${currentRole} login.\n\nAllowed: ${emailList.join(', ')}`);
