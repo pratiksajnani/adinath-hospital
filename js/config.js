@@ -116,7 +116,7 @@ const CONFIG = {
             phone: '+919824066854',
             specialty: 'Orthopedic & Joint Surgeon',
             experience: '35+ years',
-            photo: 'images/1723730611450.jpeg'
+            photo: 'images/dr-ashok-sajnani.jpg'
         },
         sunita: {
             id: 'sunita',
@@ -128,7 +128,7 @@ const CONFIG = {
             phone: '+919925450425',
             specialty: 'Obstetrics & Gynecology',
             experience: '30+ years',
-            photo: 'images/1516926564161.jpeg'
+            photo: 'images/dr-sunita-sajnani.jpg'
         }
     },
     

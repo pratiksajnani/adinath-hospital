@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Upload Request - Adinath Hospital</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 700px; margin: 0 auto; }
+        .header {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 16px 16px 0 0;
+            text-align: center;
+        }
+        .header h1 { margin-bottom: 5px; }
+        .form-body {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .section:last-child { border-bottom: none; }
+        .section h3 {
+            color: #d97706;
+            margin-bottom: 15px;
+        }
+        .photo-checklist {
+            display: grid;
+            gap: 15px;
+        }
+        .photo-item {
+            background: #fffbeb;
+            border: 2px solid #fde68a;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .photo-item h4 {
+            color: #92400e;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .photo-item p {
+            color: #78716c;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+        .photo-status {
+            display: flex;
+            gap: 10px;
+        }
+        .status-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .status-btn.have {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .status-btn.have:hover, .status-btn.have.active {
+            background: #16a34a;
+            color: white;
+        }
+        .status-btn.need {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .status-btn.need:hover, .status-btn.need.active {
+            background: #dc2626;
+            color: white;
+        }
+        .status-btn.na {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        .status-btn.na:hover, .status-btn.na.active {
+            background: #64748b;
+            color: white;
+        }
+        .upload-instructions {
+            background: #f0fdf4;
+            border: 2px solid #86efac;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .upload-instructions h4 {
+            color: #166534;
+            margin-bottom: 10px;
+        }
+        .upload-instructions ol {
+            margin-left: 20px;
+            color: #166534;
+        }
+        .upload-instructions li {
+            margin-bottom: 8px;
+        }
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        .whatsapp-btn:hover {
+            background: #128C7E;
+        }
+        .btn {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn:hover { background: #d97706; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📷 Photo Checklist</h1>
+            <p>Photos needed for the website</p>
+        </div>
+        
+        <div class="form-body">
+            <div class="upload-instructions">
+                <h4>📤 How to Send Photos</h4>
+                <ol>
+                    <li>Review the checklist below</li>
+                    <li>Take photos on your phone</li>
+                    <li>Send via WhatsApp to Pratik</li>
+                    <li>Or email to pratik.sajnani@gmail.com</li>
+                </ol>
+                <a href="https://wa.me/919XXXXXXXXX?text=Hi%20Pratik!%20Sending%20hospital%20photos%20for%20the%20website" class="whatsapp-btn" target="_blank">
+                    📱 Send Photos via WhatsApp
+                </a>
+            </div>
+            
+            <div class="section">
+                <h3>🏥 Hospital Facility Photos</h3>
+                <div class="photo-checklist">
+                    <div class="photo-item">
+                        <h4>🚪 Hospital Entrance</h4>
+                        <p>Clear photo of the hospital entrance/signboard. Good lighting, daytime preferred.</p>
+                        <div class="photo-status">
+                            <button class="status-btn have" data-photo="entrance">✓ Have It</button>
+                            <button class="status-btn need" data-photo="entrance">✗ Need to Take</button>
+                            <button class="status-btn na" data-photo="entrance">Skip</button>
+                        </div>
+                    </div>
+                    
+                    <div class="photo-item">
+                        <h4>🛋️ Reception/Waiting Area</h4>
+                        <p>Clean, inviting view of the waiting area. Remove any patient identifiable items.</p>
+                        <div class="photo-status">
+                            <button class="status-btn have" data-photo="reception">✓ Have It</button>
+                            <button class="status-btn need" data-photo="reception">✗ Need to Take</button>
+                            <button class="status-btn na" data-photo="reception">Skip</button>
+                        </div>
+                    </div>
+                    
+                    <div class="photo-item">
+                        <h4>🏠 Patient Rooms</h4>
+                        <p>AC rooms, private rooms. Show clean, comfortable environment.</p>
+                        <div class="photo-status">
+                            <button class="status-btn have" data-photo="rooms">✓ Have It</button>
+                            <button class="status-btn need" data-photo="rooms">✗ Need to Take</button>
+                            <button class="status-btn na" data-photo="rooms">Skip</button>
+                        </div>
+                    </div>
+                    
+                    <div class="photo-item">
+                        <h4>🔬 Operation Theatre</h4>
+                        <p>If allowed, show the modern OT with IITV equipment. Optional.</p>
+                        <div class="photo-status">
+                            <button class="status-btn have" data-photo="ot">✓ Have It</button>
+                            <button class="status-btn need" data-photo="ot">✗ Need to Take</button>
+                            <button class="status-btn na" data-photo="ot">Skip</button>
+                        </div>
+                    </div>
+                    
+                    <div class="photo-item">
+                        <h4>💊 Medical Store</h4>
+                        <p>The pharmacy/medical store area.</p>
+                        <div class="photo-status">
+                            <button class="status-btn have" data-photo="pharmacy">✓ Have It</button>
+                            <button class="status-btn need" data-photo="pharmacy">✗ Need to Take</button>
+                            <button class="status-btn na" data-photo="pharmacy">Skip</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>👨‍⚕️ Doctor Photos</h3>
+                <div class="photo-checklist">
+                    <div class="photo-item">
+                        <h4>👨‍⚕️ Dr. Ashok - Professional Photo</h4>
+                        <p>High-quality headshot in formal attire or doctor's coat. ✅ Currently using processed LinkedIn photo.</p>
+                        <div class="photo-status">
+                            <button class="status-btn have active" data-photo="dr-ashok">✓ Using LinkedIn</button>
+                            <button class="status-btn need" data-photo="dr-ashok">Want New Photo</button>
+                        </div>
+                    </div>
+                    
+                    <div class="photo-item">
+                        <h4>👩‍⚕️ Dr. Sunita - Professional Photo</h4>
+                        <p>High-quality headshot. ✅ Currently using LinkedIn photo.</p>
+                        <div class="photo-status">
+                            <button class="status-btn have active" data-photo="dr-sunita">✓ Using LinkedIn</button>
+                            <button class="status-btn need" data-photo="dr-sunita">Want New Photo</button>
+                        </div>
+                    </div>
+                    
+                    <div class="photo-item">
+                        <h4>👨‍⚕️ Dr. Ashok - In Consultation</h4>
+                        <p>Candid photo examining patient (with permission) or explaining to family.</p>
+                        <div class="photo-status">
+                            <button class="status-btn have" data-photo="ashok-work">✓ Have It</button>
+                            <button class="status-btn need" data-photo="ashok-work">✗ Need to Take</button>
+                            <button class="status-btn na" data-photo="ashok-work">Skip</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>🧘 Yoga Class Photos</h3>
+                <div class="photo-checklist">
+                    <div class="photo-item">
+                        <h4>🧘 Yoga Session Photos</h4>
+                        <p>✅ Already have 3 great photos from yoga sessions!</p>
+                        <div class="photo-status">
+                            <button class="status-btn have active">✓ Complete</button>
+                        </div>
+                    </div>
+                    
+                    <div class="photo-item">
+                        <h4>📹 Yoga Class Video</h4>
+                        <p>Short video clip of a yoga session for the website.</p>
+                        <div class="photo-status">
+                            <button class="status-btn have" data-photo="yoga-video">✓ Have It</button>
+                            <button class="status-btn need" data-photo="yoga-video">✗ Need to Take</button>
+                            <button class="status-btn na" data-photo="yoga-video">Skip</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3>👥 Staff Photos</h3>
+                <div class="photo-checklist">
+                    <div class="photo-item">
+                        <h4>👤 Poonam (Receptionist)</h4>
+                        <p>Professional photo at the reception desk.</p>
+                        <div class="photo-status">
+                            <button class="status-btn have" data-photo="poonam">✓ Have It</button>
+                            <button class="status-btn need" data-photo="poonam">✗ Need to Take</button>
+                            <button class="status-btn na" data-photo="poonam">Skip</button>
+                        </div>
+                    </div>
+                    
+                    <div class="photo-item">
+                        <h4>👥 Team Photo</h4>
+                        <p>Group photo of hospital staff (doctors + staff together).</p>
+                        <div class="photo-status">
+                            <button class="status-btn have" data-photo="team">✓ Have It</button>
+                            <button class="status-btn need" data-photo="team">✗ Need to Take</button>
+                            <button class="status-btn na" data-photo="team">Skip</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn" onclick="saveChecklist()">💾 Save Checklist & Share Summary</button>
+        </div>
+    </div>
+    
+    <script>
+        // Handle status button clicks
+        document.querySelectorAll('.status-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const siblings = this.parentElement.querySelectorAll('.status-btn');
+                siblings.forEach(s => s.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        function saveChecklist() {
+            const checklist = {};
+            document.querySelectorAll('.photo-item').forEach(item => {
+                const name = item.querySelector('h4').textContent;
+                const active = item.querySelector('.status-btn.active');
+                checklist[name] = active ? active.textContent : 'Not selected';
+            });
+            
+            localStorage.setItem('photo_checklist', JSON.stringify(checklist));
+            
+            // Create summary
+            let summary = 'Photo Checklist Summary:\n\n';
+            Object.entries(checklist).forEach(([name, status]) => {
+                summary += `${name}: ${status}\n`;
+            });
+            
+            const subject = encodeURIComponent('Hospital Photo Checklist');
+            const body = encodeURIComponent(summary);
+            
+            if (confirm('Open email to send checklist to Pratik?')) {
+                window.location.href = `mailto:pratik.sajnani@gmail.com?subject=${subject}&body=${body}`;
+            }
+        }
+    </script>
+</body>
+</html>
+

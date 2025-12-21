@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Sunita Sajnani - Information Form</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 700px; margin: 0 auto; }
+        .header {
+            background: linear-gradient(135deg, #db2777 0%, #9d174d 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 16px 16px 0 0;
+            text-align: center;
+        }
+        .header h1 { margin-bottom: 5px; }
+        .form-body {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .section:last-child { border-bottom: none; margin-bottom: 0; }
+        .section h3 {
+            color: #db2777;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        .field { margin-bottom: 20px; }
+        .field label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+        .field label small { font-weight: 400; color: #64748b; }
+        .field input, .field textarea, .field select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .field input:focus, .field textarea:focus, .field select:focus {
+            outline: none;
+            border-color: #db2777;
+        }
+        .field textarea { min-height: 100px; resize: vertical; }
+        .checkbox-group { display: grid; gap: 10px; }
+        .checkbox-item { display: flex; align-items: center; gap: 10px; }
+        .checkbox-item input { width: auto; }
+        .current-value {
+            background: #fdf2f8;
+            border: 1px solid #fbcfe8;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        .current-value strong { color: #9d174d; }
+        .btn {
+            background: #db2777;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn:hover { background: #be185d; }
+        .success { display: none; text-align: center; padding: 40px; }
+        .success h2 { color: #16a34a; margin-bottom: 10px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 500px) { .grid-2 { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👩‍⚕️ Dr. Sunita Sajnani</h1>
+            <p>Website Information Form</p>
+        </div>
+        
+        <div class="form-body">
+            <form id="formSunita">
+                <!-- Professional Info -->
+                <div class="section">
+                    <h3>📋 Professional Information</h3>
+                    
+                    <div class="field">
+                        <label>Full Professional Title</label>
+                        <div class="current-value">
+                            <strong>Current:</strong> MD Obstetrics & Gynecology
+                        </div>
+                        <input type="text" name="title" placeholder="Leave blank if current is correct">
+                    </div>
+                    
+                    <div class="field">
+                        <label>Years of Experience</label>
+                        <div class="current-value"><strong>Current:</strong> 30+ years</div>
+                        <input type="text" name="experience" placeholder="Leave blank if correct">
+                    </div>
+                    
+                    <div class="field">
+                        <label>Rotary Club Position/Title <small>(if any)</small></label>
+                        <input type="text" name="rotary" placeholder="e.g., Member, Past President...">
+                    </div>
+                    
+                    <div class="field">
+                        <label>Special Awards/Achievements</label>
+                        <textarea name="awards" placeholder="Any awards, recognitions, or notable achievements"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Gynecology Services -->
+                <div class="section">
+                    <h3>👶 Gynecology Services</h3>
+                    
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="services" value="obstetrics" checked>
+                            Obstetrics & Delivery Care
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="services" value="gynecology" checked>
+                            Gynecology Consultations
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="services" value="adolescent-gyn" checked>
+                            Adolescent Gynecology
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="services" value="adolescent-edu" checked>
+                            Adolescent Education Programs
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="services" value="cosmetic" checked>
+                            Cosmetic Gynecology
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="services" value="wellness" checked>
+                            Women's Wellness
+                        </label>
+                    </div>
+                    
+                    <div class="field" style="margin-top: 15px;">
+                        <label>Additional Services</label>
+                        <textarea name="additional_services" placeholder="Any other services to add?"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Yoga Classes -->
+                <div class="section">
+                    <h3>🧘 Yoga Classes</h3>
+                    
+                    <div class="grid-2">
+                        <div class="field">
+                            <label>Class Days</label>
+                            <input type="text" name="yoga_days" placeholder="e.g., Mon, Wed, Fri">
+                        </div>
+                        <div class="field">
+                            <label>Class Time</label>
+                            <input type="text" name="yoga_time" placeholder="e.g., 6:00 AM - 7:00 AM">
+                        </div>
+                    </div>
+                    
+                    <div class="grid-2">
+                        <div class="field">
+                            <label>Class Duration</label>
+                            <input type="text" name="yoga_duration" placeholder="e.g., 1 hour">
+                        </div>
+                        <div class="field">
+                            <label>Batch Size (Max Students)</label>
+                            <input type="number" name="yoga_batch" placeholder="e.g., 15">
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <label>Monthly Fee</label>
+                        <select name="yoga_fee_type">
+                            <option value="contact">Contact for pricing</option>
+                            <option value="custom">Show specific fee</option>
+                        </select>
+                    </div>
+                    
+                    <div class="field">
+                        <label>If showing fee, enter amount <small>(₹/month)</small></label>
+                        <input type="text" name="yoga_fee" placeholder="e.g., 1000">
+                    </div>
+                    
+                    <div class="field">
+                        <label>Location</label>
+                        <div class="current-value"><strong>Current:</strong> Adinath Hospital, Shukan Mall, 2nd Floor</div>
+                        <input type="text" name="yoga_location" placeholder="Leave blank if correct">
+                    </div>
+                    
+                    <div class="field">
+                        <label>Types of Yoga Offered</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="yoga_types" value="prenatal" checked>
+                                Prenatal & Postnatal Yoga
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="yoga_types" value="therapeutic" checked>
+                                Therapeutic Yoga for Pain Relief
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="yoga_types" value="stress" checked>
+                                Stress Management & Meditation
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="yoga_types" value="adolescent" checked>
+                                Special Sessions for Adolescents
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <label>Additional yoga programs to add</label>
+                        <textarea name="yoga_additional" placeholder="Any other yoga programs?"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Consultation -->
+                <div class="section">
+                    <h3>💰 Consultation Information</h3>
+                    
+                    <div class="field">
+                        <label>Consultation Fee</label>
+                        <select name="fee_type">
+                            <option value="contact">Contact for pricing</option>
+                            <option value="custom">Show specific fee</option>
+                        </select>
+                    </div>
+                    
+                    <div class="field">
+                        <label>If showing fee, enter amount <small>(₹)</small></label>
+                        <input type="text" name="fee_amount" placeholder="e.g., 500">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn">✅ Submit Information</button>
+            </form>
+            
+            <div class="success" id="success">
+                <h2>✅ Thank You!</h2>
+                <p>Your information has been saved. Pratik will update the website accordingly.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('formSunita').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                if (data[key]) {
+                    if (Array.isArray(data[key])) data[key].push(value);
+                    else data[key] = [data[key], value];
+                } else {
+                    data[key] = value;
+                }
+            });
+            
+            localStorage.setItem('form_dr_sunita', JSON.stringify(data));
+            localStorage.setItem('form_dr_sunita_timestamp', new Date().toISOString());
+            
+            this.style.display = 'none';
+            document.getElementById('success').style.display = 'block';
+            
+            const subject = encodeURIComponent('Dr. Sunita Website Form Submission');
+            const body = encodeURIComponent('Form data:\n\n' + JSON.stringify(data, null, 2));
+            
+            setTimeout(() => {
+                if (confirm('Open email to send this information to Pratik?')) {
+                    window.location.href = `mailto:pratik.sajnani@gmail.com?subject=${subject}&body=${body}`;
+                }
+            }, 500);
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Operations - Information Form</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 700px; margin: 0 auto; }
+        .header {
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 16px 16px 0 0;
+            text-align: center;
+        }
+        .header h1 { margin-bottom: 5px; }
+        .form-body {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .section:last-child { border-bottom: none; margin-bottom: 0; }
+        .section h3 {
+            color: #2563eb;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        .field { margin-bottom: 20px; }
+        .field label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+        .field label small { font-weight: 400; color: #64748b; }
+        .field input, .field textarea, .field select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        .field input:focus, .field textarea:focus { outline: none; border-color: #2563eb; }
+        .field textarea { min-height: 80px; resize: vertical; }
+        .current-value {
+            background: #eff6ff;
+            border: 1px solid #93c5fd;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        .current-value strong { color: #1e40af; }
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn:hover { background: #1d4ed8; }
+        .success { display: none; text-align: center; padding: 40px; }
+        .success h2 { color: #16a34a; margin-bottom: 10px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        @media (max-width: 500px) { .grid-2 { grid-template-columns: 1fr; } }
+        .checkbox-group { display: grid; gap: 10px; }
+        .checkbox-item { display: flex; align-items: center; gap: 10px; }
+        .checkbox-item input { width: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 Hospital Operations</h1>
+            <p>Staff, Contacts & Social Media</p>
+        </div>
+        
+        <div class="form-body">
+            <form id="formHospital">
+                <!-- Staff Information -->
+                <div class="section">
+                    <h3>👥 Staff Information</h3>
+                    
+                    <p style="color: #64748b; margin-bottom: 20px;">Enter details for staff who need access to the hospital management system.</p>
+                    
+                    <h4 style="margin-bottom: 15px; color: #475569;">Poonam (Receptionist)</h4>
+                    <div class="grid-2">
+                        <div class="field">
+                            <label>Full Name</label>
+                            <input type="text" name="poonam_name" placeholder="Poonam's full name">
+                        </div>
+                        <div class="field">
+                            <label>Phone Number</label>
+                            <input type="tel" name="poonam_phone" placeholder="+91 9XXXXXXXXX">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Email <small>(optional)</small></label>
+                        <input type="email" name="poonam_email" placeholder="email@example.com">
+                    </div>
+                    
+                    <hr style="margin: 25px 0; border: none; border-top: 1px solid #e2e8f0;">
+                    
+                    <h4 style="margin-bottom: 15px; color: #475569;">Other Staff (if any)</h4>
+                    <div class="grid-2">
+                        <div class="field">
+                            <label>Name</label>
+                            <input type="text" name="staff2_name" placeholder="Staff member name">
+                        </div>
+                        <div class="field">
+                            <label>Role</label>
+                            <input type="text" name="staff2_role" placeholder="e.g., Nurse, Medical Store">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Phone</label>
+                        <input type="tel" name="staff2_phone" placeholder="+91 9XXXXXXXXX">
+                    </div>
+                </div>
+                
+                <!-- Contact Preferences -->
+                <div class="section">
+                    <h3>📞 Contact Preferences</h3>
+                    
+                    <p style="color: #dc2626; background: #fef2f2; padding: 12px; border-radius: 8px; margin-bottom: 20px;">
+                        ⚠️ <strong>Important:</strong> We will NOT show doctors' personal mobile numbers on the public website. Only the hospital's main number will be displayed.
+                    </p>
+                    
+                    <div class="field">
+                        <label>Hospital Main Number <small>(shown on website)</small></label>
+                        <div class="current-value"><strong>Current:</strong> +91 99254 50425</div>
+                        <input type="tel" name="hospital_number" placeholder="Hospital landline or reception number">
+                    </div>
+                    
+                    <div class="field">
+                        <label>Hospital WhatsApp Number <small>(for patient inquiries)</small></label>
+                        <input type="tel" name="whatsapp" placeholder="WhatsApp number for booking inquiries">
+                    </div>
+                    
+                    <div class="field">
+                        <label>Dr. Ashok's Private Number <small>(NOT shown publicly, only for SMS alerts)</small></label>
+                        <input type="tel" name="dr_ashok_private" placeholder="For appointment reminders only">
+                    </div>
+                    
+                    <div class="field">
+                        <label>Dr. Sunita's Private Number <small>(NOT shown publicly)</small></label>
+                        <input type="tel" name="dr_sunita_private" placeholder="For appointment reminders only">
+                    </div>
+                    
+                    <div class="field">
+                        <label>Hospital Email for Notifications</label>
+                        <input type="email" name="hospital_email" placeholder="e.g., adinathhospital@gmail.com">
+                    </div>
+                    
+                    <div class="field">
+                        <label>Who should receive new appointment notifications?</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="notify" value="dr_ashok">
+                                Dr. Ashok's phone
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="notify" value="dr_sunita">
+                                Dr. Sunita's phone
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="notify" value="receptionist" checked>
+                                Receptionist (Poonam)
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="notify" value="pratik">
+                                Pratik (Site Admin)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Social Media -->
+                <div class="section">
+                    <h3>📱 Social Media</h3>
+                    
+                    <div class="field">
+                        <label>Instagram Handle</label>
+                        <input type="text" name="instagram" placeholder="@adinathhospital">
+                    </div>
+                    
+                    <div class="field">
+                        <label>Facebook Page</label>
+                        <input type="text" name="facebook" placeholder="facebook.com/adinathhospital">
+                    </div>
+                    
+                    <div class="field">
+                        <label>YouTube Channel</label>
+                        <input type="text" name="youtube" placeholder="YouTube channel URL">
+                    </div>
+                </div>
+                
+                <!-- Testimonials -->
+                <div class="section">
+                    <h3>💬 Testimonials</h3>
+                    
+                    <div class="field">
+                        <label>Can we show patient testimonials on the website?</label>
+                        <select name="testimonials_ok">
+                            <option value="yes">Yes, with patient permission</option>
+                            <option value="no">No, don't show testimonials</option>
+                            <option value="rotary">Only from Rotary Club members</option>
+                        </select>
+                    </div>
+                    
+                    <div class="field">
+                        <label>Names of people willing to give testimonials</label>
+                        <textarea name="testimonial_names" placeholder="Enter names (one per line)"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Admin Info -->
+                <div class="section">
+                    <h3>🔐 Site Admin (Pratik)</h3>
+                    
+                    <div class="field">
+                        <label>Your Phone Number <small>(for admin alerts)</small></label>
+                        <input type="tel" name="pratik_phone" placeholder="+91 9XXXXXXXXX">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn">✅ Submit Information</button>
+            </form>
+            
+            <div class="success" id="success">
+                <h2>✅ Thank You!</h2>
+                <p>Hospital information has been saved.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('formHospital').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                if (data[key]) {
+                    if (Array.isArray(data[key])) data[key].push(value);
+                    else data[key] = [data[key], value];
+                } else {
+                    data[key] = value;
+                }
+            });
+            
+            localStorage.setItem('form_hospital', JSON.stringify(data));
+            localStorage.setItem('form_hospital_timestamp', new Date().toISOString());
+            
+            this.style.display = 'none';
+            document.getElementById('success').style.display = 'block';
+            
+            const subject = encodeURIComponent('Hospital Operations Form Submission');
+            const body = encodeURIComponent('Form data:\n\n' + JSON.stringify(data, null, 2));
+            
+            setTimeout(() => {
+                if (confirm('Open email to send this information to Pratik?')) {
+                    window.location.href = `mailto:pratik.sajnani@gmail.com?subject=${subject}&body=${body}`;
+                }
+            }, 500);
+        });
+    </script>
+</body>
+</html>
+
