@@ -43,7 +43,7 @@ const HMS = {
                 specialtyGu: 'હાડકાની સર્જરી',
                 specialtyHi: 'हड्डी रोग विशेषज्ञ',
                 permissions: ['patients', 'appointments', 'prescriptions', 'reports', 'content', 'images'],
-                photo: 'images/dr-ashok-sajnani.jpg',
+                photo: 'images/1723730611450.jpeg',
                 phone: '9925450425',
                 linkedIn: 'https://www.linkedin.com/in/ashok-sajnani-11937322/',
                 experience: '35+ years',
@@ -65,7 +65,7 @@ const HMS = {
                 specialtyGu: 'પ્રસૂતિ અને સ્ત્રીરોગ',
                 specialtyHi: 'प्रसूति एवं स्त्री रोग',
                 permissions: ['patients', 'appointments', 'prescriptions', 'reports', 'content', 'images'],
-                photo: 'images/dr-sunita-sajnani.jpg',
+                photo: 'images/1516926564161.jpeg',
                 phone: '9925450425',
                 linkedIn: 'https://www.linkedin.com/in/dr-sunita-sajnani-6b81b384/',
                 experience: '30+ years',
@@ -75,25 +75,61 @@ const HMS = {
                 active: true,
                 createdAt: '2025-01-01'
             },
-            // Staff - Poonam (Receptionist) - Details to be completed via form
-            {
+            // Staff - TO BE FILLED WITH REAL DATA
+            // Placeholder: Add actual nurse details when available
+            /*{
                 id: 'U004',
-                email: 'poonam@adinathhospital.com', // Placeholder - update with real email/phone
+                email: 'nurse@adinathhospital.com',
                 password: 'staff123',
-                name: 'Poonam', // Full name TBD from form
+                name: '[Nurse Name]',
+                nameGu: '[નર્સ નામ]',
+                nameHi: '[नर्स नाम]',
+                role: 'nurse',
+                department: 'General',
+                permissions: ['patients', 'appointments', 'send_patient_link'],
+                photo: '',
+                phone: '',
+                preferredLanguage: 'gu',
+                shift: 'morning',
+                active: true,
+                createdAt: '2025-01-15'
+            },*/
+            {
+                id: 'U005',
+                email: 'receptionist@adinathhospital.com',
+                password: 'staff123',
+                name: 'Poonam',
                 nameGu: 'પૂનમ',
                 nameHi: 'पूनम',
                 role: 'receptionist',
-                department: 'Front Desk & Medical Store',
-                permissions: ['appointments', 'patients', 'send_patient_link', 'queue', 'inventory', 'sales'],
-                photo: '', // To be added
-                phone: '', // TBD from form
+                gender: 'male',
+                department: 'Front Desk',
+                permissions: ['appointments', 'patients', 'send_patient_link', 'queue'],
+                photo: '',
+                phone: '', // TO BE FILLED
+                preferredLanguage: 'gu',
+                shift: 'morning',
+                active: true,
+                createdAt: '2025-01-15'
+            },
+            // Placeholder: Add actual pharmacist details when available
+            /*{
+                id: 'U006',
+                email: 'pharmacist@adinathhospital.com',
+                password: 'staff123',
+                name: '[Pharmacist Name]',
+                nameGu: '[ફાર્માસિસ્ટ નામ]',
+                nameHi: '[फार्मासिस्ट नाम]',
+                role: 'pharmacist',
+                department: 'Medical Store',
+                permissions: ['inventory', 'sales', 'prescriptions', 'queue'],
+                photo: '',
+                phone: '',
                 preferredLanguage: 'gu',
                 shift: 'full-day',
                 active: true,
-                createdAt: '2025-01-01'
-            }
-            // NOTE: More staff can be added via the Hospital Operations form
+                createdAt: '2025-01-15'
+            }*/
         ];
 
         // Staff roles configuration
@@ -111,21 +147,15 @@ const HMS = {
         localStorage.setItem('hms_users', JSON.stringify(users));
         localStorage.setItem('hms_staff_roles', JSON.stringify(staffRoles));
 
-        // Sample patients
+        // Sample patients (demo data - will be replaced with real patients)
         const patients = [
-            { id: 'P001', name: 'Rajesh Patel', phone: '9876543210', age: 55, gender: 'male', address: 'Shahibaug, Ahmedabad', createdAt: '2025-01-15', visits: 3 },
-            { id: 'P002', name: 'Priya Shah', phone: '9876543211', age: 32, gender: 'female', address: 'Navrangpura, Ahmedabad', createdAt: '2025-02-20', visits: 2 },
-            { id: 'P003', name: 'Meena Desai', phone: '9876543212', age: 45, gender: 'female', address: 'Satellite, Ahmedabad', createdAt: '2025-03-10', visits: 5 },
-            { id: 'P004', name: 'Amit Kumar', phone: '9876543213', age: 28, gender: 'male', address: 'Maninagar, Ahmedabad', createdAt: '2025-04-05', visits: 1 },
+            // Demo patient entries for testing - real patients will be added via booking
         ];
 
-        // Sample appointments
+        // Sample appointments (demo data - will be replaced with real appointments)
         const today = new Date().toISOString().split('T')[0];
         const appointments = [
-            { id: 'A001', patientId: 'P001', patientName: 'Rajesh Patel', doctor: 'ashok', date: today, time: '11:00 AM', reason: 'Knee pain follow-up', status: 'confirmed', notes: '' },
-            { id: 'A002', patientId: 'P002', patientName: 'Priya Shah', doctor: 'sunita', date: today, time: '12:00 PM', reason: 'Prenatal checkup', status: 'waiting', notes: '' },
-            { id: 'A003', patientId: 'P003', patientName: 'Meena Desai', doctor: 'sunita', date: today, time: '2:00 PM', reason: 'Yoga class registration', status: 'pending', notes: '' },
-            { id: 'A004', patientId: 'P004', patientName: 'Amit Kumar', doctor: 'ashok', date: today, time: '4:00 PM', reason: 'Sports injury consultation', status: 'pending', notes: '' },
+            // Demo appointment entries - real appointments will be added via booking form
         ];
 
         // Sample prescriptions

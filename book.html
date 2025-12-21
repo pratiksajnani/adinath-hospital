@@ -386,6 +386,13 @@
     </style>
 </head>
 <body>
+    <!-- Language Selector -->
+    <div class="lang-float" style="position: fixed; top: 10px; right: 20px; z-index: 1001; display: flex; gap: 5px;">
+        <button onclick="I18N.setLanguage('en')" data-lang="en" style="padding: 8px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">EN</button>
+        <button onclick="I18N.setLanguage('hi')" data-lang="hi" style="padding: 8px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">हि</button>
+        <button onclick="I18N.setLanguage('gu')" data-lang="gu" style="padding: 8px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">ગુ</button>
+    </div>
+    
     <!-- Header -->
     <header class="header">
         <div class="container header-content">
@@ -593,6 +600,7 @@
     </main>
 
     <script src="js/config.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/hms.js"></script>
     <script src="js/main.js"></script>
     <script>
