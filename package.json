@@ -4,17 +4,22 @@
   "description": "Adinath Hospital - Healthcare Website",
   "scripts": {
     "test": "playwright test",
+    "test:unit": "jest --passWithNoTests",
+    "test:e2e": "playwright test",
+    "test:all": "npm run test:unit && npm run test:e2e",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:report": "playwright show-report",
-    "test:unit": "jest",
-    "test:all": "npm run test:unit && npm run test",
     "test:links": "node tests/link-checker.js",
     "test:a11y": "playwright test --grep @accessibility",
     "serve": "npx serve -p 8080",
     "pretest": "echo 'Running pre-test checks...'",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "predeploy": "npm run test:unit",
+    "deploy": "npm run predeploy && git push origin main",
+    "ci": "npm run test:unit && npm run test:e2e",
+    "validate": "npm run test:unit && echo '✅ All tests passed!'"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0",

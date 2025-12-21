@@ -39,7 +39,7 @@ Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Mana
 | Resource | Link |
 |----------|------|
 | **TinyURL** | https://tinyurl.com/doctor-demo |
-| Full Guide | [docs/doctor-demo-guide.html](docs/doctor-demo-guide.html) |
+| Full Guide | [docs/DOCTOR_GUIDE.html](docs/DOCTOR_GUIDE.html) |
 | CRUD Operations | View appointments, Write prescriptions, Update status, Send messages |
 
 ### 👩‍💼 Staff Demo Guide
@@ -47,7 +47,7 @@ Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Mana
 | Resource | Link |
 |----------|------|
 | **TinyURL** | https://tinyurl.com/staff-demo |
-| Full Guide | [docs/staff-demo-guide.html](docs/staff-demo-guide.html) |
+| Full Guide | [docs/STAFF_GUIDE.html](docs/STAFF_GUIDE.html) |
 | CRUD Operations | Register patients, Book appointments, Send SMS/WhatsApp, Show QR |
 
 ### 👨‍👩‍👧 Patient Demo Guide

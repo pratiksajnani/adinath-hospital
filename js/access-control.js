@@ -37,11 +37,9 @@ const AccessControl = {
         
         // Staff-only guides
         '/docs/STAFF_GUIDE.html': ['admin', 'staff', 'receptionist'],
-        '/docs/staff-demo-guide.html': ['admin', 'staff', 'receptionist'],
         
         // Doctor-only guides  
         '/docs/DOCTOR_GUIDE.html': ['admin', 'doctor'],
-        '/docs/doctor-demo-guide.html': ['admin', 'doctor'],
         
         // Admin-only guides
         '/docs/ADMIN_GUIDE.html': ['admin'],
