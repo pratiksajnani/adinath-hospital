@@ -1,447 +1,628 @@
 /**
  * HMS (Hospital Management System) Unit Tests
- * Tests data structures and business logic
+ * Tests all CRUD operations for patients, appointments, prescriptions, etc.
  */
 
-describe('HMS - Data Structures', () => {
-    test('user should have required fields', () => {
-        const user = {
-            id: 'user_1',
+// Load HMS module
+const HMS = require('../../js/hms.js');
+
+describe('HMS Core', () => {
+    beforeEach(() => {
+        localStorage.clear();
+        HMS.init();
+    });
+
+    describe('Initialization', () => {
+        test('should have DATA_VERSION defined', () => {
+            expect(HMS.DATA_VERSION).toBeDefined();
+        });
+
+        test('should initialize data version in localStorage', () => {
+            expect(localStorage.getItem('hms_data_version')).toBe(HMS.DATA_VERSION);
+        });
+
+        test('should set hms_initialized flag', () => {
+            expect(localStorage.getItem('hms_initialized')).toBe('true');
+        });
+
+        test('should seed default users', () => {
+            const users = HMS.users.getAll();
+            expect(users.length).toBeGreaterThan(0);
+        });
+
+        test('should have admin user', () => {
+            const admin = HMS.users.getByRole('admin');
+            expect(admin.length).toBe(1);
+            expect(admin[0].email).toBe('pratik.sajnani@gmail.com');
+        });
+
+        test('should have doctor users', () => {
+            const doctors = HMS.users.getDoctors();
+            expect(doctors.length).toBe(2);
+        });
+    });
+});
+
+describe('HMS.users', () => {
+    beforeEach(() => {
+        localStorage.clear();
+        HMS.init();
+    });
+
+    test('getAll() should return all users', () => {
+        const users = HMS.users.getAll();
+        expect(Array.isArray(users)).toBe(true);
+        expect(users.length).toBeGreaterThan(0);
+    });
+
+    test('getById() should return user by ID', () => {
+        const users = HMS.users.getAll();
+        const user = HMS.users.getById(users[0].id);
+        expect(user).toBeDefined();
+        expect(user.id).toBe(users[0].id);
+    });
+
+    test('getById() should return undefined for unknown ID', () => {
+        const user = HMS.users.getById('nonexistent-id');
+        expect(user).toBeUndefined();
+    });
+
+    test('getByEmail() should return user by email', () => {
+        const user = HMS.users.getByEmail('pratik.sajnani@gmail.com');
+        expect(user).toBeDefined();
+        expect(user.role).toBe('admin');
+    });
+
+    test('getByEmail() should return undefined for unknown email', () => {
+        const user = HMS.users.getByEmail('unknown@test.com');
+        expect(user).toBeUndefined();
+    });
+
+    test('getByEmailOrUsername() should find by email', () => {
+        const user = HMS.users.getByEmailOrUsername('drsajnani@gmail.com');
+        expect(user).toBeDefined();
+        expect(user.role).toBe('doctor');
+    });
+
+    test('getByEmailOrUsername() should find by username', () => {
+        const user = HMS.users.getByEmailOrUsername('psaj');
+        expect(user).toBeDefined();
+        expect(user.role).toBe('admin');
+    });
+
+    test('getByRole() should filter by role', () => {
+        const doctors = HMS.users.getByRole('doctor');
+        expect(doctors.every(u => u.role === 'doctor')).toBe(true);
+    });
+
+    test('getDoctors() should return only doctors', () => {
+        const doctors = HMS.users.getDoctors();
+        expect(doctors.length).toBe(2);
+        expect(doctors.every(u => u.role === 'doctor')).toBe(true);
+    });
+
+    test('create() should add new user', () => {
+        const initialCount = HMS.users.getAll().length;
+        HMS.users.create({
             email: 'test@test.com',
             name: 'Test User',
-            role: 'admin',
-            createdAt: new Date().toISOString()
-        };
+            role: 'patient'
+        });
+        expect(HMS.users.getAll().length).toBe(initialCount + 1);
+    });
 
+    test('create() should generate ID', () => {
+        const user = HMS.users.create({
+            email: 'new@test.com',
+            name: 'New User',
+            role: 'staff'
+        });
         expect(user.id).toBeDefined();
-        expect(user.email).toBeDefined();
-        expect(user.role).toBeDefined();
     });
 
-    test('patient should have required fields', () => {
-        const patient = {
-            id: 'P12345',
-            name: 'Ramesh Kumar',
-            phone: '9925450425',
-            age: 45,
-            gender: 'male',
-            createdAt: new Date().toISOString()
-        };
+    test('update() should modify user', () => {
+        const users = HMS.users.getAll();
+        HMS.users.update(users[0].id, { name: 'Updated Name' });
+        const updated = HMS.users.getById(users[0].id);
+        expect(updated.name).toBe('Updated Name');
+    });
 
+    test('delete() should remove user', () => {
+        const users = HMS.users.getAll();
+        const initialCount = users.length;
+        HMS.users.delete(users[0].id);
+        expect(HMS.users.getAll().length).toBe(initialCount - 1);
+    });
+});
+
+describe('HMS.patients', () => {
+    beforeEach(() => {
+        localStorage.clear();
+        HMS.init();
+    });
+
+    test('getAll() should return array', () => {
+        const patients = HMS.patients.getAll();
+        expect(Array.isArray(patients)).toBe(true);
+    });
+
+    test('create() should add patient with ID', () => {
+        const patient = HMS.patients.create({
+            name: 'Test Patient',
+            phone: '9999999999',
+            age: 30,
+            gender: 'male'
+        });
         expect(patient.id).toBeDefined();
-        expect(patient.name).toBeDefined();
-        expect(patient.phone).toBeDefined();
+        expect(patient.name).toBe('Test Patient');
     });
 
-    test('appointment should have required fields', () => {
-        const appointment = {
-            id: 'A12345',
-            patientId: 'P12345',
-            doctorId: 'ashok',
-            date: '2025-12-25',
-            time: '11:00 AM',
-            status: 'pending',
-            createdAt: new Date().toISOString()
-        };
-
-        expect(appointment.id).toBeDefined();
-        expect(appointment.patientId).toBeDefined();
-        expect(appointment.doctorId).toBeDefined();
-        expect(appointment.date).toBeDefined();
-        expect(appointment.status).toBeDefined();
+    test('create() should set createdAt', () => {
+        const patient = HMS.patients.create({
+            name: 'New Patient',
+            phone: '8888888888'
+        });
+        expect(patient.createdAt).toBeDefined();
     });
 
-    test('prescription should have required fields', () => {
-        const prescription = {
-            id: 'RX12345',
-            patientId: 'P12345',
-            doctorId: 'ashok',
-            diagnosis: 'Knee Osteoarthritis',
-            medicines: [],
-            createdAt: new Date().toISOString()
-        };
-        
-        expect(prescription.id).toBeDefined();
-        expect(prescription.patientId).toBeDefined();
-        expect(prescription.doctorId).toBeDefined();
-        expect(prescription.diagnosis).toBeDefined();
+    test('getById() should return patient', () => {
+        const created = HMS.patients.create({
+            name: 'Find Me',
+            phone: '1234567890'
+        });
+        const found = HMS.patients.getById(created.id);
+        expect(found).toBeDefined();
+        expect(found.name).toBe('Find Me');
     });
 
-    test('inventory item should have required fields', () => {
-        const item = {
-            id: 'INV12345',
-            name: 'Paracetamol 500mg',
-            category: 'Tablet',
-            quantity: 100,
-            price: 10,
-            reorderLevel: 20
-        };
-        
-        expect(item.id).toBeDefined();
-        expect(item.name).toBeDefined();
-        expect(item.quantity).toBeDefined();
+    test('getByPhone() should find by phone', () => {
+        HMS.patients.create({
+            name: 'Phone Patient',
+            phone: '5555555555'
+        });
+        const found = HMS.patients.getByPhone('5555555555');
+        expect(found).toBeDefined();
+        expect(found.name).toBe('Phone Patient');
     });
 
-    test('sale should have required fields', () => {
-        const sale = {
-            id: 'S12345',
-            items: [{ name: 'Paracetamol', qty: 2, price: 10 }],
-            total: 20,
-            paymentMethod: 'cash',
-            createdAt: new Date().toISOString()
-        };
-        
-        expect(sale.id).toBeDefined();
-        expect(sale.items).toBeDefined();
-        expect(sale.total).toBeDefined();
-    });
-});
-
-describe('HMS - Role Validation', () => {
-    const validRoles = ['admin', 'doctor', 'staff', 'receptionist', 'nurse', 'pharmacist', 'patient'];
-
-    test('should have valid roles', () => {
-        expect(validRoles).toContain('admin');
-        expect(validRoles).toContain('doctor');
-        expect(validRoles).toContain('patient');
+    test('update() should modify patient', () => {
+        const patient = HMS.patients.create({
+            name: 'Original',
+            phone: '1111111111'
+        });
+        HMS.patients.update(patient.id, { name: 'Modified' });
+        const updated = HMS.patients.getById(patient.id);
+        expect(updated.name).toBe('Modified');
     });
 
-    test('admin should have all permissions', () => {
-        const adminPermissions = ['all', 'users', 'patients', 'appointments', 'prescriptions', 'inventory', 'sales'];
-        expect(adminPermissions).toContain('all');
+    test('delete() should remove patient', () => {
+        const patient = HMS.patients.create({
+            name: 'To Delete',
+            phone: '7777777777'
+        });
+        const initialCount = HMS.patients.getAll().length;
+        HMS.patients.delete(patient.id);
+        expect(HMS.patients.getAll().length).toBe(initialCount - 1);
     });
 
-    test('doctor should have clinical permissions', () => {
-        const doctorPermissions = ['patients', 'appointments', 'prescriptions', 'queue'];
-        expect(doctorPermissions).toContain('prescriptions');
-        expect(doctorPermissions).toContain('patients');
-    });
-
-    test('receptionist should have front desk permissions', () => {
-        const receptionistPermissions = ['patients', 'appointments', 'queue'];
-        expect(receptionistPermissions).toContain('appointments');
-        expect(receptionistPermissions).not.toContain('prescriptions');
-    });
-});
-
-describe('HMS - User Authentication Logic', () => {
-    test('should validate email format', () => {
-        const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-        expect(isValidEmail('test@test.com')).toBe(true);
-        expect(isValidEmail('pratik.sajnani@gmail.com')).toBe(true);
-        expect(isValidEmail('invalid')).toBe(false);
-        expect(isValidEmail('invalid@')).toBe(false);
-    });
-
-    test('should hash password for storage (mock)', () => {
-        const hashPassword = (password) => {
-            // Simple mock - in reality would use bcrypt
-            return `hashed_${password}`;
-        };
-        
-        expect(hashPassword('1234')).toBe('hashed_1234');
-        expect(hashPassword('password')).not.toBe('password');
-    });
-
-    test('should verify password match', () => {
-        const verifyPassword = (input, stored) => {
-            return `hashed_${input}` === stored;
-        };
-        
-        expect(verifyPassword('1234', 'hashed_1234')).toBe(true);
-        expect(verifyPassword('wrong', 'hashed_1234')).toBe(false);
-    });
-});
-
-describe('HMS - Patient Search', () => {
-    const patients = [
-        { id: '1', name: 'Ramesh Kumar', phone: '9925450425' },
-        { id: '2', name: 'Suresh Patel', phone: '9876543210' },
-        { id: '3', name: 'Mahesh Shah', phone: '9123456789' }
-    ];
-
-    const searchPatients = (query) => {
-        const q = query.toLowerCase();
-        return patients.filter(p => 
-            p.name.toLowerCase().includes(q) || 
-            p.phone.includes(q)
-        );
-    };
-
-    test('should find by name', () => {
-        const results = searchPatients('Ramesh');
+    test('search() should find by name', () => {
+        HMS.patients.create({ name: 'Ramesh Kumar', phone: '1' });
+        HMS.patients.create({ name: 'Suresh Patel', phone: '2' });
+        const results = HMS.patients.search('Ramesh');
         expect(results.length).toBe(1);
         expect(results[0].name).toBe('Ramesh Kumar');
     });
 
-    test('should find by phone', () => {
-        const results = searchPatients('9876');
+    test('search() should find by phone', () => {
+        HMS.patients.create({ name: 'ABC', phone: '9876543210' });
+        const results = HMS.patients.search('987654');
+        expect(results.length).toBeGreaterThan(0);
+    });
+});
+
+describe('HMS.appointments', () => {
+    let testPatient;
+
+    beforeEach(() => {
+        localStorage.clear();
+        HMS.init();
+        testPatient = HMS.patients.create({
+            name: 'Appointment Patient',
+            phone: '1234567890'
+        });
+    });
+
+    test('create() should add appointment', () => {
+        const apt = HMS.appointments.create({
+            patientId: testPatient.id,
+            doctorId: 'ashok',
+            date: '2025-12-25',
+            time: '11:00 AM',
+            reason: 'Knee pain'
+        });
+        expect(apt.id).toBeDefined();
+        expect(apt.status).toBe('pending');
+    });
+
+    test('getAll() should return appointments', () => {
+        HMS.appointments.create({
+            patientId: testPatient.id,
+            doctorId: 'ashok',
+            date: '2025-12-25',
+            time: '11:00 AM'
+        });
+        const all = HMS.appointments.getAll();
+        expect(all.length).toBeGreaterThan(0);
+    });
+
+    test('getById() should return appointment', () => {
+        const created = HMS.appointments.create({
+            patientId: testPatient.id,
+            doctorId: 'ashok',
+            date: '2025-12-25',
+            time: '11:00 AM'
+        });
+        const found = HMS.appointments.getById(created.id);
+        expect(found).toBeDefined();
+    });
+
+    test('getByDate() should filter by date', () => {
+        HMS.appointments.create({
+            patientId: testPatient.id,
+            doctorId: 'ashok',
+            date: '2025-12-25',
+            time: '11:00 AM'
+        });
+        HMS.appointments.create({
+            patientId: testPatient.id,
+            doctorId: 'ashok',
+            date: '2025-12-26',
+            time: '11:00 AM'
+        });
+        const results = HMS.appointments.getByDate('2025-12-25');
         expect(results.length).toBe(1);
-        expect(results[0].name).toBe('Suresh Patel');
     });
 
-    test('should be case insensitive', () => {
-        const results = searchPatients('MAHESH');
+    test('getByDoctor() should filter by doctor', () => {
+        HMS.appointments.create({
+            patientId: testPatient.id,
+            doctorId: 'ashok',
+            date: '2025-12-25',
+            time: '11:00 AM'
+        });
+        HMS.appointments.create({
+            patientId: testPatient.id,
+            doctorId: 'sunita',
+            date: '2025-12-25',
+            time: '12:00 PM'
+        });
+        const results = HMS.appointments.getByDoctor('ashok');
+        expect(results.every(a => a.doctorId === 'ashok')).toBe(true);
+    });
+
+    test('getByPatient() should filter by patient', () => {
+        const patient2 = HMS.patients.create({ name: 'Other', phone: '2' });
+        HMS.appointments.create({
+            patientId: testPatient.id,
+            doctorId: 'ashok',
+            date: '2025-12-25',
+            time: '11:00 AM'
+        });
+        HMS.appointments.create({
+            patientId: patient2.id,
+            doctorId: 'ashok',
+            date: '2025-12-25',
+            time: '12:00 PM'
+        });
+        const results = HMS.appointments.getByPatient(testPatient.id);
         expect(results.length).toBe(1);
     });
 
-    test('should return empty for no match', () => {
-        const results = searchPatients('xyz');
-        expect(results.length).toBe(0);
-    });
-});
-
-describe('HMS - Appointment Status Flow', () => {
-    const validTransitions = {
-        'pending': ['confirmed', 'cancelled'],
-        'confirmed': ['completed', 'cancelled', 'no-show'],
-        'completed': [],
-        'cancelled': [],
-        'no-show': []
-    };
-
-    test('pending can transition to confirmed or cancelled', () => {
-        expect(validTransitions['pending']).toContain('confirmed');
-        expect(validTransitions['pending']).toContain('cancelled');
+    test('updateStatus() should change status', () => {
+        const apt = HMS.appointments.create({
+            patientId: testPatient.id,
+            doctorId: 'ashok',
+            date: '2025-12-25',
+            time: '11:00 AM'
+        });
+        HMS.appointments.updateStatus(apt.id, 'confirmed');
+        const updated = HMS.appointments.getById(apt.id);
+        expect(updated.status).toBe('confirmed');
     });
 
-    test('confirmed can transition to completed, cancelled, or no-show', () => {
-        expect(validTransitions['confirmed']).toContain('completed');
-        expect(validTransitions['confirmed']).toContain('cancelled');
-        expect(validTransitions['confirmed']).toContain('no-show');
+    test('cancel() should mark as cancelled', () => {
+        const apt = HMS.appointments.create({
+            patientId: testPatient.id,
+            doctorId: 'ashok',
+            date: '2025-12-25',
+            time: '11:00 AM'
+        });
+        HMS.appointments.cancel(apt.id);
+        const updated = HMS.appointments.getById(apt.id);
+        expect(updated.status).toBe('cancelled');
     });
 
-    test('completed cannot transition further', () => {
-        expect(validTransitions['completed'].length).toBe(0);
-    });
-});
-
-describe('HMS - ID Generation', () => {
-    test('should generate unique IDs', () => {
-        // Use counter for uniqueness within same millisecond
-        let counter = 0;
-        const generateId = (prefix) => `${prefix}${Date.now()}_${counter++}`;
-        
-        const id1 = generateId('P');
-        const id2 = generateId('P');
-        
-        expect(id1).toMatch(/^P\d+_\d+$/);
-        // IDs should be different due to counter
-        expect(id1).not.toBe(id2);
-    });
-
-    test('should generate IDs with correct prefix format', () => {
-        const generateId = (prefix) => `${prefix}${Date.now()}`;
-        
-        expect(generateId('P')).toMatch(/^P\d+$/);
-        expect(generateId('A')).toMatch(/^A\d+$/);
-        expect(generateId('RX')).toMatch(/^RX\d+$/);
-    });
-});
-
-describe('HMS - Date Utilities', () => {
-    test('should format date correctly', () => {
-        const formatDate = (dateStr) => {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('en-IN');
-        };
-        
-        const formatted = formatDate('2025-12-25');
-        expect(formatted).toBeDefined();
-    });
-
-    test('should check if date is today', () => {
-        const isToday = (dateStr) => {
-            const today = new Date().toISOString().split('T')[0];
-            return dateStr === today;
-        };
-        
+    test('getToday() should return today\'s appointments', () => {
         const today = new Date().toISOString().split('T')[0];
-        expect(isToday(today)).toBe(true);
-        expect(isToday('2020-01-01')).toBe(false);
-    });
-
-    test('should check if date is in future', () => {
-        const isFuture = (dateStr) => {
-            return new Date(dateStr) > new Date();
-        };
-        
-        expect(isFuture('2030-12-25')).toBe(true);
-        expect(isFuture('2020-01-01')).toBe(false);
+        HMS.appointments.create({
+            patientId: testPatient.id,
+            doctorId: 'ashok',
+            date: today,
+            time: '11:00 AM'
+        });
+        const results = HMS.appointments.getToday();
+        expect(results.length).toBeGreaterThan(0);
     });
 });
 
-describe('HMS - Inventory Management', () => {
-    test('should identify low stock items', () => {
-        const items = [
-            { name: 'Item A', quantity: 5, reorderLevel: 10 },
-            { name: 'Item B', quantity: 50, reorderLevel: 10 },
-            { name: 'Item C', quantity: 10, reorderLevel: 10 }
-        ];
-        
-        const lowStock = items.filter(i => i.quantity < i.reorderLevel);
-        expect(lowStock.length).toBe(1);
-        expect(lowStock[0].name).toBe('Item A');
+describe('HMS.prescriptions', () => {
+    let testPatient;
+
+    beforeEach(() => {
+        localStorage.clear();
+        HMS.init();
+        testPatient = HMS.patients.create({
+            name: 'Prescription Patient',
+            phone: '1234567890'
+        });
     });
 
-    test('should calculate total inventory value', () => {
-        const items = [
-            { name: 'Item A', quantity: 10, price: 100 },
-            { name: 'Item B', quantity: 5, price: 200 }
-        ];
-        
-        const totalValue = items.reduce((sum, i) => sum + (i.quantity * i.price), 0);
-        expect(totalValue).toBe(2000);
-    });
-});
-
-describe('HMS - Sales Calculations', () => {
-    test('should calculate sale total', () => {
-        const items = [
-            { name: 'Item A', qty: 2, price: 100 },
-            { name: 'Item B', qty: 3, price: 50 }
-        ];
-        
-        const total = items.reduce((sum, i) => sum + (i.qty * i.price), 0);
-        expect(total).toBe(350);
+    test('create() should add prescription', () => {
+        const rx = HMS.prescriptions.create({
+            patientId: testPatient.id,
+            doctorId: 'ashok',
+            diagnosis: 'Knee Osteoarthritis',
+            medicines: [
+                { name: 'Paracetamol', dosage: '500mg', frequency: 'Twice daily' }
+            ]
+        });
+        expect(rx.id).toBeDefined();
+        expect(rx.diagnosis).toBe('Knee Osteoarthritis');
     });
 
-    test('should apply discount correctly', () => {
-        const subtotal = 1000;
-        const discountPercent = 10;
-        const discount = subtotal * (discountPercent / 100);
-        const total = subtotal - discount;
-        
-        expect(discount).toBe(100);
-        expect(total).toBe(900);
+    test('getByPatient() should return patient prescriptions', () => {
+        HMS.prescriptions.create({
+            patientId: testPatient.id,
+            doctorId: 'ashok',
+            diagnosis: 'Test'
+        });
+        const results = HMS.prescriptions.getByPatient(testPatient.id);
+        expect(results.length).toBe(1);
     });
 
-    test('should calculate GST', () => {
-        const subtotal = 1000;
-        const gstRate = 18;
-        const gst = subtotal * (gstRate / 100);
-        
-        expect(gst).toBe(180);
+    test('getByDoctor() should return doctor prescriptions', () => {
+        HMS.prescriptions.create({
+            patientId: testPatient.id,
+            doctorId: 'ashok',
+            diagnosis: 'Test'
+        });
+        const results = HMS.prescriptions.getByDoctor('ashok');
+        expect(results.length).toBeGreaterThan(0);
     });
 });
 
-describe('HMS - Queue Management', () => {
-    test('should add patient to queue', () => {
-        const queue = [];
-        const addToQueue = (patient) => {
-            queue.push({
-                ...patient,
-                queueNumber: queue.length + 1,
-                addedAt: new Date().toISOString()
-            });
-            return queue[queue.length - 1];
-        };
-        
-        const entry = addToQueue({ patientId: 'P1', patientName: 'Test' });
-        expect(entry.queueNumber).toBe(1);
+describe('HMS.inventory', () => {
+    beforeEach(() => {
+        localStorage.clear();
+        HMS.init();
     });
 
-    test('should get next in queue', () => {
-        const queue = [
-            { queueNumber: 1, patientName: 'First' },
-            { queueNumber: 2, patientName: 'Second' }
-        ];
+    test('create() should add item', () => {
+        const item = HMS.inventory.create({
+            name: 'Paracetamol 500mg',
+            category: 'Tablet',
+            quantity: 100,
+            price: 10
+        });
+        expect(item.id).toBeDefined();
+        expect(item.name).toBe('Paracetamol 500mg');
+    });
+
+    test('updateQuantity() should modify quantity', () => {
+        const item = HMS.inventory.create({
+            name: 'Test Item',
+            quantity: 50
+        });
+        HMS.inventory.updateQuantity(item.id, 75);
+        const updated = HMS.inventory.getById(item.id);
+        expect(updated.quantity).toBe(75);
+    });
+
+    test('getByCategory() should filter', () => {
+        HMS.inventory.create({ name: 'Tab A', category: 'Tablet', quantity: 10 });
+        HMS.inventory.create({ name: 'Syrup B', category: 'Syrup', quantity: 10 });
+        const tablets = HMS.inventory.getByCategory('Tablet');
+        expect(tablets.every(i => i.category === 'Tablet')).toBe(true);
+    });
+
+    test('getLowStock() should find low items', () => {
+        HMS.inventory.create({ name: 'Low Item', quantity: 5, reorderLevel: 10 });
+        HMS.inventory.create({ name: 'OK Item', quantity: 50, reorderLevel: 10 });
+        const low = HMS.inventory.getLowStock();
+        expect(low.length).toBe(1);
+        expect(low[0].name).toBe('Low Item');
+    });
+});
+
+describe('HMS.sales', () => {
+    beforeEach(() => {
+        localStorage.clear();
+        HMS.init();
+    });
+
+    test('create() should record sale', () => {
+        const sale = HMS.sales.create({
+            items: [{ name: 'Paracetamol', qty: 2, price: 10 }],
+            total: 20,
+            paymentMethod: 'cash'
+        });
+        expect(sale.id).toBeDefined();
+        expect(sale.total).toBe(20);
+    });
+
+    test('getToday() should return today\'s sales', () => {
+        HMS.sales.create({
+            items: [{ name: 'Test', qty: 1, price: 100 }],
+            total: 100
+        });
+        const today = HMS.sales.getToday();
+        expect(today.length).toBeGreaterThan(0);
+    });
+
+    test('getTodayTotal() should sum sales', () => {
+        HMS.sales.create({ items: [], total: 100 });
+        HMS.sales.create({ items: [], total: 200 });
+        const total = HMS.sales.getTodayTotal();
+        expect(total).toBe(300);
+    });
+});
+
+describe('HMS.auth', () => {
+    beforeEach(() => {
+        localStorage.clear();
+        HMS.init();
+    });
+
+    test('login() should authenticate valid user', () => {
+        const result = HMS.auth.login('psaj', '1234');
+        expect(result.success).toBe(true);
+        expect(result.user.role).toBe('admin');
+    });
+
+    test('login() should accept email', () => {
+        const result = HMS.auth.login('pratik.sajnani@gmail.com', '1234');
+        expect(result.success).toBe(true);
+    });
+
+    test('login() should reject invalid credentials', () => {
+        const result = HMS.auth.login('psaj', 'wrongpassword');
+        expect(result.error).toBeDefined();
+    });
+
+    test('login() should reject unknown user', () => {
+        const result = HMS.auth.login('nobody@test.com', 'password');
+        expect(result.error).toBeDefined();
+    });
+
+    test('logout() should clear session', () => {
+        HMS.auth.login('psaj', '1234');
+        HMS.auth.logout();
+        expect(HMS.auth.getCurrentUser()).toBeNull();
+    });
+
+    test('isLoggedIn() should return correct state', () => {
+        expect(HMS.auth.isLoggedIn()).toBe(false);
+        HMS.auth.login('psaj', '1234');
+        expect(HMS.auth.isLoggedIn()).toBe(true);
+    });
+
+    test('hasPermission() should check permissions', () => {
+        HMS.auth.login('psaj', '1234');
+        expect(HMS.auth.hasPermission('all')).toBe(true);
+    });
+});
+
+describe('HMS.tokens', () => {
+    beforeEach(() => {
+        localStorage.clear();
+        HMS.init();
+    });
+
+    test('generate() should create unique token', () => {
+        const result = HMS.tokens.generate({
+            type: 'doctor',
+            email: 'test@test.com'
+        });
+        expect(result.token).toBeDefined();
+        expect(result.token.length).toBeGreaterThan(30);
+    });
+
+    test('validate() should return token data', () => {
+        const { token } = HMS.tokens.generate({
+            type: 'doctor',
+            email: 'test@test.com'
+        });
+        const validation = HMS.tokens.validate(token);
+        expect(validation.valid).toBe(true);
+        expect(validation.email).toBe('test@test.com');
+    });
+
+    test('validate() should reject invalid token', () => {
+        const validation = HMS.tokens.validate('invalid-token-12345');
+        expect(validation.valid).toBe(false);
+    });
+
+    test('markUsed() should invalidate token', () => {
+        const { token } = HMS.tokens.generate({
+            type: 'doctor',
+            email: 'test@test.com'
+        });
+        HMS.tokens.markUsed(token);
+        const validation = HMS.tokens.validate(token);
+        expect(validation.valid).toBe(false);
+    });
+
+    test('cleanup() should remove expired tokens', () => {
+        const invites = JSON.parse(localStorage.getItem('hms_invites') || '[]');
+        invites.push({
+            token: 'expired-token',
+            expiresAt: new Date(Date.now() - 1000).toISOString()
+        });
+        localStorage.setItem('hms_invites', JSON.stringify(invites));
         
-        const next = queue[0];
+        HMS.tokens.cleanup();
+        
+        const afterCleanup = JSON.parse(localStorage.getItem('hms_invites') || '[]');
+        expect(afterCleanup.find(t => t.token === 'expired-token')).toBeUndefined();
+    });
+});
+
+describe('HMS.queue', () => {
+    let testPatient;
+
+    beforeEach(() => {
+        localStorage.clear();
+        HMS.init();
+        testPatient = HMS.patients.create({
+            name: 'Queue Patient',
+            phone: '1234567890'
+        });
+    });
+
+    test('add() should add to queue', () => {
+        HMS.queue.add({
+            patientId: testPatient.id,
+            patientName: testPatient.name,
+            doctor: 'ashok'
+        });
+        const queue = HMS.queue.getByDoctor('ashok');
+        expect(queue.length).toBe(1);
+    });
+
+    test('getNext() should return first in queue', () => {
+        HMS.queue.add({ patientId: 'p1', patientName: 'First', doctor: 'ashok' });
+        HMS.queue.add({ patientId: 'p2', patientName: 'Second', doctor: 'ashok' });
+        const next = HMS.queue.getNext('ashok');
         expect(next.patientName).toBe('First');
     });
 
-    test('should complete and remove from queue', () => {
-        const queue = [
-            { queueNumber: 1, patientName: 'First' },
-            { queueNumber: 2, patientName: 'Second' }
-        ];
-        
-        queue.shift();
-        expect(queue.length).toBe(1);
-        expect(queue[0].patientName).toBe('Second');
+    test('complete() should remove from queue', () => {
+        HMS.queue.add({ patientId: 'p1', patientName: 'Test', doctor: 'ashok' });
+        HMS.queue.complete('ashok');
+        const queue = HMS.queue.getByDoctor('ashok');
+        expect(queue.length).toBe(0);
     });
 });
 
-describe('HMS - Token Validation', () => {
-    test('should validate token format', () => {
-        const isValidToken = (token) => {
-            if (!token) return false;
-            return token.length > 20;
-        };
-        
-        expect(isValidToken('abc123def456ghi789jkl012mno345')).toBe(true);
-        expect(isValidToken('short')).toBe(false);
-        expect(isValidToken(null)).toBe(false);
-        expect(isValidToken('')).toBe(false);
-        expect(isValidToken(undefined)).toBe(false);
+describe('HMS.stats', () => {
+    beforeEach(() => {
+        localStorage.clear();
+        HMS.init();
     });
 
-    test('should check token expiry', () => {
-        const isExpired = (expiresAt) => {
-            return new Date(expiresAt) < new Date();
-        };
-        
-        const pastDate = new Date(Date.now() - 86400000).toISOString();
-        const futureDate = new Date(Date.now() + 86400000).toISOString();
-        
-        expect(isExpired(pastDate)).toBe(true);
-        expect(isExpired(futureDate)).toBe(false);
-    });
-});
-
-describe('HMS - Default Users', () => {
-    const defaultUsers = [
-        { id: 'admin_1', email: 'pratik.sajnani@gmail.com', role: 'admin', username: 'psaj' },
-        { id: 'ashok', email: 'drsajnani@gmail.com', role: 'doctor' },
-        { id: 'sunita', email: 'sunita.sajnani9@gmail.com', role: 'doctor' }
-    ];
-
-    test('should have admin user', () => {
-        const admin = defaultUsers.find(u => u.role === 'admin');
-        expect(admin).toBeDefined();
-        expect(admin.email).toBe('pratik.sajnani@gmail.com');
-    });
-
-    test('should have two doctors', () => {
-        const doctors = defaultUsers.filter(u => u.role === 'doctor');
-        expect(doctors.length).toBe(2);
-    });
-
-    test('admin should have username', () => {
-        const admin = defaultUsers.find(u => u.role === 'admin');
-        expect(admin.username).toBe('psaj');
-    });
-});
-
-describe('HMS - Statistics Calculations', () => {
-    test('should count appointments by status', () => {
-        const appointments = [
-            { status: 'pending' },
-            { status: 'confirmed' },
-            { status: 'confirmed' },
-            { status: 'completed' }
-        ];
-        
-        const counts = appointments.reduce((acc, a) => {
-            acc[a.status] = (acc[a.status] || 0) + 1;
-            return acc;
-        }, {});
-        
-        expect(counts['pending']).toBe(1);
-        expect(counts['confirmed']).toBe(2);
-        expect(counts['completed']).toBe(1);
-    });
-
-    test('should calculate average consultation time', () => {
-        const consultations = [
-            { duration: 15 },
-            { duration: 20 },
-            { duration: 25 }
-        ];
-        
-        const avg = consultations.reduce((sum, c) => sum + c.duration, 0) / consultations.length;
-        expect(avg).toBe(20);
+    test('getDashboardStats() should return statistics', () => {
+        const stats = HMS.stats.getDashboardStats();
+        expect(stats).toBeDefined();
+        expect(typeof stats.totalPatients).toBe('number');
     });
 });

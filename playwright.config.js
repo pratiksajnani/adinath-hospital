@@ -22,10 +22,13 @@ module.exports = defineConfig({
   
   // Reporter configuration
   reporter: [
-    ['html', { outputFolder: 'test-results/html-report' }],
-    ['json', { outputFile: 'test-results/results.json' }],
+    ['html', { outputFolder: 'playwright-report' }],
+    ['json', { outputFile: 'playwright-report/results.json' }],
     ['list']
   ],
+  
+  // Output folder for test artifacts
+  outputDir: 'test-results',
   
   // Shared settings for all projects
   use: {
