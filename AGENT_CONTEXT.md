@@ -140,6 +140,40 @@ I18N.setLanguage('hi')  // Switch to Hindi
 - Local: `python3 -m http.server 8080`
 - Live: Changes auto-deploy in ~2 minutes after push to main
 
+---
+
+# WORK STREAMS
+
+## Stream 1: Public Website (index.html, css/, new pages)
+- Google Reviews widget
+- FAQ accordion
+- Floating Book Now button
+- Trust badges
+- Accessibility toggle
+- Blog page
+
+## Stream 2: Patient Portal (portal/patient/*)
+- Enhanced patient dashboard
+- Prescription downloads
+- Health tracker
+- Symptom checker
+- Feedback form
+
+## Stream 3: Doctor & Staff Dashboards (portal/doctor/*, portal/staff/*, portal/admin/*)
+- Senior-friendly doctor UI
+- Queue management
+- Video content upload
+- Statistics dashboard
+
+## Stream 4: Forms & Medical Store (forms/*, store/*)
+- Enhanced printable forms
+- Discharge summary
+- Referral letters
+- Billing system
+- UPI payments
+
+---
+
 ## DO NOT
 - Add npm/node dependencies
 - Use React/Vue/Angular
