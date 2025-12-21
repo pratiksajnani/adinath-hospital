@@ -12,7 +12,7 @@
 - **Dr. Sunita Sajnani:** sunita.sajnani9@gmail.com / doctor123
 
 ### Staff
-- **Poonam (Receptionist):** receptionist@adinathhospital.com / staff123
+- **Poonam (Receptionist):** poonam@adinathhealth.com / staff123
 
 ### Test Patients (Created during testing)
 - **Test Patient 1:** 9876500001 / Ramesh Kumar

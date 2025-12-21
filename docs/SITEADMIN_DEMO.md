@@ -12,7 +12,7 @@
 | **Site Admin** | pratik.sajnani@gmail.com | admin123 |
 | **Dr. Ashok** | drsajnani@gmail.com | doctor123 |
 | **Dr. Sunita** | sunita.sajnani9@gmail.com | doctor123 |
-| **Poonam (Receptionist)** | receptionist@adinathhospital.com | staff123 |
+| **Poonam (Receptionist)** | poonam@adinathhealth.com | staff123 |
 
 ---
 
