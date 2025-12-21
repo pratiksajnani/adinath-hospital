@@ -4,10 +4,10 @@
 // ============================================
 
 // Supabase Configuration
-// Get these from: https://supabase.com/dashboard/project/YOUR_PROJECT/settings/api
+// Project: adinath-hospital (Mumbai region)
 const SUPABASE_CONFIG = {
-    url: '', // e.g., 'https://xxxxx.supabase.co'
-    anonKey: '' // e.g., 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+    url: 'https://lhwqwloibxiiqtgaoxqp.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxod3F3bG9pYnhpaXF0Z2FveHFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMzMzMzksImV4cCI6MjA4MTkwOTMzOX0.s5IuG7e50dam4QAPpyTXEYoNHIWv8PupOgXx8Y_Rv0Y'
 };
 
 // Initialize Supabase client (lazy load)
