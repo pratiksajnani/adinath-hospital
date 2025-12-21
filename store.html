@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Store | Adinath Hospital</title>
+    <meta name="description" content="In-house medical store at Adinath Hospital. Quality medicines, health products, and prescription services.">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <style>
+        .store-page { padding-top: 100px; }
+        
+        .store-hero {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .store-hero h1 { color: white; margin-bottom: 12px; }
+        .store-hero p { opacity: 0.9; max-width: 600px; margin: 0 auto 24px; }
+        
+        .store-features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .store-feature {
+            background: rgba(255,255,255,0.15);
+            padding: 20px;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+        
+        .store-feature .icon { font-size: 2rem; margin-bottom: 8px; }
+        .store-feature h4 { margin: 0; font-size: 1rem; }
+        
+        .store-content { padding: 60px 0; }
+        
+        .order-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+        
+        .order-card {
+            background: white;
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .order-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .order-card .icon { font-size: 3rem; margin-bottom: 20px; }
+        .order-card h3 { margin-bottom: 12px; }
+        .order-card p { color: var(--gray-600); margin-bottom: 24px; }
+        
+        .categories-section {
+            margin-bottom: 60px;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .category-card {
+            background: white;
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .category-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .category-card .icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .category-card h4 { margin-bottom: 4px; font-size: 1rem; }
+        .category-card span { font-size: 0.85rem; color: var(--gray-500); }
+        
+        .info-section {
+            background: var(--gray-50);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+        
+        .info-item .icon { font-size: 2rem; margin-bottom: 12px; }
+        .info-item h4 { margin-bottom: 8px; }
+        .info-item p { font-size: 0.95rem; color: var(--gray-600); line-height: 1.6; }
+        
+        @media (max-width: 900px) {
+            .store-features { grid-template-columns: 1fr; }
+            .order-options { grid-template-columns: 1fr; }
+            .categories-grid { grid-template-columns: repeat(2, 1fr); }
+            .info-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <a href="/" class="logo">
+                <span class="logo-icon">🏥</span>
+                <div class="logo-text">
+                    <span class="logo-name">Adinath Hospital</span>
+                    <span class="logo-tagline">Care with Compassion</span>
+                </div>
+            </a>
+            <nav class="nav">
+                <a href="/">Home</a>
+                <a href="/#services">Services</a>
+                <a href="/#doctors">Doctors</a>
+                <a href="/book.html" class="btn btn-primary btn-sm">Book Appointment</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="store-page">
+        <section class="store-hero">
+            <div class="container">
+                <h1>💊 Medical Store</h1>
+                <p>Quality medicines and health products, right at the hospital. Get your prescriptions filled quickly and conveniently.</p>
+                
+                <div class="store-features">
+                    <div class="store-feature">
+                        <div class="icon">✅</div>
+                        <h4>Genuine Medicines</h4>
+                    </div>
+                    <div class="store-feature">
+                        <div class="icon">⚡</div>
+                        <h4>Quick Service</h4>
+                    </div>
+                    <div class="store-feature">
+                        <div class="icon">🖨️</div>
+                        <h4>Print Facility</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="store-content">
+            <div class="container">
+                <!-- Order Options -->
+                <div class="order-options">
+                    <div class="order-card">
+                        <div class="icon">📱</div>
+                        <h3>Order via WhatsApp</h3>
+                        <p>Send your prescription photo and we'll prepare your medicines. Pick up when ready or get home delivery!</p>
+                        <a href="https://wa.me/919925450425?text=Hi, I'd like to order medicines. Here's my prescription:" class="btn btn-primary" target="_blank">
+                            Send Prescription →
+                        </a>
+                    </div>
+                    <div class="order-card">
+                        <div class="icon">🏥</div>
+                        <h3>Visit In-Store</h3>
+                        <p>Located inside Shukan Mall, 2nd Floor. Walk in with your prescription and we'll have it ready in minutes.</p>
+                        <a href="https://maps.app.goo.gl/shukanmall" class="btn btn-outline" target="_blank">
+                            Get Directions →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="categories-section">
+                    <h2 style="text-align: center; margin-bottom: 32px;">Available Categories</h2>
+                    <div class="categories-grid">
+                        <div class="category-card">
+                            <div class="icon">💊</div>
+                            <h4>Prescription Meds</h4>
+                            <span>All prescriptions filled</span>
+                        </div>
+                        <div class="category-card">
+                            <div class="icon">🦴</div>
+                            <h4>Orthopedic Supplies</h4>
+                            <span>Braces, supports, aids</span>
+                        </div>
+                        <div class="category-card">
+                            <div class="icon">💪</div>
+                            <h4>Supplements</h4>
+                            <span>Vitamins, calcium, etc.</span>
+                        </div>
+                        <div class="category-card">
+                            <div class="icon">🩹</div>
+                            <h4>First Aid</h4>
+                            <span>Bandages, antiseptics</span>
+                        </div>
+                        <div class="category-card">
+                            <div class="icon">🤰</div>
+                            <h4>Women's Health</h4>
+                            <span>Prenatal, postnatal care</span>
+                        </div>
+                        <div class="category-card">
+                            <div class="icon">👶</div>
+                            <h4>Baby Care</h4>
+                            <span>Essentials for infants</span>
+                        </div>
+                        <div class="category-card">
+                            <div class="icon">🧴</div>
+                            <h4>Personal Care</h4>
+                            <span>Skincare, hygiene</span>
+                        </div>
+                        <div class="category-card">
+                            <div class="icon">🩺</div>
+                            <h4>Medical Devices</h4>
+                            <span>BP monitors, glucometers</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info -->
+                <div class="info-section">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="icon">🕐</div>
+                            <h4>Store Hours</h4>
+                            <p>Monday - Saturday<br>11:00 AM - 7:00 PM<br>Closed on Sundays</p>
+                        </div>
+                        <div class="info-item">
+                            <div class="icon">📞</div>
+                            <h4>Contact</h4>
+                            <p>Phone: <a href="tel:+919925450425">+91 99254 50425</a><br>WhatsApp for orders<br>Quick response guaranteed</p>
+                        </div>
+                        <div class="info-item">
+                            <div class="icon">🖨️</div>
+                            <h4>Print Facility</h4>
+                            <p>Collect your medical reports, prescriptions, and documents. Sent directly from the doctor!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
+

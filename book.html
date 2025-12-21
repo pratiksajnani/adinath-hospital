@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment | Adinath Hospital</title>
+    <meta name="description" content="Book an appointment with Dr. Ashok Sajnani (Orthopedic) or Dr. Sunita Sajnani (Gynecology) at Adinath Hospital, Ahmedabad.">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <style>
+        .booking-page {
+            padding-top: 120px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, var(--gray-50), var(--white));
+        }
+        
+        .booking-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+        
+        .booking-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .booking-header h1 {
+            margin-bottom: 12px;
+        }
+        
+        .booking-header p {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+        }
+        
+        .booking-form {
+            background: var(--white);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .form-section {
+            margin-bottom: 32px;
+        }
+        
+        .form-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-50);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 8px;
+        }
+        
+        .form-group label .required {
+            color: #dc2626;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-50);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-group.error input,
+        .form-group.error select,
+        .form-group.error textarea {
+            border-color: #dc2626;
+        }
+        
+        .error-message {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 4px;
+        }
+        
+        /* Doctor Selection Cards */
+        .doctor-selection {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        
+        .doctor-option {
+            position: relative;
+        }
+        
+        .doctor-option input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .doctor-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .doctor-option input:checked + label {
+            border-color: var(--primary);
+            background: var(--primary-50);
+        }
+        
+        .doctor-option label:hover {
+            border-color: var(--primary);
+        }
+        
+        .doctor-option .doctor-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+        
+        .doctor-option .doctor-name {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 4px;
+        }
+        
+        .doctor-option .doctor-specialty {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+        
+        /* Time Slots */
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .time-slot {
+            position: relative;
+        }
+        
+        .time-slot input {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .time-slot label {
+            display: block;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .time-slot input:checked + label {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .time-slot label:hover {
+            border-color: var(--primary);
+        }
+        
+        .time-slot.unavailable label {
+            background: var(--gray-100);
+            color: var(--gray-400);
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+        
+        /* Submit Section */
+        .submit-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+            margin-top: 32px;
+        }
+        
+        .submit-section .btn {
+            width: 100%;
+            max-width: 300px;
+            padding: 16px 32px;
+            font-size: 1.1rem;
+        }
+        
+        .or-divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--gray-500);
+            width: 100%;
+        }
+        
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gray-200);
+        }
+        
+        .whatsapp-booking {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: #25d366;
+            color: white;
+            border-radius: var(--radius);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .whatsapp-booking:hover {
+            background: #128c7e;
+            transform: translateY(-2px);
+        }
+        
+        .whatsapp-booking img {
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* Confirmation */
+        .booking-confirmation {
+            display: none;
+            text-align: center;
+            padding: 60px 40px;
+        }
+        
+        .booking-confirmation.show {
+            display: block;
+        }
+        
+        .confirmation-icon {
+            font-size: 4rem;
+            margin-bottom: 24px;
+        }
+        
+        .confirmation-title {
+            font-size: 1.5rem;
+            color: var(--gray-800);
+            margin-bottom: 12px;
+        }
+        
+        .confirmation-message {
+            color: var(--gray-600);
+            margin-bottom: 24px;
+            line-height: 1.7;
+        }
+        
+        .confirmation-details {
+            background: var(--gray-50);
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+            text-align: left;
+        }
+        
+        .confirmation-details p {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .confirmation-details p:last-child {
+            border-bottom: none;
+        }
+        
+        .confirmation-details strong {
+            color: var(--gray-800);
+        }
+        
+        /* Hospital Info */
+        .hospital-info {
+            background: var(--primary-50);
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            margin-top: 40px;
+        }
+        
+        .hospital-info h3 {
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .info-item .icon {
+            font-size: 1.5rem;
+        }
+        
+        .info-item .text {
+            font-size: 0.95rem;
+            color: var(--gray-700);
+        }
+        
+        .info-item .text strong {
+            display: block;
+            color: var(--gray-800);
+            margin-bottom: 4px;
+        }
+        
+        @media (max-width: 768px) {
+            .booking-form {
+                padding: 24px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .doctor-selection {
+                grid-template-columns: 1fr;
+            }
+            
+            .time-slots {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <a href="/" class="logo">
+                <span class="logo-icon">🏥</span>
+                <div class="logo-text">
+                    <span class="logo-name">Adinath Hospital</span>
+                    <span class="logo-tagline">Care with Compassion</span>
+                </div>
+            </a>
+            <nav class="nav">
+                <a href="/">Home</a>
+                <a href="/#services">Services</a>
+                <a href="/#doctors">Doctors</a>
+                <a href="/#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="booking-page">
+        <div class="booking-container">
+            <div class="booking-header">
+                <h1>📅 Book an Appointment</h1>
+                <p>Schedule your visit with our experienced doctors</p>
+            </div>
+            
+            <div class="booking-form" id="bookingForm">
+                <form id="appointmentForm">
+                    <!-- Doctor Selection -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">👨‍⚕️ Select Doctor</h3>
+                        <div class="doctor-selection">
+                            <div class="doctor-option">
+                                <input type="radio" name="doctor" id="dr-ashok" value="Dr. Ashok Sajnani" required>
+                                <label for="dr-ashok">
+                                    <span class="doctor-emoji">👨‍⚕️</span>
+                                    <span class="doctor-name">Dr. Ashok Sajnani</span>
+                                    <span class="doctor-specialty">Orthopedic & Joint Surgeon</span>
+                                </label>
+                            </div>
+                            <div class="doctor-option">
+                                <input type="radio" name="doctor" id="dr-sunita" value="Dr. Sunita Sajnani">
+                                <label for="dr-sunita">
+                                    <span class="doctor-emoji">👩‍⚕️</span>
+                                    <span class="doctor-name">Dr. Sunita Sajnani</span>
+                                    <span class="doctor-specialty">Gynecology & Obstetrics</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Date & Time -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">📆 Preferred Date & Time</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="date">Date <span class="required">*</span></label>
+                                <input type="date" id="date" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Preferred Time <span class="required">*</span></label>
+                                <div class="time-slots">
+                                    <div class="time-slot">
+                                        <input type="radio" name="time" id="time-11" value="11:00 AM" required>
+                                        <label for="time-11">11:00 AM</label>
+                                    </div>
+                                    <div class="time-slot">
+                                        <input type="radio" name="time" id="time-12" value="12:00 PM">
+                                        <label for="time-12">12:00 PM</label>
+                                    </div>
+                                    <div class="time-slot">
+                                        <input type="radio" name="time" id="time-1" value="1:00 PM">
+                                        <label for="time-1">1:00 PM</label>
+                                    </div>
+                                    <div class="time-slot">
+                                        <input type="radio" name="time" id="time-2" value="2:00 PM">
+                                        <label for="time-2">2:00 PM</label>
+                                    </div>
+                                    <div class="time-slot">
+                                        <input type="radio" name="time" id="time-3" value="3:00 PM">
+                                        <label for="time-3">3:00 PM</label>
+                                    </div>
+                                    <div class="time-slot">
+                                        <input type="radio" name="time" id="time-4" value="4:00 PM">
+                                        <label for="time-4">4:00 PM</label>
+                                    </div>
+                                    <div class="time-slot">
+                                        <input type="radio" name="time" id="time-5" value="5:00 PM">
+                                        <label for="time-5">5:00 PM</label>
+                                    </div>
+                                    <div class="time-slot">
+                                        <input type="radio" name="time" id="time-6" value="6:00 PM">
+                                        <label for="time-6">6:00 PM</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Patient Details -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">👤 Patient Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="name">Full Name <span class="required">*</span></label>
+                                <input type="text" id="name" name="name" placeholder="Enter patient's full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number <span class="required">*</span></label>
+                                <input type="tel" id="phone" name="phone" placeholder="+91 99999 99999" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="age">Age <span class="required">*</span></label>
+                                <input type="number" id="age" name="age" placeholder="Age in years" min="0" max="120" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">Gender <span class="required">*</span></label>
+                                <select id="gender" name="gender" required>
+                                    <option value="">Select gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="reason">Reason for Visit <span class="required">*</span></label>
+                                <textarea id="reason" name="reason" placeholder="Please describe your symptoms or reason for consultation..." required></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="notes">Additional Notes (Optional)</label>
+                                <textarea id="notes" name="notes" placeholder="Any allergies, current medications, or other information the doctor should know..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit -->
+                    <div class="submit-section">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            ✅ Confirm Appointment
+                        </button>
+                        
+                        <div class="or-divider">or</div>
+                        
+                        <a href="#" class="whatsapp-booking" id="whatsappBook">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+                            Book via WhatsApp
+                        </a>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Confirmation (hidden initially) -->
+            <div class="booking-form booking-confirmation" id="confirmationSection">
+                <span class="confirmation-icon">✅</span>
+                <h2 class="confirmation-title">Appointment Request Sent!</h2>
+                <p class="confirmation-message">
+                    Thank you for booking with Adinath Hospital. We will call you shortly to confirm your appointment.
+                </p>
+                <div class="confirmation-details" id="confirmationDetails">
+                    <!-- Filled by JavaScript -->
+                </div>
+                <a href="/" class="btn btn-primary">← Back to Home</a>
+            </div>
+            
+            <!-- Hospital Info -->
+            <div class="hospital-info">
+                <h3>📍 Hospital Information</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="icon">🕐</span>
+                        <div class="text">
+                            <strong>OPD Hours</strong>
+                            Monday - Saturday: 11:00 AM - 7:00 PM
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="icon">📍</span>
+                        <div class="text">
+                            <strong>Location</strong>
+                            2nd Floor, Shukan Mall, Shahibaug Road, Ahmedabad
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="icon">📞</span>
+                        <div class="text">
+                            <strong>Contact</strong>
+                            <a href="tel:+919925450425">+91 99254 50425</a>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <span class="icon">💬</span>
+                        <div class="text">
+                            <strong>WhatsApp</strong>
+                            <a href="https://wa.me/919925450425">Chat with us</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('appointmentForm');
+            const dateInput = document.getElementById('date');
+            const whatsappBtn = document.getElementById('whatsappBook');
+            
+            // Set min date to today
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.min = today;
+            
+            // Pre-select doctor from URL
+            const params = new URLSearchParams(window.location.search);
+            const doctorParam = params.get('doctor');
+            if (doctorParam === 'ashok') {
+                document.getElementById('dr-ashok').checked = true;
+            } else if (doctorParam === 'sunita') {
+                document.getElementById('dr-sunita').checked = true;
+            }
+            
+            // Form submission
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                
+                // Show confirmation
+                document.getElementById('bookingForm').style.display = 'none';
+                const confirmation = document.getElementById('confirmationSection');
+                confirmation.classList.add('show');
+                
+                document.getElementById('confirmationDetails').innerHTML = `
+                    <p><span>Doctor</span><strong>${data.doctor}</strong></p>
+                    <p><span>Date</span><strong>${new Date(data.date).toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</strong></p>
+                    <p><span>Time</span><strong>${data.time}</strong></p>
+                    <p><span>Patient</span><strong>${data.name}</strong></p>
+                    <p><span>Phone</span><strong>${data.phone}</strong></p>
+                `;
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // WhatsApp booking
+            whatsappBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                const formData = new FormData(form);
+                const doctor = formData.get('doctor') || 'a doctor';
+                const date = formData.get('date') ? new Date(formData.get('date')).toLocaleDateString('en-IN') : '[Date]';
+                const time = formData.get('time') || '[Time]';
+                const name = formData.get('name') || '[Your Name]';
+                const reason = formData.get('reason') || '[Reason]';
+                
+                const message = encodeURIComponent(
+`🏥 *Appointment Request - Adinath Hospital*
+
+👨‍⚕️ Doctor: ${doctor}
+📅 Preferred Date: ${date}
+🕐 Preferred Time: ${time}
+
+👤 Patient: ${name}
+📝 Reason: ${reason}
+
+Please confirm my appointment. Thank you!`
+                );
+                
+                window.open(`https://wa.me/919925450425?text=${message}`, '_blank');
+            });
+        });
+    </script>
+</body>
+</html>
+

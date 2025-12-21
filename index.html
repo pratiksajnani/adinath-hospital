@@ -16,7 +16,81 @@
     <meta property="og:locale" content="en_IN">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%230d9488' width='100' height='100' rx='20'/><text y='.9em' x='50' text-anchor='middle' font-size='60' font-family='system-ui' fill='white'>🏥</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://pratiksajnani.github.io/adinath-hospital/">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a7369">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Adinath Hospital">
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Hospital",
+        "name": "Adinath Hospital",
+        "alternateName": "આદિનાથ હોસ્પિટલ",
+        "description": "Expert Orthopedic and Gynecology care in Ahmedabad with 35+ years of experience",
+        "url": "https://pratiksajnani.github.io/adinath-hospital/",
+        "telephone": "+91-99254-50425",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "2nd Floor, Shukan Mall, Shahibaug Road",
+            "addressLocality": "Ahmedabad",
+            "addressRegion": "Gujarat",
+            "postalCode": "380004",
+            "addressCountry": "IN"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "23.0541",
+            "longitude": "72.5846"
+        },
+        "openingHoursSpecification": [
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                "opens": "11:00",
+                "closes": "19:00"
+            }
+        ],
+        "medicalSpecialty": ["Orthopedic", "Gynecology", "Obstetrics"],
+        "availableService": [
+            {
+                "@type": "MedicalProcedure",
+                "name": "Joint Preservation Surgery"
+            },
+            {
+                "@type": "MedicalProcedure", 
+                "name": "Non-Surgical Knee Treatment"
+            },
+            {
+                "@type": "MedicalProcedure",
+                "name": "Gynecology Consultation"
+            }
+        ],
+        "employee": [
+            {
+                "@type": "Physician",
+                "name": "Dr. Ashok Sajnani",
+                "medicalSpecialty": "Orthopedic Surgery",
+                "description": "Consultant Orthopedic & Joint Surgeon with 35+ years experience"
+            },
+            {
+                "@type": "Physician",
+                "name": "Dr. Sunita Sajnani",
+                "medicalSpecialty": "Gynecology",
+                "description": "MD Obstetrics & Gynecology with 30+ years experience"
+            }
+        ]
+    }
+    </script>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -387,6 +461,61 @@
         </div>
     </section>
 
+    <!-- Quick Actions / Guided Journey -->
+    <section class="quick-actions-section" id="actions">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">🎯 Quick Actions</span>
+                <h2>How Can We Help You Today?</h2>
+                <p>Choose what you need - we'll guide you through</p>
+            </div>
+            
+            <div class="actions-grid">
+                <a href="/book.html" class="action-card">
+                    <div class="action-icon">📅</div>
+                    <h3>Book Appointment</h3>
+                    <p>Schedule a visit with Dr. Ashok or Dr. Sunita</p>
+                    <span class="action-arrow">→</span>
+                </a>
+                
+                <a href="https://wa.me/919925450425?text=Hi, I need to order medicines from my prescription" class="action-card" target="_blank">
+                    <div class="action-icon">💊</div>
+                    <h3>Order Medicines</h3>
+                    <p>Send your prescription via WhatsApp for home delivery</p>
+                    <span class="action-arrow">→</span>
+                </a>
+                
+                <a href="/store.html" class="action-card">
+                    <div class="action-icon">🏪</div>
+                    <h3>Medical Store</h3>
+                    <p>View available medicines & health products</p>
+                    <span class="action-arrow">→</span>
+                </a>
+                
+                <a href="https://wa.me/919925450425?text=Hi, I'd like to check my appointment status" class="action-card" target="_blank">
+                    <div class="action-icon">📋</div>
+                    <h3>Check Status</h3>
+                    <p>Appointment confirmation & updates</p>
+                    <span class="action-arrow">→</span>
+                </a>
+                
+                <a href="tel:+919925450425" class="action-card">
+                    <div class="action-icon">📞</div>
+                    <h3>Call Us</h3>
+                    <p>Speak directly with our staff</p>
+                    <span class="action-arrow">→</span>
+                </a>
+                
+                <a href="https://maps.app.goo.gl/shukanmall" class="action-card" target="_blank">
+                    <div class="action-icon">📍</div>
+                    <h3>Get Directions</h3>
+                    <p>Navigate to Shukan Mall, 2nd Floor</p>
+                    <span class="action-arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Gallery Section -->
     <section class="gallery-section" id="gallery">
         <div class="container">
@@ -583,13 +712,17 @@
                 
                 <div class="contact-map">
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.5!2d72.58!3d23.05!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDAzJzAwLjAiTiA3MsKwMzQnNDguMCJF!5e0!3m2!1sen!2sin!4v1"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.5!2d72.5846!3d23.0541!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84f5a77e5cd1%3A0x8b0c9f4b6c5a1d2e!2sShukan+Mall!5e0!3m2!1sen!2sin!4v1"
                         width="100%" 
                         height="400" 
                         style="border:0; border-radius: 16px;" 
                         allowfullscreen="" 
-                        loading="lazy">
+                        loading="lazy"
+                        title="Adinath Hospital Location - Shukan Mall, Shahibaug, Ahmedabad">
                     </iframe>
+                    <a href="https://maps.app.goo.gl/3H3WJ6" target="_blank" class="map-directions-link">
+                        📍 Get Directions on Google Maps
+                    </a>
                 </div>
             </div>
         </div>

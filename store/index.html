@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Store Dashboard | Adinath Hospital</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <style>
+        :root {
+            --store-primary: #059669;
+        }
+        
+        .store-layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .store-sidebar {
+            background: var(--gray-800);
+            color: white;
+            padding: 24px;
+            position: fixed;
+            width: 240px;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .store-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--gray-700);
+            margin-bottom: 24px;
+        }
+        
+        .store-logo .icon { font-size: 2rem; }
+        .store-logo h2 { font-size: 1rem; margin: 0; }
+        .store-logo span { font-size: 0.75rem; color: var(--gray-400); }
+        
+        .store-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            color: var(--gray-300);
+            margin-bottom: 4px;
+            transition: var(--transition);
+        }
+        
+        .store-nav a:hover, .store-nav a.active {
+            background: var(--gray-700);
+            color: white;
+        }
+        
+        .store-nav .icon { font-size: 1.25rem; }
+        
+        /* Main Content */
+        .store-main {
+            margin-left: 240px;
+            padding: 24px;
+            background: var(--gray-50);
+        }
+        
+        .store-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .store-header h1 { font-size: 1.5rem; }
+        
+        .today-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+        }
+        
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            margin-bottom: 8px;
+        }
+        
+        .stat-card .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+        
+        .stat-card .change {
+            font-size: 0.8rem;
+            color: var(--store-primary);
+            margin-top: 4px;
+        }
+        
+        /* Panels */
+        .panels-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        
+        .panel {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .panel-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--gray-100);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .panel-header h3 {
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .panel-body {
+            padding: 20px;
+        }
+        
+        /* Patient Queue */
+        .patient-queue {
+            list-style: none;
+        }
+        
+        .queue-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        
+        .queue-item:last-child { border-bottom: none; }
+        
+        .queue-number {
+            width: 36px;
+            height: 36px;
+            background: var(--store-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .queue-info { flex: 1; }
+        .queue-info .name { font-weight: 600; color: var(--gray-800); }
+        .queue-info .purpose { font-size: 0.85rem; color: var(--gray-500); }
+        
+        .queue-status {
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .queue-status.waiting { background: #fef3c7; color: #92400e; }
+        .queue-status.ready { background: #d1fae5; color: #065f46; }
+        .queue-status.done { background: var(--gray-100); color: var(--gray-500); }
+        
+        /* Quick Entry Form */
+        .quick-entry {
+            display: grid;
+            gap: 16px;
+        }
+        
+        .entry-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+        
+        .entry-field label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--gray-600);
+            margin-bottom: 6px;
+        }
+        
+        .entry-field input, .entry-field select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+        }
+        
+        .btn-add {
+            padding: 10px 20px;
+            background: var(--store-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .btn-add:hover { background: #047857; }
+        
+        /* Recent Sales */
+        .sales-list {
+            list-style: none;
+        }
+        
+        .sale-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        
+        .sale-item:last-child { border-bottom: none; }
+        
+        .sale-info .items { font-weight: 500; color: var(--gray-800); }
+        .sale-info .time { font-size: 0.8rem; color: var(--gray-500); }
+        
+        .sale-amount {
+            font-weight: 700;
+            color: var(--store-primary);
+        }
+        
+        /* Inventory */
+        .inventory-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .inventory-table th, .inventory-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        
+        .inventory-table th {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .stock-low { color: #dc2626; }
+        .stock-ok { color: var(--store-primary); }
+        
+        /* Print Queue */
+        .print-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            margin-bottom: 8px;
+        }
+        
+        .print-item .icon { font-size: 1.5rem; }
+        .print-item .info { flex: 1; }
+        .print-item .name { font-weight: 500; }
+        .print-item .type { font-size: 0.8rem; color: var(--gray-500); }
+        
+        .btn-print {
+            padding: 6px 12px;
+            background: white;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            cursor: pointer;
+        }
+        
+        .btn-print:hover {
+            background: var(--gray-100);
+        }
+        
+        @media (max-width: 1024px) {
+            .store-layout { grid-template-columns: 1fr; }
+            .store-sidebar { display: none; }
+            .store-main { margin-left: 0; }
+            .today-stats { grid-template-columns: repeat(2, 1fr); }
+            .panels-grid { grid-template-columns: 1fr; }
+            .entry-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="store-layout">
+        <!-- Sidebar -->
+        <aside class="store-sidebar">
+            <div class="store-logo">
+                <span class="icon">💊</span>
+                <div>
+                    <h2>Medical Store</h2>
+                    <span>Adinath Hospital</span>
+                </div>
+            </div>
+            
+            <nav class="store-nav">
+                <a href="#" class="active"><span class="icon">📊</span> Dashboard</a>
+                <a href="#inventory"><span class="icon">📦</span> Inventory</a>
+                <a href="#sales"><span class="icon">💰</span> Sales</a>
+                <a href="#patients"><span class="icon">👥</span> Patient Queue</a>
+                <a href="#print"><span class="icon">🖨️</span> Print Queue</a>
+                <a href="/"><span class="icon">🏥</span> Hospital Site</a>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="store-main">
+            <div class="store-header">
+                <div>
+                    <h1>📊 Store Dashboard</h1>
+                    <p style="color: var(--gray-500);">Today: <span id="todayDate"></span></p>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-outline" onclick="window.print()">🖨️ Print Report</button>
+                </div>
+            </div>
+            
+            <!-- Today's Stats -->
+            <div class="today-stats">
+                <div class="stat-card">
+                    <div class="label">Today's Sales</div>
+                    <div class="value">₹<span id="todaySales">4,250</span></div>
+                    <div class="change">↑ 12% from yesterday</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Patients Served</div>
+                    <div class="value" id="patientsServed">18</div>
+                    <div class="change">3 currently waiting</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Prescriptions Filled</div>
+                    <div class="value" id="rxFilled">12</div>
+                    <div class="change">2 pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">Low Stock Items</div>
+                    <div class="value" id="lowStock">5</div>
+                    <div class="change" style="color: #dc2626;">Needs attention</div>
+                </div>
+            </div>
+            
+            <!-- Panels -->
+            <div class="panels-grid">
+                <!-- Patient Queue -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>👥 Patient Queue</h3>
+                        <span style="font-size: 0.85rem; color: var(--gray-500);">Live</span>
+                    </div>
+                    <div class="panel-body" style="padding: 0;">
+                        <ul class="patient-queue" id="patientQueue">
+                            <li class="queue-item">
+                                <div class="queue-number">1</div>
+                                <div class="queue-info">
+                                    <div class="name">Ramesh Patel</div>
+                                    <div class="purpose">💊 Prescription pickup - Dr. Ashok</div>
+                                </div>
+                                <span class="queue-status ready">Ready</span>
+                            </li>
+                            <li class="queue-item">
+                                <div class="queue-number">2</div>
+                                <div class="queue-info">
+                                    <div class="name">Sunita Ben</div>
+                                    <div class="purpose">🖨️ Print reports - Consultation</div>
+                                </div>
+                                <span class="queue-status waiting">Waiting</span>
+                            </li>
+                            <li class="queue-item">
+                                <div class="queue-number">3</div>
+                                <div class="queue-info">
+                                    <div class="name">Jayesh Shah</div>
+                                    <div class="purpose">💊 Medicine refill - Monthly</div>
+                                </div>
+                                <span class="queue-status waiting">Waiting</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Quick Sale Entry -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>💰 Quick Sale Entry</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form class="quick-entry" id="saleForm">
+                            <div class="entry-row">
+                                <div class="entry-field">
+                                    <label>Medicine / Item</label>
+                                    <input type="text" id="itemName" placeholder="Enter medicine name" list="medicines">
+                                    <datalist id="medicines">
+                                        <option value="Paracetamol 500mg">
+                                        <option value="Amoxicillin 250mg">
+                                        <option value="Calcium + D3">
+                                        <option value="Vitamin B Complex">
+                                        <option value="Knee Brace">
+                                        <option value="Crepe Bandage">
+                                    </datalist>
+                                </div>
+                                <div class="entry-field">
+                                    <label>Qty</label>
+                                    <input type="number" id="itemQty" value="1" min="1">
+                                </div>
+                                <div class="entry-field">
+                                    <label>Price ₹</label>
+                                    <input type="number" id="itemPrice" placeholder="0">
+                                </div>
+                                <button type="button" class="btn-add" onclick="addItem()">+ Add</button>
+                            </div>
+                            
+                            <div id="cartItems" style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--gray-200);">
+                                <!-- Cart items appear here -->
+                            </div>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 16px; border-top: 2px solid var(--gray-200);">
+                                <div>
+                                    <span style="color: var(--gray-500);">Total:</span>
+                                    <span style="font-size: 1.5rem; font-weight: 700; color: var(--store-primary);">₹<span id="cartTotal">0</span></span>
+                                </div>
+                                <div style="display: flex; gap: 12px;">
+                                    <select id="paymentMethod" style="padding: 10px;">
+                                        <option value="cash">💵 Cash</option>
+                                        <option value="upi">📱 UPI</option>
+                                        <option value="card">💳 Card</option>
+                                    </select>
+                                    <button type="button" class="btn-add" onclick="completeSale()">✅ Complete Sale</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Print Queue -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>🖨️ Print Queue</h3>
+                        <span style="font-size: 0.85rem; color: var(--gray-500);">2 pending</span>
+                    </div>
+                    <div class="panel-body">
+                        <div class="print-item">
+                            <span class="icon">📄</span>
+                            <div class="info">
+                                <div class="name">Sunita Ben - X-Ray Report</div>
+                                <div class="type">Sent by Dr. Ashok • 5 min ago</div>
+                            </div>
+                            <button class="btn-print" onclick="printDoc(this)">🖨️ Print</button>
+                        </div>
+                        <div class="print-item">
+                            <span class="icon">📋</span>
+                            <div class="info">
+                                <div class="name">Ramesh Patel - Prescription</div>
+                                <div class="type">Sent by Dr. Sunita • 12 min ago</div>
+                            </div>
+                            <button class="btn-print" onclick="printDoc(this)">🖨️ Print</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Sales -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>📜 Recent Sales</h3>
+                        <a href="#sales" style="font-size: 0.85rem; color: var(--store-primary);">View All</a>
+                    </div>
+                    <div class="panel-body" style="padding: 0 20px;">
+                        <ul class="sales-list" id="recentSales">
+                            <li class="sale-item">
+                                <div class="sale-info">
+                                    <div class="items">Calcium + D3, Knee Brace</div>
+                                    <div class="time">2 min ago • Cash</div>
+                                </div>
+                                <div class="sale-amount">₹850</div>
+                            </li>
+                            <li class="sale-item">
+                                <div class="sale-info">
+                                    <div class="items">Paracetamol 500mg (10)</div>
+                                    <div class="time">15 min ago • UPI</div>
+                                </div>
+                                <div class="sale-amount">₹45</div>
+                            </li>
+                            <li class="sale-item">
+                                <div class="sale-info">
+                                    <div class="items">Prescription meds (5 items)</div>
+                                    <div class="time">32 min ago • Cash</div>
+                                </div>
+                                <div class="sale-amount">₹1,240</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Inventory Section -->
+            <div class="panel" style="margin-top: 24px;" id="inventory">
+                <div class="panel-header">
+                    <h3>📦 Medicine Inventory</h3>
+                    <button class="btn-add" onclick="showAddMedicine()">+ Add Medicine</button>
+                </div>
+                <div class="panel-body" style="padding: 0;">
+                    <table class="inventory-table">
+                        <thead>
+                            <tr>
+                                <th>Medicine Name</th>
+                                <th>Category</th>
+                                <th>Stock</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTable">
+                            <tr>
+                                <td><strong>Paracetamol 500mg</strong></td>
+                                <td>Pain Relief</td>
+                                <td class="stock-ok">150 strips</td>
+                                <td>₹45</td>
+                                <td><button class="btn-print">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Calcium + D3</strong></td>
+                                <td>Supplements</td>
+                                <td class="stock-low">8 bottles</td>
+                                <td>₹320</td>
+                                <td><button class="btn-print">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Knee Brace (Medium)</strong></td>
+                                <td>Orthopedic</td>
+                                <td class="stock-ok">12 pcs</td>
+                                <td>₹550</td>
+                                <td><button class="btn-print">Edit</button></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Crepe Bandage 4"</strong></td>
+                                <td>First Aid</td>
+                                <td class="stock-low">5 pcs</td>
+                                <td>₹85</td>
+                                <td><button class="btn-print">Edit</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Set today's date
+        document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-IN', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        // Cart functionality
+        let cart = [];
+        
+        function addItem() {
+            const name = document.getElementById('itemName').value;
+            const qty = parseInt(document.getElementById('itemQty').value);
+            const price = parseFloat(document.getElementById('itemPrice').value);
+            
+            if (!name || !price) {
+                alert('Please enter item name and price');
+                return;
+            }
+            
+            cart.push({ name, qty, price, total: qty * price });
+            updateCart();
+            
+            // Reset form
+            document.getElementById('itemName').value = '';
+            document.getElementById('itemQty').value = '1';
+            document.getElementById('itemPrice').value = '';
+        }
+        
+        function updateCart() {
+            const cartDiv = document.getElementById('cartItems');
+            const total = cart.reduce((sum, item) => sum + item.total, 0);
+            
+            cartDiv.innerHTML = cart.map((item, i) => `
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--gray-100);">
+                    <span>${item.name} × ${item.qty}</span>
+                    <span style="display: flex; align-items: center; gap: 12px;">
+                        <strong>₹${item.total}</strong>
+                        <button onclick="removeItem(${i})" style="background: none; border: none; color: #dc2626; cursor: pointer;">✕</button>
+                    </span>
+                </div>
+            `).join('');
+            
+            document.getElementById('cartTotal').textContent = total;
+        }
+        
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+        
+        function completeSale() {
+            if (cart.length === 0) {
+                alert('Add items to cart first');
+                return;
+            }
+            
+            const total = cart.reduce((sum, item) => sum + item.total, 0);
+            const method = document.getElementById('paymentMethod').value;
+            
+            // Add to recent sales
+            const salesList = document.getElementById('recentSales');
+            const newSale = document.createElement('li');
+            newSale.className = 'sale-item';
+            newSale.innerHTML = `
+                <div class="sale-info">
+                    <div class="items">${cart.map(i => i.name).join(', ')}</div>
+                    <div class="time">Just now • ${method.toUpperCase()}</div>
+                </div>
+                <div class="sale-amount">₹${total}</div>
+            `;
+            salesList.insertBefore(newSale, salesList.firstChild);
+            
+            // Update stats
+            const currentSales = parseInt(document.getElementById('todaySales').textContent.replace(',', ''));
+            document.getElementById('todaySales').textContent = (currentSales + total).toLocaleString();
+            document.getElementById('patientsServed').textContent = 
+                parseInt(document.getElementById('patientsServed').textContent) + 1;
+            
+            // Clear cart
+            cart = [];
+            updateCart();
+            
+            alert('✅ Sale completed! Total: ₹' + total);
+        }
+        
+        function printDoc(btn) {
+            btn.textContent = '✅ Printed';
+            btn.disabled = true;
+            btn.style.background = '#d1fae5';
+            btn.style.color = '#065f46';
+        }
+        
+        function showAddMedicine() {
+            const name = prompt('Medicine Name:');
+            if (!name) return;
+            const category = prompt('Category (e.g., Pain Relief, Supplements):');
+            const stock = prompt('Initial Stock:');
+            const price = prompt('Price (₹):');
+            
+            const tbody = document.getElementById('inventoryTable');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><strong>${name}</strong></td>
+                <td>${category}</td>
+                <td class="stock-ok">${stock}</td>
+                <td>₹${price}</td>
+                <td><button class="btn-print">Edit</button></td>
+            `;
+            tbody.appendChild(row);
+        }
+    </script>
+</body>
+</html>
+

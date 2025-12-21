@@ -8,7 +8,23 @@ document.addEventListener('DOMContentLoaded', () => {
     initSmoothScroll();
     initHeaderScroll();
     initAnimations();
+    registerServiceWorker();
 });
+
+// Register Service Worker for PWA
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/adinath-hospital/sw.js')
+                .then(registration => {
+                    console.log('SW registered:', registration.scope);
+                })
+                .catch(error => {
+                    console.log('SW registration failed:', error);
+                });
+        });
+    }
+}
 
 // Mobile Menu Toggle
 function initMobileMenu() {
