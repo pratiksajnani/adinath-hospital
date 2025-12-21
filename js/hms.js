@@ -4,11 +4,17 @@
 // ============================================
 
 const HMS = {
+    // Data version - increment this when changing default users/data
+    DATA_VERSION: '2.0',
+    
     // Initialize default data
     init() {
-        if (!localStorage.getItem('hms_initialized')) {
+        const storedVersion = localStorage.getItem('hms_data_version');
+        if (!localStorage.getItem('hms_initialized') || storedVersion !== this.DATA_VERSION) {
+            console.log('HMS: Initializing/updating data to version', this.DATA_VERSION);
             this.seedData();
             localStorage.setItem('hms_initialized', 'true');
+            localStorage.setItem('hms_data_version', this.DATA_VERSION);
         }
     },
 
