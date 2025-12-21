@@ -140,6 +140,7 @@ const HMS = {
         ];
 
         // Store all data
+        localStorage.setItem('hms_users', JSON.stringify(users));
         localStorage.setItem('hms_patients', JSON.stringify(patients));
         localStorage.setItem('hms_appointments', JSON.stringify(appointments));
         localStorage.setItem('hms_prescriptions', JSON.stringify(prescriptions));

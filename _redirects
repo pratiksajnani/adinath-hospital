@@ -1,23 +1,12 @@
-# Adinath Hospital - Redirects
-# Ensure HTML files are served correctly
+# Adinath Hospital - Redirects (for Netlify compatibility)
+# AWS Amplify uses rewrites/redirects in amplify.yml or console
 
-/login    /login.html    200
-/portal   /portal/index.html    200
-/forms    /forms/index.html    200
-/store    /store.html    200
-/book     /book.html    200
+# Clean URLs without .html
+/login      /login.html     200
+/portal     /portal/index.html     200
+/forms      /forms/index.html     200
+/store      /store.html     200
+/book       /book.html      200
 
-# SPA fallback - send 404s to 404.html
-/*    /404.html    404
-
-# Ensure HTML files are served correctly
-
-/login    /login.html    200
-/portal   /portal/index.html    200
-/forms    /forms/index.html    200
-/store    /store.html    200
-/book     /book.html    200
-
-# SPA fallback - send 404s to 404.html
-/*    /404.html    404
-
+# 404 fallback (but not for actual files)
+/*    /index.html    200
