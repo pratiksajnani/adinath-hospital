@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Guide - Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #0f766e;
+            --primary-light: #14b8a6;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, #134e4a 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .header h1 { font-size: 2rem; margin-bottom: 8px; }
+        .header p { opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        
+        .lang-switch {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        
+        .lang-btn {
+            padding: 6px 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: transparent;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .lang-btn:hover, .lang-btn.active {
+            background: white;
+            color: var(--primary);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .toc {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .toc h2 { color: var(--primary); margin-bottom: 16px; font-size: 1.25rem; }
+        
+        .toc-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            list-style: none;
+        }
+        
+        .toc-list a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: var(--bg);
+            border-radius: 8px;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .toc-list a:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .section {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 32px;
+            margin: 24px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section h2 .emoji { font-size: 1.75rem; }
+        
+        .section-subtitle {
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+        
+        .step {
+            display: flex;
+            gap: 16px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .step:last-child { border-bottom: none; }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .step-content { flex: 1; }
+        .step-content h3 { margin-bottom: 8px; font-size: 1.1rem; }
+        .step-content p { color: var(--text-light); margin-bottom: 12px; }
+        
+        .screenshot {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 12px 0;
+            text-align: center;
+        }
+        
+        .screenshot img {
+            max-width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .screenshot-placeholder {
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            height: 200px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .tip {
+            background: #ecfdf5;
+            border-left: 4px solid var(--success);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+        
+        .tip-title { font-weight: 600; color: #166534; margin-bottom: 4px; }
+        
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid var(--warning);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+        
+        .warning-title { font-weight: 600; color: #92400e; margin-bottom: 4px; }
+        
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover { background: #0d6359; }
+        
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-whatsapp {
+            background: #25d366;
+            color: white;
+        }
+        
+        .btn-whatsapp:hover { background: #1da851; }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        
+        .quick-action {
+            background: var(--bg);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .quick-action:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .quick-action .icon { font-size: 2rem; margin-bottom: 8px; }
+        .quick-action .label { font-weight: 500; font-size: 0.9rem; }
+        
+        .video-embed {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            margin: 20px 0;
+            background: #000;
+        }
+        
+        .video-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+        }
+        
+        .video-placeholder .play-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        
+        .faq { margin: 24px 0; }
+        
+        .faq-item {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 16px 20px;
+            background: var(--bg);
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            padding: 16px 20px;
+            color: var(--text-light);
+            display: none;
+        }
+        
+        .faq-item.open .faq-answer { display: block; }
+        .faq-item.open .faq-question::after { content: '−'; }
+        .faq-question::after { content: '+'; font-size: 1.25rem; color: var(--primary); }
+        
+        .contact-card {
+            background: linear-gradient(135deg, var(--primary) 0%, #134e4a 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 24px 0;
+        }
+        
+        .contact-card h3 { font-size: 1.5rem; margin-bottom: 8px; }
+        .contact-card p { opacity: 0.9; margin-bottom: 20px; }
+        
+        .contact-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: white;
+            color: var(--primary);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .contact-btn:hover { transform: scale(1.05); }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+        
+        /* Multi-language content */
+        [data-lang] { display: none; }
+        [data-lang="en"] { display: block; }
+        
+        body.lang-hi [data-lang="en"] { display: none; }
+        body.lang-hi [data-lang="hi"] { display: block; }
+        
+        body.lang-gu [data-lang="en"] { display: none; }
+        body.lang-gu [data-lang="gu"] { display: block; }
+        
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.5rem; }
+            .section { padding: 20px; }
+            .step { flex-direction: column; }
+        }
+        
+        @media print {
+            .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .section { break-inside: avoid; }
+            .btn-group, .lang-switch { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>📱 Patient Guide</h1>
+        <p data-lang="en">Complete guide to using Adinath Hospital's online services</p>
+        <p data-lang="hi">आदिनाथ हॉस्पिटल की ऑनलाइन सेवाओं का उपयोग करने के लिए पूर्ण गाइड</p>
+        <p data-lang="gu">આદિનાથ હોસ્પિટલની ઓનલાઇન સેવાઓનો ઉપયોગ કરવા માટેની સંપૂર્ણ માર્ગદર્શિકા</p>
+        
+        <div class="lang-switch">
+            <button class="lang-btn active" onclick="setLang('en')">English</button>
+            <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+            <button class="lang-btn" onclick="setLang('gu')">ગુજરાતી</button>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <a href="../book.html" class="quick-action">
+                <div class="icon">📅</div>
+                <div class="label" data-lang="en">Book Appointment</div>
+                <div class="label" data-lang="hi">अपॉइंटमेंट बुक करें</div>
+                <div class="label" data-lang="gu">એપોઇન્ટમેન્ટ બુક કરો</div>
+            </a>
+            <a href="tel:+919925450425" class="quick-action">
+                <div class="icon">📞</div>
+                <div class="label" data-lang="en">Call Hospital</div>
+                <div class="label" data-lang="hi">हॉस्पिटल को कॉल करें</div>
+                <div class="label" data-lang="gu">હોસ્પિટલને કૉલ કરો</div>
+            </a>
+            <a href="https://wa.me/919925450425" class="quick-action">
+                <div class="icon">💬</div>
+                <div class="label" data-lang="en">WhatsApp</div>
+                <div class="label" data-lang="hi">WhatsApp</div>
+                <div class="label" data-lang="gu">WhatsApp</div>
+            </a>
+            <a href="https://maps.google.com/?q=Adinath+Hospital+Shahibaug+Ahmedabad" class="quick-action">
+                <div class="icon">📍</div>
+                <div class="label" data-lang="en">Get Directions</div>
+                <div class="label" data-lang="hi">दिशा-निर्देश</div>
+                <div class="label" data-lang="gu">દિશાઓ મેળવો</div>
+            </a>
+        </div>
+        
+        <!-- Table of Contents -->
+        <nav class="toc">
+            <h2 data-lang="en">📋 What You Can Do</h2>
+            <h2 data-lang="hi">📋 आप क्या कर सकते हैं</h2>
+            <h2 data-lang="gu">📋 તમે શું કરી શકો છો</h2>
+            <ul class="toc-list">
+                <li><a href="#book">📅 <span data-lang="en">Book Appointment</span><span data-lang="hi">अपॉइंटमेंट बुक करें</span><span data-lang="gu">એપોઇન્ટમેન્ટ બુક કરો</span></a></li>
+                <li><a href="#view">👁️ <span data-lang="en">View Appointments</span><span data-lang="hi">अपॉइंटमेंट देखें</span><span data-lang="gu">એપોઇન્ટમેન્ટ જુઓ</span></a></li>
+                <li><a href="#cancel">❌ <span data-lang="en">Cancel/Reschedule</span><span data-lang="hi">रद्द/पुनर्निर्धारित</span><span data-lang="gu">રદ/ફરી શેડ્યૂલ</span></a></li>
+                <li><a href="#medicines">💊 <span data-lang="en">Order Medicines</span><span data-lang="hi">दवाइयां ऑर्डर करें</span><span data-lang="gu">દવાઓનો ઓર્ડર કરો</span></a></li>
+                <li><a href="#prescriptions">📋 <span data-lang="en">View Prescriptions</span><span data-lang="hi">प्रिस्क्रिप्शन देखें</span><span data-lang="gu">પ્રિસ્ક્રિપ્શન જુઓ</span></a></li>
+                <li><a href="#directions">📍 <span data-lang="en">Find Hospital</span><span data-lang="hi">हॉस्पिटल खोजें</span><span data-lang="gu">હોસ્પિટલ શોધો</span></a></li>
+            </ul>
+        </nav>
+        
+        <!-- Video Walkthrough -->
+        <div class="section">
+            <h2><span class="emoji">🎬</span> <span data-lang="en">Video Walkthrough</span><span data-lang="hi">वीडियो वॉकथ्रू</span><span data-lang="gu">વીડિયો વૉકથ્રુ</span></h2>
+            <p class="section-subtitle" data-lang="en">Watch this 2-minute video to learn how to use our services</p>
+            <p class="section-subtitle" data-lang="hi">हमारी सेवाओं का उपयोग करना सीखने के लिए यह 2 मिनट का वीडियो देखें</p>
+            <p class="section-subtitle" data-lang="gu">અમારી સેવાઓનો ઉપયોગ કેવી રીતે કરવો તે જાણવા આ 2 મિનિટનો વીડિયો જુઓ</p>
+            
+            <div class="video-embed">
+                <div class="video-placeholder">
+                    <div class="play-icon">▶️</div>
+                    <p data-lang="en">Patient Tutorial Video</p>
+                    <p data-lang="hi">मरीज ट्यूटोरियल वीडियो</p>
+                    <p data-lang="gu">દર્દી ટ્યુટોરિયલ વીડિયો</p>
+                    <small style="opacity: 0.7; margin-top: 8px;">Coming Soon</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION: Book Appointment (CREATE) -->
+        <section class="section" id="book">
+            <h2><span class="emoji">📅</span> <span data-lang="en">Book an Appointment</span><span data-lang="hi">अपॉइंटमेंट बुक करें</span><span data-lang="gu">એપોઇન્ટમેન્ટ બુક કરો</span></h2>
+            <p class="section-subtitle" data-lang="en">Schedule a visit with our doctors in just a few steps</p>
+            <p class="section-subtitle" data-lang="hi">बस कुछ कदमों में हमारे डॉक्टरों के साथ मिलने का समय निर्धारित करें</p>
+            <p class="section-subtitle" data-lang="gu">માત્ર થોડા પગલાંમાં અમારા ડોક્ટરો સાથે મુલાકાત શેડ્યૂલ કરો</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Go to Booking Page</h3>
+                    <h3 data-lang="hi">बुकिंग पेज पर जाएं</h3>
+                    <h3 data-lang="gu">બુકિંગ પેજ પર જાઓ</h3>
+                    <p data-lang="en">Click the "Book Appointment" button on the homepage or in the menu</p>
+                    <p data-lang="hi">होमपेज या मेनू में "अपॉइंटमेंट बुक करें" बटन पर क्लिक करें</p>
+                    <p data-lang="gu">હોમપેજ અથવા મેનુમાં "એપોઇન્ટમેન્ટ બુક કરો" બટન પર ક્લિક કરો</p>
+                    <div class="screenshot">
+                        <div class="screenshot-placeholder">📸 Screenshot: Homepage with Book button highlighted</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Select Doctor</h3>
+                    <h3 data-lang="hi">डॉक्टर चुनें</h3>
+                    <h3 data-lang="gu">ડોક્ટર પસંદ કરો</h3>
+                    <p data-lang="en">Choose between Dr. Ashok Sajnani (Orthopedic) or Dr. Sunita Sajnani (OB-GYN)</p>
+                    <p data-lang="hi">डॉ. अशोक सजनानी (हड्डी रोग) या डॉ. सुनीता सजनानी (स्त्री रोग) में से चुनें</p>
+                    <p data-lang="gu">ડૉ. અશોક સજનાની (ઓર્થોપેડિક) અથવા ડૉ. સુનિતા સજનાની (OB-GYN) વચ્ચે પસંદ કરો</p>
+                    <div class="screenshot">
+                        <div class="screenshot-placeholder">📸 Screenshot: Doctor selection dropdown</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Pick Date & Time</h3>
+                    <h3 data-lang="hi">तारीख और समय चुनें</h3>
+                    <h3 data-lang="gu">તારીખ અને સમય પસંદ કરો</h3>
+                    <p data-lang="en">Select your preferred date and available time slot (11 AM - 7 PM, Mon-Sat)</p>
+                    <p data-lang="hi">अपनी पसंदीदा तारीख और उपलब्ध समय स्लॉट चुनें (सुबह 11 - शाम 7, सोम-शनि)</p>
+                    <p data-lang="gu">તમારી પસંદગીની તારીખ અને ઉપલબ્ધ સમય સ્લોટ પસંદ કરો (સવારે 11 - સાંજે 7, સોમ-શનિ)</p>
+                    <div class="tip">
+                        <div class="tip-title" data-lang="en">💡 Tip</div>
+                        <div class="tip-title" data-lang="hi">💡 सुझाव</div>
+                        <div class="tip-title" data-lang="gu">💡 ટિપ</div>
+                        <p data-lang="en">Morning slots (11 AM - 1 PM) are less crowded on weekdays</p>
+                        <p data-lang="hi">सप्ताह के दिनों में सुबह के स्लॉट (11 AM - 1 PM) में कम भीड़ होती है</p>
+                        <p data-lang="gu">અઠવાડિયાના દિવસોમાં સવારના સ્લોટ (સવારે 11 - બપોરે 1) ઓછા ભીડવાળા હોય છે</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Enter Your Details</h3>
+                    <h3 data-lang="hi">अपना विवरण दर्ज करें</h3>
+                    <h3 data-lang="gu">તમારી વિગતો દાખલ કરો</h3>
+                    <p data-lang="en">Fill in your name, phone number, and reason for visit</p>
+                    <p data-lang="hi">अपना नाम, फोन नंबर और मिलने का कारण भरें</p>
+                    <p data-lang="gu">તમારું નામ, ફોન નંબર અને મુલાકાતનું કારણ ભરો</p>
+                    <div class="screenshot">
+                        <div class="screenshot-placeholder">📸 Screenshot: Patient details form</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Confirm & Receive SMS</h3>
+                    <h3 data-lang="hi">पुष्टि करें और SMS प्राप्त करें</h3>
+                    <h3 data-lang="gu">પુષ્ટિ કરો અને SMS મેળવો</h3>
+                    <p data-lang="en">Click Submit and receive confirmation via SMS/WhatsApp</p>
+                    <p data-lang="hi">सबमिट पर क्लिक करें और SMS/WhatsApp के माध्यम से पुष्टि प्राप्त करें</p>
+                    <p data-lang="gu">સબમિટ પર ક્લિક કરો અને SMS/WhatsApp દ્વારા પુષ્ટિ મેળવો</p>
+                    <div class="screenshot">
+                        <div class="screenshot-placeholder">📸 Screenshot: Confirmation message</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <a href="../book.html" class="btn btn-primary">📅 <span data-lang="en">Book Now</span><span data-lang="hi">अभी बुक करें</span><span data-lang="gu">હમણાં બુક કરો</span></a>
+                <a href="https://wa.me/919925450425?text=I%20want%20to%20book%20an%20appointment" class="btn btn-whatsapp">💬 <span data-lang="en">Book via WhatsApp</span><span data-lang="hi">WhatsApp से बुक करें</span><span data-lang="gu">WhatsApp દ્વારા બુક કરો</span></a>
+            </div>
+        </section>
+        
+        <!-- SECTION: View Appointments (READ) -->
+        <section class="section" id="view">
+            <h2><span class="emoji">👁️</span> <span data-lang="en">View Your Appointments</span><span data-lang="hi">अपनी अपॉइंटमेंट देखें</span><span data-lang="gu">તમારી એપોઇન્ટમેન્ટ જુઓ</span></h2>
+            <p class="section-subtitle" data-lang="en">Check the status of your upcoming and past appointments</p>
+            <p class="section-subtitle" data-lang="hi">अपनी आगामी और पिछली अपॉइंटमेंट की स्थिति देखें</p>
+            <p class="section-subtitle" data-lang="gu">તમારી આગામી અને ભૂતકાળની એપોઇન્ટમેન્ટની સ્થિતિ તપાસો</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Go to Patient Portal</h3>
+                    <h3 data-lang="hi">पेशेंट पोर्टल पर जाएं</h3>
+                    <h3 data-lang="gu">પેશન્ટ પોર્ટલ પર જાઓ</h3>
+                    <p data-lang="en">Click on "Help" → "Portal Login" in the menu</p>
+                    <p data-lang="hi">मेनू में "Help" → "Portal Login" पर क्लिक करें</p>
+                    <p data-lang="gu">મેનુમાં "Help" → "Portal Login" પર ક્લિક કરો</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Enter Your Phone Number</h3>
+                    <h3 data-lang="hi">अपना फोन नंबर दर्ज करें</h3>
+                    <h3 data-lang="gu">તમારો ફોન નંબર દાખલ કરો</h3>
+                    <p data-lang="en">Use the same phone number you used while booking</p>
+                    <p data-lang="hi">बुकिंग के समय उपयोग किए गए फोन नंबर का उपयोग करें</p>
+                    <p data-lang="gu">બુકિંગ સમયે વાપરેલ એ જ ફોન નંબરનો ઉપયોગ કરો</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3 data-lang="en">View Appointment List</h3>
+                    <h3 data-lang="hi">अपॉइंटमेंट सूची देखें</h3>
+                    <h3 data-lang="gu">એપોઇન્ટમેન્ટ યાદી જુઓ</h3>
+                    <p data-lang="en">See all your appointments with status (Confirmed, Pending, Completed)</p>
+                    <p data-lang="hi">सभी अपॉइंटमेंट स्थिति के साथ देखें (पुष्टि, लंबित, पूर्ण)</p>
+                    <p data-lang="gu">તમામ એપોઇન્ટમેન્ટ સ્થિતિ સાથે જુઓ (પુષ્ટિ, બાકી, પૂર્ણ)</p>
+                    <div class="screenshot">
+                        <div class="screenshot-placeholder">📸 Screenshot: Appointments list view</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <a href="../portal/patient/index.html" class="btn btn-primary">👤 <span data-lang="en">Patient Portal</span><span data-lang="hi">पेशेंट पोर्टल</span><span data-lang="gu">પેશન્ટ પોર્ટલ</span></a>
+            </div>
+        </section>
+        
+        <!-- SECTION: Cancel/Reschedule (UPDATE/DELETE) -->
+        <section class="section" id="cancel">
+            <h2><span class="emoji">❌</span> <span data-lang="en">Cancel or Reschedule</span><span data-lang="hi">रद्द या पुनर्निर्धारित करें</span><span data-lang="gu">રદ અથવા ફરી શેડ્યૂલ કરો</span></h2>
+            <p class="section-subtitle" data-lang="en">Need to change your appointment? Here's how</p>
+            <p class="section-subtitle" data-lang="hi">अपॉइंटमेंट बदलनी है? यहां देखें कैसे</p>
+            <p class="section-subtitle" data-lang="gu">એપોઇન્ટમેન્ટ બદલવાની જરૂર છે? અહીં જુઓ કેવી રીતે</p>
+            
+            <div class="warning">
+                <div class="warning-title" data-lang="en">⚠️ Please Note</div>
+                <div class="warning-title" data-lang="hi">⚠️ कृपया ध्यान दें</div>
+                <div class="warning-title" data-lang="gu">⚠️ કૃપયા નોંધ કરો</div>
+                <p data-lang="en">Cancel at least 2 hours before your appointment to allow others to book</p>
+                <p data-lang="hi">दूसरों को बुक करने की अनुमति देने के लिए अपॉइंटमेंट से कम से कम 2 घंटे पहले रद्द करें</p>
+                <p data-lang="gu">અન્યોને બુક કરવાની મંજૂરી આપવા માટે તમારી એપોઇન્ટમેન્ટના ઓછામાં ઓછા 2 કલાક પહેલાં રદ કરો</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Contact via WhatsApp or Call</h3>
+                    <h3 data-lang="hi">WhatsApp या कॉल के माध्यम से संपर्क करें</h3>
+                    <h3 data-lang="gu">WhatsApp અથવા કૉલ દ્વારા સંપર્ક કરો</h3>
+                    <p data-lang="en">Send a message or call +91 99254 50425 with your appointment details</p>
+                    <p data-lang="hi">अपनी अपॉइंटमेंट विवरण के साथ +91 99254 50425 पर मैसेज भेजें या कॉल करें</p>
+                    <p data-lang="gu">તમારી એપોઇન્ટમેન્ટ વિગતો સાથે +91 99254 50425 પર મેસેજ મોકલો અથવા કૉલ કરો</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Provide Your Details</h3>
+                    <h3 data-lang="hi">अपना विवरण प्रदान करें</h3>
+                    <h3 data-lang="gu">તમારી વિગતો આપો</h3>
+                    <p data-lang="en">Tell them your name, phone number, and original appointment date</p>
+                    <p data-lang="hi">उन्हें अपना नाम, फोन नंबर और मूल अपॉइंटमेंट तारीख बताएं</p>
+                    <p data-lang="gu">તેમને તમારું નામ, ફોન નંબર અને મૂળ એપોઇન્ટમેન્ટ તારીખ જણાવો</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Confirm New Date (if rescheduling)</h3>
+                    <h3 data-lang="hi">नई तारीख की पुष्टि करें (यदि पुनर्निर्धारण)</h3>
+                    <h3 data-lang="gu">નવી તારીખ પુષ્ટિ કરો (જો ફરી શેડ્યૂલ કરો)</h3>
+                    <p data-lang="en">Choose a new available slot and receive confirmation</p>
+                    <p data-lang="hi">नया उपलब्ध स्लॉट चुनें और पुष्टि प्राप्त करें</p>
+                    <p data-lang="gu">નવો ઉપલબ્ધ સ્લોટ પસંદ કરો અને પુષ્ટિ મેળવો</p>
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <a href="https://wa.me/919925450425?text=I%20need%20to%20reschedule%20my%20appointment" class="btn btn-whatsapp">💬 <span data-lang="en">Reschedule via WhatsApp</span><span data-lang="hi">WhatsApp से पुनर्निर्धारित</span><span data-lang="gu">WhatsApp દ્વારા ફરી શેડ્યૂલ</span></a>
+                <a href="tel:+919925450425" class="btn btn-outline">📞 <span data-lang="en">Call to Cancel</span><span data-lang="hi">रद्द करने के लिए कॉल</span><span data-lang="gu">રદ કરવા કૉલ કરો</span></a>
+            </div>
+        </section>
+        
+        <!-- SECTION: Order Medicines -->
+        <section class="section" id="medicines">
+            <h2><span class="emoji">💊</span> <span data-lang="en">Order Medicines</span><span data-lang="hi">दवाइयां ऑर्डर करें</span><span data-lang="gu">દવાઓનો ઓર્ડર કરો</span></h2>
+            <p class="section-subtitle" data-lang="en">Get your prescription medicines delivered or ready for pickup</p>
+            <p class="section-subtitle" data-lang="hi">अपनी प्रिस्क्रिप्शन दवाइयां डिलीवरी या पिकअप के लिए तैयार करें</p>
+            <p class="section-subtitle" data-lang="gu">તમારી પ્રિસ્ક્રિપ્શન દવાઓ ડિલિવરી અથવા પિકઅપ માટે તૈયાર મેળવો</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Send Prescription Photo</h3>
+                    <h3 data-lang="hi">प्रिस्क्रिप्शन फोटो भेजें</h3>
+                    <h3 data-lang="gu">પ્રિસ્ક્રિપ્શન ફોટો મોકલો</h3>
+                    <p data-lang="en">Take a clear photo of your prescription and send via WhatsApp</p>
+                    <p data-lang="hi">अपने प्रिस्क्रिप्शन की स्पष्ट फोटो लें और WhatsApp पर भेजें</p>
+                    <p data-lang="gu">તમારા પ્રિસ્ક્રિપ્શનનો સ્પષ્ટ ફોટો લો અને WhatsApp પર મોકલો</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Receive Quote & Confirm</h3>
+                    <h3 data-lang="hi">कोट प्राप्त करें और पुष्टि करें</h3>
+                    <h3 data-lang="gu">ક્વોટ મેળવો અને પુષ્ટિ કરો</h3>
+                    <p data-lang="en">Staff will reply with medicine availability and total cost</p>
+                    <p data-lang="hi">स्टाफ दवाइयों की उपलब्धता और कुल लागत के साथ जवाब देगा</p>
+                    <p data-lang="gu">સ્ટાફ દવાઓની ઉપલબ્ધતા અને કુલ ખર્ચ સાથે જવાબ આપશે</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Pickup from Store</h3>
+                    <h3 data-lang="hi">स्टोर से पिकअप करें</h3>
+                    <h3 data-lang="gu">સ્ટોરમાંથી પિકઅપ કરો</h3>
+                    <p data-lang="en">Visit the medical store at Adinath Hospital to collect your medicines</p>
+                    <p data-lang="hi">अपनी दवाइयां लेने के लिए आदिनाथ हॉस्पिटल के मेडिकल स्टोर पर जाएं</p>
+                    <p data-lang="gu">તમારી દવાઓ લેવા આદિનાથ હોસ્પિટલના મેડિકલ સ્ટોરની મુલાકાત લો</p>
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <a href="https://wa.me/919925450425?text=I%20want%20to%20order%20medicines.%20Here%20is%20my%20prescription:" class="btn btn-whatsapp">💊 <span data-lang="en">Order via WhatsApp</span><span data-lang="hi">WhatsApp से ऑर्डर</span><span data-lang="gu">WhatsApp દ્વારા ઓર્ડર</span></a>
+                <a href="../store.html" class="btn btn-outline">🏪 <span data-lang="en">Store Info</span><span data-lang="hi">स्टोर जानकारी</span><span data-lang="gu">સ્ટોર માહિતી</span></a>
+            </div>
+        </section>
+        
+        <!-- SECTION: View Prescriptions -->
+        <section class="section" id="prescriptions">
+            <h2><span class="emoji">📋</span> <span data-lang="en">View Prescriptions</span><span data-lang="hi">प्रिस्क्रिप्शन देखें</span><span data-lang="gu">પ્રિસ્ક્રિપ્શન જુઓ</span></h2>
+            <p class="section-subtitle" data-lang="en">Access your prescription history from past visits</p>
+            <p class="section-subtitle" data-lang="hi">पिछली विज़िट से अपना प्रिस्क्रिप्शन इतिहास देखें</p>
+            <p class="section-subtitle" data-lang="gu">ભૂતકાળની મુલાકાતોમાંથી તમારો પ્રિસ્ક્રિપ્શન ઇતિહાસ જુઓ</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Login to Patient Portal</h3>
+                    <h3 data-lang="hi">पेशेंट पोर्टल में लॉगिन करें</h3>
+                    <h3 data-lang="gu">પેશન્ટ પોર્ટલમાં લૉગિન કરો</h3>
+                    <p data-lang="en">Use your phone number to access your records</p>
+                    <p data-lang="hi">अपने रिकॉर्ड तक पहुंचने के लिए अपने फोन नंबर का उपयोग करें</p>
+                    <p data-lang="gu">તમારા રેકોર્ડ્સ ઍક્સેસ કરવા તમારા ફોન નંબરનો ઉપયોગ કરો</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Go to "My Prescriptions"</h3>
+                    <h3 data-lang="hi">"मेरे प्रिस्क्रिप्शन" पर जाएं</h3>
+                    <h3 data-lang="gu">"મારા પ્રિસ્ક્રિપ્શન" પર જાઓ</h3>
+                    <p data-lang="en">View list of all prescriptions with dates and doctor names</p>
+                    <p data-lang="hi">तारीखों और डॉक्टर नामों के साथ सभी प्रिस्क्रिप्शन की सूची देखें</p>
+                    <p data-lang="gu">તારીખો અને ડોક્ટર નામો સાથે બધા પ્રિસ્ક્રિપ્શનની યાદી જુઓ</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3 data-lang="en">Download or Print</h3>
+                    <h3 data-lang="hi">डाउनलोड या प्रिंट करें</h3>
+                    <h3 data-lang="gu">ડાઉનલોડ અથવા પ્રિન્ટ કરો</h3>
+                    <p data-lang="en">Save as PDF or print for your records</p>
+                    <p data-lang="hi">अपने रिकॉर्ड के लिए PDF के रूप में सहेजें या प्रिंट करें</p>
+                    <p data-lang="gu">તમારા રેકોર્ડ્સ માટે PDF તરીકે સાચવો અથવા પ્રિન્ટ કરો</p>
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <a href="../portal/patient/index.html" class="btn btn-primary">📋 <span data-lang="en">View My Prescriptions</span><span data-lang="hi">मेरे प्रिस्क्रिप्शन देखें</span><span data-lang="gu">મારા પ્રિસ્ક્રિપ્શન જુઓ</span></a>
+            </div>
+        </section>
+        
+        <!-- SECTION: Find Hospital -->
+        <section class="section" id="directions">
+            <h2><span class="emoji">📍</span> <span data-lang="en">Find the Hospital</span><span data-lang="hi">हॉस्पिटल खोजें</span><span data-lang="gu">હોસ્પિટલ શોધો</span></h2>
+            <p class="section-subtitle" data-lang="en">Directions to reach Adinath Hospital</p>
+            <p class="section-subtitle" data-lang="hi">आदिनाथ हॉस्पिटल पहुंचने के लिए दिशा-निर्देश</p>
+            <p class="section-subtitle" data-lang="gu">આદિનાથ હોસ્પિટલ પહોંચવા માટેના દિશા-નિર્દેશો</p>
+            
+            <div style="background: var(--bg); padding: 20px; border-radius: 8px; margin: 16px 0;">
+                <h3 style="margin-bottom: 12px;">📍 Address</h3>
+                <p data-lang="en"><strong>Adinath Hospital</strong><br>2nd Floor, Shukan Mall<br>Shahibaug Road, Near Rajasthan Hospital<br>Ahmedabad, Gujarat 380004</p>
+                <p data-lang="hi"><strong>आदिनाथ हॉस्पिटल</strong><br>दूसरी मंजिल, शुकन मॉल<br>शाहीबाग रोड, राजस्थान हॉस्पिटल के पास<br>अहमदाबाद, गुजरात 380004</p>
+                <p data-lang="gu"><strong>આદિનાથ હોસ્પિટલ</strong><br>બીજો માળ, શુકન મોલ<br>શાહીબાગ રોડ, રાજસ્થાન હોસ્પિટલ પાસે<br>અમદાવાદ, ગુજરાત 380004</p>
+            </div>
+            
+            <div style="background: var(--bg); padding: 20px; border-radius: 8px; margin: 16px 0;">
+                <h3 style="margin-bottom: 12px;">🕐 <span data-lang="en">Timings</span><span data-lang="hi">समय</span><span data-lang="gu">સમય</span></h3>
+                <p><strong data-lang="en">Monday - Saturday:</strong><strong data-lang="hi">सोमवार - शनिवार:</strong><strong data-lang="gu">સોમવાર - શનિવાર:</strong> 11:00 AM - 7:00 PM</p>
+                <p><strong data-lang="en">Sunday:</strong><strong data-lang="hi">रविवार:</strong><strong data-lang="gu">રવિવાર:</strong> <span data-lang="en">By Appointment Only</span><span data-lang="hi">केवल अपॉइंटमेंट से</span><span data-lang="gu">ફક્ત એપોઇન્ટમેન્ટ દ્વારા</span></p>
+            </div>
+            
+            <div class="btn-group">
+                <a href="https://maps.google.com/?q=Adinath+Hospital+Shukan+Mall+Shahibaug+Ahmedabad" class="btn btn-primary">📍 <span data-lang="en">Open in Google Maps</span><span data-lang="hi">Google Maps में खोलें</span><span data-lang="gu">Google Maps માં ખોલો</span></a>
+            </div>
+        </section>
+        
+        <!-- FAQ Section -->
+        <section class="section">
+            <h2><span class="emoji">❓</span> <span data-lang="en">Frequently Asked Questions</span><span data-lang="hi">अक्सर पूछे जाने वाले प्रश्न</span><span data-lang="gu">વારંવાર પૂછાતા પ્રશ્નો</span></h2>
+            
+            <div class="faq">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                        <span data-lang="en">Do I need to bring any documents?</span>
+                        <span data-lang="hi">क्या मुझे कोई दस्तावेज लाने होंगे?</span>
+                        <span data-lang="gu">શું મારે કોઈ દસ્તાવેજો લાવવાની જરૂર છે?</span>
+                    </div>
+                    <div class="faq-answer">
+                        <span data-lang="en">Yes, please bring any previous prescriptions, test reports, and a valid ID proof. If you have health insurance, bring your insurance card as well.</span>
+                        <span data-lang="hi">हां, कृपया कोई भी पुराने प्रिस्क्रिप्शन, टेस्ट रिपोर्ट और एक वैध आईडी प्रूफ लाएं। अगर आपके पास स्वास्थ्य बीमा है, तो अपना बीमा कार्ड भी लाएं।</span>
+                        <span data-lang="gu">હા, કૃપા કરીને કોઈપણ અગાઉના પ્રિસ્ક્રિપ્શન, ટેસ્ટ રિપોર્ટ્સ અને માન્ય ID પ્રૂફ લાવો. જો તમારી પાસે હેલ્થ ઇન્સ્યોરન્સ છે, તો તમારું ઇન્સ્યોરન્સ કાર્ડ પણ લાવો.</span>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                        <span data-lang="en">Is parking available at the hospital?</span>
+                        <span data-lang="hi">क्या हॉस्पिटल में पार्किंग उपलब्ध है?</span>
+                        <span data-lang="gu">શું હોસ્પિટલમાં પાર્કિંગ ઉપલબ્ધ છે?</span>
+                    </div>
+                    <div class="faq-answer">
+                        <span data-lang="en">Yes, Shukan Mall has parking available for patients. Entry is from the Shahibaug Road side.</span>
+                        <span data-lang="hi">हां, शुकन मॉल में मरीजों के लिए पार्किंग उपलब्ध है। प्रवेश शाहीबाग रोड की तरफ से है।</span>
+                        <span data-lang="gu">હા, શુકન મોલમાં દર્દીઓ માટે પાર્કિંગ ઉપલબ્ધ છે. પ્રવેશ શાહીબાગ રોડ બાજુથી છે.</span>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                        <span data-lang="en">Do you handle emergencies?</span>
+                        <span data-lang="hi">क्या आप इमरजेंसी संभालते हैं?</span>
+                        <span data-lang="gu">શું તમે ઇમર્જન્સી સંભાળો છો?</span>
+                    </div>
+                    <div class="faq-answer">
+                        <span data-lang="en">No, Adinath Hospital does not handle emergencies. For emergencies, please go to the nearest government hospital or call 108.</span>
+                        <span data-lang="hi">नहीं, आदिनाथ हॉस्पिटल इमरजेंसी नहीं संभालता। इमरजेंसी के लिए, कृपया नजदीकी सरकारी हॉस्पिटल जाएं या 108 पर कॉल करें।</span>
+                        <span data-lang="gu">ના, આદિનાથ હોસ્પિટલ ઇમર્જન્સી સંભાળતું નથી. ઇમર્જન્સી માટે, કૃપા કરીને નજીકની સરકારી હોસ્પિટલમાં જાઓ અથવા 108 પર કૉલ કરો.</span>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+                        <span data-lang="en">What payment methods are accepted?</span>
+                        <span data-lang="hi">कौन से पेमेंट मेथड स्वीकार किए जाते हैं?</span>
+                        <span data-lang="gu">કયા પેમેન્ટ મેથડ્સ સ્વીકારવામાં આવે છે?</span>
+                    </div>
+                    <div class="faq-answer">
+                        <span data-lang="en">We accept Cash, UPI (GPay, PhonePe, Paytm), and major credit/debit cards.</span>
+                        <span data-lang="hi">हम नकद, UPI (GPay, PhonePe, Paytm) और प्रमुख क्रेडिट/डेबिट कार्ड स्वीकार करते हैं।</span>
+                        <span data-lang="gu">અમે રોકડ, UPI (GPay, PhonePe, Paytm) અને મુખ્ય ક્રેડિટ/ડેબિટ કાર્ડ સ્વીકારીએ છીએ.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Card -->
+        <div class="contact-card">
+            <h3 data-lang="en">Need Help?</h3>
+            <h3 data-lang="hi">मदद चाहिए?</h3>
+            <h3 data-lang="gu">મદદ જોઈએ છે?</h3>
+            <p data-lang="en">Our staff is here to assist you</p>
+            <p data-lang="hi">हमारा स्टाफ आपकी सहायता के लिए यहां है</p>
+            <p data-lang="gu">અમારો સ્ટાફ તમને મદદ કરવા માટે અહીં છે</p>
+            
+            <div class="contact-buttons">
+                <a href="tel:+919925450425" class="contact-btn">📞 +91 99254 50425</a>
+                <a href="https://wa.me/919925450425" class="contact-btn">💬 WhatsApp</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>🏥 Adinath Hospital | <span data-lang="en">Care with Compassion</span><span data-lang="hi">करुणा के साथ देखभाल</span><span data-lang="gu">કરુણા સાથે સંભાળ</span></p>
+        <p style="margin-top: 8px;">
+            <a href="../index.html" style="color: var(--primary);">← <span data-lang="en">Back to Website</span><span data-lang="hi">वेबसाइट पर वापस</span><span data-lang="gu">વેબસાઇટ પર પાછા</span></a>
+        </p>
+    </footer>
+    
+    <script>
+        function setLang(lang) {
+            document.body.className = 'lang-' + lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase().includes(
+                    lang === 'en' ? 'english' : lang === 'hi' ? 'हिंदी' : 'ગુજરાતી'
+                ) || btn.textContent === (lang === 'en' ? 'English' : lang === 'hi' ? 'हिंदी' : 'ગુજરાતી'));
+            });
+            localStorage.setItem('patient_guide_lang', lang);
+        }
+        
+        // Restore language preference
+        const savedLang = localStorage.getItem('patient_guide_lang');
+        if (savedLang) setLang(savedLang);
+        
+        // Make all lang-btn work
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            const text = btn.textContent;
+            if (text.includes('English')) btn.onclick = () => setLang('en');
+            else if (text.includes('हिंदी')) btn.onclick = () => setLang('hi');
+            else if (text.includes('ગુજરાતી')) btn.onclick = () => setLang('gu');
+        });
+    </script>
+</body>
+</html>
+

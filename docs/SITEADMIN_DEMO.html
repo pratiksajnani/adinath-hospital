@@ -3,187 +3,573 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adinath Hospital - Site Admin Demo Guide</title>
+    <title>Site Admin Guide - Adinath Hospital</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
-            line-height: 1.6;
+            line-height: 1.7;
             color: #1e293b;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 20px;
+            background: #f8fafc;
         }
-        h1 { color: #0f766e; margin-bottom: 10px; font-size: 28px; }
-        h2 { color: #0f766e; margin: 30px 0 15px; padding-bottom: 5px; border-bottom: 2px solid #0f766e; }
-        h3 { color: #334155; margin: 20px 0 10px; }
-        p { margin-bottom: 10px; }
-        .header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 3px solid #0f766e; }
-        .header img { width: 80px; margin-bottom: 10px; }
-        .subtitle { color: #64748b; font-size: 14px; }
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        th, td { padding: 10px 12px; text-align: left; border: 1px solid #e2e8f0; }
-        th { background: #0f766e; color: white; }
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #dc2626, #f97316);
+            color: white;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+        .header h1 { font-size: 28px; margin-bottom: 8px; }
+        
+        .credentials {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        .credentials h3 { color: #92400e; margin-bottom: 12px; }
+        .credentials table { width: 100%; }
+        .credentials td { padding: 8px; border-bottom: 1px solid #fcd34d; }
+        
+        .video-section {
+            background: #fee2e2;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .video-btn {
+            display: inline-block;
+            background: #dc2626;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .quick-link {
+            background: white;
+            padding: 14px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #dc2626;
+            font-weight: 600;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+        }
+        .quick-link:hover { border-color: #dc2626; }
+        
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .section h2 {
+            color: #dc2626;
+            border-bottom: 3px solid #dc2626;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .step {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid #dc2626;
+        }
+        .step-number {
+            background: #dc2626;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .step-content { flex: 1; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #e2e8f0;
+        }
+        th { background: #dc2626; color: white; }
         tr:nth-child(even) { background: #f8fafc; }
-        .checklist { list-style: none; padding: 0; }
-        .checklist li { padding: 8px 0; padding-left: 28px; position: relative; }
-        .checklist li::before { content: "☐"; position: absolute; left: 0; color: #0f766e; font-size: 18px; }
-        code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 13px; }
-        pre { background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 8px; overflow-x: auto; margin: 10px 0; }
-        pre code { background: none; color: inherit; }
-        .warning { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 15px 0; }
-        .info { background: #dbeafe; border-left: 4px solid #3b82f6; padding: 15px; margin: 15px 0; }
-        .url { color: #0f766e; word-break: break-all; }
-        @media print {
-            body { padding: 20px; }
-            h2 { page-break-before: auto; }
-            pre { white-space: pre-wrap; }
+        
+        .tip {
+            background: #dcfce7;
+            border-left: 4px solid #22c55e;
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
         }
-        .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; text-align: center; color: #64748b; font-size: 12px; }
+        
+        .warning {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+        
+        code {
+            background: #f1f5f9;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+        
+        .sms-box {
+            background: linear-gradient(135deg, #dc2626, #f97316);
+            color: white;
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .sms-box a {
+            display: inline-block;
+            background: white;
+            color: #dc2626;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+        }
+        
+        @media print {
+            body { background: white; }
+            .video-section, .sms-box { display: none; }
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🏥 ADINATH HOSPITAL</h1>
-        <h2 style="border: none; margin: 0;">Site Admin Demo Guide</h2>
-        <p class="subtitle">Last Updated: December 20, 2025</p>
-        <p class="url">https://main.d2a0i6erg1hmca.amplifyapp.com/</p>
+        <h1>🔧 Site Admin Guide</h1>
+        <p>For Pratik Sajnani (Technical Admin)</p>
+        <p style="font-size: 12px; margin-top: 8px;">📱 Link: <strong>tinyurl.com/siteadmin-demo</strong></p>
     </div>
 
-    <!-- VIDEO DEMO SECTION -->
-    <div class="info" style="text-align: center; padding: 30px;">
-        <h3 style="margin: 0 0 15px 0;">🎬 Watch the Full Demo Video</h3>
-        <p style="margin-bottom: 15px;">See all features in action (5 min)</p>
-        <!-- REPLACE_WITH_LOOM_EMBED -->
-        <a href="#" id="video-link" style="display: inline-block; background: #0f766e; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">
-            ▶️ Video Coming Soon
-        </a>
-        <p style="margin-top: 10px; font-size: 12px; color: #64748b;">
-            Or read the step-by-step guide below
-        </p>
+    <!-- Login Credentials -->
+    <div class="credentials">
+        <h3>🔐 All System Credentials</h3>
+        <table>
+            <tr>
+                <td><strong>Site Admin</strong></td>
+                <td>pratik.sajnani@gmail.com</td>
+                <td>admin123</td>
+            </tr>
+            <tr>
+                <td><strong>Dr. Ashok</strong></td>
+                <td>drsajnani@gmail.com</td>
+                <td>doctor123</td>
+            </tr>
+            <tr>
+                <td><strong>Dr. Sunita</strong></td>
+                <td>sunita.sajnani9@gmail.com</td>
+                <td>doctor123</td>
+            </tr>
+            <tr>
+                <td><strong>Poonam (Reception)</strong></td>
+                <td>receptionist@adinathhospital.com</td>
+                <td>staff123</td>
+            </tr>
+        </table>
     </div>
 
-    <h2>🔐 Login Credentials</h2>
-    <table>
-        <tr><th>Role</th><th>Email</th><th>Password</th></tr>
-        <tr><td><strong>Site Admin</strong></td><td>pratik.sajnani@gmail.com</td><td>admin123</td></tr>
-        <tr><td><strong>Dr. Ashok</strong></td><td>drsajnani@gmail.com</td><td>doctor123</td></tr>
-        <tr><td><strong>Dr. Sunita</strong></td><td>sunita.sajnani9@gmail.com</td><td>doctor123</td></tr>
-        <tr><td><strong>Poonam (Receptionist)</strong></td><td>receptionist@adinathhospital.com</td><td>staff123</td></tr>
-    </table>
+    <!-- Video Section -->
+    <div class="video-section">
+        <h3>🎬 Watch Full System Walkthrough</h3>
+        <p style="margin-bottom: 12px;">Complete admin overview (10 min)</p>
+        <a href="#" class="video-btn">▶️ Video Coming Soon</a>
+    </div>
 
-    <h2>📋 Demo Walkthrough</h2>
+    <!-- Quick Links -->
+    <div class="quick-links">
+        <a href="#overview" class="quick-link">📊 Dashboard</a>
+        <a href="#users" class="quick-link">👥 Users</a>
+        <a href="#content" class="quick-link">📝 Content</a>
+        <a href="#console" class="quick-link">💻 Console</a>
+        <a href="#deploy" class="quick-link">🚀 Deploy</a>
+    </div>
 
-    <h3>1. Homepage Tour (5 mins)</h3>
-    <ul class="checklist">
-        <li>Visit the main website URL</li>
-        <li>Click language toggle (EN → हिंदी → ગુજરાતી)</li>
-        <li>Click "Services" dropdown to see all services</li>
-        <li>Click "Doctors" dropdown to see doctor profiles</li>
-        <li>Scroll to see: Services, Doctors, Yoga, Dr. Ashok's Corner</li>
-        <li>Click WhatsApp floating button (bottom right)</li>
-        <li>Click "Book Appointment" button</li>
-    </ul>
+    <!-- System Overview -->
+    <div class="section" id="overview">
+        <h2>📊 System Overview</h2>
+        
+        <table>
+            <tr>
+                <th>Component</th>
+                <th>Location</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td>Homepage</td>
+                <td><code>/index.html</code></td>
+                <td>Public hospital website</td>
+            </tr>
+            <tr>
+                <td>Booking</td>
+                <td><code>/book.html</code></td>
+                <td>Patient appointment booking</td>
+            </tr>
+            <tr>
+                <td>Patient Portal</td>
+                <td><code>/portal/patient/</code></td>
+                <td>Patient view appointments</td>
+            </tr>
+            <tr>
+                <td>Doctor Dashboard</td>
+                <td><code>/portal/doctor/</code></td>
+                <td>Doctor appointments & Rx</td>
+            </tr>
+            <tr>
+                <td>Staff Dashboard</td>
+                <td><code>/portal/staff/</code></td>
+                <td>Queue & patient management</td>
+            </tr>
+            <tr>
+                <td>Admin Dashboard</td>
+                <td><code>/portal/admin/</code></td>
+                <td>System overview</td>
+            </tr>
+            <tr>
+                <td>Medical Store</td>
+                <td><code>/store/</code></td>
+                <td>Inventory & sales</td>
+            </tr>
+            <tr>
+                <td>Forms</td>
+                <td><code>/forms/</code></td>
+                <td>Printable forms</td>
+            </tr>
+        </table>
+    </div>
 
-    <h3>2. Book an Appointment (3 mins)</h3>
-    <p>URL: <code>/book.html</code></p>
-    <ul class="checklist">
-        <li>Select Dr. Ashok (Orthopedic)</li>
-        <li>Pick a date and time slot</li>
-        <li>Fill patient details: Name, Phone, Age, Reason</li>
-        <li>Click "Book Appointment"</li>
-        <li>See confirmation message</li>
-    </ul>
+    <!-- CRUD: Users -->
+    <div class="section" id="users">
+        <h2>👥 Manage Users (CRUD)</h2>
+        
+        <h3>View All Users</h3>
+        <pre>HMS.users.getAll()</pre>
+        
+        <h3>Create New User</h3>
+        <pre>HMS.users.add({
+    email: 'newstaff@adinathhospital.com',
+    password: 'staff123',
+    name: 'New Staff Member',
+    role: 'staff',
+    permissions: ['appointments', 'queue'],
+    phone: '9876543210',
+    active: true
+})</pre>
 
-    <h3>3. Portal Hub (2 mins)</h3>
-    <p>URL: <code>/portal/index.html</code></p>
-    <ul class="checklist">
-        <li>Patient Portal - for patients to view appointments</li>
-        <li>Doctor Dashboard (Simple) - large buttons for seniors</li>
-        <li>Staff Portal - queue management, patient links</li>
-        <li>Admin Portal - hospital overview</li>
-        <li>Medical Store - inventory and sales</li>
-        <li>Printable Forms - all forms hub</li>
-    </ul>
+        <h3>Update User</h3>
+        <pre>HMS.users.update('U005', {
+    name: 'Updated Name',
+    phone: '9999888877'
+})</pre>
 
-    <h3>4. Doctor Dashboard - Simple View (5 mins)</h3>
-    <p>URL: <code>/portal/doctor/simple.html</code></p>
-    <ul class="checklist">
-        <li>Large buttons designed for seniors (60+ years)</li>
-        <li>Click "Next Patient" to see patient info</li>
-        <li>Click "Write Prescription" to open Rx form</li>
-        <li>Click "Send SMS" to see message preview</li>
-        <li>Click "Forms" to access printable forms</li>
-    </ul>
+        <h3>Delete User</h3>
+        <pre>HMS.users.delete('U005')</pre>
 
-    <h3>5. Printable Forms (5 mins)</h3>
-    <p>URL: <code>/forms/index.html</code></p>
-    <ul class="checklist">
-        <li>Patient Registration - Bilingual form (EN + ગુજરાતી)</li>
-        <li>Consent Form - Medical consent</li>
-        <li>Prescription Pad - Doctor's Rx form</li>
-        <li>Try "Print Form" button on any form</li>
-    </ul>
+        <div class="warning">
+            ⚠️ <strong>Be careful!</strong> Deleting users is permanent. Back up data first.
+        </div>
+    </div>
 
-    <h3>6. Service Pages</h3>
-    <table>
-        <tr><th>Service</th><th>URL</th></tr>
-        <tr><td>Orthopedic Care</td><td><code>/services/orthopedic.html</code></td></tr>
-        <tr><td>Gynecology</td><td><code>/services/gynecology.html</code></td></tr>
-        <tr><td>Yoga Classes</td><td><code>/services/yoga.html</code></td></tr>
-    </table>
+    <!-- CRUD: Patients -->
+    <div class="section">
+        <h2>🏥 Manage Patients (CRUD)</h2>
+        
+        <h3>View All Patients</h3>
+        <pre>console.table(HMS.patients.getAll())</pre>
+        
+        <h3>Search Patient</h3>
+        <pre>HMS.patients.search('Sharma')</pre>
 
-    <h2>💻 Admin Console Commands</h2>
-    <p>Open browser console (F12) and run:</p>
-    <pre><code>// Reset/Initialize all data
-HMS.reset();
-
-// View all users
-console.table(HMS.users.getAll());
-
-// View all patients  
-console.table(HMS.patients.getAll());
-
-// Create test patient
-HMS.patients.add({
-    name: 'Demo Patient',
-    phone: '9999888877',
-    age: 35,
+        <h3>Create Patient</h3>
+        <pre>HMS.patients.add({
+    name: 'Test Patient',
+    phone: '9876543210',
+    age: 45,
     gender: 'male'
-});
+})</pre>
 
-// View inventory
-console.table(HMS.inventory.getAll());</code></pre>
+        <h3>Update Patient</h3>
+        <pre>HMS.patients.update('P001', {
+    age: 46,
+    address: 'New Address'
+})</pre>
 
-    <h2>⚠️ Known Issues</h2>
-    <div class="warning">
-        <strong>Login page redirect:</strong> <code>/login.html</code> redirects to homepage. This is an AWS Amplify configuration issue that needs to be fixed in the console.
+        <h3>Delete Patient</h3>
+        <pre>HMS.patients.delete('P001')</pre>
     </div>
 
-    <h2>📞 Hospital Contact</h2>
-    <table>
-        <tr><td><strong>Phone</strong></td><td>+91 99254 50425</td></tr>
-        <tr><td><strong>Address</strong></td><td>2nd Floor, Shukan Mall, Shahibaug Rd, Ahmedabad</td></tr>
-        <tr><td><strong>Hours</strong></td><td>11 AM - 7 PM (No emergencies)</td></tr>
-        <tr><td><strong>WhatsApp</strong></td><td>Same as phone</td></tr>
-    </table>
+    <!-- CRUD: Appointments -->
+    <div class="section">
+        <h2>📅 Manage Appointments (CRUD)</h2>
+        
+        <h3>View All Appointments</h3>
+        <pre>console.table(HMS.appointments.getAll())</pre>
+        
+        <h3>View Today's Appointments</h3>
+        <pre>HMS.appointments.getToday()</pre>
 
-    <h2>🔗 Quick Links</h2>
-    <table>
-        <tr><th>Page</th><th>Path</th></tr>
-        <tr><td>Homepage</td><td><code>/</code></td></tr>
-        <tr><td>Book Appointment</td><td><code>/book.html</code></td></tr>
-        <tr><td>Portal Hub</td><td><code>/portal/index.html</code></td></tr>
-        <tr><td>Doctor Dashboard</td><td><code>/portal/doctor/simple.html</code></td></tr>
-        <tr><td>Patient Portal</td><td><code>/portal/patient/index.html</code></td></tr>
-        <tr><td>Forms</td><td><code>/forms/index.html</code></td></tr>
-        <tr><td>Medical Store</td><td><code>/store.html</code></td></tr>
-    </table>
+        <h3>Create Appointment</h3>
+        <pre>HMS.appointments.add({
+    patientId: 'P001',
+    patientName: 'Test Patient',
+    doctor: 'ashok',
+    date: '2025-12-25',
+    time: '11:30 AM',
+    reason: 'Knee pain'
+})</pre>
 
+        <h3>Update Status</h3>
+        <pre>HMS.appointments.updateStatus('A001', 'completed')</pre>
+
+        <h3>Cancel Appointment</h3>
+        <pre>HMS.appointments.cancel('A001')</pre>
+    </div>
+
+    <!-- Console Commands -->
+    <div class="section" id="console">
+        <h2>💻 Console Commands Reference</h2>
+        
+        <table>
+            <tr>
+                <th>Command</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td><code>HMS.reset()</code></td>
+                <td>Reset all data to defaults</td>
+            </tr>
+            <tr>
+                <td><code>HMS.export()</code></td>
+                <td>Export all data as JSON</td>
+            </tr>
+            <tr>
+                <td><code>HMS.import(data)</code></td>
+                <td>Import data from JSON</td>
+            </tr>
+            <tr>
+                <td><code>HMS.stats()</code></td>
+                <td>View system statistics</td>
+            </tr>
+            <tr>
+                <td><code>HMS.users.getAll()</code></td>
+                <td>List all users</td>
+            </tr>
+            <tr>
+                <td><code>HMS.patients.getAll()</code></td>
+                <td>List all patients</td>
+            </tr>
+            <tr>
+                <td><code>HMS.appointments.getAll()</code></td>
+                <td>List all appointments</td>
+            </tr>
+            <tr>
+                <td><code>HMS.inventory.getAll()</code></td>
+                <td>List medicine inventory</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Content Management -->
+    <div class="section" id="content">
+        <h2>📝 Content Management</h2>
+        
+        <h3>Update Doctor Information</h3>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                Edit <code>index.html</code> - find the Doctors section
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                Update text, images, or links
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                Commit and push to deploy
+            </div>
+        </div>
+
+        <h3>Add New Service</h3>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                Create new file in <code>services/</code> folder
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                Copy structure from existing service page
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                Add link in navigation dropdown
+            </div>
+        </div>
+
+        <h3>Update Translations</h3>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                Edit <code>js/i18n.js</code>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                Find the key, add Hindi/Gujarati translations
+            </div>
+        </div>
+    </div>
+
+    <!-- Deployment -->
+    <div class="section" id="deploy">
+        <h2>🚀 Deployment</h2>
+        
+        <h3>Deploy Changes</h3>
+        <pre>cd /Users/psaj/src/adinath-hospital
+git add -A
+git commit -m "Your message"
+git push origin main</pre>
+        
+        <div class="tip">
+            💡 AWS Amplify auto-deploys in ~2 minutes after push.
+        </div>
+
+        <h3>Check Deployment Status</h3>
+        <p>Go to AWS Amplify Console to see build status.</p>
+
+        <h3>Known Issues</h3>
+        <table>
+            <tr>
+                <th>Issue</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>/login.html redirects to homepage</td>
+                <td>🔴 AWS Amplify config</td>
+            </tr>
+            <tr>
+                <td>Missing i18n translations</td>
+                <td>🟡 In progress</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Testing Checklist -->
+    <div class="section">
+        <h2>✅ Testing Checklist</h2>
+        
+        <table>
+            <tr>
+                <th>Feature</th>
+                <th>How to Test</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>Homepage loads</td>
+                <td>Visit main URL</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td>Language toggle</td>
+                <td>Click EN/हि/ગુ</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td>Booking form</td>
+                <td>Submit test booking</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td>Doctor dashboard</td>
+                <td>Login as doctor</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td>Print forms</td>
+                <td>Try print button</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td>Mobile responsive</td>
+                <td>Resize browser</td>
+                <td>✅</td>
+            </tr>
+            <tr>
+                <td>WhatsApp link</td>
+                <td>Click green button</td>
+                <td>✅</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- SMS Share Box -->
+    <div class="sms-box">
+        <h3>📱 Share This Guide</h3>
+        <p>Bookmark for quick reference:</p>
+        <a href="https://tinyurl.com/siteadmin-demo">tinyurl.com/siteadmin-demo</a>
+    </div>
+
+    <!-- Footer -->
     <div class="footer">
-        <p>Created by Pratik Sajnani for Adinath Hospital</p>
-        <p>© 2025 Adinath Hospital. All rights reserved.</p>
+        <p>© 2025 Adinath Hospital | Admin: Pratik Sajnani</p>
+        <p>📧 pratik.sajnani@gmail.com</p>
     </div>
 </body>
 </html>
-

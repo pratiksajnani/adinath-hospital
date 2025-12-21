@@ -3,270 +3,452 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adinath Hospital - Patient Demo Guide</title>
+    <title>Patient Guide - Adinath Hospital</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            line-height: 1.6;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.7;
             color: #1e293b;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 20px;
             background: #f8fafc;
         }
-        
         .header {
             text-align: center;
-            padding: 40px;
-            background: linear-gradient(135deg, #0f766e 0%, #134e4a 100%);
+            padding: 30px;
+            background: linear-gradient(135deg, #0f766e, #14b8a6);
             color: white;
             border-radius: 16px;
-            margin-bottom: 32px;
+            margin-bottom: 30px;
+        }
+        .header h1 { font-size: 28px; margin-bottom: 8px; }
+        .header p { opacity: 0.9; }
+        
+        .video-section {
+            background: #dbeafe;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .video-section h3 { color: #1e40af; margin-bottom: 12px; }
+        .video-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
         }
         
-        .header h1 { font-size: 2rem; margin-bottom: 8px; }
-        .header p { opacity: 0.9; }
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .quick-link {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #0f766e;
+            font-weight: 600;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+        .quick-link:hover {
+            border-color: #0f766e;
+            transform: translateY(-2px);
+        }
         
         .section {
             background: white;
+            border-radius: 16px;
             padding: 24px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
-        
         .section h2 {
             color: #0f766e;
-            margin-bottom: 16px;
-            font-size: 1.25rem;
+            border-bottom: 3px solid #0f766e;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+        .section h3 {
+            color: #334155;
+            margin: 20px 0 12px;
+        }
+        
+        .step {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid #0f766e;
+        }
+        .step-number {
+            background: #0f766e;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
         }
+        .step-content { flex: 1; }
+        .step-content strong { color: #0f766e; }
         
-        .section h2 .emoji { font-size: 1.5rem; }
-        
-        .checklist {
-            list-style: none;
-        }
-        
-        .checklist li {
-            padding: 12px 16px;
-            border-left: 3px solid #0f766e;
-            background: #f0fdfa;
-            margin-bottom: 8px;
-            border-radius: 0 8px 8px 0;
-        }
-        
-        .checklist li strong {
-            display: block;
-            color: #0f766e;
-            margin-bottom: 4px;
-        }
-        
-        .url-box {
-            background: #1e293b;
-            color: #94a3b8;
-            padding: 12px 16px;
+        .screenshot {
+            background: #e2e8f0;
             border-radius: 8px;
-            font-family: monospace;
-            margin: 8px 0;
-            word-break: break-all;
+            padding: 60px 20px;
+            text-align: center;
+            color: #64748b;
+            margin: 16px 0;
+            border: 2px dashed #cbd5e1;
         }
         
-        .url-box a {
-            color: #67e8f9;
-            text-decoration: none;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
         }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #e2e8f0;
+        }
+        th {
+            background: #0f766e;
+            color: white;
+        }
+        tr:nth-child(even) { background: #f8fafc; }
         
-        .highlight {
+        .tip {
             background: #fef3c7;
-            padding: 16px;
-            border-radius: 8px;
             border-left: 4px solid #f59e0b;
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+        .tip::before {
+            content: "💡 ";
+        }
+        
+        .warning {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
             margin: 16px 0;
         }
         
-        .qr-section {
-            text-align: center;
+        .lang-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        .lang-btn {
+            padding: 8px 16px;
+            border: 2px solid #0f766e;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .lang-btn.active {
+            background: #0f766e;
+            color: white;
+        }
+        
+        .sms-box {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
             padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .sms-box a {
+            display: inline-block;
+            background: white;
+            color: #059669;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 12px;
         }
         
         .footer {
             text-align: center;
-            padding: 24px;
+            padding: 20px;
             color: #64748b;
-            font-size: 0.9rem;
+            font-size: 14px;
         }
         
         @media print {
-            body { background: white; padding: 20px; }
+            body { background: white; }
             .section { box-shadow: none; border: 1px solid #e2e8f0; }
-            .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .video-section, .sms-box { display: none; }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🏥 Adinath Hospital</h1>
-        <p>Patient Website Demo Guide</p>
+        <h1>👤 Patient Guide</h1>
+        <p>Complete guide to using Adinath Hospital's website</p>
+        <p style="font-size: 12px; margin-top: 8px;">📱 Send this link: <strong>tinyurl.com/adinath-patient</strong></p>
     </div>
-    
-    <div class="section">
-        <h2><span class="emoji">🌐</span> Website Access</h2>
-        <p>Open the website on your phone or computer:</p>
-        <div class="url-box">
-            <a href="https://tinyurl.com/adinath-hospital" target="_blank">https://tinyurl.com/adinath-hospital</a>
+
+    <!-- Video Section -->
+    <div class="video-section">
+        <h3>🎬 Watch the Video Walkthrough (5 min)</h3>
+        <p style="margin-bottom: 12px;">See all features in action</p>
+        <a href="#" class="video-btn" id="video-link">▶️ Video Coming Soon</a>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="quick-links">
+        <a href="#book" class="quick-link">📅 Book Appointment</a>
+        <a href="#view" class="quick-link">👁️ View Appointments</a>
+        <a href="#cancel" class="quick-link">❌ Cancel Booking</a>
+        <a href="#contact" class="quick-link">📞 Contact Hospital</a>
+    </div>
+
+    <!-- CRUD: CREATE - Book Appointment -->
+    <div class="section" id="book">
+        <h2>📅 Book an Appointment</h2>
+        
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <strong>Go to the Hospital Website</strong><br>
+                Open your browser and visit:<br>
+                <code style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px;">https://main.d2a0i6erg1hmca.amplifyapp.com/</code>
+            </div>
         </div>
-        <p style="margin-top: 12px; color: #64748b;">Or scan the QR code at the hospital reception</p>
-    </div>
-    
-    <div class="section">
-        <h2><span class="emoji">📱</span> Things to Try (Patient Perspective)</h2>
-        <ul class="checklist">
-            <li>
-                <strong>1. Browse the Homepage</strong>
-                Scroll down to see services, doctors, and quick actions. Notice the WhatsApp button in the corner.
-            </li>
-            <li>
-                <strong>2. Book an Appointment</strong>
-                Click "Book Appointment" → Select doctor → Pick date/time → Enter your details → Submit
-            </li>
-            <li>
-                <strong>3. View Doctor Profiles</strong>
-                Click on "Doctors" menu → View Dr. Ashok (Orthopedic) or Dr. Sunita (OB-GYN) profiles
-            </li>
-            <li>
-                <strong>4. Explore Yoga Classes</strong>
-                Navigate to Services → Yoga Classes → See schedule and photos
-            </li>
-            <li>
-                <strong>5. Check Medical Store</strong>
-                Click "Medicines" → View pharmacy info and ordering options
-            </li>
-            <li>
-                <strong>6. Get Directions</strong>
-                Click "Get Directions" → Opens Google Maps to hospital location
-            </li>
-            <li>
-                <strong>7. Try Different Languages</strong>
-                Click EN/हि/ગુ buttons to switch between English, Hindi, and Gujarati
-            </li>
-            <li>
-                <strong>8. Contact via WhatsApp</strong>
-                Click the green WhatsApp button → Opens chat with hospital
-            </li>
-            <li>
-                <strong>9. Call the Hospital</strong>
-                Click the phone number → Directly calls +91 99254 50425
-            </li>
-            <li>
-                <strong>10. View on Mobile</strong>
-                Open on your phone to see the mobile-friendly version
-            </li>
-        </ul>
-    </div>
-    
-    <div class="section">
-        <h2><span class="emoji">🔗</span> Quick Links to Test</h2>
-        <ul class="checklist">
-            <li>
-                <strong>Homepage</strong>
-                <div class="url-box"><a href="https://main.d2a0i6erg1hmca.amplifyapp.com/" target="_blank">main.d2a0i6erg1hmca.amplifyapp.com</a></div>
-            </li>
-            <li>
-                <strong>Book Appointment</strong>
-                <div class="url-box"><a href="https://main.d2a0i6erg1hmca.amplifyapp.com/book.html" target="_blank">/book.html</a></div>
-            </li>
-            <li>
-                <strong>Orthopedic Services</strong>
-                <div class="url-box"><a href="https://main.d2a0i6erg1hmca.amplifyapp.com/services/orthopedic.html" target="_blank">/services/orthopedic.html</a></div>
-            </li>
-            <li>
-                <strong>Gynecology Services</strong>
-                <div class="url-box"><a href="https://main.d2a0i6erg1hmca.amplifyapp.com/services/gynecology.html" target="_blank">/services/gynecology.html</a></div>
-            </li>
-            <li>
-                <strong>Yoga Classes</strong>
-                <div class="url-box"><a href="https://main.d2a0i6erg1hmca.amplifyapp.com/services/yoga.html" target="_blank">/services/yoga.html</a></div>
-            </li>
-            <li>
-                <strong>Medical Store</strong>
-                <div class="url-box"><a href="https://main.d2a0i6erg1hmca.amplifyapp.com/store.html" target="_blank">/store.html</a></div>
-            </li>
-        </ul>
-    </div>
-    
-    <div class="section">
-        <h2><span class="emoji">✅</span> Demo Checklist</h2>
-        <div class="highlight">
-            <strong>Before showing to patients, verify:</strong>
+
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <strong>Click "Book Appointment" Button</strong><br>
+                Find the big green button that says "📅 Book Appointment" on the homepage.
+                <div class="screenshot">📸 Screenshot: Homepage with Book button highlighted</div>
+            </div>
         </div>
-        <ul class="checklist">
-            <li>
-                <strong>☐ Phone numbers work</strong>
-                Tap phone number → Should open dialer with +91 99254 50425
-            </li>
-            <li>
-                <strong>☐ WhatsApp opens correctly</strong>
-                Green button → Opens WhatsApp chat
-            </li>
-            <li>
-                <strong>☐ Google Maps directions work</strong>
-                "Get Directions" → Opens correct location
-            </li>
-            <li>
-                <strong>☐ Booking form submits</strong>
-                Fill form → Click submit → See confirmation message
-            </li>
-            <li>
-                <strong>☐ Doctor photos display</strong>
-                Dr. Ashok and Dr. Sunita photos visible and professional
-            </li>
-            <li>
-                <strong>☐ Languages switch properly</strong>
-                EN/हि/ગુ buttons change text content
-            </li>
-            <li>
-                <strong>☐ Works on mobile</strong>
-                Open on phone → Navigation works, readable text
-            </li>
-        </ul>
+
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <strong>Select Your Doctor</strong><br>
+                Choose from:
+                <ul style="margin-top: 8px; margin-left: 20px;">
+                    <li><strong>Dr. Ashok Sajnani</strong> - For bones, joints, knee pain</li>
+                    <li><strong>Dr. Sunita Sajnani</strong> - For women's health, pregnancy</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <strong>Pick Date & Time</strong><br>
+                Select a convenient date and time slot. Hospital hours: 11 AM - 7 PM.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+                <strong>Fill Your Details</strong><br>
+                Enter:
+                <table>
+                    <tr><td>Name</td><td>Your full name</td></tr>
+                    <tr><td>Phone</td><td>10-digit mobile number</td></tr>
+                    <tr><td>Age</td><td>Your age in years</td></tr>
+                    <tr><td>Gender</td><td>Male / Female</td></tr>
+                    <tr><td>Reason</td><td>Why you want to see the doctor</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">6</div>
+            <div class="step-content">
+                <strong>Submit & Confirm</strong><br>
+                Click "Book Appointment". You'll see a confirmation message.
+                <div class="tip">You may receive an SMS confirmation on your phone.</div>
+            </div>
+        </div>
     </div>
-    
+
+    <!-- CRUD: READ - View Appointments -->
+    <div class="section" id="view">
+        <h2>👁️ View Your Appointments</h2>
+        
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <strong>Go to Patient Portal</strong><br>
+                Visit: <code>portal/patient/index.html</code> or click "Check Status" on homepage.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <strong>Enter Your Phone Number</strong><br>
+                Type the same phone number you used when booking.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <strong>See Your Appointments</strong><br>
+                View all your upcoming and past appointments with status:
+                <ul style="margin-top: 8px; margin-left: 20px;">
+                    <li>🟡 <strong>Pending</strong> - Waiting for confirmation</li>
+                    <li>🟢 <strong>Confirmed</strong> - You're all set!</li>
+                    <li>✅ <strong>Completed</strong> - Visit done</li>
+                    <li>🔴 <strong>Cancelled</strong> - Appointment was cancelled</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- CRUD: UPDATE - Reschedule -->
+    <div class="section" id="reschedule">
+        <h2>🔄 Reschedule an Appointment</h2>
+        
+        <div class="warning">
+            ⚠️ <strong>Cannot reschedule online yet.</strong> Please call the hospital to change your appointment time.
+        </div>
+
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <strong>Call the Hospital</strong><br>
+                📞 <a href="tel:+919925450425">+91 99254 50425</a>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <strong>Or WhatsApp</strong><br>
+                💬 Send a message with your name and new preferred time.
+            </div>
+        </div>
+    </div>
+
+    <!-- CRUD: DELETE - Cancel -->
+    <div class="section" id="cancel">
+        <h2>❌ Cancel an Appointment</h2>
+        
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <strong>Call or WhatsApp</strong><br>
+                Contact the hospital at <a href="tel:+919925450425">+91 99254 50425</a> to cancel.
+            </div>
+        </div>
+
+        <div class="tip">
+            Please cancel at least 2 hours before your appointment time so others can use that slot.
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="section" id="contact">
+        <h2>📞 Contact the Hospital</h2>
+        
+        <table>
+            <tr>
+                <th>Method</th>
+                <th>Details</th>
+            </tr>
+            <tr>
+                <td>📞 Phone</td>
+                <td><a href="tel:+919925450425">+91 99254 50425</a></td>
+            </tr>
+            <tr>
+                <td>💬 WhatsApp</td>
+                <td><a href="https://wa.me/919925450425">wa.me/919925450425</a></td>
+            </tr>
+            <tr>
+                <td>📍 Address</td>
+                <td>2nd Floor, Shukan Mall, Shahibaug Rd, Ahmedabad</td>
+            </tr>
+            <tr>
+                <td>🕐 Hours</td>
+                <td>11 AM - 7 PM (Mon-Sat)</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Language Support -->
     <div class="section">
-        <h2><span class="emoji">📞</span> Hospital Contact</h2>
-        <ul class="checklist">
-            <li>
-                <strong>Phone</strong>
-                +91 99254 50425
-            </li>
-            <li>
-                <strong>Address</strong>
-                Shukan Mall, 2nd Floor, Shahibaug Rd., Near Rajasthan Hospital, Ahmedabad 380004
-            </li>
-            <li>
-                <strong>Hours</strong>
-                Monday - Saturday: 11:00 AM - 7:00 PM
-            </li>
-        </ul>
+        <h2>🌐 Change Language</h2>
+        
+        <p>The website supports 3 languages:</p>
+        
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <strong>Find the Language Buttons</strong><br>
+                Look for <strong>EN | हि | ગુ</strong> buttons on the right side of the page.
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <strong>Click Your Preferred Language</strong><br>
+                <ul style="margin-top: 8px; margin-left: 20px;">
+                    <li><strong>EN</strong> - English</li>
+                    <li><strong>हि</strong> - हिंदी (Hindi)</li>
+                    <li><strong>ગુ</strong> - ગુજરાતી (Gujarati)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tip">Your language preference is saved. Next time you visit, it will remember!</div>
     </div>
-    
+
+    <!-- SMS/WhatsApp Share Box -->
+    <div class="sms-box">
+        <h3>📱 Share This Guide</h3>
+        <p>Send this link to family members:</p>
+        <a href="https://tinyurl.com/adinath-patient">tinyurl.com/adinath-patient</a>
+    </div>
+
+    <!-- Footer -->
     <div class="footer">
-        <p>🏥 Adinath Hospital | Care with Compassion</p>
-        <p style="margin-top: 8px;">Demo Guide v1.0 | December 2024</p>
+        <p>© 2025 Adinath Hospital | Last Updated: December 2025</p>
+        <p>Need help? Call <a href="tel:+919925450425">+91 99254 50425</a></p>
     </div>
-    
+
     <script>
-        // Print-friendly
-        if (window.location.search.includes('print')) {
-            window.print();
-        }
+        // Language toggle (for demo)
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
     </script>
 </body>
 </html>
-
