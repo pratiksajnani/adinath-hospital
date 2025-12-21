@@ -15,6 +15,8 @@
             --text: #1e293b;
             --text-light: #64748b;
             --border: #e2e8f0;
+            --google: #ea4335;
+            --phone: #22c55e;
         }
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
@@ -72,6 +74,78 @@
         
         .login-form {
             padding: 32px;
+        }
+        
+        /* OAuth Buttons */
+        .oauth-section {
+            margin-bottom: 24px;
+        }
+        
+        .oauth-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.2s;
+            margin-bottom: 12px;
+        }
+        
+        .oauth-btn:hover {
+            background: #f8fafc;
+            transform: translateY(-1px);
+        }
+        
+        .oauth-btn.google {
+            border-color: var(--google);
+            color: var(--google);
+        }
+        .oauth-btn.google:hover {
+            background: #fef2f2;
+        }
+        
+        .oauth-btn.phone {
+            border-color: var(--phone);
+            color: #166534;
+        }
+        .oauth-btn.phone:hover {
+            background: #f0fdf4;
+        }
+        
+        .oauth-btn.magic {
+            border-color: #8b5cf6;
+            color: #7c3aed;
+        }
+        .oauth-btn.magic:hover {
+            background: #f5f3ff;
+        }
+        
+        .oauth-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 24px 0;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
         }
         
         .form-group {
@@ -157,15 +231,92 @@
         }
         
         .demo-note {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
+            background: #dbeafe;
+            border: 1px solid #3b82f6;
             border-radius: 10px;
             padding: 14px;
             margin-bottom: 20px;
             font-size: 0.9rem;
-            color: #92400e;
+            color: #1e40af;
         }
-        .demo-note strong { color: #b45309; }
+        .demo-note strong { color: #1d4ed8; }
+        
+        /* Phone OTP Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .modal {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        .modal h3 {
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        .modal p {
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+        .otp-input {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        .otp-input input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+        }
+        .otp-input input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            margin-top: 16px;
+        }
+        
+        .success-message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            text-align: center;
+            display: none;
+        }
+        
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            text-align: center;
+            display: none;
+        }
         
         @media (max-width: 480px) {
             .role-tab .label { display: none; }
@@ -180,6 +331,7 @@
         <button onclick="setLang('hi')" style="padding: 6px 10px; border: none; background: rgba(255,255,255,0.2); color: white; border-radius: 4px; cursor: pointer;">हि</button>
         <button onclick="setLang('gu')" style="padding: 6px 10px; border: none; background: rgba(255,255,255,0.2); color: white; border-radius: 4px; cursor: pointer;">ગુ</button>
     </div>
+    
     <div class="login-container">
         <div class="login-header">
             <div class="logo">🏥</div>
@@ -204,15 +356,32 @@
             </div>
             
             <div class="login-form">
-                <!-- Demo note hidden in production -->
-                <div class="demo-note" id="demoNote" style="display: none;">
-                    <strong>🔐 Test Accounts (Demo Only)</strong><br>
-                    <small id="modeIndicator"></small>
+                <!-- Demo note -->
+                <div class="demo-note" id="demoNote">
+                    <strong>🔐 Demo Mode</strong><br>
+                    <small>Use demo credentials or try Google/Phone login</small>
                 </div>
                 
-                <div id="errorMessage" style="display: none; background: #fee2e2; color: #991b1b; padding: 12px; border-radius: 8px; margin-bottom: 16px; text-align: center;">
-                    Invalid email or password
+                <div id="successMessage" class="success-message"></div>
+                <div id="errorMessage" class="error-message"></div>
+                
+                <!-- OAuth Login Options -->
+                <div class="oauth-section">
+                    <button class="oauth-btn google" onclick="loginWithGoogle()">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                        Continue with Google
+                    </button>
+                    
+                    <button class="oauth-btn phone" onclick="showPhoneLogin()">
+                        📱 Login with Phone OTP
+                    </button>
+                    
+                    <button class="oauth-btn magic" onclick="showMagicLinkLogin()">
+                        ✨ Send Magic Link to Email
+                    </button>
                 </div>
+                
+                <div class="divider">or login with password</div>
                 
                 <form id="loginForm">
                     <div class="form-group" id="doctorSelectGroup">
@@ -224,13 +393,13 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>Username / Phone</label>
-                        <input type="text" id="username" placeholder="Enter email or phone" value="">
+                        <label>Email</label>
+                        <input type="email" id="username" placeholder="Enter your email" required>
                     </div>
                     
                     <div class="form-group">
                         <label>Password</label>
-                        <input type="password" id="password" placeholder="Enter password" value="">
+                        <input type="password" id="password" placeholder="Enter password" required>
                     </div>
                     
                     <button type="submit" class="btn btn-primary">
@@ -251,6 +420,58 @@
         </div>
     </div>
     
+    <!-- Phone OTP Modal -->
+    <div class="modal-overlay" id="phoneModal">
+        <div class="modal">
+            <h3>📱 Phone Login</h3>
+            <p id="phoneModalText">Enter your registered phone number</p>
+            
+            <div id="phoneStep1">
+                <div class="form-group">
+                    <input type="tel" id="phoneNumber" placeholder="10-digit phone number" maxlength="10" pattern="[0-9]{10}">
+                </div>
+                <button class="btn btn-primary" onclick="sendOTP()">Send OTP</button>
+            </div>
+            
+            <div id="phoneStep2" style="display: none;">
+                <div class="otp-input">
+                    <input type="text" maxlength="1" oninput="moveToNext(this, 1)">
+                    <input type="text" maxlength="1" oninput="moveToNext(this, 2)">
+                    <input type="text" maxlength="1" oninput="moveToNext(this, 3)">
+                    <input type="text" maxlength="1" oninput="moveToNext(this, 4)">
+                    <input type="text" maxlength="1" oninput="moveToNext(this, 5)">
+                    <input type="text" maxlength="1" oninput="moveToNext(this, 6)">
+                </div>
+                <button class="btn btn-primary" onclick="verifyOTP()">Verify OTP</button>
+                <p style="margin-top: 12px; color: var(--text-light); font-size: 0.85rem;">
+                    Didn't receive? <a href="#" onclick="sendOTP(); return false;">Resend OTP</a>
+                </p>
+            </div>
+            
+            <button class="modal-close" onclick="closeModal('phoneModal')">Cancel</button>
+        </div>
+    </div>
+    
+    <!-- Magic Link Modal -->
+    <div class="modal-overlay" id="magicLinkModal">
+        <div class="modal">
+            <h3>✨ Magic Link Login</h3>
+            <p>We'll send a login link to your email</p>
+            
+            <div class="form-group">
+                <input type="email" id="magicLinkEmail" placeholder="Enter your email">
+            </div>
+            <button class="btn btn-primary" onclick="sendMagicLink()">Send Magic Link</button>
+            
+            <button class="modal-close" onclick="closeModal('magicLinkModal')">Cancel</button>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/hms.js"></script>
+    <script src="js/i18n.js"></script>
     <script>
         let currentRole = 'doctor';
         
@@ -273,6 +494,13 @@
                 { icon: '💰', text: 'Financial reports' },
                 { icon: '⚙️', text: 'System settings' }
             ]
+        };
+        
+        // Demo credentials for testing
+        const demoCredentials = {
+            doctor: { email: 'drsajnani@gmail.com', password: 'doctor123' },
+            staff: { email: 'receptionist@adinathhospital.com', password: 'staff123' },
+            admin: { email: 'pratik.sajnani@gmail.com', password: 'admin123' }
         };
         
         function switchRole(role) {
@@ -298,83 +526,322 @@
                     </div>
                 `).join('')}
             `;
+            
+            // Update demo hint
+            const creds = demoCredentials[role];
+            document.getElementById('demoNote').innerHTML = `
+                <strong>🔐 Demo: ${role.charAt(0).toUpperCase() + role.slice(1)}</strong><br>
+                <small>Email: ${creds.email} | Password: ${creds.password}</small>
+            `;
         }
         
         // Initialize
         switchRole('doctor');
         
-        // Form submit
+        // Show/hide messages
+        function showSuccess(msg) {
+            const el = document.getElementById('successMessage');
+            el.textContent = msg;
+            el.style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+        
+        function showError(msg) {
+            const el = document.getElementById('errorMessage');
+            el.textContent = msg;
+            el.style.display = 'block';
+            document.getElementById('successMessage').style.display = 'none';
+        }
+        
+        function hideMessages() {
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+        
+        // ============================================
+        // Google OAuth Login
+        // ============================================
+        async function loginWithGoogle() {
+            hideMessages();
+            
+            // Check if Supabase is configured
+            if (typeof supabase !== 'undefined' && window.SUPABASE_URL && window.SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+                try {
+                    const { data, error } = await supabase.auth.signInWithOAuth({
+                        provider: 'google',
+                        options: {
+                            redirectTo: window.location.origin + '/portal/index.html'
+                        }
+                    });
+                    
+                    if (error) throw error;
+                    // Redirect happens automatically
+                } catch (err) {
+                    showError('Google login failed: ' + err.message);
+                }
+            } else {
+                // Demo mode - simulate Google login
+                showSuccess('🔐 Demo Mode: Google OAuth requires Supabase configuration. Using demo login instead.');
+                
+                setTimeout(() => {
+                    // Simulate successful Google login with demo data
+                    const email = demoCredentials[currentRole].email;
+                    localStorage.setItem('hms_logged_in', 'true');
+                    localStorage.setItem('hms_role', currentRole);
+                    localStorage.setItem('hms_user_email', email);
+                    localStorage.setItem('hms_auth_method', 'google');
+                    
+                    redirectToPortal(currentRole);
+                }, 1500);
+            }
+        }
+        
+        // ============================================
+        // Phone OTP Login
+        // ============================================
+        let pendingPhone = '';
+        
+        function showPhoneLogin() {
+            hideMessages();
+            document.getElementById('phoneModal').classList.add('show');
+            document.getElementById('phoneStep1').style.display = 'block';
+            document.getElementById('phoneStep2').style.display = 'none';
+            document.getElementById('phoneNumber').value = '';
+            document.getElementById('phoneNumber').focus();
+        }
+        
+        async function sendOTP() {
+            const phone = document.getElementById('phoneNumber').value.trim();
+            
+            if (!/^\d{10}$/.test(phone)) {
+                alert('Please enter a valid 10-digit phone number');
+                return;
+            }
+            
+            pendingPhone = phone;
+            
+            // Check if Supabase is configured
+            if (typeof supabase !== 'undefined' && window.SUPABASE_URL && window.SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+                try {
+                    const { data, error } = await supabase.auth.signInWithOtp({
+                        phone: '+91' + phone
+                    });
+                    
+                    if (error) throw error;
+                    
+                    document.getElementById('phoneStep1').style.display = 'none';
+                    document.getElementById('phoneStep2').style.display = 'block';
+                    document.getElementById('phoneModalText').textContent = `OTP sent to +91 ${phone}`;
+                } catch (err) {
+                    alert('Failed to send OTP: ' + err.message);
+                }
+            } else {
+                // Demo mode
+                document.getElementById('phoneStep1').style.display = 'none';
+                document.getElementById('phoneStep2').style.display = 'block';
+                document.getElementById('phoneModalText').textContent = `Demo: Enter any 6 digits to login`;
+                
+                // Focus first OTP input
+                document.querySelector('.otp-input input').focus();
+            }
+        }
+        
+        function moveToNext(input, index) {
+            if (input.value.length === 1 && index < 6) {
+                const inputs = document.querySelectorAll('.otp-input input');
+                inputs[index].focus();
+            }
+        }
+        
+        async function verifyOTP() {
+            const inputs = document.querySelectorAll('.otp-input input');
+            let otp = '';
+            inputs.forEach(input => otp += input.value);
+            
+            if (otp.length !== 6) {
+                alert('Please enter all 6 digits');
+                return;
+            }
+            
+            // Check if Supabase is configured
+            if (typeof supabase !== 'undefined' && window.SUPABASE_URL && window.SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+                try {
+                    const { data, error } = await supabase.auth.verifyOtp({
+                        phone: '+91' + pendingPhone,
+                        token: otp,
+                        type: 'sms'
+                    });
+                    
+                    if (error) throw error;
+                    
+                    // Success - redirect
+                    localStorage.setItem('hms_logged_in', 'true');
+                    localStorage.setItem('hms_auth_method', 'phone');
+                    closeModal('phoneModal');
+                    redirectToPortal(currentRole);
+                } catch (err) {
+                    alert('Invalid OTP: ' + err.message);
+                }
+            } else {
+                // Demo mode - accept any OTP
+                closeModal('phoneModal');
+                localStorage.setItem('hms_logged_in', 'true');
+                localStorage.setItem('hms_role', currentRole);
+                localStorage.setItem('hms_user_phone', pendingPhone);
+                localStorage.setItem('hms_auth_method', 'phone');
+                
+                showSuccess('✅ Phone verified! Redirecting...');
+                setTimeout(() => redirectToPortal(currentRole), 1000);
+            }
+        }
+        
+        // ============================================
+        // Magic Link Login
+        // ============================================
+        function showMagicLinkLogin() {
+            hideMessages();
+            document.getElementById('magicLinkModal').classList.add('show');
+            document.getElementById('magicLinkEmail').value = '';
+            document.getElementById('magicLinkEmail').focus();
+        }
+        
+        async function sendMagicLink() {
+            const email = document.getElementById('magicLinkEmail').value.trim();
+            
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            // Check if Supabase is configured
+            if (typeof supabase !== 'undefined' && window.SUPABASE_URL && window.SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+                try {
+                    const { data, error } = await supabase.auth.signInWithOtp({
+                        email: email,
+                        options: {
+                            emailRedirectTo: window.location.origin + '/portal/index.html'
+                        }
+                    });
+                    
+                    if (error) throw error;
+                    
+                    closeModal('magicLinkModal');
+                    showSuccess(`✨ Magic link sent to ${email}! Check your inbox.`);
+                } catch (err) {
+                    alert('Failed to send magic link: ' + err.message);
+                }
+            } else {
+                // Demo mode
+                closeModal('magicLinkModal');
+                showSuccess(`✨ Demo Mode: Magic link would be sent to ${email}. Logging in automatically...`);
+                
+                setTimeout(() => {
+                    localStorage.setItem('hms_logged_in', 'true');
+                    localStorage.setItem('hms_role', currentRole);
+                    localStorage.setItem('hms_user_email', email);
+                    localStorage.setItem('hms_auth_method', 'magic_link');
+                    
+                    redirectToPortal(currentRole);
+                }, 2000);
+            }
+        }
+        
+        // ============================================
+        // Email/Password Login
+        // ============================================
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            hideMessages();
             
             const email = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const errorDiv = document.getElementById('errorMessage');
             const submitBtn = e.target.querySelector('button[type="submit"]');
             
-            // Show loading
             submitBtn.disabled = true;
             submitBtn.innerHTML = '⏳ Logging in...';
-            errorDiv.style.display = 'none';
             
             try {
-                // Try Supabase auth first, falls back to demo mode
-                const { data, error } = await SupabaseAuth.signIn(email, password);
-                
-                if (error) {
-                    errorDiv.textContent = error.message;
-                    errorDiv.style.display = 'block';
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '🔓 Login to Dashboard';
-                    return;
-                }
-                
-                // Determine role
-                const role = data.profile?.role || data.user?.role || currentRole;
-                const doctor = document.getElementById('doctorSelect').value;
-                
-                // Store login state
-                localStorage.setItem('hms_logged_in', 'true');
-                localStorage.setItem('hms_role', role);
-                localStorage.setItem('hms_doctor', doctor);
-                localStorage.setItem('hms_user_email', email);
-                
-                // Redirect based on role
-                if (role === 'doctor') {
-                    window.location.href = `portal/doctor/simple.html?doctor=${doctor}`;
-                } else if (role === 'staff' || role === 'receptionist' || role === 'nurse') {
-                    window.location.href = 'portal/staff/index.html';
-                } else if (role === 'admin') {
-                    window.location.href = 'portal/admin/index.html';
+                // Check if Supabase is configured
+                if (typeof supabase !== 'undefined' && window.SUPABASE_URL && window.SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email: email,
+                        password: password
+                    });
+                    
+                    if (error) throw error;
+                    
+                    // Get role from user metadata or default to current selected role
+                    const role = data.user?.user_metadata?.role || currentRole;
+                    localStorage.setItem('hms_logged_in', 'true');
+                    localStorage.setItem('hms_role', role);
+                    localStorage.setItem('hms_user_email', email);
+                    localStorage.setItem('hms_auth_method', 'password');
+                    
+                    redirectToPortal(role);
                 } else {
-                    window.location.href = 'portal/patient/index.html';
+                    // Demo mode - check against HMS users
+                    const user = HMS.auth.login(email, password);
+                    
+                    if (user) {
+                        localStorage.setItem('hms_logged_in', 'true');
+                        localStorage.setItem('hms_role', user.role);
+                        localStorage.setItem('hms_user_email', email);
+                        localStorage.setItem('hms_auth_method', 'password');
+                        localStorage.setItem('hms_doctor', document.getElementById('doctorSelect').value);
+                        
+                        redirectToPortal(user.role);
+                    } else {
+                        throw new Error('Invalid email or password');
+                    }
                 }
             } catch (err) {
-                console.error('Login error:', err);
-                errorDiv.textContent = 'Login failed. Please try again.';
-                errorDiv.style.display = 'block';
+                showError(err.message || 'Login failed. Please try again.');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '🔓 Login to Dashboard';
             }
         });
-    </script>
-<!-- Supabase SDK (only loads if needed) -->
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <script src="js/supabase-client.js"></script>
-    <script src="js/i18n.js"></script>
-    <script>
+        
+        // ============================================
+        // Helpers
+        // ============================================
+        function redirectToPortal(role) {
+            const doctor = document.getElementById('doctorSelect').value;
+            
+            if (role === 'doctor') {
+                window.location.href = `portal/doctor/simple.html?doctor=${doctor}`;
+            } else if (role === 'staff' || role === 'receptionist' || role === 'nurse' || role === 'pharmacist') {
+                window.location.href = 'portal/staff/index.html';
+            } else if (role === 'admin') {
+                window.location.href = 'portal/admin/index.html';
+            } else {
+                window.location.href = 'portal/index.html';
+            }
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+        
         function setLang(lang) {
             if (typeof I18N !== 'undefined') {
                 I18N.setLanguage(lang);
             }
         }
         
-        // Check Supabase mode on load
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof SupabaseAuth !== 'undefined' && SupabaseAuth.isConfigured()) {
-                document.getElementById('modeIndicator').innerHTML = '✅ Secure Mode - Real authentication';
-                document.getElementById('modeIndicator').style.color = '#166534';
+        // Close modals on escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('show'));
             }
+        });
+        
+        // Close modals on backdrop click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('show');
+                }
+            });
         });
     </script>
 </body>
