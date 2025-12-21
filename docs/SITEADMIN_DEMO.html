@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adinath Hospital - Site Admin Demo Guide</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 { color: #0f766e; margin-bottom: 10px; font-size: 28px; }
+        h2 { color: #0f766e; margin: 30px 0 15px; padding-bottom: 5px; border-bottom: 2px solid #0f766e; }
+        h3 { color: #334155; margin: 20px 0 10px; }
+        p { margin-bottom: 10px; }
+        .header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 3px solid #0f766e; }
+        .header img { width: 80px; margin-bottom: 10px; }
+        .subtitle { color: #64748b; font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 10px 12px; text-align: left; border: 1px solid #e2e8f0; }
+        th { background: #0f766e; color: white; }
+        tr:nth-child(even) { background: #f8fafc; }
+        .checklist { list-style: none; padding: 0; }
+        .checklist li { padding: 8px 0; padding-left: 28px; position: relative; }
+        .checklist li::before { content: "☐"; position: absolute; left: 0; color: #0f766e; font-size: 18px; }
+        code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 13px; }
+        pre { background: #1e293b; color: #e2e8f0; padding: 15px; border-radius: 8px; overflow-x: auto; margin: 10px 0; }
+        pre code { background: none; color: inherit; }
+        .warning { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 15px 0; }
+        .info { background: #dbeafe; border-left: 4px solid #3b82f6; padding: 15px; margin: 15px 0; }
+        .url { color: #0f766e; word-break: break-all; }
+        @media print {
+            body { padding: 20px; }
+            h2 { page-break-before: auto; }
+            pre { white-space: pre-wrap; }
+        }
+        .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; text-align: center; color: #64748b; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏥 ADINATH HOSPITAL</h1>
+        <h2 style="border: none; margin: 0;">Site Admin Demo Guide</h2>
+        <p class="subtitle">Last Updated: December 20, 2025</p>
+        <p class="url">https://main.d2a0i6erg1hmca.amplifyapp.com/</p>
+    </div>
+
+    <h2>🔐 Login Credentials</h2>
+    <table>
+        <tr><th>Role</th><th>Email</th><th>Password</th></tr>
+        <tr><td><strong>Site Admin</strong></td><td>pratik.sajnani@gmail.com</td><td>admin123</td></tr>
+        <tr><td><strong>Dr. Ashok</strong></td><td>drsajnani@gmail.com</td><td>doctor123</td></tr>
+        <tr><td><strong>Dr. Sunita</strong></td><td>sunita.sajnani9@gmail.com</td><td>doctor123</td></tr>
+        <tr><td><strong>Poonam (Receptionist)</strong></td><td>receptionist@adinathhospital.com</td><td>staff123</td></tr>
+    </table>
+
+    <h2>📋 Demo Walkthrough</h2>
+
+    <h3>1. Homepage Tour (5 mins)</h3>
+    <ul class="checklist">
+        <li>Visit the main website URL</li>
+        <li>Click language toggle (EN → हिंदी → ગુજરાતી)</li>
+        <li>Click "Services" dropdown to see all services</li>
+        <li>Click "Doctors" dropdown to see doctor profiles</li>
+        <li>Scroll to see: Services, Doctors, Yoga, Dr. Ashok's Corner</li>
+        <li>Click WhatsApp floating button (bottom right)</li>
+        <li>Click "Book Appointment" button</li>
+    </ul>
+
+    <h3>2. Book an Appointment (3 mins)</h3>
+    <p>URL: <code>/book.html</code></p>
+    <ul class="checklist">
+        <li>Select Dr. Ashok (Orthopedic)</li>
+        <li>Pick a date and time slot</li>
+        <li>Fill patient details: Name, Phone, Age, Reason</li>
+        <li>Click "Book Appointment"</li>
+        <li>See confirmation message</li>
+    </ul>
+
+    <h3>3. Portal Hub (2 mins)</h3>
+    <p>URL: <code>/portal/index.html</code></p>
+    <ul class="checklist">
+        <li>Patient Portal - for patients to view appointments</li>
+        <li>Doctor Dashboard (Simple) - large buttons for seniors</li>
+        <li>Staff Portal - queue management, patient links</li>
+        <li>Admin Portal - hospital overview</li>
+        <li>Medical Store - inventory and sales</li>
+        <li>Printable Forms - all forms hub</li>
+    </ul>
+
+    <h3>4. Doctor Dashboard - Simple View (5 mins)</h3>
+    <p>URL: <code>/portal/doctor/simple.html</code></p>
+    <ul class="checklist">
+        <li>Large buttons designed for seniors (60+ years)</li>
+        <li>Click "Next Patient" to see patient info</li>
+        <li>Click "Write Prescription" to open Rx form</li>
+        <li>Click "Send SMS" to see message preview</li>
+        <li>Click "Forms" to access printable forms</li>
+    </ul>
+
+    <h3>5. Printable Forms (5 mins)</h3>
+    <p>URL: <code>/forms/index.html</code></p>
+    <ul class="checklist">
+        <li>Patient Registration - Bilingual form (EN + ગુજરાતી)</li>
+        <li>Consent Form - Medical consent</li>
+        <li>Prescription Pad - Doctor's Rx form</li>
+        <li>Try "Print Form" button on any form</li>
+    </ul>
+
+    <h3>6. Service Pages</h3>
+    <table>
+        <tr><th>Service</th><th>URL</th></tr>
+        <tr><td>Orthopedic Care</td><td><code>/services/orthopedic.html</code></td></tr>
+        <tr><td>Gynecology</td><td><code>/services/gynecology.html</code></td></tr>
+        <tr><td>Yoga Classes</td><td><code>/services/yoga.html</code></td></tr>
+    </table>
+
+    <h2>💻 Admin Console Commands</h2>
+    <p>Open browser console (F12) and run:</p>
+    <pre><code>// Reset/Initialize all data
+HMS.reset();
+
+// View all users
+console.table(HMS.users.getAll());
+
+// View all patients  
+console.table(HMS.patients.getAll());
+
+// Create test patient
+HMS.patients.add({
+    name: 'Demo Patient',
+    phone: '9999888877',
+    age: 35,
+    gender: 'male'
+});
+
+// View inventory
+console.table(HMS.inventory.getAll());</code></pre>
+
+    <h2>⚠️ Known Issues</h2>
+    <div class="warning">
+        <strong>Login page redirect:</strong> <code>/login.html</code> redirects to homepage. This is an AWS Amplify configuration issue that needs to be fixed in the console.
+    </div>
+
+    <h2>📞 Hospital Contact</h2>
+    <table>
+        <tr><td><strong>Phone</strong></td><td>+91 99254 50425</td></tr>
+        <tr><td><strong>Address</strong></td><td>2nd Floor, Shukan Mall, Shahibaug Rd, Ahmedabad</td></tr>
+        <tr><td><strong>Hours</strong></td><td>11 AM - 7 PM (No emergencies)</td></tr>
+        <tr><td><strong>WhatsApp</strong></td><td>Same as phone</td></tr>
+    </table>
+
+    <h2>🔗 Quick Links</h2>
+    <table>
+        <tr><th>Page</th><th>Path</th></tr>
+        <tr><td>Homepage</td><td><code>/</code></td></tr>
+        <tr><td>Book Appointment</td><td><code>/book.html</code></td></tr>
+        <tr><td>Portal Hub</td><td><code>/portal/index.html</code></td></tr>
+        <tr><td>Doctor Dashboard</td><td><code>/portal/doctor/simple.html</code></td></tr>
+        <tr><td>Patient Portal</td><td><code>/portal/patient/index.html</code></td></tr>
+        <tr><td>Forms</td><td><code>/forms/index.html</code></td></tr>
+        <tr><td>Medical Store</td><td><code>/store.html</code></td></tr>
+    </table>
+
+    <div class="footer">
+        <p>Created by Pratik Sajnani for Adinath Hospital</p>
+        <p>© 2025 Adinath Hospital. All rights reserved.</p>
+    </div>
+</body>
+</html>
+
