@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adinath Hospital - Patient Demo Guide</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f8fafc;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #0f766e 0%, #134e4a 100%);
+            color: white;
+            border-radius: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .header h1 { font-size: 2rem; margin-bottom: 8px; }
+        .header p { opacity: 0.9; }
+        
+        .section {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #0f766e;
+            margin-bottom: 16px;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section h2 .emoji { font-size: 1.5rem; }
+        
+        .checklist {
+            list-style: none;
+        }
+        
+        .checklist li {
+            padding: 12px 16px;
+            border-left: 3px solid #0f766e;
+            background: #f0fdfa;
+            margin-bottom: 8px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .checklist li strong {
+            display: block;
+            color: #0f766e;
+            margin-bottom: 4px;
+        }
+        
+        .url-box {
+            background: #1e293b;
+            color: #94a3b8;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 8px 0;
+            word-break: break-all;
+        }
+        
+        .url-box a {
+            color: #67e8f9;
+            text-decoration: none;
+        }
+        
+        .highlight {
+            background: #fef3c7;
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+            margin: 16px 0;
+        }
+        
+        .qr-section {
+            text-align: center;
+            padding: 24px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        
+        @media print {
+            body { background: white; padding: 20px; }
+            .section { box-shadow: none; border: 1px solid #e2e8f0; }
+            .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏥 Adinath Hospital</h1>
+        <p>Patient Website Demo Guide</p>
+    </div>
+    
+    <div class="section">
+        <h2><span class="emoji">🌐</span> Website Access</h2>
+        <p>Open the website on your phone or computer:</p>
+        <div class="url-box">
+            <a href="https://tinyurl.com/adinath-hospital" target="_blank">https://tinyurl.com/adinath-hospital</a>
+        </div>
+        <p style="margin-top: 12px; color: #64748b;">Or scan the QR code at the hospital reception</p>
+    </div>
+    
+    <div class="section">
+        <h2><span class="emoji">📱</span> Things to Try (Patient Perspective)</h2>
+        <ul class="checklist">
+            <li>
+                <strong>1. Browse the Homepage</strong>
+                Scroll down to see services, doctors, and quick actions. Notice the WhatsApp button in the corner.
+            </li>
+            <li>
+                <strong>2. Book an Appointment</strong>
+                Click "Book Appointment" → Select doctor → Pick date/time → Enter your details → Submit
+            </li>
+            <li>
+                <strong>3. View Doctor Profiles</strong>
+                Click on "Doctors" menu → View Dr. Ashok (Orthopedic) or Dr. Sunita (OB-GYN) profiles
+            </li>
+            <li>
+                <strong>4. Explore Yoga Classes</strong>
+                Navigate to Services → Yoga Classes → See schedule and photos
+            </li>
+            <li>
+                <strong>5. Check Medical Store</strong>
+                Click "Medicines" → View pharmacy info and ordering options
+            </li>
+            <li>
+                <strong>6. Get Directions</strong>
+                Click "Get Directions" → Opens Google Maps to hospital location
+            </li>
+            <li>
+                <strong>7. Try Different Languages</strong>
+                Click EN/हि/ગુ buttons to switch between English, Hindi, and Gujarati
+            </li>
+            <li>
+                <strong>8. Contact via WhatsApp</strong>
+                Click the green WhatsApp button → Opens chat with hospital
+            </li>
+            <li>
+                <strong>9. Call the Hospital</strong>
+                Click the phone number → Directly calls +91 99254 50425
+            </li>
+            <li>
+                <strong>10. View on Mobile</strong>
+                Open on your phone to see the mobile-friendly version
+            </li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2><span class="emoji">🔗</span> Quick Links to Test</h2>
+        <ul class="checklist">
+            <li>
+                <strong>Homepage</strong>
+                <div class="url-box"><a href="https://main.d2a0i6erg1hmca.amplifyapp.com/" target="_blank">main.d2a0i6erg1hmca.amplifyapp.com</a></div>
+            </li>
+            <li>
+                <strong>Book Appointment</strong>
+                <div class="url-box"><a href="https://main.d2a0i6erg1hmca.amplifyapp.com/book.html" target="_blank">/book.html</a></div>
+            </li>
+            <li>
+                <strong>Orthopedic Services</strong>
+                <div class="url-box"><a href="https://main.d2a0i6erg1hmca.amplifyapp.com/services/orthopedic.html" target="_blank">/services/orthopedic.html</a></div>
+            </li>
+            <li>
+                <strong>Gynecology Services</strong>
+                <div class="url-box"><a href="https://main.d2a0i6erg1hmca.amplifyapp.com/services/gynecology.html" target="_blank">/services/gynecology.html</a></div>
+            </li>
+            <li>
+                <strong>Yoga Classes</strong>
+                <div class="url-box"><a href="https://main.d2a0i6erg1hmca.amplifyapp.com/services/yoga.html" target="_blank">/services/yoga.html</a></div>
+            </li>
+            <li>
+                <strong>Medical Store</strong>
+                <div class="url-box"><a href="https://main.d2a0i6erg1hmca.amplifyapp.com/store.html" target="_blank">/store.html</a></div>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2><span class="emoji">✅</span> Demo Checklist</h2>
+        <div class="highlight">
+            <strong>Before showing to patients, verify:</strong>
+        </div>
+        <ul class="checklist">
+            <li>
+                <strong>☐ Phone numbers work</strong>
+                Tap phone number → Should open dialer with +91 99254 50425
+            </li>
+            <li>
+                <strong>☐ WhatsApp opens correctly</strong>
+                Green button → Opens WhatsApp chat
+            </li>
+            <li>
+                <strong>☐ Google Maps directions work</strong>
+                "Get Directions" → Opens correct location
+            </li>
+            <li>
+                <strong>☐ Booking form submits</strong>
+                Fill form → Click submit → See confirmation message
+            </li>
+            <li>
+                <strong>☐ Doctor photos display</strong>
+                Dr. Ashok and Dr. Sunita photos visible and professional
+            </li>
+            <li>
+                <strong>☐ Languages switch properly</strong>
+                EN/हि/ગુ buttons change text content
+            </li>
+            <li>
+                <strong>☐ Works on mobile</strong>
+                Open on phone → Navigation works, readable text
+            </li>
+        </ul>
+    </div>
+    
+    <div class="section">
+        <h2><span class="emoji">📞</span> Hospital Contact</h2>
+        <ul class="checklist">
+            <li>
+                <strong>Phone</strong>
+                +91 99254 50425
+            </li>
+            <li>
+                <strong>Address</strong>
+                Shukan Mall, 2nd Floor, Shahibaug Rd., Near Rajasthan Hospital, Ahmedabad 380004
+            </li>
+            <li>
+                <strong>Hours</strong>
+                Monday - Saturday: 11:00 AM - 7:00 PM
+            </li>
+        </ul>
+    </div>
+    
+    <div class="footer">
+        <p>🏥 Adinath Hospital | Care with Compassion</p>
+        <p style="margin-top: 8px;">Demo Guide v1.0 | December 2024</p>
+    </div>
+    
+    <script>
+        // Print-friendly
+        if (window.location.search.includes('print')) {
+            window.print();
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adinath Hospital - Doctor Demo Guide</title>
+    <style>
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .no-print { display: none; }
+            .page-break { page-break-before: always; }
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #1a1a2e;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f8fafc;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+            color: white;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 { font-size: 28px; margin-bottom: 8px; }
+        .header p { opacity: 0.9; font-size: 16px; }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .section h2 {
+            color: #0f766e;
+            font-size: 20px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .step {
+            display: flex;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .step:last-child { border-bottom: none; }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: #0f766e;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .step-content h3 {
+            font-size: 16px;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+        
+        .step-content p {
+            font-size: 14px;
+            color: #64748b;
+        }
+        
+        .url-box {
+            background: #f1f5f9;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            word-break: break-all;
+            margin: 12px 0;
+        }
+        
+        .credentials {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        
+        .credentials h4 {
+            color: #b45309;
+            margin-bottom: 8px;
+        }
+        
+        .credentials code {
+            background: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+        
+        .checklist {
+            list-style: none;
+        }
+        
+        .checklist li {
+            padding: 8px 0;
+            padding-left: 28px;
+            position: relative;
+        }
+        
+        .checklist li::before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            font-size: 18px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+            font-size: 14px;
+        }
+        
+        .print-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0f766e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .print-btn:hover { background: #0d6359; }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">📄 Save as PDF</button>
+
+    <div class="header">
+        <h1>🏥 Adinath Hospital</h1>
+        <p>Doctor Portal Demo Guide</p>
+    </div>
+
+    <div class="section">
+        <h2>🔗 Quick Access URLs</h2>
+        <p><strong>Main Website:</strong></p>
+        <div class="url-box">https://main.d2a0i6erg1hmca.amplifyapp.com/</div>
+        
+        <p><strong>Doctor Login:</strong></p>
+        <div class="url-box">https://main.d2a0i6erg1hmca.amplifyapp.com/login.html</div>
+        
+        <p><strong>Doctor Portal (Direct):</strong></p>
+        <div class="url-box">https://main.d2a0i6erg1hmca.amplifyapp.com/portal/doctor/</div>
+    </div>
+
+    <div class="section">
+        <h2>🔐 Login Credentials</h2>
+        <div class="credentials">
+            <h4>Dr. Ashok Sajnani</h4>
+            <p>Email: <code>drsajnani@gmail.com</code><br>
+            Password: <code>doctor123</code> (demo mode)</p>
+        </div>
+        <div class="credentials">
+            <h4>Dr. Sunita Sajnani</h4>
+            <p>Email: <code>sunita.sajnani9@gmail.com</code><br>
+            Password: <code>doctor123</code> (demo mode)</p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📋 Demo Walkthrough - Doctor Features</h2>
+        
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h3>Login to Doctor Portal</h3>
+                <p>Go to Login page → Select "Doctor" tab → Enter credentials → Click Login</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h3>View Today's Appointments</h3>
+                <p>Dashboard shows today's patient queue with names, times, and reasons for visit</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h3>Check Patient Details</h3>
+                <p>Click on a patient to see their history, previous prescriptions, and notes</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h3>Write a Prescription</h3>
+                <p>Select patient → Click "New Prescription" → Add medicines → Print/Send to patient</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+                <h3>Send Patient Message</h3>
+                <p>Send SMS reminders, follow-up instructions, or exercise routines to patients</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">6</div>
+            <div class="step-content">
+                <h3>Upload Content (Videos/Images)</h3>
+                <p>Add health tips, exercise videos, or educational content to your profile</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section page-break">
+        <h2>🧪 Things to Try</h2>
+        <ul class="checklist">
+            <li>Switch language to Hindi or Gujarati (buttons on right side)</li>
+            <li>Click "Book Appointment" to see the patient booking flow</li>
+            <li>Try the "Simple Mode" dashboard (designed for easy use)</li>
+            <li>Print a prescription using the print button</li>
+            <li>View your public doctor profile page</li>
+            <li>Check the medical store inventory</li>
+            <li>Send a test SMS to a patient</li>
+            <li>View the yoga classes page</li>
+            <li>Test on mobile phone (scan QR on homepage)</li>
+            <li>Try the FAQ section - do the answers make sense?</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>📱 Staff Portal (For Reference)</h2>
+        <p>The receptionist (Poonam) uses a separate portal:</p>
+        <div class="url-box">https://main.d2a0i6erg1hmca.amplifyapp.com/portal/staff/</div>
+        <p style="margin-top: 12px; color: #64748b;">Staff can: book appointments, check in patients, manage queue, send signup links to patients</p>
+    </div>
+
+    <div class="section">
+        <h2>💬 Feedback Questions</h2>
+        <ul class="checklist">
+            <li>Is the dashboard easy to understand?</li>
+            <li>Are the fonts large enough to read comfortably?</li>
+            <li>Is the patient information displayed clearly?</li>
+            <li>Would you prefer voice input for notes?</li>
+            <li>What features are missing for your daily work?</li>
+            <li>Is the prescription format correct?</li>
+            <li>Should we add any specific medicines to the catalog?</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>📞 Support</h2>
+        <p>For any issues or questions, contact:</p>
+        <p style="margin-top: 8px;"><strong>Pratik Sajnani</strong><br>
+        Email: pratik.sajnani@gmail.com<br>
+        Phone: Available on WhatsApp</p>
+    </div>
+
+    <div class="footer">
+        <p>Adinath Hospital Management System - Demo Version</p>
+        <p>Created: December 2025</p>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adinath Hospital - Staff Demo Guide</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 {
+            color: #0d9488;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #0f766e;
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #0d9488;
+        }
+        h3 {
+            color: #333;
+            margin: 20px 0 10px;
+        }
+        .section {
+            background: #f8fffe;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #0d9488;
+        }
+        .step {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .step-number {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: #0d9488;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .url {
+            font-family: monospace;
+            background: #e0f2f1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: block;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        .credentials {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .tip {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        ul { margin-left: 20px; }
+        li { margin: 8px 0; }
+        .emoji { font-size: 1.2em; }
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+        }
+        @media print {
+            body { padding: 20px; }
+            .section { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <h1>🏥 Adinath Hospital</h1>
+    <p class="subtitle">Staff Demo Guide - Website Exploration</p>
+
+    <div class="section">
+        <h2>🌐 Website URL</h2>
+        <p class="url">https://main.d2a0i6erg1hmca.amplifyapp.com/</p>
+    </div>
+
+    <h2>👥 Role-Based Demos</h2>
+
+    <div class="section">
+        <h3><span class="emoji">👩‍💼</span> Receptionist (Poonam) Demo</h3>
+        
+        <div class="credentials">
+            <strong>Login:</strong> poonam@adinathhospital.com<br>
+            <strong>Password:</strong> staff123<br>
+            <strong>Role:</strong> Staff
+        </div>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Login to Staff Portal</strong>
+            <p class="url">→ Click "Staff Login" in footer OR go to /login.html</p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Register New Patient</strong>
+            <ul>
+                <li>Enter patient name and phone</li>
+                <li>Select consulting doctor</li>
+                <li>Choose SMS language (Gujarati/Hindi/English)</li>
+                <li>Click "Send SMS" or "Show QR"</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong>Manage Patient Queue</strong>
+            <ul>
+                <li>View today's appointments</li>
+                <li>Mark patients as "Waiting", "In Consultation", "Done"</li>
+                <li>Print intake forms for new patients</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">4</span>
+            <strong>Print Forms</strong>
+            <p class="url">→ Go to /forms/index.html</p>
+            <ul>
+                <li>Patient Intake Form (new patient registration)</li>
+                <li>Consent Form (for procedures)</li>
+                <li>Prescription Pad (blank)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3><span class="emoji">👨‍⚕️</span> Doctor Demo (Dr. Ashok / Dr. Sunita)</h3>
+        
+        <div class="credentials">
+            <strong>Login (Dr. Ashok):</strong> drsajnani@gmail.com / doctor123<br>
+            <strong>Login (Dr. Sunita):</strong> sunita.sajnani9@gmail.com / doctor123<br>
+            <strong>Role:</strong> Doctor
+        </div>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Simple Dashboard (Recommended)</strong>
+            <p class="url">→ /portal/doctor/simple.html</p>
+            <ul>
+                <li>Large buttons for easy navigation</li>
+                <li>View today's patients</li>
+                <li>One-tap to write prescription</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Write Prescription</strong>
+            <p class="url">→ /forms/prescription.html</p>
+            <ul>
+                <li>Select patient from list</li>
+                <li>Add medicines with dosage</li>
+                <li>Add advice/instructions</li>
+                <li>Print or send to patient phone</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong>View Patient History</strong>
+            <ul>
+                <li>Click on any patient name</li>
+                <li>See past visits and prescriptions</li>
+                <li>Add notes for follow-up</li>
+            </ul>
+        </div>
+
+        <div class="tip">
+            💡 <strong>Tip:</strong> The Simple Dashboard is designed for doctors in their 60s - large fonts, clear buttons, minimal complexity.
+        </div>
+    </div>
+
+    <div class="section">
+        <h3><span class="emoji">💊</span> Medical Store Demo</h3>
+        
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>View Store (Public)</strong>
+            <p class="url">→ /store.html</p>
+            <ul>
+                <li>See what patients see</li>
+                <li>WhatsApp ordering info</li>
+                <li>Store hours and contact</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Store Dashboard (Staff)</strong>
+            <p class="url">→ /store/index.html</p>
+            <ul>
+                <li>Add medicine inventory</li>
+                <li>Process sales</li>
+                <li>View print queue</li>
+                <li>Track patient pickups</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3><span class="emoji">🔧</span> Admin Demo</h3>
+        
+        <div class="credentials">
+            <strong>Login:</strong> pratik.sajnani@gmail.com / admin123<br>
+            <strong>Role:</strong> Site Admin
+        </div>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Admin Dashboard</strong>
+            <p class="url">→ /portal/admin/index.html</p>
+            <ul>
+                <li>View all statistics</li>
+                <li>Manage staff accounts</li>
+                <li>System settings</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>📱 Patient Journey Demo</h2>
+
+    <div class="section">
+        <div class="step">
+            <span class="step-number">1</span>
+            <strong>Book Appointment</strong>
+            <p class="url">→ /book.html</p>
+            <ul>
+                <li>Select doctor</li>
+                <li>Choose date and time</li>
+                <li>Enter patient details</li>
+                <li>Submit → WhatsApp confirmation</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <strong>Order Medicines</strong>
+            <p class="url">→ /store.html → WhatsApp</p>
+            <ul>
+                <li>Send prescription photo via WhatsApp</li>
+                <li>Get confirmation and pickup time</li>
+            </ul>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <strong>Join Yoga Classes</strong>
+            <p class="url">→ /services/yoga.html</p>
+            <ul>
+                <li>View schedule</li>
+                <li>See photos from classes</li>
+                <li>Contact for registration</li>
+            </ul>
+        </div>
+    </div>
+
+    <h2>🔗 Quick Links</h2>
+    
+    <div class="section">
+        <ul>
+            <li><strong>Homepage:</strong> /index.html</li>
+            <li><strong>Book Appointment:</strong> /book.html</li>
+            <li><strong>Staff Login:</strong> /login.html</li>
+            <li><strong>Patient Portal:</strong> /portal/patient/index.html</li>
+            <li><strong>Doctor Dashboard:</strong> /portal/doctor/index.html</li>
+            <li><strong>Doctor Simple View:</strong> /portal/doctor/simple.html</li>
+            <li><strong>Staff Dashboard:</strong> /portal/staff/index.html</li>
+            <li><strong>Admin Dashboard:</strong> /portal/admin/index.html</li>
+            <li><strong>Medical Store:</strong> /store.html</li>
+            <li><strong>Store Dashboard:</strong> /store/index.html</li>
+            <li><strong>Printable Forms:</strong> /forms/index.html</li>
+            <li><strong>Orthopedic Services:</strong> /services/orthopedic.html</li>
+            <li><strong>Gynecology Services:</strong> /services/gynecology.html</li>
+            <li><strong>Yoga Classes:</strong> /services/yoga.html</li>
+        </ul>
+    </div>
+
+    <h2>🌍 Language Testing</h2>
+    
+    <div class="section">
+        <p>Test the multilingual features:</p>
+        <ul>
+            <li>Click <strong>EN</strong> for English</li>
+            <li>Click <strong>हि</strong> for Hindi</li>
+            <li>Click <strong>ગુ</strong> for Gujarati</li>
+        </ul>
+        <p>Labels and content should change across the site.</p>
+    </div>
+
+    <footer>
+        <p><strong>Adinath Hospital</strong></p>
+        <p>2nd Floor, Shukan Mall, Shahibaug Road, Ahmedabad 380004</p>
+        <p>📞 +91 99254 50425 | 💬 WhatsApp Same Number</p>
+        <p style="margin-top: 15px; font-size: 0.9em;">
+            Demo Guide v1.0 | December 2024
+        </p>
+    </footer>
+</body>
+</html>
+
