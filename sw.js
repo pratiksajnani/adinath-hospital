@@ -1,82 +1,107 @@
 // Adinath Hospital Service Worker
-const CACHE_NAME = 'adinath-hospital-v1';
+// Version 2.0 - Force cache bust
+const CACHE_NAME = 'adinath-hospital-v2.0';
+
+// Minimal caching for production - only static assets
 const urlsToCache = [
-    '/adinath-hospital/',
-    '/adinath-hospital/index.html',
-    '/adinath-hospital/book.html',
-    '/adinath-hospital/404.html',
-    '/adinath-hospital/css/styles.css',
-    '/adinath-hospital/js/main.js',
-    '/adinath-hospital/js/config.js',
-    '/adinath-hospital/js/i18n.js',
-    '/adinath-hospital/images/favicon.svg'
+    '/',
+    '/images/favicon.svg'
 ];
 
-// Install event - cache static assets
+// Install event - minimal cache
 self.addEventListener('install', event => {
+    console.log('[SW] Installing v2.0');
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('Opened cache');
+                console.log('[SW] Caching minimal assets');
                 return cache.addAll(urlsToCache);
             })
             .catch(err => {
-                console.log('Cache failed:', err);
+                console.log('[SW] Cache failed:', err);
             })
     );
+    // Force activate immediately
     self.skipWaiting();
 });
 
-// Activate event - clean up old caches
+// Activate event - clean up ALL old caches
 self.addEventListener('activate', event => {
+    console.log('[SW] Activating v2.0 - clearing old caches');
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map(cacheName => {
+                    // Delete ALL caches except current
                     if (cacheName !== CACHE_NAME) {
-                        console.log('Deleting old cache:', cacheName);
+                        console.log('[SW] Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
             );
         })
     );
+    // Take control immediately
     self.clients.claim();
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - Network-first strategy for HTML/JS
 self.addEventListener('fetch', event => {
+    const url = new URL(event.request.url);
+    
+    // Always go to network for HTML and JS files
+    if (event.request.destination === 'document' || 
+        url.pathname.endsWith('.html') ||
+        url.pathname.endsWith('.js')) {
+        event.respondWith(
+            fetch(event.request)
+                .then(response => response)
+                .catch(() => {
+                    // Only use cache as fallback for offline
+                    return caches.match(event.request);
+                })
+        );
+        return;
+    }
+    
+    // Cache-first for images and static assets
     event.respondWith(
         caches.match(event.request)
             .then(response => {
-                // Return cached version or fetch from network
                 if (response) {
                     return response;
                 }
                 
                 return fetch(event.request).then(response => {
-                    // Don't cache non-successful responses
-                    if (!response || response.status !== 200 || response.type !== 'basic') {
+                    // Only cache successful responses for images
+                    if (!response || response.status !== 200) {
                         return response;
                     }
                     
-                    // Clone the response
-                    const responseToCache = response.clone();
-                    
-                    caches.open(CACHE_NAME)
-                        .then(cache => {
-                            cache.put(event.request, responseToCache);
-                        });
+                    // Cache images only
+                    if (event.request.destination === 'image') {
+                        const responseToCache = response.clone();
+                        caches.open(CACHE_NAME)
+                            .then(cache => {
+                                cache.put(event.request, responseToCache);
+                            });
+                    }
                     
                     return response;
                 });
             })
             .catch(() => {
-                // If both cache and network fail, show offline page
+                // Offline fallback
                 if (event.request.mode === 'navigate') {
-                    return caches.match('/adinath-hospital/404.html');
+                    return caches.match('/404.html');
                 }
             })
     );
 });
 
+// Listen for skip waiting message
+self.addEventListener('message', event => {
+    if (event.data && event.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
+});
