@@ -199,9 +199,10 @@ Changes deploy in ~2 minutes.
 
 | Issue | Status | Notes |
 |-------|--------|-------|
-| `/login.html` redirects to homepage | 🔴 Open | AWS Amplify rewrite config |
-| `/portal/staff/` redirects | 🔴 Open | Same as above |
-| Missing i18n translations | 🟡 Partial | ~40 keys need translation |
+| Domain DNS propagation | 🟡 Pending | adinathhealth.com - up in 10-48 hours |
+| Missing i18n translations | 🟡 Partial | Some keys need translation |
+| Real SMS integration | ⚪ Future | Requires MSG91/Twilio setup |
+| Cloud database | ⚪ Future | Currently using localStorage |
 
 ---
 

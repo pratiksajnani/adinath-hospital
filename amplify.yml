@@ -4,6 +4,7 @@ frontend:
     preBuild:
       commands:
         - echo "Adinath Hospital - Building for production..."
+        - echo "Domain: adinathhealth.com"
     build:
       commands:
         - echo "Static site - no build required"
@@ -14,7 +15,7 @@ frontend:
   cache:
     paths: []
 
-# Rewrites and redirects
+# Security and caching headers
 customHeaders:
   - pattern: '**/*'
     headers:
@@ -24,19 +25,33 @@ customHeaders:
         value: 'nosniff'
       - key: 'X-XSS-Protection'
         value: '1; mode=block'
+      - key: 'Referrer-Policy'
+        value: 'strict-origin-when-cross-origin'
+      - key: 'Permissions-Policy'
+        value: 'camera=(), microphone=(), geolocation=(self)'
   - pattern: '*.html'
     headers:
       - key: 'Cache-Control'
-        value: 'no-cache'
+        value: 'no-cache, no-store, must-revalidate'
   - pattern: '/images/*'
     headers:
       - key: 'Cache-Control'
-        value: 'max-age=31536000'
+        value: 'public, max-age=31536000, immutable'
   - pattern: '/css/*'
     headers:
       - key: 'Cache-Control'
-        value: 'max-age=31536000'
+        value: 'public, max-age=31536000, immutable'
   - pattern: '/js/*'
     headers:
       - key: 'Cache-Control'
-        value: 'max-age=31536000'
+        value: 'public, max-age=31536000, immutable'
+  - pattern: '/fonts/*'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=31536000, immutable'
+
+# Rewrites for clean URLs
+customRules:
+  - source: '</^[^.]+$|\.(?!(css|gif|ico|jpg|jpeg|js|png|txt|svg|woff|woff2|ttf|map|json|webp)$)([^.]+$)/>'
+    target: /index.html
+    status: '200'
