@@ -14,7 +14,7 @@ frontend:
   cache:
     paths: []
 
-# Custom headers for security and caching
+# Rewrites and redirects
 customHeaders:
   - pattern: '**/*'
     headers:
@@ -28,7 +28,7 @@ customHeaders:
     headers:
       - key: 'Cache-Control'
         value: 'no-cache'
-  - pattern: '/js/*'
+  - pattern: '/images/*'
     headers:
       - key: 'Cache-Control'
         value: 'max-age=31536000'
@@ -36,8 +36,7 @@ customHeaders:
     headers:
       - key: 'Cache-Control'
         value: 'max-age=31536000'
-  - pattern: '/images/*'
+  - pattern: '/js/*'
     headers:
       - key: 'Cache-Control'
         value: 'max-age=31536000'
-
