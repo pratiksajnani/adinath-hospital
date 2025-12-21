@@ -200,45 +200,98 @@
     <script src="../js/config.js"></script>
     <script src="../js/hms.js"></script>
     <script>
-        // Get token from URL
+        // Get secure token from URL
         const params = new URLSearchParams(window.location.search);
-        const token = params.get('token');
+        const tokenString = params.get('token');
+        let validatedToken = null;
         
-        // Load invite info
+        // Load and validate invite using secure token system
         function loadInvite() {
-            if (!token) {
-                document.getElementById('invite-info').innerHTML = '<p style="color:#991b1b;">Invalid or missing invite token</p>';
+            if (!tokenString) {
+                showError('Invalid or missing invite link. Please contact the hospital administrator.');
                 return;
             }
             
-            const invites = JSON.parse(localStorage.getItem('hms_invites') || '[]');
-            const invite = invites.find(i => i.id === token);
+            // Validate token using secure HMS.tokens system
+            const validation = HMS.tokens.validate(tokenString);
             
-            if (!invite) {
-                document.getElementById('invite-info').innerHTML = '<p style="color:#991b1b;">Invite not found or expired</p>';
+            if (!validation.valid) {
+                switch (validation.error) {
+                    case 'Token not found':
+                        showError('This invite link is invalid. Please request a new one from the administrator.');
+                        break;
+                    case 'Token already used':
+                        showError('This invite link has already been used. If you need to register again, please contact the administrator.');
+                        break;
+                    case 'Token expired':
+                        showError('This invite link has expired. Please request a new one from the administrator.');
+                        break;
+                    default:
+                        showError('Invalid invite link. Please contact the hospital administrator.');
+                }
                 return;
             }
             
-            if (invite.status === 'used') {
-                document.getElementById('invite-info').innerHTML = '<p style="color:#991b1b;">This invite has already been used</p>';
-                return;
+            validatedToken = validation.token;
+            
+            // Look up user by email from token
+            const user = HMS.users.getByEmail(validatedToken.targetEmail);
+            
+            if (user) {
+                // Pre-fill with existing user data
+                document.getElementById('invite-name').textContent = user.name || 'Doctor';
+                document.getElementById('name').value = user.name || '';
+                document.getElementById('phone').value = user.phone || '';
+                document.getElementById('email').value = user.email || '';
+                document.getElementById('email').readOnly = true; // Email is locked to token
+                if (user.specialty) {
+                    document.getElementById('specialty').value = user.specialty;
+                }
+            } else {
+                // New doctor registration
+                document.getElementById('invite-name').textContent = 'New Doctor';
+                document.getElementById('email').value = validatedToken.targetEmail;
+                document.getElementById('email').readOnly = true;
             }
             
-            document.getElementById('invite-name').textContent = invite.name;
-            document.getElementById('name').value = invite.name || '';
-            document.getElementById('phone').value = invite.phone || '';
-            document.getElementById('email').value = invite.email || '';
-            if (invite.specialty) {
-                document.getElementById('specialty').value = invite.specialty;
+            // Show expiry info
+            const expiresAt = new Date(validatedToken.expiresAt);
+            const hoursRemaining = Math.max(0, Math.round((expiresAt - new Date()) / (1000 * 60 * 60)));
+            if (hoursRemaining < 24) {
+                document.getElementById('invite-info').innerHTML += 
+                    `<p style="color:#b45309; font-size:12px; margin-top:8px;">⏰ This link expires in ${hoursRemaining} hours</p>`;
             }
+        }
+        
+        function showError(message) {
+            document.getElementById('invite-info').innerHTML = 
+                `<div style="background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:16px;">
+                    <p style="color:#991b1b; margin:0;">❌ ${message}</p>
+                    <p style="margin:12px 0 0; font-size:13px;">
+                        <a href="../index.html" style="color:#0f766e;">← Back to Website</a> | 
+                        <a href="https://wa.me/919925450425" style="color:#25d366;">📱 Contact via WhatsApp</a>
+                    </p>
+                </div>`;
+            document.getElementById('form-section').style.display = 'none';
         }
         
         // Handle form submission
         document.getElementById('register-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            if (!validatedToken) {
+                showError('Session expired. Please use the invite link again.');
+                return;
+            }
+            
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
+            
+            if (password.length < 8) {
+                document.getElementById('error-msg').textContent = 'Password must be at least 8 characters';
+                document.getElementById('error-msg').style.display = 'block';
+                return;
+            }
             
             if (password !== confirmPassword) {
                 document.getElementById('error-msg').textContent = 'Passwords do not match';
@@ -246,41 +299,45 @@
                 return;
             }
             
-            // Create user
-            const user = {
-                id: 'DOC' + Date.now().toString(36).toUpperCase(),
-                email: document.getElementById('email').value,
-                password: password,
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                role: 'doctor',
-                specialty: document.getElementById('specialty').value,
-                qualifications: document.getElementById('qualifications').value,
-                experience: document.getElementById('experience').value,
-                permissions: ['patients', 'appointments', 'prescriptions'],
-                active: true,
-                createdAt: new Date().toISOString()
-            };
+            // Check if user exists and update, or create new
+            const existingUser = HMS.users.getByEmail(validatedToken.targetEmail);
             
-            // Save user
-            if (HMS.users) {
-                HMS.users.add(user);
+            if (existingUser) {
+                // Update existing user with new password and details
+                HMS.users.update(existingUser.id, {
+                    password: password, // In production, this would be hashed
+                    name: document.getElementById('name').value,
+                    phone: document.getElementById('phone').value,
+                    specialty: document.getElementById('specialty').value,
+                    qualifications: document.getElementById('qualifications').value,
+                    experience: document.getElementById('experience').value,
+                    registered: true,
+                    registeredAt: new Date().toISOString(),
+                    active: true
+                });
             } else {
-                const users = JSON.parse(localStorage.getItem('hms_users') || '[]');
-                users.push(user);
-                localStorage.setItem('hms_users', JSON.stringify(users));
+                // Create new user
+                const newUser = {
+                    id: 'DOC' + Date.now().toString(36).toUpperCase(),
+                    email: validatedToken.targetEmail,
+                    password: password, // In production, this would be hashed
+                    name: document.getElementById('name').value,
+                    phone: document.getElementById('phone').value,
+                    role: 'doctor',
+                    specialty: document.getElementById('specialty').value,
+                    qualifications: document.getElementById('qualifications').value,
+                    experience: document.getElementById('experience').value,
+                    permissions: ['patients', 'appointments', 'prescriptions'],
+                    active: true,
+                    registered: true,
+                    registeredAt: new Date().toISOString(),
+                    createdAt: new Date().toISOString()
+                };
+                HMS.users.add(newUser);
             }
             
-            // Mark invite as used
-            if (token) {
-                const invites = JSON.parse(localStorage.getItem('hms_invites') || '[]');
-                const invite = invites.find(i => i.id === token);
-                if (invite) {
-                    invite.status = 'used';
-                    invite.usedAt = new Date().toISOString();
-                    localStorage.setItem('hms_invites', JSON.stringify(invites));
-                }
-            }
+            // Mark token as used (prevents reuse)
+            HMS.tokens.markUsed(tokenString);
             
             // Show success
             document.getElementById('form-section').style.display = 'none';

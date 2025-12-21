@@ -903,6 +903,149 @@ function closeFeedbackModal() {
     document.getElementById('feedback-modal').style.display = 'none';
 }
 
+// ============================================
+// SECURE TOKEN SYSTEM
+// Generates cryptographically secure tokens for registration links
+// ============================================
+
+HMS.tokens = {
+    STORAGE_KEY: 'hms_secure_tokens',
+    
+    // Generate a cryptographically secure UUID v4
+    generateUUID() {
+        if (crypto && crypto.randomUUID) {
+            return crypto.randomUUID();
+        }
+        // Fallback for older browsers
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = crypto.getRandomValues(new Uint8Array(1))[0] % 16;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    },
+    
+    // Get all tokens
+    getAll() {
+        const data = localStorage.getItem(this.STORAGE_KEY);
+        return data ? JSON.parse(data) : [];
+    },
+    
+    // Save tokens
+    save(tokens) {
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(tokens));
+    },
+    
+    // Create a new secure registration token
+    create(params) {
+        const { targetEmail, targetRole, purpose, expiresInHours = 72, createdBy } = params;
+        
+        const token = {
+            id: this.generateUUID(),
+            token: this.generateUUID(), // The actual token in the URL
+            targetEmail,
+            targetRole,
+            purpose: purpose || 'registration',
+            createdAt: new Date().toISOString(),
+            expiresAt: new Date(Date.now() + expiresInHours * 60 * 60 * 1000).toISOString(),
+            createdBy: createdBy || 'system',
+            used: false,
+            usedAt: null
+        };
+        
+        const tokens = this.getAll();
+        tokens.push(token);
+        this.save(tokens);
+        
+        console.log('🔐 Secure token created for:', targetEmail);
+        return token;
+    },
+    
+    // Validate a token
+    validate(tokenString) {
+        const tokens = this.getAll();
+        const token = tokens.find(t => t.token === tokenString);
+        
+        if (!token) {
+            return { valid: false, error: 'Token not found' };
+        }
+        
+        if (token.used) {
+            return { valid: false, error: 'Token already used', token };
+        }
+        
+        if (new Date(token.expiresAt) < new Date()) {
+            return { valid: false, error: 'Token expired', token };
+        }
+        
+        return { valid: true, token };
+    },
+    
+    // Mark token as used
+    markUsed(tokenString) {
+        const tokens = this.getAll();
+        const index = tokens.findIndex(t => t.token === tokenString);
+        
+        if (index !== -1) {
+            tokens[index].used = true;
+            tokens[index].usedAt = new Date().toISOString();
+            this.save(tokens);
+            return true;
+        }
+        return false;
+    },
+    
+    // Get token by target email (for checking existing invites)
+    getByEmail(email) {
+        const tokens = this.getAll();
+        return tokens.filter(t => t.targetEmail === email && !t.used && new Date(t.expiresAt) > new Date());
+    },
+    
+    // Clean up expired tokens
+    cleanup() {
+        const tokens = this.getAll();
+        const validTokens = tokens.filter(t => {
+            // Keep used tokens for audit trail (30 days)
+            if (t.used) {
+                return new Date(t.usedAt) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+            }
+            // Remove expired unused tokens
+            return new Date(t.expiresAt) > new Date();
+        });
+        this.save(validTokens);
+        console.log(`🧹 Token cleanup: ${tokens.length - validTokens.length} tokens removed`);
+    },
+    
+    // Generate a secure registration link
+    generateLink(params) {
+        const { targetEmail, targetRole, baseUrl } = params;
+        
+        // Check for existing valid token
+        const existingTokens = this.getByEmail(targetEmail);
+        if (existingTokens.length > 0) {
+            // Return existing valid token
+            const existing = existingTokens[0];
+            return {
+                token: existing.token,
+                link: `${baseUrl || window.location.origin}/onboard/${targetRole}.html?token=${existing.token}`,
+                expiresAt: existing.expiresAt,
+                isExisting: true
+            };
+        }
+        
+        // Create new token
+        const token = this.create(params);
+        return {
+            token: token.token,
+            link: `${baseUrl || window.location.origin}/onboard/${targetRole}.html?token=${token.token}`,
+            expiresAt: token.expiresAt,
+            isExisting: false
+        };
+    }
+};
+
+// Cleanup expired tokens on init
+setTimeout(() => HMS.tokens.cleanup(), 5000);
+
 // Initialize on load
 HMS.init();
 

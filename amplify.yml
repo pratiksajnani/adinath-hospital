@@ -52,6 +52,13 @@ customHeaders:
 
 # Rewrites for clean URLs and onboarding
 customRules:
+  # Onboarding index
+  - source: /onboard
+    target: /onboard/index.html
+    status: '200'
+  - source: /onboard/
+    target: /onboard/index.html
+    status: '200'
   # Admin and Doctor onboarding (preserve paths) - with and without trailing slash
   - source: /onboard/admin
     target: /onboard/admin.html

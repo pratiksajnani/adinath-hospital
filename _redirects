@@ -1,6 +1,12 @@
 # Adinath Hospital - AWS Amplify Redirects
 
-# Admin onboarding (preserve query params)
+# EXPLICIT .html file mappings (highest priority)
+/onboard/admin.html /onboard/admin.html 200!
+/onboard/doctor.html /onboard/doctor.html 200!
+/onboard/staff.html /onboard/staff.html 200!
+/onboard/patient.html /onboard/patient.html 200!
+
+# Clean URL rewrites for onboarding
 /onboard/admin /onboard/admin.html 200
 /onboard/admin/ /onboard/admin.html 200
 /onboard/doctor /onboard/doctor.html 200
@@ -9,14 +15,15 @@
 /onboard/staff/ /onboard/staff.html 200
 /onboard/patient /onboard/patient.html 200
 /onboard/patient/ /onboard/patient.html 200
+/onboard /onboard/index.html 200
+/onboard/ /onboard/index.html 200
 
 # Main pages
 /login /login.html 200
-/login.html /login.html 200
 /book /book.html 200
-/book.html /book.html 200
 /store /store.html 200
 /check-status /check-status.html 200
+/clear-cache /clear-cache.html 200
 
 # Portal pages
 /portal /portal/index.html 200
@@ -28,5 +35,5 @@
 # Documentation
 /docs /docs/index.html 200
 
-# Catch-all for SPA routing (only if file not found)
-/*  /index.html  404
+# 404 for unknown paths (NOT for valid .html files)
+/*  /404.html  404
