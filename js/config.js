@@ -13,10 +13,16 @@ const ENV = (() => {
         return 'github'; // GitHub Pages (demo)
     } else if (HOSTNAME.includes('amplifyapp.com')) {
         return 'staging'; // AWS Amplify staging
+    } else if (HOSTNAME.includes('adinathhealth.com')) {
+        return 'production'; // Production domain
     } else {
         return 'production'; // Custom domain
     }
 })();
+
+// Production domain
+const PRODUCTION_DOMAIN = 'adinathhealth.com';
+const PRODUCTION_URL = 'https://adinathhealth.com';
 
 const CONFIG = {
     // Environment

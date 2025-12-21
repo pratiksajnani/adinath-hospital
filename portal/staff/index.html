@@ -470,6 +470,11 @@
         
         // Initialize
         refreshQueue();
+        
+        // Initialize feedback widget for staff role
+        if (typeof initFeedbackWidget === 'function') {
+            initFeedbackWidget('staff');
+        }
     </script>
 </body>
 </html>
