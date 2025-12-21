@@ -389,8 +389,8 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="username" placeholder="Enter your email" required>
+                        <label>Email or Username</label>
+                        <input type="text" id="username" placeholder="Enter email or username" required>
                     </div>
                     
                     <div class="form-group">
@@ -805,19 +805,24 @@
                     
                     redirectToPortal(role);
                 } else {
-                    // Demo mode - check against HMS users
-                    const user = HMS.auth.login(email, password);
+                    // Local mode - check against HMS users
+                    const result = HMS.auth.login(email, password);
                     
-                    if (user) {
+                    if (result.error) {
+                        throw new Error(result.error);
+                    }
+                    
+                    if (result.success && result.user) {
                         localStorage.setItem('hms_logged_in', 'true');
-                        localStorage.setItem('hms_role', user.role);
-                        localStorage.setItem('hms_user_email', email);
+                        localStorage.setItem('hms_role', result.user.role);
+                        localStorage.setItem('hms_user_email', result.user.email);
+                        localStorage.setItem('hms_user_name', result.user.name);
                         localStorage.setItem('hms_auth_method', 'password');
                         localStorage.setItem('hms_doctor', document.getElementById('doctorSelect').value);
                         
-                        redirectToPortal(user.role);
+                        redirectToPortal(result.user.role);
                     } else {
-                        throw new Error('Invalid email or password');
+                        throw new Error('Invalid email/username or password');
                     }
                 }
             } catch (err) {
