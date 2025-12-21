@@ -75,58 +75,25 @@ const HMS = {
                 active: true,
                 createdAt: '2025-01-01'
             },
-            // Staff
+            // Staff - Poonam (Receptionist) - Details to be completed via form
             {
                 id: 'U004',
-                email: 'nurse1@adinathhospital.com',
+                email: 'poonam@adinathhospital.com', // Placeholder - update with real email/phone
                 password: 'staff123',
-                name: 'Kavita Sharma',
-                nameGu: 'કવિતા શર્મા',
-                nameHi: 'कविता शर्मा',
-                role: 'nurse',
-                department: 'General',
-                permissions: ['patients', 'appointments', 'send_patient_link'],
-                photo: '',
-                phone: '9876543001',
-                preferredLanguage: 'gu',
-                shift: 'morning',
-                active: true,
-                createdAt: '2025-01-15'
-            },
-            {
-                id: 'U005',
-                email: 'receptionist@adinathhospital.com',
-                password: 'staff123',
-                name: 'Priya Patel',
-                nameGu: 'પ્રિયા પટેલ',
-                nameHi: 'प्रिया पटेल',
+                name: 'Poonam', // Full name TBD from form
+                nameGu: 'પૂનમ',
+                nameHi: 'पूनम',
                 role: 'receptionist',
-                department: 'Front Desk',
-                permissions: ['appointments', 'patients', 'send_patient_link', 'queue'],
-                photo: '',
-                phone: '9876543002',
-                preferredLanguage: 'gu',
-                shift: 'morning',
-                active: true,
-                createdAt: '2025-01-15'
-            },
-            {
-                id: 'U006',
-                email: 'pharmacist@adinathhospital.com',
-                password: 'staff123',
-                name: 'Rahul Mehta',
-                nameGu: 'રાહુલ મહેતા',
-                nameHi: 'राहुल मेहता',
-                role: 'pharmacist',
-                department: 'Medical Store',
-                permissions: ['inventory', 'sales', 'prescriptions', 'queue'],
-                photo: '',
-                phone: '9876543003',
+                department: 'Front Desk & Medical Store',
+                permissions: ['appointments', 'patients', 'send_patient_link', 'queue', 'inventory', 'sales'],
+                photo: '', // To be added
+                phone: '', // TBD from form
                 preferredLanguage: 'gu',
                 shift: 'full-day',
                 active: true,
-                createdAt: '2025-01-15'
+                createdAt: '2025-01-01'
             }
+            // NOTE: More staff can be added via the Hospital Operations form
         ];
 
         // Staff roles configuration
