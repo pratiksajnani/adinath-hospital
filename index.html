@@ -57,9 +57,26 @@
             
             <nav class="nav">
                 <a href="#home" data-i18n="nav_home">Home</a>
-                <a href="#services" data-i18n="nav_services">Services</a>
-                <a href="#doctors" data-i18n="nav_doctors">Our Doctors</a>
-                <a href="#yoga" data-i18n="nav_yoga">Yoga Classes</a>
+                
+                <div class="nav-dropdown">
+                    <a href="#services" class="dropdown-trigger">Services <span class="dropdown-arrow">▾</span></a>
+                    <div class="dropdown-menu">
+                        <a href="#services">🦴 Orthopedic Care</a>
+                        <a href="#services">👶 OB-GYN Services</a>
+                        <a href="#yoga">🧘 Yoga Classes</a>
+                        <a href="#expect">📋 What to Expect</a>
+                    </div>
+                </div>
+                
+                <div class="nav-dropdown">
+                    <a href="#doctors" class="dropdown-trigger">Doctors <span class="dropdown-arrow">▾</span></a>
+                    <div class="dropdown-menu">
+                        <a href="#dr-ashok">👨‍⚕️ Dr. Ashok Sajnani</a>
+                        <a href="#dr-sunita">👩‍⚕️ Dr. Sunita Sajnani</a>
+                        <a href="#corner">🎥 Health Videos</a>
+                    </div>
+                </div>
+                
                 <a href="#gallery" data-i18n="nav_gallery">Gallery</a>
                 <a href="#contact" data-i18n="nav_contact">Contact</a>
                 <a href="/book.html" class="btn btn-primary btn-sm" data-i18n="nav_book">Book Appointment</a>
@@ -308,6 +325,101 @@
                         
                         <a href="/book.html?doctor=sunita" class="btn btn-primary" data-i18n="book_with">Book Appointment</a>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What to Expect Section -->
+    <section class="expect-section" id="expect">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag" data-i18n="expect_tag">Patient Experience</span>
+                <h2 data-i18n="expect_title">What to Expect at Your Visit</h2>
+                <p data-i18n="expect_subtitle">Your comfort is our priority. Here's what a typical visit looks like.</p>
+            </div>
+            
+            <div class="expect-grid">
+                <div class="expect-step">
+                    <div class="step-number">1</div>
+                    <div class="step-image">
+                        <img src="images/hospital-entrance.jpg" alt="Hospital Entrance" onerror="this.style.display='none'">
+                        <div class="step-placeholder">🏥</div>
+                    </div>
+                    <h3 data-i18n="step1_title">Arrive & Check-in</h3>
+                    <p data-i18n="step1_desc">Find us at Shukan Mall, 2nd Floor. Our friendly staff will greet you and complete a quick registration.</p>
+                </div>
+                
+                <div class="expect-step">
+                    <div class="step-number">2</div>
+                    <div class="step-image">
+                        <img src="images/waiting-area.jpg" alt="Waiting Area" onerror="this.style.display='none'">
+                        <div class="step-placeholder">🪑</div>
+                    </div>
+                    <h3 data-i18n="step2_title">Comfortable Waiting</h3>
+                    <p data-i18n="step2_desc">Relax in our clean, air-conditioned waiting area. We respect your time and minimize wait times.</p>
+                </div>
+                
+                <div class="expect-step">
+                    <div class="step-number">3</div>
+                    <div class="step-image">
+                        <img src="images/consultation.jpg" alt="Doctor Consultation" onerror="this.style.display='none'">
+                        <div class="step-placeholder">👨‍⚕️</div>
+                    </div>
+                    <h3 data-i18n="step3_title">Personal Consultation</h3>
+                    <p data-i18n="step3_desc">One-on-one time with your doctor. We listen carefully, explain clearly, and answer all your questions.</p>
+                </div>
+                
+                <div class="expect-step">
+                    <div class="step-number">4</div>
+                    <div class="step-image">
+                        <img src="images/treatment.jpg" alt="Treatment" onerror="this.style.display='none'">
+                        <div class="step-placeholder">💊</div>
+                    </div>
+                    <h3 data-i18n="step4_title">Treatment & Care Plan</h3>
+                    <p data-i18n="step4_desc">Receive your personalized treatment plan with clear instructions. Follow-up appointments scheduled as needed.</p>
+                </div>
+            </div>
+            
+            <div class="expect-cta">
+                <a href="/book.html" class="btn btn-primary btn-lg" data-i18n="book_first">📅 Book Your First Visit</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section" id="gallery">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag" data-i18n="gallery_tag">Our Hospital</span>
+                <h2 data-i18n="gallery_title">See Our Facilities</h2>
+            </div>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item large">
+                    <img src="images/hospital-signboard.jpg" alt="Adinath Hospital Signboard" onerror="this.parentElement.classList.add('placeholder')">
+                    <div class="gallery-placeholder">🏥<br>Hospital Entrance</div>
+                    <div class="gallery-caption">આદિનાથ હોસ્પિટલ - Find us easily!</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="images/consultation-room.jpg" alt="Consultation Room" onerror="this.parentElement.classList.add('placeholder')">
+                    <div class="gallery-placeholder">👨‍⚕️<br>Consultation</div>
+                    <div class="gallery-caption">Modern Consultation Rooms</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="images/operation-theatre.jpg" alt="Operation Theatre" onerror="this.parentElement.classList.add('placeholder')">
+                    <div class="gallery-placeholder">🏥<br>OT</div>
+                    <div class="gallery-caption">Well-equipped Operation Theatre</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="images/patient-room.jpg" alt="Patient Room" onerror="this.parentElement.classList.add('placeholder')">
+                    <div class="gallery-placeholder">🛏️<br>Rooms</div>
+                    <div class="gallery-caption">AC Private Rooms</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="images/rotary-event.jpg" alt="Community Event" onerror="this.parentElement.classList.add('placeholder')">
+                    <div class="gallery-placeholder">🤝<br>Community</div>
+                    <div class="gallery-caption">Rotary Club Community Service</div>
                 </div>
             </div>
         </div>
