@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Guide - Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #0f766e;
+            --primary-light: #14b8a6;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --doctor: #3b82f6;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--doctor) 0%, #1e40af 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .header h1 { font-size: 2rem; margin-bottom: 8px; }
+        .header p { opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        
+        .role-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .lang-switch {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        
+        .lang-btn {
+            padding: 6px 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: transparent;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .lang-btn:hover, .lang-btn.active {
+            background: white;
+            color: var(--doctor);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .login-info {
+            background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+            border: 2px solid var(--doctor);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+        
+        .login-info h3 { color: var(--doctor); margin-bottom: 12px; }
+        
+        .credentials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .credential-card {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .credential-card .name { font-weight: 600; margin-bottom: 4px; }
+        .credential-card .email { color: var(--text-light); font-size: 0.9rem; }
+        .credential-card .password { 
+            background: var(--bg); 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            font-family: monospace;
+            margin-top: 8px;
+        }
+        
+        .toc {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .toc h2 { color: var(--doctor); margin-bottom: 16px; font-size: 1.25rem; }
+        
+        .toc-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            list-style: none;
+        }
+        
+        .toc-list a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: var(--bg);
+            border-radius: 8px;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .toc-list a:hover {
+            background: var(--doctor);
+            color: white;
+        }
+        
+        .section {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 32px;
+            margin: 24px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: var(--doctor);
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section h2 .emoji { font-size: 1.75rem; }
+        
+        .section-subtitle {
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+        
+        .crud-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        
+        .crud-create { background: #dcfce7; color: #166534; }
+        .crud-read { background: #dbeafe; color: #1e40af; }
+        .crud-update { background: #fef3c7; color: #92400e; }
+        .crud-delete { background: #fee2e2; color: #991b1b; }
+        
+        .step {
+            display: flex;
+            gap: 16px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .step:last-child { border-bottom: none; }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--doctor);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .step-content { flex: 1; }
+        .step-content h3 { margin-bottom: 8px; font-size: 1.1rem; }
+        .step-content p { color: var(--text-light); margin-bottom: 12px; }
+        
+        .screenshot {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 12px 0;
+            text-align: center;
+        }
+        
+        .screenshot-placeholder {
+            background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+            height: 200px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--doctor);
+            font-size: 14px;
+        }
+        
+        .tip {
+            background: #ecfdf5;
+            border-left: 4px solid var(--success);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+        
+        .tip-title { font-weight: 600; color: #166534; margin-bottom: 4px; }
+        
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid var(--warning);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+        
+        .warning-title { font-weight: 600; color: #92400e; margin-bottom: 4px; }
+        
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--doctor);
+            color: white;
+        }
+        
+        .btn-primary:hover { background: #2563eb; }
+        
+        .btn-outline {
+            border: 2px solid var(--doctor);
+            color: var(--doctor);
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            background: var(--doctor);
+            color: white;
+        }
+        
+        .video-embed {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            margin: 20px 0;
+            background: #000;
+        }
+        
+        .video-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+        }
+        
+        .video-placeholder .play-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        
+        .shortcut-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        
+        .shortcut-card {
+            background: var(--bg);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .shortcut-card .key {
+            display: inline-block;
+            background: white;
+            border: 1px solid var(--border);
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .shortcut-card .action { font-size: 0.9rem; color: var(--text-light); }
+        
+        .contact-card {
+            background: linear-gradient(135deg, var(--doctor) 0%, #1e40af 100%);
+            color: white;
+            padding: 32px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 24px 0;
+        }
+        
+        .contact-card h3 { font-size: 1.5rem; margin-bottom: 8px; }
+        .contact-card p { opacity: 0.9; margin-bottom: 20px; }
+        
+        .contact-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: white;
+            color: var(--doctor);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        
+        .contact-btn:hover { transform: scale(1.05); }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+        
+        /* Multi-language content */
+        [data-lang] { display: none; }
+        [data-lang="en"] { display: block; }
+        
+        body.lang-hi [data-lang="en"] { display: none; }
+        body.lang-hi [data-lang="hi"] { display: block; }
+        
+        body.lang-gu [data-lang="en"] { display: none; }
+        body.lang-gu [data-lang="gu"] { display: block; }
+        
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.5rem; }
+            .section { padding: 20px; }
+            .step { flex-direction: column; }
+        }
+        
+        @media print {
+            .header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .section { break-inside: avoid; }
+            .btn-group, .lang-switch { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="role-badge">👨‍⚕️ Doctor Role</div>
+        <h1>Doctor Dashboard Guide</h1>
+        <p data-lang="en">Complete guide for doctors to manage patients, appointments, and prescriptions</p>
+        <p data-lang="hi">मरीजों, अपॉइंटमेंट और प्रिस्क्रिप्शन प्रबंधित करने के लिए डॉक्टरों की पूर्ण गाइड</p>
+        <p data-lang="gu">દર્દીઓ, એપોઇન્ટમેન્ટ અને પ્રિસ્ક્રિપ્શન મેનેજ કરવા માટે ડોક્ટરોની સંપૂર્ણ માર્ગદર્શિકા</p>
+        
+        <div class="lang-switch">
+            <button class="lang-btn active" onclick="setLang('en')">English</button>
+            <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+            <button class="lang-btn" onclick="setLang('gu')">ગુજરાતી</button>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Login Information -->
+        <div class="login-info">
+            <h3>🔐 Login Credentials</h3>
+            <p data-lang="en">Use these credentials to access the Doctor Dashboard:</p>
+            <p data-lang="hi">डॉक्टर डैशबोर्ड तक पहुंचने के लिए इन क्रेडेंशियल्स का उपयोग करें:</p>
+            <p data-lang="gu">ડોક્ટર ડેશબોર્ડ ઍક્સેસ કરવા આ ક્રેડેન્શિયલ્સનો ઉપયોગ કરો:</p>
+            
+            <div class="credentials">
+                <div class="credential-card">
+                    <div class="name">Dr. Ashok Sajnani</div>
+                    <div class="email">drsajnani@gmail.com</div>
+                    <div class="password">doctor123</div>
+                </div>
+                <div class="credential-card">
+                    <div class="name">Dr. Sunita Sajnani</div>
+                    <div class="email">sunita.sajnani9@gmail.com</div>
+                    <div class="password">doctor123</div>
+                </div>
+            </div>
+            
+            <div class="btn-group" style="margin-top: 16px;">
+                <a href="../login.html" class="btn btn-primary">🔑 Go to Login</a>
+                <a href="../portal/doctor/simple.html" class="btn btn-outline">📱 Simple Dashboard</a>
+            </div>
+        </div>
+        
+        <!-- Table of Contents -->
+        <nav class="toc">
+            <h2 data-lang="en">📋 What You Can Do</h2>
+            <h2 data-lang="hi">📋 आप क्या कर सकते हैं</h2>
+            <h2 data-lang="gu">📋 તમે શું કરી શકો છો</h2>
+            <ul class="toc-list">
+                <li><a href="#login">🔑 <span>Login to Dashboard</span></a></li>
+                <li><a href="#view-patients">👥 <span>View Today's Patients</span></a></li>
+                <li><a href="#prescriptions">📝 <span>Write Prescriptions</span></a></li>
+                <li><a href="#send-reminders">📱 <span>Send Reminders</span></a></li>
+                <li><a href="#update-status">✅ <span>Update Appointments</span></a></li>
+                <li><a href="#content">📰 <span>Manage Content</span></a></li>
+            </ul>
+        </nav>
+        
+        <!-- Video Walkthrough -->
+        <div class="section">
+            <h2><span class="emoji">🎬</span> Video Walkthrough</h2>
+            <p class="section-subtitle" data-lang="en">Watch this tutorial to learn how to use the Doctor Dashboard</p>
+            
+            <div class="video-embed">
+                <div class="video-placeholder">
+                    <div class="play-icon">▶️</div>
+                    <p>Doctor Dashboard Tutorial</p>
+                    <small style="opacity: 0.7; margin-top: 8px;">Coming Soon</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- SECTION: Login -->
+        <section class="section" id="login">
+            <h2><span class="emoji">🔑</span> Login to Dashboard</h2>
+            <p class="section-subtitle">Access your personalized doctor portal</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Go to Login Page</h3>
+                    <p>Click "Help" → "Portal Login" or go directly to the login page</p>
+                    <div class="btn-group">
+                        <a href="../login.html" class="btn btn-outline">🔗 Login Page</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Select "Doctor" Tab</h3>
+                    <p>Click on the "Doctor" tab at the top of the login form</p>
+                    <div class="screenshot">
+                        <div class="screenshot-placeholder">📸 Screenshot: Doctor login tab selected</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Enter Your Credentials</h3>
+                    <p>Enter your email and password, then click "Login"</p>
+                    <div class="tip">
+                        <div class="tip-title">💡 Quick Access</div>
+                        <p>You can also bookmark the Simple Dashboard for faster access: <code>/portal/doctor/simple.html</code></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECTION: View Patients (READ) -->
+        <section class="section" id="view-patients">
+            <h2>
+                <span class="emoji">👥</span> View Today's Patients
+                <span class="crud-tag crud-read">READ</span>
+            </h2>
+            <p class="section-subtitle">See all appointments scheduled for today</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Access Dashboard</h3>
+                    <p>After login, you'll see your dashboard with today's appointments</p>
+                    <div class="screenshot">
+                        <div class="screenshot-placeholder">📸 Screenshot: Doctor dashboard overview</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>View Patient List</h3>
+                    <p>See patient names, appointment times, and reasons for visit</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>View Patient Details</h3>
+                    <p>Click on a patient's name to see their full history and previous prescriptions</p>
+                    <div class="screenshot">
+                        <div class="screenshot-placeholder">📸 Screenshot: Patient detail view</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECTION: Write Prescriptions (CREATE) -->
+        <section class="section" id="prescriptions">
+            <h2>
+                <span class="emoji">📝</span> Write Prescriptions
+                <span class="crud-tag crud-create">CREATE</span>
+            </h2>
+            <p class="section-subtitle">Create and save prescriptions for patients</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Select Patient</h3>
+                    <p>Click on the patient you want to write a prescription for</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Click "Write Prescription"</h3>
+                    <p>Open the prescription form</p>
+                    <div class="screenshot">
+                        <div class="screenshot-placeholder">📸 Screenshot: Write prescription button</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Enter Diagnosis & Medicines</h3>
+                    <p>Fill in the diagnosis, medicines, dosage, and duration</p>
+                    <div class="warning">
+                        <div class="warning-title">⚠️ Important</div>
+                        <p>Always verify medicine names and dosages before saving</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Add Advice & Follow-up</h3>
+                    <p>Include any special instructions and set a follow-up date if needed</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h3>Save & Print</h3>
+                    <p>Click "Save Prescription" and optionally print a copy for the patient</p>
+                    <div class="btn-group">
+                        <a href="../forms/prescription.html" class="btn btn-outline">📄 Printable Prescription Form</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECTION: Send Reminders (CREATE) -->
+        <section class="section" id="send-reminders">
+            <h2>
+                <span class="emoji">📱</span> Send Reminders
+                <span class="crud-tag crud-create">CREATE</span>
+            </h2>
+            <p class="section-subtitle">Send SMS/WhatsApp reminders to patients</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Select Patient</h3>
+                    <p>Choose the patient you want to send a reminder to</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Click "Send Reminder"</h3>
+                    <p>Open the reminder options</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Choose Message Type</h3>
+                    <p>Select from pre-defined messages or write a custom one:</p>
+                    <ul style="margin-left: 20px; color: var(--text-light);">
+                        <li>💊 Medicine reminder</li>
+                        <li>📅 Follow-up reminder</li>
+                        <li>🏥 Appointment reminder</li>
+                        <li>📝 Custom message</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Send via WhatsApp or SMS</h3>
+                    <p>Choose your preferred method and send</p>
+                    <div class="tip">
+                        <div class="tip-title">💡 Quick Tip</div>
+                        <p>WhatsApp messages are free and can include images/documents</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECTION: Update Appointments (UPDATE) -->
+        <section class="section" id="update-status">
+            <h2>
+                <span class="emoji">✅</span> Update Appointment Status
+                <span class="crud-tag crud-update">UPDATE</span>
+            </h2>
+            <p class="section-subtitle">Mark appointments as completed or update status</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Find the Appointment</h3>
+                    <p>Locate the appointment in your today's list</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Update Status</h3>
+                    <p>Click the status button and select:</p>
+                    <ul style="margin-left: 20px; color: var(--text-light);">
+                        <li>✅ Completed - Patient has been seen</li>
+                        <li>⏳ In Progress - Currently with patient</li>
+                        <li>❌ Cancelled - Patient didn't show</li>
+                        <li>🔄 Rescheduled - Moved to another date</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Add Notes (Optional)</h3>
+                    <p>Add any relevant notes for your records</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECTION: Manage Content (CREATE/UPDATE) -->
+        <section class="section" id="content">
+            <h2>
+                <span class="emoji">📰</span> Manage Your Content
+                <span class="crud-tag crud-create">CREATE</span>
+                <span class="crud-tag crud-update">UPDATE</span>
+            </h2>
+            <p class="section-subtitle">Upload health tips, videos, and articles</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Go to Content Section</h3>
+                    <p>Click "My Content" in the dashboard sidebar</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Add New Content</h3>
+                    <p>Click "Add New" and choose content type:</p>
+                    <ul style="margin-left: 20px; color: var(--text-light);">
+                        <li>📝 Health Tip / Article</li>
+                        <li>🎥 Video (YouTube link)</li>
+                        <li>📸 Photo with caption</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Fill in Details</h3>
+                    <p>Add title, description, and upload any media</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Publish</h3>
+                    <p>Click "Publish" to make it visible on the website's "Health Corner" section</p>
+                    <div class="tip">
+                        <div class="tip-title">💡 Visibility</div>
+                        <p>Published content appears on the homepage and can be shared on social media</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Quick Reference -->
+        <div class="section">
+            <h2><span class="emoji">⚡</span> Quick Reference</h2>
+            <p class="section-subtitle">Common actions at a glance</p>
+            
+            <div class="shortcut-grid">
+                <div class="shortcut-card">
+                    <div class="key">📅</div>
+                    <div class="action">Today's Appointments</div>
+                </div>
+                <div class="shortcut-card">
+                    <div class="key">📝</div>
+                    <div class="action">New Prescription</div>
+                </div>
+                <div class="shortcut-card">
+                    <div class="key">📱</div>
+                    <div class="action">Send Message</div>
+                </div>
+                <div class="shortcut-card">
+                    <div class="key">👤</div>
+                    <div class="action">Patient History</div>
+                </div>
+                <div class="shortcut-card">
+                    <div class="key">🖨️</div>
+                    <div class="action">Print Forms</div>
+                </div>
+                <div class="shortcut-card">
+                    <div class="key">🚪</div>
+                    <div class="action">Logout</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Card -->
+        <div class="contact-card">
+            <h3>Need Technical Help?</h3>
+            <p>Contact the site administrator for any issues</p>
+            
+            <div class="contact-buttons">
+                <a href="mailto:pratik.sajnani@gmail.com" class="contact-btn">📧 Email Admin</a>
+                <a href="tel:+919925450425" class="contact-btn">📞 Call</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>🏥 Adinath Hospital | Doctor Dashboard Guide</p>
+        <p style="margin-top: 8px;">
+            <a href="../index.html" style="color: var(--doctor);">← Back to Website</a>
+        </p>
+    </footer>
+    
+    <script>
+        function setLang(lang) {
+            document.body.className = 'lang-' + lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if ((lang === 'en' && btn.textContent === 'English') ||
+                    (lang === 'hi' && btn.textContent === 'हिंदी') ||
+                    (lang === 'gu' && btn.textContent === 'ગુજરાતી')) {
+                    btn.classList.add('active');
+                }
+            });
+            localStorage.setItem('doctor_guide_lang', lang);
+        }
+        
+        // Restore language preference
+        const savedLang = localStorage.getItem('doctor_guide_lang');
+        if (savedLang) setLang(savedLang);
+    </script>
+</body>
+</html>
+

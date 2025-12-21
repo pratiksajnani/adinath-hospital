@@ -3,97 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site Admin Guide - Adinath Hospital</title>
+    <title>Admin Guide | Adinath Hospital</title>
     <style>
+        @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .no-print { display: none !important; }
+            .page-break { page-break-before: always; }
+        }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            line-height: 1.7;
-            color: #1e293b;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #1a1a2e;
             max-width: 900px;
             margin: 0 auto;
             padding: 20px;
-            background: #f8fafc;
+            background: #fef2f2;
         }
+        
         .header {
-            text-align: center;
-            padding: 30px;
-            background: linear-gradient(135deg, #dc2626, #f97316);
+            background: linear-gradient(135deg, #dc2626 0%, #f87171 100%);
             color: white;
+            padding: 30px;
             border-radius: 16px;
             margin-bottom: 30px;
-        }
-        .header h1 { font-size: 28px; margin-bottom: 8px; }
-        
-        .credentials {
-            background: #fef3c7;
-            border: 2px solid #f59e0b;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 24px;
-        }
-        .credentials h3 { color: #92400e; margin-bottom: 12px; }
-        .credentials table { width: 100%; }
-        .credentials td { padding: 8px; border-bottom: 1px solid #fcd34d; }
-        
-        .video-section {
-            background: #fee2e2;
-            border-radius: 12px;
-            padding: 24px;
             text-align: center;
-            margin-bottom: 30px;
         }
-        .video-btn {
-            display: inline-block;
-            background: #dc2626;
-            color: white;
-            padding: 12px 28px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
+        
+        .header h1 { font-size: 2rem; margin-bottom: 10px; }
+        .header p { opacity: 0.9; }
+        
+        .credentials-box {
+            background: white;
+            border: 2px solid #dc2626;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .credentials-box h3 {
+            color: #dc2626;
+            margin-bottom: 15px;
+        }
+        
+        .credentials-box table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .credentials-box td {
+            padding: 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .credentials-box td:first-child {
+            font-weight: bold;
+            width: 40%;
         }
         
         .quick-links {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
             margin-bottom: 30px;
         }
+        
         .quick-link {
             background: white;
-            padding: 14px;
+            padding: 20px;
             border-radius: 12px;
-            text-decoration: none;
-            color: #dc2626;
-            font-weight: 600;
             text-align: center;
-            border: 2px solid #e2e8f0;
+            text-decoration: none;
+            color: #1a1a2e;
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s;
         }
-        .quick-link:hover { border-color: #dc2626; }
+        
+        .quick-link:hover {
+            border-color: #dc2626;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .quick-link .icon { font-size: 2rem; margin-bottom: 10px; }
+        .quick-link .title { font-weight: 600; font-size: 0.9rem; }
         
         .section {
             background: white;
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 4px solid #dc2626;
         }
+        
         .section h2 {
             color: #dc2626;
-            border-bottom: 3px solid #dc2626;
-            padding-bottom: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .section h3 {
+            color: #374151;
+            margin: 20px 0 10px;
+            font-size: 1.1rem;
+        }
+        
+        .crud-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .crud-table th, .crud-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .crud-table th {
+            background: #fef2f2;
+            color: #dc2626;
+            font-weight: 600;
         }
         
         .step {
             display: flex;
-            gap: 16px;
-            padding: 16px;
+            gap: 15px;
+            padding: 15px;
             background: #f8fafc;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            border-left: 4px solid #dc2626;
+            border-radius: 8px;
+            margin: 10px 0;
         }
+        
         .step-number {
             background: #dc2626;
             color: white;
@@ -106,470 +149,489 @@
             font-weight: bold;
             flex-shrink: 0;
         }
-        .step-content { flex: 1; }
         
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 16px 0;
+        .step-content { flex: 1; }
+        .step-content strong { color: #dc2626; }
+        
+        .screenshot {
+            background: #f1f5f9;
+            border: 2px dashed #94a3b8;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 15px 0;
+            color: #64748b;
         }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #e2e8f0;
-        }
-        th { background: #dc2626; color: white; }
-        tr:nth-child(even) { background: #f8fafc; }
         
         .tip {
-            background: #dcfce7;
-            border-left: 4px solid #22c55e;
-            padding: 16px;
+            background: #fef2f2;
+            border-left: 4px solid #f87171;
+            padding: 15px;
+            margin: 15px 0;
             border-radius: 0 8px 8px 0;
-            margin: 16px 0;
+        }
+        
+        .tip::before {
+            content: "💡 Tip: ";
+            font-weight: bold;
+            color: #dc2626;
         }
         
         .warning {
-            background: #fee2e2;
-            border-left: 4px solid #ef4444;
-            padding: 16px;
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 15px 0;
             border-radius: 0 8px 8px 0;
-            margin: 16px 0;
         }
         
-        code {
-            background: #f1f5f9;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-family: monospace;
+        .warning::before {
+            content: "⚠️ Caution: ";
+            font-weight: bold;
+            color: #d97706;
         }
         
-        pre {
-            background: #1e293b;
-            color: #e2e8f0;
-            padding: 16px;
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .checklist li {
+            padding: 10px;
+            background: #f8fafc;
+            margin: 5px 0;
             border-radius: 8px;
-            overflow-x: auto;
-            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        .sms-box {
-            background: linear-gradient(135deg, #dc2626, #f97316);
-            color: white;
-            padding: 24px;
-            border-radius: 12px;
-            text-align: center;
-            margin: 20px 0;
+        .checklist li::before {
+            content: "☐";
+            font-size: 1.2rem;
         }
-        .sms-box a {
-            display: inline-block;
-            background: white;
-            color: #dc2626;
-            padding: 12px 24px;
+        
+        .video-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #dc2626;
+            color: white;
+            padding: 10px 20px;
             border-radius: 8px;
             text-decoration: none;
-            font-weight: bold;
-            margin-top: 12px;
+            margin-top: 15px;
         }
         
         .footer {
             text-align: center;
-            padding: 20px;
+            padding: 30px;
             color: #64748b;
         }
         
-        @media print {
-            body { background: white; }
-            .video-section, .sms-box { display: none; }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .stat-card {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #dc2626;
+        }
+        
+        .stat-card .label {
+            color: #64748b;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>🔧 Site Admin Guide</h1>
-        <p>For Pratik Sajnani (Technical Admin)</p>
-        <p style="font-size: 12px; margin-top: 8px;">📱 Link: <strong>tinyurl.com/siteadmin-demo</strong></p>
+        <p>Complete admin guide for Pratik Sajnani (Site Administrator)</p>
     </div>
 
     <!-- Login Credentials -->
-    <div class="credentials">
-        <h3>🔐 All System Credentials</h3>
+    <div class="credentials-box">
+        <h3>🔐 Login Credentials</h3>
         <table>
             <tr>
-                <td><strong>Site Admin</strong></td>
-                <td>pratik.sajnani@gmail.com</td>
-                <td>admin123</td>
+                <td>Site Admin</td>
+                <td>pratik.sajnani@gmail.com / admin123</td>
             </tr>
             <tr>
-                <td><strong>Dr. Ashok</strong></td>
-                <td>drsajnani@gmail.com</td>
-                <td>doctor123</td>
+                <td>Admin Portal</td>
+                <td><a href="../portal/admin/">portal/admin/</a></td>
             </tr>
             <tr>
-                <td><strong>Dr. Sunita</strong></td>
-                <td>sunita.sajnani9@gmail.com</td>
-                <td>doctor123</td>
+                <td>Login Page</td>
+                <td><a href="../login.html">login.html</a></td>
             </tr>
             <tr>
-                <td><strong>Poonam (Reception)</strong></td>
-                <td>receptionist@adinathhospital.com</td>
-                <td>staff123</td>
+                <td>GitHub Repo</td>
+                <td><a href="https://github.com/pratiksajnani/adinath-hospital">pratiksajnani/adinath-hospital</a></td>
             </tr>
         </table>
-    </div>
-
-    <!-- Video Section -->
-    <div class="video-section">
-        <h3>🎬 Watch Full System Walkthrough</h3>
-        <p style="margin-bottom: 12px;">Complete admin overview (10 min)</p>
-        <a href="#" class="video-btn">▶️ Video Coming Soon</a>
     </div>
 
     <!-- Quick Links -->
     <div class="quick-links">
-        <a href="#overview" class="quick-link">📊 Dashboard</a>
-        <a href="#users" class="quick-link">👥 Users</a>
-        <a href="#content" class="quick-link">📝 Content</a>
-        <a href="#console" class="quick-link">💻 Console</a>
-        <a href="#deploy" class="quick-link">🚀 Deploy</a>
+        <a href="../portal/admin/" class="quick-link">
+            <div class="icon">📊</div>
+            <div class="title">Admin Dashboard</div>
+        </a>
+        <a href="../portal/doctor/" class="quick-link">
+            <div class="icon">👨‍⚕️</div>
+            <div class="title">Doctor View</div>
+        </a>
+        <a href="../portal/staff/" class="quick-link">
+            <div class="icon">👩‍💼</div>
+            <div class="title">Staff View</div>
+        </a>
+        <a href="../store/index.html" class="quick-link">
+            <div class="icon">💊</div>
+            <div class="title">Medical Store</div>
+        </a>
+        <a href="../forms/index.html" class="quick-link">
+            <div class="icon">📝</div>
+            <div class="title">Forms</div>
+        </a>
+        <a href="../" class="quick-link">
+            <div class="icon">🏠</div>
+            <div class="title">Public Website</div>
+        </a>
     </div>
 
-    <!-- System Overview -->
-    <div class="section" id="overview">
-        <h2>📊 System Overview</h2>
+    <!-- CRUD Operations -->
+    <div class="section">
+        <h2>📋 Admin CRUD Operations Overview</h2>
         
-        <table>
-            <tr>
-                <th>Component</th>
-                <th>Location</th>
-                <th>Purpose</th>
-            </tr>
-            <tr>
-                <td>Homepage</td>
-                <td><code>/index.html</code></td>
-                <td>Public hospital website</td>
-            </tr>
-            <tr>
-                <td>Booking</td>
-                <td><code>/book.html</code></td>
-                <td>Patient appointment booking</td>
-            </tr>
-            <tr>
-                <td>Patient Portal</td>
-                <td><code>/portal/patient/</code></td>
-                <td>Patient view appointments</td>
-            </tr>
-            <tr>
-                <td>Doctor Dashboard</td>
-                <td><code>/portal/doctor/</code></td>
-                <td>Doctor appointments & Rx</td>
-            </tr>
-            <tr>
-                <td>Staff Dashboard</td>
-                <td><code>/portal/staff/</code></td>
-                <td>Queue & patient management</td>
-            </tr>
-            <tr>
-                <td>Admin Dashboard</td>
-                <td><code>/portal/admin/</code></td>
-                <td>System overview</td>
-            </tr>
-            <tr>
-                <td>Medical Store</td>
-                <td><code>/store/</code></td>
-                <td>Inventory & sales</td>
-            </tr>
-            <tr>
-                <td>Forms</td>
-                <td><code>/forms/</code></td>
-                <td>Printable forms</td>
-            </tr>
+        <table class="crud-table">
+            <thead>
+                <tr>
+                    <th>Entity</th>
+                    <th>CREATE</th>
+                    <th>READ</th>
+                    <th>UPDATE</th>
+                    <th>DELETE</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>👥 Patients</strong></td>
+                    <td>✅ Add new</td>
+                    <td>✅ View all</td>
+                    <td>✅ Edit info</td>
+                    <td>✅ Remove</td>
+                </tr>
+                <tr>
+                    <td><strong>📅 Appointments</strong></td>
+                    <td>✅ Book new</td>
+                    <td>✅ View all</td>
+                    <td>✅ Change status</td>
+                    <td>✅ Cancel</td>
+                </tr>
+                <tr>
+                    <td><strong>💊 Prescriptions</strong></td>
+                    <td>via Doctor</td>
+                    <td>✅ View all</td>
+                    <td>via Doctor</td>
+                    <td>❌ Archive only</td>
+                </tr>
+                <tr>
+                    <td><strong>🏪 Inventory</strong></td>
+                    <td>✅ Add items</td>
+                    <td>✅ View stock</td>
+                    <td>✅ Update stock</td>
+                    <td>✅ Remove items</td>
+                </tr>
+                <tr>
+                    <td><strong>💰 Sales</strong></td>
+                    <td>via Store</td>
+                    <td>✅ View all</td>
+                    <td>❌</td>
+                    <td>❌</td>
+                </tr>
+                <tr>
+                    <td><strong>👤 Staff</strong></td>
+                    <td>✅ Add new</td>
+                    <td>✅ View all</td>
+                    <td>✅ Edit role</td>
+                    <td>✅ Deactivate</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
-    <!-- CRUD: Users -->
-    <div class="section" id="users">
-        <h2>👥 Manage Users (CRUD)</h2>
+    <!-- Dashboard Overview -->
+    <div class="section">
+        <h2>📊 Admin Dashboard Overview</h2>
         
-        <h3>View All Users</h3>
-        <pre>HMS.users.getAll()</pre>
+        <p>The admin dashboard shows key stats at a glance:</p>
         
-        <h3>Create New User</h3>
-        <pre>HMS.users.add({
-    email: 'newstaff@adinathhospital.com',
-    password: 'staff123',
-    name: 'New Staff Member',
-    role: 'staff',
-    permissions: ['appointments', 'queue'],
-    phone: '9876543210',
-    active: true
-})</pre>
-
-        <h3>Update User</h3>
-        <pre>HMS.users.update('U005', {
-    name: 'Updated Name',
-    phone: '9999888877'
-})</pre>
-
-        <h3>Delete User</h3>
-        <pre>HMS.users.delete('U005')</pre>
-
-        <div class="warning">
-            ⚠️ <strong>Be careful!</strong> Deleting users is permanent. Back up data first.
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="value">📅 4</div>
+                <div class="label">Today's Appointments</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">👥 4</div>
+                <div class="label">Total Patients</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">₹470</div>
+                <div class="label">Today's Sales</div>
+            </div>
+            <div class="stat-card">
+                <div class="value">⚠️ 0</div>
+                <div class="label">Low Stock Items</div>
+            </div>
+        </div>
+        
+        <div class="screenshot">
+            📸 Screenshot: Admin dashboard with 4 stat cards and appointment/patient tables
         </div>
     </div>
 
-    <!-- CRUD: Patients -->
+    <!-- How to Manage Appointments -->
     <div class="section">
-        <h2>🏥 Manage Patients (CRUD)</h2>
-        
-        <h3>View All Patients</h3>
-        <pre>console.table(HMS.patients.getAll())</pre>
-        
-        <h3>Search Patient</h3>
-        <pre>HMS.patients.search('Sharma')</pre>
-
-        <h3>Create Patient</h3>
-        <pre>HMS.patients.add({
-    name: 'Test Patient',
-    phone: '9876543210',
-    age: 45,
-    gender: 'male'
-})</pre>
-
-        <h3>Update Patient</h3>
-        <pre>HMS.patients.update('P001', {
-    age: 46,
-    address: 'New Address'
-})</pre>
-
-        <h3>Delete Patient</h3>
-        <pre>HMS.patients.delete('P001')</pre>
-    </div>
-
-    <!-- CRUD: Appointments -->
-    <div class="section">
-        <h2>📅 Manage Appointments (CRUD)</h2>
-        
-        <h3>View All Appointments</h3>
-        <pre>console.table(HMS.appointments.getAll())</pre>
+        <h2>📅 How to Manage Appointments</h2>
         
         <h3>View Today's Appointments</h3>
-        <pre>HMS.appointments.getToday()</pre>
-
-        <h3>Create Appointment</h3>
-        <pre>HMS.appointments.add({
-    patientId: 'P001',
-    patientName: 'Test Patient',
-    doctor: 'ashok',
-    date: '2025-12-25',
-    time: '11:30 AM',
-    reason: 'Knee pain'
-})</pre>
-
-        <h3>Update Status</h3>
-        <pre>HMS.appointments.updateStatus('A001', 'completed')</pre>
-
-        <h3>Cancel Appointment</h3>
-        <pre>HMS.appointments.cancel('A001')</pre>
-    </div>
-
-    <!-- Console Commands -->
-    <div class="section" id="console">
-        <h2>💻 Console Commands Reference</h2>
-        
-        <table>
-            <tr>
-                <th>Command</th>
-                <th>Purpose</th>
-            </tr>
-            <tr>
-                <td><code>HMS.reset()</code></td>
-                <td>Reset all data to defaults</td>
-            </tr>
-            <tr>
-                <td><code>HMS.export()</code></td>
-                <td>Export all data as JSON</td>
-            </tr>
-            <tr>
-                <td><code>HMS.import(data)</code></td>
-                <td>Import data from JSON</td>
-            </tr>
-            <tr>
-                <td><code>HMS.stats()</code></td>
-                <td>View system statistics</td>
-            </tr>
-            <tr>
-                <td><code>HMS.users.getAll()</code></td>
-                <td>List all users</td>
-            </tr>
-            <tr>
-                <td><code>HMS.patients.getAll()</code></td>
-                <td>List all patients</td>
-            </tr>
-            <tr>
-                <td><code>HMS.appointments.getAll()</code></td>
-                <td>List all appointments</td>
-            </tr>
-            <tr>
-                <td><code>HMS.inventory.getAll()</code></td>
-                <td>List medicine inventory</td>
-            </tr>
-        </table>
-    </div>
-
-    <!-- Content Management -->
-    <div class="section" id="content">
-        <h2>📝 Content Management</h2>
-        
-        <h3>Update Doctor Information</h3>
         <div class="step">
             <div class="step-number">1</div>
             <div class="step-content">
-                Edit <code>index.html</code> - find the Doctors section
+                <strong>Open Admin Dashboard</strong><br>
+                The "Today's Appointments" table shows all booked appointments
+            </div>
+        </div>
+        
+        <h3>Change Appointment Status</h3>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <strong>Find the Appointment Row</strong><br>
+                Shows: Time, Patient Name, Doctor, Reason, Current Status
             </div>
         </div>
         <div class="step">
             <div class="step-number">2</div>
             <div class="step-content">
-                Update text, images, or links
+                <strong>Use the Status Dropdown</strong><br>
+                Change between: Pending → Confirmed → Waiting → Completed → Cancelled
+            </div>
+        </div>
+        
+        <h3>Add New Appointment</h3>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <strong>Click "+ New Appointment" Button</strong>
+            </div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <strong>Fill Appointment Details</strong><br>
+                Patient name, phone, doctor, date, time, reason
             </div>
         </div>
         <div class="step">
             <div class="step-number">3</div>
             <div class="step-content">
-                Commit and push to deploy
-            </div>
-        </div>
-
-        <h3>Add New Service</h3>
-        <div class="step">
-            <div class="step-number">1</div>
-            <div class="step-content">
-                Create new file in <code>services/</code> folder
-            </div>
-        </div>
-        <div class="step">
-            <div class="step-number">2</div>
-            <div class="step-content">
-                Copy structure from existing service page
-            </div>
-        </div>
-        <div class="step">
-            <div class="step-number">3</div>
-            <div class="step-content">
-                Add link in navigation dropdown
-            </div>
-        </div>
-
-        <h3>Update Translations</h3>
-        <div class="step">
-            <div class="step-number">1</div>
-            <div class="step-content">
-                Edit <code>js/i18n.js</code>
-            </div>
-        </div>
-        <div class="step">
-            <div class="step-number">2</div>
-            <div class="step-content">
-                Find the key, add Hindi/Gujarati translations
+                <strong>Save</strong>
             </div>
         </div>
     </div>
 
-    <!-- Deployment -->
-    <div class="section" id="deploy">
-        <h2>🚀 Deployment</h2>
+    <!-- How to Manage Patients -->
+    <div class="section page-break">
+        <h2>👥 How to Manage Patients</h2>
         
-        <h3>Deploy Changes</h3>
-        <pre>cd /Users/psaj/src/adinath-hospital
-git add -A
-git commit -m "Your message"
-git push origin main</pre>
+        <h3>View All Patients</h3>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <strong>Look at "Recent Patients" Table</strong><br>
+                Shows: ID, Name, Age, Phone, Visits, Last Visit Date
+            </div>
+        </div>
+        
+        <h3>Search Patients</h3>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <strong>Use Search Box</strong><br>
+                Type patient name or phone number to filter
+            </div>
+        </div>
+        
+        <h3>View Patient Details</h3>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <strong>Click Patient Name</strong><br>
+                View full history, appointments, prescriptions
+            </div>
+        </div>
         
         <div class="tip">
-            💡 AWS Amplify auto-deploys in ~2 minutes after push.
+            Click the phone number to call the patient directly!
         </div>
-
-        <h3>Check Deployment Status</h3>
-        <p>Go to AWS Amplify Console to see build status.</p>
-
-        <h3>Known Issues</h3>
-        <table>
-            <tr>
-                <th>Issue</th>
-                <th>Status</th>
-            </tr>
-            <tr>
-                <td>/login.html redirects to homepage</td>
-                <td>🔴 AWS Amplify config</td>
-            </tr>
-            <tr>
-                <td>Missing i18n translations</td>
-                <td>🟡 In progress</td>
-            </tr>
-        </table>
     </div>
 
-    <!-- Testing Checklist -->
+    <!-- How to Manage Inventory -->
     <div class="section">
-        <h2>✅ Testing Checklist</h2>
+        <h2>💊 How to Manage Inventory</h2>
         
-        <table>
-            <tr>
-                <th>Feature</th>
-                <th>How to Test</th>
-                <th>Status</th>
-            </tr>
-            <tr>
-                <td>Homepage loads</td>
-                <td>Visit main URL</td>
-                <td>✅</td>
-            </tr>
-            <tr>
-                <td>Language toggle</td>
-                <td>Click EN/हि/ગુ</td>
-                <td>✅</td>
-            </tr>
-            <tr>
-                <td>Booking form</td>
-                <td>Submit test booking</td>
-                <td>✅</td>
-            </tr>
-            <tr>
-                <td>Doctor dashboard</td>
-                <td>Login as doctor</td>
-                <td>✅</td>
-            </tr>
-            <tr>
-                <td>Print forms</td>
-                <td>Try print button</td>
-                <td>✅</td>
-            </tr>
-            <tr>
-                <td>Mobile responsive</td>
-                <td>Resize browser</td>
-                <td>✅</td>
-            </tr>
-            <tr>
-                <td>WhatsApp link</td>
-                <td>Click green button</td>
-                <td>✅</td>
-            </tr>
-        </table>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <strong>Go to Medical Store (from sidebar)</strong><br>
+                Or visit <a href="../store/index.html">store/index.html</a>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <strong>View Current Stock</strong><br>
+                See all medicines with stock levels
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <strong>Add New Medicine</strong><br>
+                Click "+ Add Medicine" → Fill details → Save
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <strong>Update Stock</strong><br>
+                Click on item → Update quantity → Save
+            </div>
+        </div>
+        
+        <div class="warning">
+            Items with low stock (below reorder level) show a warning ⚠️
+        </div>
     </div>
 
-    <!-- SMS Share Box -->
-    <div class="sms-box">
-        <h3>📱 Share This Guide</h3>
-        <p>Bookmark for quick reference:</p>
-        <a href="https://tinyurl.com/siteadmin-demo">tinyurl.com/siteadmin-demo</a>
+    <!-- How to Reset Demo Data -->
+    <div class="section">
+        <h2>🔄 How to Reset Demo Data</h2>
+        
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <strong>Click "🔄 Reset Demo" Button</strong><br>
+                Found in top-right of admin dashboard
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <strong>Confirm Reset</strong><br>
+                All data will be restored to original demo state
+            </div>
+        </div>
+        
+        <div class="warning">
+            This will delete all custom data! Use only for demo purposes.
+        </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Sidebar Navigation -->
+    <div class="section">
+        <h2>📍 Admin Sidebar Navigation</h2>
+        
+        <ul style="padding-left: 20px;">
+            <li><strong>📊 Overview</strong> - Main dashboard with stats</li>
+            <li><strong>👨‍⚕️ Doctor View</strong> - See what doctors see</li>
+            <li><strong>📅 Appointments</strong> - All appointments list</li>
+            <li><strong>👥 All Patients</strong> - Complete patient database</li>
+            <li><strong>💊 Medical Store</strong> - Inventory management</li>
+            <li><strong>👤 Staff</strong> - Manage staff accounts</li>
+            <li><strong>📈 Reports</strong> - Analytics (coming soon)</li>
+            <li><strong>⚙️ Settings</strong> - System configuration</li>
+        </ul>
+    </div>
+
+    <!-- Demo Checklist -->
+    <div class="section page-break">
+        <h2>✔️ Admin Demo Checklist</h2>
+        
+        <ul class="checklist">
+            <li>Login to Admin Portal</li>
+            <li>View dashboard stats (4 cards)</li>
+            <li>Check today's appointments table</li>
+            <li>Change an appointment status using dropdown</li>
+            <li>Search for a patient by name</li>
+            <li>Click a phone number to see call link</li>
+            <li>Navigate to Medical Store from sidebar</li>
+            <li>View inventory levels</li>
+            <li>Check for low stock warnings</li>
+            <li>Try the Reset Demo button</li>
+            <li>View as Doctor (click "Doctor View")</li>
+            <li>View as Staff (click "Staff View")</li>
+        </ul>
+    </div>
+
+    <!-- Technical Admin Tasks -->
+    <div class="section">
+        <h2>🔧 Technical Admin Tasks</h2>
+        
+        <h3>Deploy Changes</h3>
+        <ol style="padding-left: 20px; margin-top: 10px;">
+            <li>Make changes to code</li>
+            <li>Commit to Git: <code>git add -A && git commit -m "message"</code></li>
+            <li>Push to GitHub: <code>git push origin main</code></li>
+            <li>AWS Amplify auto-deploys in ~2 minutes</li>
+        </ol>
+        
+        <h3>Check Deployment</h3>
+        <ol style="padding-left: 20px; margin-top: 10px;">
+            <li>Visit AWS Amplify Console</li>
+            <li>Check build status</li>
+            <li>Verify live site updated</li>
+        </ol>
+        
+        <h3>Clear LocalStorage (Reset Data)</h3>
+        <ol style="padding-left: 20px; margin-top: 10px;">
+            <li>Open browser DevTools (F12)</li>
+            <li>Go to Application → Storage</li>
+            <li>Click "Clear site data"</li>
+            <li>Refresh page - demo data restored</li>
+        </ol>
+    </div>
+
+    <!-- Video Walkthrough -->
+    <div class="section">
+        <h2>🎬 Video Walkthrough</h2>
+        <p>Watch the complete admin portal walkthrough:</p>
+        <a href="VIDEO_SCRIPT.md" class="video-link">
+            ▶️ View Video Script
+        </a>
+    </div>
+
     <div class="footer">
-        <p>© 2025 Adinath Hospital | Admin: Pratik Sajnani</p>
-        <p>📧 pratik.sajnani@gmail.com</p>
+        <p>🏥 Adinath Hospital | Care with Compassion</p>
+        <p>Last Updated: December 2025</p>
     </div>
 </body>
 </html>
