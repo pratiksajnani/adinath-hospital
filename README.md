@@ -1,5 +1,12 @@
 # 🏥 Adinath Hospital Website
 
+[![Tests](https://github.com/pratiksajnani/adinath-hospital/actions/workflows/test.yml/badge.svg)](https://github.com/pratiksajnani/adinath-hospital/actions/workflows/test.yml)
+[![E2E Tests](https://github.com/pratiksajnani/adinath-hospital/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/pratiksajnani/adinath-hospital/actions)
+[![Links](https://img.shields.io/badge/links-verified-brightgreen)](https://adinathhealth.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fadinathhealth.com)](https://adinathhealth.com)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org)
+
 Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Management System.
 
 ## 🌐 Live Website
@@ -63,8 +70,7 @@ Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Mana
 | Resource | Link |
 |----------|------|
 | **TinyURL** | https://tinyurl.com/siteadmin-demo |
-| Full Guide (HTML) | [docs/SITEADMIN_DEMO.html](docs/SITEADMIN_DEMO.html) |
-| Full Guide (MD) | [docs/SITEADMIN_DEMO.md](docs/SITEADMIN_DEMO.md) |
+| Full Guide | [docs/SITEADMIN_DEMO.html](docs/SITEADMIN_DEMO.html) |
 | CRUD Operations | Full access to all data, Manage appointments, Manage patients, Reset demo
 
 ---
@@ -192,6 +198,53 @@ git push origin main
 ```
 
 Changes deploy in ~2 minutes.
+
+---
+
+## 🧪 Testing
+
+### Quick Test Commands
+
+```bash
+# Install dependencies
+npm install
+
+# Install Playwright browsers
+npx playwright install
+
+# Run unit tests
+npm run test:unit
+
+# Run E2E tests (requires browsers)
+npm run test:e2e
+
+# Run all tests
+npm run test:all
+
+# Check all links
+npm run test:links
+
+# View test report
+npm run test:report
+```
+
+### Test Coverage
+
+| Test Suite | Description | Files |
+|------------|-------------|-------|
+| **Unit Tests** | HMS, i18n, API logic | `tests/unit/*.test.js` |
+| **E2E Tests** | Full user flows | `tests/e2e/*.spec.js` |
+| **Link Checker** | All pages accessible | `tests/link-checker.js` |
+| **Accessibility** | WCAG compliance | `tests/e2e/accessibility.spec.js` |
+
+### CI/CD Pipeline
+
+Tests run automatically on every push via GitHub Actions:
+
+1. ✅ **Unit Tests** - Jest tests for JS modules
+2. ✅ **E2E Tests** - Playwright browser tests
+3. ✅ **Link Check** - Verify all pages work
+4. ✅ **Accessibility** - WCAG compliance
 
 ---
 

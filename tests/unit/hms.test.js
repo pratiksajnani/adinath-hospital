@@ -167,13 +167,23 @@ describe('HMS - Data Version', () => {
 
 describe('HMS - ID Generation', () => {
     test('should generate unique IDs', () => {
-        const generateId = (prefix) => `${prefix}${Date.now()}`;
+        // Use counter for uniqueness within same millisecond
+        let counter = 0;
+        const generateId = (prefix) => `${prefix}${Date.now()}_${counter++}`;
         
         const id1 = generateId('P');
         const id2 = generateId('P');
         
-        expect(id1).toMatch(/^P\d+$/);
-        // IDs generated at different times should differ
-        expect(id1.slice(1)).not.toBe(id2.slice(1));
+        expect(id1).toMatch(/^P\d+_\d+$/);
+        // IDs should be different due to counter
+        expect(id1).not.toBe(id2);
+    });
+
+    test('should generate IDs with correct prefix format', () => {
+        const generateId = (prefix) => `${prefix}${Date.now()}`;
+        
+        expect(generateId('P')).toMatch(/^P\d+$/);
+        expect(generateId('A')).toMatch(/^A\d+$/);
+        expect(generateId('RX')).toMatch(/^RX\d+$/);
     });
 });

@@ -203,3 +203,8 @@ if (document.readyState === 'loading') {
     injectUserStatus();
 }
 
+// Export for testing
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { getBasePath, toggleUserMenu, updateUserStatusWidget, doLogout, injectUserStatus };
+}
+
