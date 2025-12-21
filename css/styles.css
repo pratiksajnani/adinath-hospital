@@ -834,6 +834,22 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
     color: var(--gray-600);
 }
 
+.linkedin-link {
+    display: inline-block;
+    margin-left: 12px;
+    padding: 4px 12px;
+    background: #0077b5;
+    color: white;
+    font-size: 0.85rem;
+    border-radius: var(--radius-full);
+    transition: var(--transition);
+}
+
+.linkedin-link:hover {
+    background: #005885;
+    transform: translateY(-2px);
+}
+
 @media (max-width: 1100px) {
     .doctors-grid {
         grid-template-columns: 1fr;
