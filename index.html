@@ -953,6 +953,81 @@
         if (localStorage.getItem('largeTextMode') === 'true') {
             document.body.classList.add('large-text-mode');
         }
+        
+        // User Status Display
+        function updateUserStatus() {
+            const isLoggedIn = localStorage.getItem('hms_logged_in') === 'true';
+            const role = localStorage.getItem('hms_role');
+            const userName = localStorage.getItem('hms_user_name') || localStorage.getItem('hms_user_email');
+            
+            const userIcon = document.getElementById('userIcon');
+            const userDisplayName = document.getElementById('userDisplayName');
+            const guestMenu = document.getElementById('guestMenu');
+            const loggedInMenu = document.getElementById('loggedInMenu');
+            const loggedInName = document.getElementById('loggedInName');
+            const loggedInRole = document.getElementById('loggedInRole');
+            const myPortalLink = document.getElementById('myPortalLink');
+            const adminOnlyLinks = document.getElementById('adminOnlyLinks');
+            
+            if (isLoggedIn && role) {
+                // Show logged in state
+                const roleIcons = {
+                    'admin': '👑',
+                    'doctor': '👨‍⚕️',
+                    'staff': '👤',
+                    'receptionist': '💁',
+                    'nurse': '👩‍⚕️',
+                    'patient': '🏥'
+                };
+                
+                const displayName = userName ? userName.split('@')[0].split(' ')[0] : role;
+                userIcon.textContent = roleIcons[role] || '👤';
+                userDisplayName.textContent = displayName;
+                
+                guestMenu.style.display = 'none';
+                loggedInMenu.style.display = 'block';
+                loggedInName.textContent = userName || 'User';
+                loggedInRole.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+                
+                // Set portal link based on role
+                const portalLinks = {
+                    'admin': 'portal/admin/index.html',
+                    'doctor': 'portal/doctor/simple.html',
+                    'staff': 'portal/staff/index.html',
+                    'receptionist': 'portal/staff/index.html',
+                    'patient': 'portal/patient/index.html'
+                };
+                myPortalLink.href = portalLinks[role] || 'portal/index.html';
+                
+                // Show admin-only links if admin
+                if (role === 'admin' && adminOnlyLinks) {
+                    adminOnlyLinks.style.display = 'block';
+                }
+            } else {
+                // Show guest state
+                userIcon.textContent = '👤';
+                userDisplayName.textContent = 'Guest';
+                guestMenu.style.display = 'block';
+                loggedInMenu.style.display = 'none';
+                if (adminOnlyLinks) {
+                    adminOnlyLinks.style.display = 'none';
+                }
+            }
+        }
+        
+        function logoutUser() {
+            localStorage.removeItem('hms_logged_in');
+            localStorage.removeItem('hms_role');
+            localStorage.removeItem('hms_user_email');
+            localStorage.removeItem('hms_user_name');
+            localStorage.removeItem('hms_current_user');
+            localStorage.removeItem('hms_auth_method');
+            updateUserStatus();
+            alert('✅ Logged out successfully!');
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', updateUserStatus);
     </script>
 </body>
 </html>
