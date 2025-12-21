@@ -52,7 +52,7 @@ After nameservers propagate:
 - [ ] Add more service details
 - [ ] Create YouTube channel for Dr. Ashok's videos
 - [ ] Integrate real SMS service (MSG91)
-- [ ] Setup email forwarding (info@adinathhealth.com)
+- [x] Setup email forwarding (info@adinathhealth.com) ✅ Done via Squarespace
 
 ---
 
@@ -78,7 +78,7 @@ After nameservers propagate:
 | WhatsApp | 919925450425 | ✅ Verified |
 | Address | Shukan Mall, 2nd Floor, Shahibaug | ✅ Verified |
 | Hours | 11 AM - 7 PM | ✅ Verified |
-| Email | info@adinathhealth.com | ⚠️ Setup needed |
+| Email | info@adinathhealth.com | ✅ Configured |
 
 ---
 

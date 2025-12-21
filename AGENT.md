@@ -35,7 +35,7 @@
 | **Site Admin** | Pratik Sajnani | pratik.sajnani@gmail.com | - |
 | **Doctor** | Dr. Ashok Sajnani | drsajnani@gmail.com | 9925450425 |
 | **Doctor** | Dr. Sunita Sajnani | sunita.sajnani9@gmail.com | 9925450425 |
-| **Receptionist** | Poonam (male) | poonam@adinathhealth.com | ❓ Need |
+| **Receptionist** | Poonam (male) | reception@adinathhealth.com | ❓ Need |
 
 ### ❌ FAKE DATA REMOVED
 - ~~Priya Patel (fake receptionist)~~
@@ -149,7 +149,7 @@ console.log('Patient link:', link);
 | Admin | pratik.sajnani@gmail.com | admin123 |
 | Doctor | drsajnani@gmail.com | doctor123 |
 | Doctor | sunita.sajnani9@gmail.com | doctor123 |
-| Staff | poonam@adinathhealth.com | staff123 |
+| Staff | reception@adinathhealth.com | staff123 |
 
 ---
 

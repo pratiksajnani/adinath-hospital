@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Registration | Adinath Hospital</title>
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header .icon { font-size: 60px; margin-bottom: 12px; }
+        .header h1 { color: #059669; font-size: 24px; }
+        .header p { color: #64748b; margin-top: 8px; }
+        
+        .lang-switch {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .lang-btn {
+            padding: 8px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .lang-btn.active { border-color: #059669; background: #ecfdf5; }
+        
+        .invite-info {
+            background: #ecfdf5;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .invite-info .name { font-size: 20px; font-weight: bold; color: #059669; }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #334155;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #059669;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: #059669;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn:hover { background: #047857; }
+        
+        .success {
+            text-align: center;
+            display: none;
+        }
+        .success .icon { font-size: 80px; margin-bottom: 20px; }
+        .success h2 { color: #166534; margin-bottom: 12px; }
+        .success a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: #059669;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+        
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .help-text { color: #64748b; font-size: 13px; margin-top: 4px; }
+        
+        @media (max-width: 480px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="form-section">
+            <div class="header">
+                <div class="icon">🏥</div>
+                <h1 data-i18n="patient_registration">Patient Registration</h1>
+                <p data-i18n="join_adinath">Join Adinath Hospital Patient Portal</p>
+            </div>
+            
+            <!-- Language Switch -->
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="setLang('en')">English</button>
+                <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+                <button class="lang-btn" onclick="setLang('gu')">ગુજરાતી</button>
+            </div>
+            
+            <div class="invite-info" id="invite-info">
+                <p data-i18n="welcome">Welcome,</p>
+                <div class="name" id="invite-name">Loading...</div>
+            </div>
+            
+            <div class="error" id="error-msg"></div>
+            
+            <form id="register-form">
+                <div class="form-group">
+                    <label data-i18n="full_name">Full Name *</label>
+                    <input type="text" id="name" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-i18n="phone">Phone *</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="email">Email</label>
+                        <input type="email" id="email">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-i18n="age">Age *</label>
+                        <input type="number" id="age" min="0" max="120" required>
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="gender">Gender *</label>
+                        <select id="gender" required>
+                            <option value="">Select / પસંદ કરો</option>
+                            <option value="male">Male / પુરુષ</option>
+                            <option value="female">Female / સ્ત્રી</option>
+                            <option value="other">Other / અન્ય</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label data-i18n="address">Address</label>
+                    <textarea id="address" rows="2" placeholder="Street, City, Pincode"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label data-i18n="emergency_contact">Emergency Contact</label>
+                    <input type="tel" id="emergency-contact" placeholder="+91 9876543210">
+                    <div class="help-text" data-i18n="emergency_help">Family member or relative's number</div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-i18n="password">Password *</label>
+                        <input type="password" id="password" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="confirm_password">Confirm Password *</label>
+                        <input type="password" id="confirm-password" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label data-i18n="pref_language">Preferred Language</label>
+                    <select id="language">
+                        <option value="gu">ગુજરાતી (Gujarati)</option>
+                        <option value="hi">हिंदी (Hindi)</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn" data-i18n="complete_registration">Complete Registration</button>
+            </form>
+        </div>
+        
+        <div class="success" id="success-section">
+            <div class="icon">✅</div>
+            <h2 data-i18n="registration_complete">Registration Complete!</h2>
+            <p data-i18n="welcome_patient">Welcome to Adinath Hospital!</p>
+            <p style="margin-top: 12px;" data-i18n="can_book">You can now book appointments online.</p>
+            <a href="../login.html" data-i18n="go_login">Go to Login</a>
+        </div>
+    </div>
+    
+    <script src="../js/config.js"></script>
+    <script src="../js/hms.js"></script>
+    <script>
+        // Translations
+        const translations = {
+            en: {
+                patient_registration: 'Patient Registration',
+                join_adinath: 'Join Adinath Hospital Patient Portal',
+                welcome: 'Welcome,',
+                full_name: 'Full Name *',
+                phone: 'Phone *',
+                email: 'Email',
+                age: 'Age *',
+                gender: 'Gender *',
+                address: 'Address',
+                emergency_contact: 'Emergency Contact',
+                emergency_help: "Family member or relative's number",
+                password: 'Password *',
+                confirm_password: 'Confirm Password *',
+                pref_language: 'Preferred Language',
+                complete_registration: 'Complete Registration',
+                registration_complete: 'Registration Complete!',
+                welcome_patient: 'Welcome to Adinath Hospital!',
+                can_book: 'You can now book appointments online.',
+                go_login: 'Go to Login'
+            },
+            hi: {
+                patient_registration: 'रोगी पंजीकरण',
+                join_adinath: 'आदिनाथ हॉस्पिटल में शामिल हों',
+                welcome: 'स्वागत है,',
+                full_name: 'पूरा नाम *',
+                phone: 'फ़ोन *',
+                email: 'ईमेल',
+                age: 'उम्र *',
+                gender: 'लिंग *',
+                address: 'पता',
+                emergency_contact: 'आपातकालीन संपर्क',
+                emergency_help: 'परिवार के सदस्य का नंबर',
+                password: 'पासवर्ड *',
+                confirm_password: 'पासवर्ड पुष्टि *',
+                pref_language: 'पसंदीदा भाषा',
+                complete_registration: 'पंजीकरण पूरा करें',
+                registration_complete: 'पंजीकरण पूरा!',
+                welcome_patient: 'आदिनाथ हॉस्पिटल में आपका स्वागत है!',
+                can_book: 'अब आप ऑनलाइन अपॉइंटमेंट बुक कर सकते हैं।',
+                go_login: 'लॉगिन करें'
+            },
+            gu: {
+                patient_registration: 'દર્દી નોંધણી',
+                join_adinath: 'આદિનાથ હોસ્પિટલમાં જોડાઓ',
+                welcome: 'સ્વાગત છે,',
+                full_name: 'પૂરું નામ *',
+                phone: 'ફોન *',
+                email: 'ઈમેલ',
+                age: 'ઉંમર *',
+                gender: 'જાતિ *',
+                address: 'સરનામું',
+                emergency_contact: 'કટોકટી સંપર્ક',
+                emergency_help: 'પરિવારના સભ્યનો નંબર',
+                password: 'પાસવર્ડ *',
+                confirm_password: 'પાસવર્ડ ખાતરી *',
+                pref_language: 'પસંદગીની ભાષા',
+                complete_registration: 'નોંધણી પૂર્ણ કરો',
+                registration_complete: 'નોંધણી પૂર્ણ!',
+                welcome_patient: 'આદિનાથ હોસ્પિટલમાં આપનું સ્વાગત છે!',
+                can_book: 'હવે તમે ઓનલાઈન એપોઈન્ટમેન્ટ બુક કરી શકો છો.',
+                go_login: 'લૉગિન કરો'
+            }
+        };
+        
+        let currentLang = 'en';
+        
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+        }
+        
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+        
+        function loadInvite() {
+            if (!token) {
+                // Allow direct registration without invite
+                document.getElementById('invite-info').style.display = 'none';
+                return;
+            }
+            
+            const invites = JSON.parse(localStorage.getItem('hms_invites') || '[]');
+            const invite = invites.find(i => i.id === token);
+            
+            if (!invite) {
+                document.getElementById('invite-info').innerHTML = '<p style="color:#991b1b;">Invite not found</p>';
+                return;
+            }
+            
+            if (invite.status === 'used') {
+                document.getElementById('invite-info').innerHTML = '<p style="color:#991b1b;">This invite has been used</p>';
+                return;
+            }
+            
+            document.getElementById('invite-name').textContent = invite.name;
+            document.getElementById('name').value = invite.name || '';
+            document.getElementById('phone').value = invite.phone || '';
+            document.getElementById('email').value = invite.email || '';
+        }
+        
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                document.getElementById('error-msg').textContent = 'Passwords do not match';
+                document.getElementById('error-msg').style.display = 'block';
+                return;
+            }
+            
+            // Create patient record
+            const patient = {
+                id: 'PAT' + Date.now().toString(36).toUpperCase(),
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                age: document.getElementById('age').value,
+                gender: document.getElementById('gender').value,
+                address: document.getElementById('address').value,
+                emergencyContact: document.getElementById('emergency-contact').value,
+                preferredLanguage: document.getElementById('language').value,
+                createdAt: new Date().toISOString()
+            };
+            
+            if (HMS.patients) {
+                HMS.patients.add(patient);
+            } else {
+                const patients = JSON.parse(localStorage.getItem('hms_patients') || '[]');
+                patients.push(patient);
+                localStorage.setItem('hms_patients', JSON.stringify(patients));
+            }
+            
+            // Create user account
+            const user = {
+                id: patient.id,
+                email: patient.email || patient.phone + '@patient.adinathhealth.com',
+                password: password,
+                name: patient.name,
+                phone: patient.phone,
+                role: 'patient',
+                patientId: patient.id,
+                preferredLanguage: patient.preferredLanguage,
+                permissions: ['view_own'],
+                active: true,
+                createdAt: new Date().toISOString()
+            };
+            
+            if (HMS.users) {
+                HMS.users.add(user);
+            } else {
+                const users = JSON.parse(localStorage.getItem('hms_users') || '[]');
+                users.push(user);
+                localStorage.setItem('hms_users', JSON.stringify(users));
+            }
+            
+            // Mark invite as used
+            if (token) {
+                const invites = JSON.parse(localStorage.getItem('hms_invites') || '[]');
+                const invite = invites.find(i => i.id === token);
+                if (invite) {
+                    invite.status = 'used';
+                    invite.usedAt = new Date().toISOString();
+                    localStorage.setItem('hms_invites', JSON.stringify(invites));
+                }
+            }
+            
+            document.getElementById('form-section').style.display = 'none';
+            document.getElementById('success-section').style.display = 'block';
+        });
+        
+        loadInvite();
+    </script>
+</body>
+</html>
+

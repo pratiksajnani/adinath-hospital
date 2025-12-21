@@ -89,4 +89,20 @@
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
     </url>
+    
+    <!-- Admin Management -->
+    <url>
+        <loc>https://adinathhealth.com/portal/admin/manage.html</loc>
+        <lastmod>2025-12-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- Onboarding Pages -->
+    <url>
+        <loc>https://adinathhealth.com/onboard/patient.html</loc>
+        <lastmod>2025-12-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
 </urlset>
