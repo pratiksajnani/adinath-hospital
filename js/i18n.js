@@ -59,6 +59,30 @@ const I18N = {
         stat_patients: { en: 'Happy Patients', hi: 'खुश मरीज', gu: 'ખુશ દર્દીઓ' },
         stat_surgeries: { en: 'Successful Surgeries', hi: 'सफल सर्जरी', gu: 'સફળ સર્જરી' },
         stat_care: { en: 'Patient Support', hi: 'रोगी सहायता', gu: 'દર્દી સપોર્ટ' },
+        stat_since: { en: 'Established 1990', hi: '1990 से स्थापित', gu: '1990 થી સ્થાપિત' },
+        stat_doctors: { en: 'Expert Doctors', hi: 'विशेषज्ञ डॉक्टर', gu: 'નિષ્ણાત ડોક્ટર્સ' },
+        stat_rotary: { en: 'Rotary Members', hi: 'रोटरी सदस्य', gu: 'રોટરી સભ્યો' },
+        
+        // Doctors Section
+        doctors_tag: { en: 'Meet Our Doctors', hi: 'हमारे डॉक्टरों से मिलें', gu: 'અમારા ડોક્ટર્સને મળો' },
+        doctors_title: { en: 'Experienced & Caring Physicians', hi: 'अनुभवी और देखभाल करने वाले चिकित्सक', gu: 'અનુભવી અને કાળજી રાખનાર ચિકિત્સકો' },
+        
+        // Doctor Specialties
+        spec_ortho: { en: 'Orthopedic Surgeon', hi: 'हड्डी रोग विशेषज्ञ', gu: 'ઓર્થોપેડિક સર્જન' },
+        spec_joint: { en: 'Joint Specialist', hi: 'जोड़ विशेषज्ञ', gu: 'સાંધા નિષ્ણાત' },
+        spec_orthobio: { en: 'Orthobiology Expert', hi: 'ऑर्थोबायोलॉजी विशेषज्ञ', gu: 'ઓર્થોબાયોલોજી નિષ્ણાત' },
+        spec_obgyn: { en: 'OB-GYN Specialist', hi: 'प्रसूति-स्त्री रोग विशेषज्ञ', gu: 'OB-GYN નિષ્ણાત' },
+        spec_adolescent: { en: 'Adolescent Care', hi: 'किशोर देखभाल', gu: 'કિશોર સંભાળ' },
+        spec_cosmetic: { en: 'Cosmetic Gynecology', hi: 'कॉस्मेटिक स्त्री रोग', gu: 'કોસ્મેટિક સ્ત્રીરોગ' },
+        
+        // Doctor Interests
+        special_interest: { en: 'Special Interests', hi: 'विशेष रुचियां', gu: 'વિશેષ રસ' },
+        ashok_int_1: { en: 'Joint Preservation', hi: 'जोड़ों का संरक्षण', gu: 'સાંધાનું સંરક્ષણ' },
+        ashok_int_2: { en: 'Non-Surgical Treatments', hi: 'बिना सर्जरी उपचार', gu: 'બિન-સર્જિકલ સારવાર' },
+        ashok_int_3: { en: 'Sports Medicine', hi: 'खेल चिकित्सा', gu: 'સ્પોર્ટ્સ મેડિસિન' },
+        sunita_int_1: { en: 'Adolescent Health', hi: 'किशोर स्वास्थ्य', gu: 'કિશોર આરોગ્ય' },
+        sunita_int_2: { en: 'Prenatal Care', hi: 'प्रसव पूर्व देखभाल', gu: 'પ્રિનેટલ કેર' },
+        sunita_int_3: { en: 'Yoga & Wellness', hi: 'योग और स्वास्थ्य', gu: 'યોગ અને સ્વાસ્થ્ય' },
         
         // ===== SERVICES SECTION =====
         services_tag: { en: 'Our Services', hi: 'हमारी सेवाएं', gu: 'અમારી સેવાઓ' },
