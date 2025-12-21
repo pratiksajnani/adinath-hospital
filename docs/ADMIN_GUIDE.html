@@ -333,20 +333,103 @@
     </header>
     
     <div class="container">
-        <!-- Login Information -->
-        <div class="login-info">
-            <h3>🔐 Admin Login Credentials</h3>
-            <p>Use these credentials to access the Admin Dashboard:</p>
+        <!-- First-Time Setup -->
+        <div class="login-info" style="background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%); border-color: #f59e0b;">
+            <h3 style="color: #92400e;">🚀 First-Time Admin Setup</h3>
+            <p>If you're setting up admin access for the first time:</p>
             
-            <div class="credential-card">
-                <div class="name">Pratik Sajnani</div>
-                <div class="email">pratik.sajnani@gmail.com</div>
-                <div class="password">1234</div>
+            <div class="btn-group" style="justify-content: center; margin-top: 16px;">
+                <a href="../onboard/admin.html?token=ADMIN2024SECURE" class="btn btn-primary" style="background: #f59e0b;">🔐 Complete Admin Setup</a>
             </div>
             
-            <div class="btn-group" style="justify-content: center;">
+            <div class="tip" style="margin-top: 16px;">
+                <div class="tip-title">What you'll set up:</div>
+                <ul style="margin-left: 20px; margin-top: 8px;">
+                    <li>Your admin password</li>
+                    <li>Two-Factor Authentication (2FA) - Passkey, Authenticator, or SMS</li>
+                    <li>Recovery options</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Login Methods -->
+        <div class="section">
+            <h2><span class="emoji">🔑</span> Login Methods</h2>
+            <p class="section-subtitle">Multiple secure ways to access the admin dashboard</p>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>🟢 Gmail Login (Recommended)</h3>
+                    <p>Click "Continue with Google" on the login page</p>
+                    <p style="margin-top: 8px;"><strong>Authorized Email:</strong> <code>pratik.sajnani@gmail.com</code></p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>📧 Email + Password</h3>
+                    <p>Use your email and the password set during admin setup</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>📱 Phone OTP</h3>
+                    <p>Receive a one-time code via SMS to your registered phone</p>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>✨ Magic Link</h3>
+                    <p>Receive a login link via email - no password needed</p>
+                </div>
+            </div>
+            
+            <div class="btn-group">
                 <a href="../login.html" class="btn btn-primary">🔑 Go to Login</a>
                 <a href="../portal/admin/index.html" class="btn btn-outline">🔧 Admin Dashboard</a>
+            </div>
+        </div>
+        
+        <!-- Send Doctor Registration Links -->
+        <div class="section" style="border: 2px solid var(--admin);">
+            <h2><span class="emoji">📲</span> Send Doctor Registration Links</h2>
+            <p class="section-subtitle">Help doctors set up their accounts</p>
+            
+            <div class="warning">
+                <div class="warning-title">📋 Action Required</div>
+                <p>Send these links to doctors so they can complete their registration:</p>
+            </div>
+            
+            <div style="background: var(--bg); padding: 20px; border-radius: 8px; margin: 16px 0;">
+                <h4 style="margin-bottom: 12px;">Dr. Ashok Sajnani</h4>
+                <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 8px;">drsajnani@gmail.com</p>
+                <code style="display: block; background: white; padding: 12px; border-radius: 4px; word-break: break-all; font-size: 0.85rem;">
+                    https://adinathhealth.com/onboard/doctor.html?id=ashok&token=ASH2024REG&name=Dr.%20Ashok%20Sajnani&specialty=Orthopedic
+                </code>
+                <div style="margin-top: 12px;">
+                    <a href="https://wa.me/919824066854?text=Welcome%20to%20Adinath%20Hospital!%20Please%20complete%20your%20registration%20here%3A%20https%3A%2F%2Fadinathhealth.com%2Fonboard%2Fdoctor.html%3Fid%3Dashok%26token%3DASH2024REG" class="btn btn-outline" style="font-size: 0.9rem;">📱 Send via WhatsApp</a>
+                </div>
+            </div>
+            
+            <div style="background: var(--bg); padding: 20px; border-radius: 8px; margin: 16px 0;">
+                <h4 style="margin-bottom: 12px;">Dr. Sunita Sajnani</h4>
+                <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 8px;">sunita.sajnani9@gmail.com</p>
+                <code style="display: block; background: white; padding: 12px; border-radius: 4px; word-break: break-all; font-size: 0.85rem;">
+                    https://adinathhealth.com/onboard/doctor.html?id=sunita&token=SUN2024REG&name=Dr.%20Sunita%20Sajnani&specialty=Gynecology
+                </code>
+                <div style="margin-top: 12px;">
+                    <a href="https://wa.me/919925450425?text=Welcome%20to%20Adinath%20Hospital!%20Please%20complete%20your%20registration%20here%3A%20https%3A%2F%2Fadinathhealth.com%2Fonboard%2Fdoctor.html%3Fid%3Dsunita%26token%3DSUN2024REG" class="btn btn-outline" style="font-size: 0.9rem;">📱 Send via WhatsApp</a>
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <a href="send-registration-links.html" class="btn btn-primary">📋 View All Registration Links</a>
             </div>
         </div>
         

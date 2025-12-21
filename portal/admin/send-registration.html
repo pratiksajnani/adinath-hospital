@@ -240,46 +240,75 @@
     
     <script src="../../js/hms.js"></script>
     <script>
-        // Registration tokens
+        // Doctor configuration (no static tokens - they're generated securely)
         const doctors = {
             'ashok': {
                 name: 'Dr. Ashok',
                 phone: '919824066854',
-                email: 'drsajnani@gmail.com',
-                token: 'ASH2024REG'
+                email: 'drsajnani@gmail.com'
             },
             'sunita': {
                 name: 'Dr. Sunita',
                 phone: '919925450425',
-                email: 'sunita.sajnani9@gmail.com',
-                token: 'SUN2024REG'
+                email: 'sunita.sajnani9@gmail.com'
             }
         };
         
-        // Generate links on load
+        // Store generated links
+        const generatedLinks = {};
+        
+        // Generate secure links on load
         document.addEventListener('DOMContentLoaded', function() {
-            const baseUrl = window.location.origin;
-            
             Object.keys(doctors).forEach(id => {
-                const link = `${baseUrl}/onboard/doctor.html?id=${id}&token=${doctors[id].token}`;
-                document.getElementById(`${id}-link`).textContent = link;
+                const doctor = doctors[id];
                 
-                // Check registration status
+                // Check registration status first
                 if (typeof HMS !== 'undefined') {
                     HMS.init();
-                    const user = HMS.users.getByEmail(doctors[id].email);
+                    const user = HMS.users.getByEmail(doctor.email);
                     if (user && user.registered) {
                         document.getElementById(`${id}-status`).textContent = '✅ Registered';
                         document.getElementById(`${id}-status`).className = 'doctor-status status-registered';
                         document.getElementById(`${id}-card`).classList.add('sent');
+                        document.getElementById(`${id}-link`).innerHTML = 
+                            '<span style="color:#059669;">✓ Already registered. No link needed.</span>';
+                        return;
                     }
+                    
+                    // Generate secure token using HMS.tokens
+                    const linkInfo = HMS.tokens.generateLink({
+                        targetEmail: doctor.email,
+                        targetRole: 'doctor',
+                        expiresInHours: 72,
+                        createdBy: 'admin'
+                    });
+                    
+                    generatedLinks[id] = linkInfo;
+                    
+                    const expiresAt = new Date(linkInfo.expiresAt);
+                    const expiresIn = Math.round((expiresAt - new Date()) / (1000 * 60 * 60));
+                    
+                    document.getElementById(`${id}-link`).innerHTML = 
+                        `<div style="word-break:break-all;">${linkInfo.link}</div>
+                         <div style="font-size:11px; color:#64748b; margin-top:4px;">
+                            🔐 Secure token • Expires in ${expiresIn} hours ${linkInfo.isExisting ? '(existing)' : '(new)'}
+                         </div>`;
                 }
             });
         });
         
         function getLink(doctorId) {
-            const baseUrl = window.location.origin;
-            return `${baseUrl}/onboard/doctor.html?id=${doctorId}&token=${doctors[doctorId].token}`;
+            if (!generatedLinks[doctorId]) {
+                // Generate if not already
+                const doctor = doctors[doctorId];
+                generatedLinks[doctorId] = HMS.tokens.generateLink({
+                    targetEmail: doctor.email,
+                    targetRole: 'doctor',
+                    expiresInHours: 72,
+                    createdBy: 'admin'
+                });
+            }
+            return generatedLinks[doctorId].link;
         }
         
         function sendViaWhatsApp(doctorId) {
@@ -291,6 +320,8 @@ Welcome to Adinath Hospital's digital system.
 
 Please complete your account setup by clicking this link:
 ${link}
+
+⏰ This link expires in 72 hours for security.
 
 This will allow you to:
 ✅ View appointments

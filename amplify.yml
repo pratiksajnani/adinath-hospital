@@ -104,6 +104,15 @@ customRules:
   - source: /portal/admin
     target: /portal/admin/index.html
     status: '200'
+  - source: /portal/admin/
+    target: /portal/admin/index.html
+    status: '200'
+  - source: /portal/admin/manage
+    target: /portal/admin/manage.html
+    status: '200'
+  - source: /portal/admin/manage/
+    target: /portal/admin/manage.html
+    status: '200'
   - source: /portal/doctor
     target: /portal/doctor/index.html
     status: '200'
