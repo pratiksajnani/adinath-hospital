@@ -424,6 +424,37 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
     display: none !important;
 }
 
+/* Mobile Dropdown State */
+@media (max-width: 900px) {
+    .dropdown-menu {
+        position: static;
+        transform: none;
+        box-shadow: none;
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 1;
+        visibility: visible;
+        background: var(--gray-50);
+        border-radius: var(--radius);
+        margin-top: 8px;
+        transition: max-height 0.3s ease;
+    }
+    
+    .nav-dropdown.open .dropdown-menu {
+        max-height: 300px;
+        padding: 8px 0;
+    }
+    
+    .dropdown-arrow {
+        transition: transform 0.3s ease;
+    }
+    
+    .nav-dropdown.open .dropdown-arrow {
+        transform: rotate(180deg);
+    }
+}
+
 /* Mobile Menu */
 .mobile-menu-btn {
     display: none;

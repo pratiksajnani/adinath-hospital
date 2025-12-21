@@ -4,6 +4,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     initMobileMenu();
+    initDropdowns();
     initSmoothScroll();
     initHeaderScroll();
     initAnimations();
@@ -28,6 +29,45 @@ function initMobileMenu() {
             });
         });
     }
+}
+
+// Mobile Dropdown Toggle
+function initDropdowns() {
+    const dropdowns = document.querySelectorAll('.nav-dropdown');
+    
+    dropdowns.forEach(dropdown => {
+        const trigger = dropdown.querySelector('.dropdown-trigger');
+        const menu = dropdown.querySelector('.dropdown-menu');
+        
+        if (trigger && menu) {
+            // Toggle on click for mobile
+            trigger.addEventListener('click', (e) => {
+                // Check if on mobile (nav is visible = mobile menu is open)
+                const isMobile = window.innerWidth <= 900;
+                
+                if (isMobile) {
+                    e.preventDefault();
+                    dropdown.classList.toggle('open');
+                    
+                    // Close other dropdowns
+                    dropdowns.forEach(other => {
+                        if (other !== dropdown) {
+                            other.classList.remove('open');
+                        }
+                    });
+                }
+            });
+        }
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-dropdown')) {
+            dropdowns.forEach(dropdown => {
+                dropdown.classList.remove('open');
+            });
+        }
+    });
 }
 
 // Smooth Scroll for anchor links
