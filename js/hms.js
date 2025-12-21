@@ -108,9 +108,6 @@ const HMS = {
             { id: 'housekeeping', name: 'Housekeeping', icon: '🧹', color: '#64748b', permissions: [] }
         ];
 
-        localStorage.setItem('hms_users', JSON.stringify(users));
-        localStorage.setItem('hms_staff_roles', JSON.stringify(staffRoles));
-
         // Empty patient list - real patients will be added as they register
         const patients = [];
 
@@ -141,6 +138,7 @@ const HMS = {
 
         // Store all data
         localStorage.setItem('hms_users', JSON.stringify(users));
+        localStorage.setItem('hms_staff_roles', JSON.stringify(staffRoles));
         localStorage.setItem('hms_patients', JSON.stringify(patients));
         localStorage.setItem('hms_appointments', JSON.stringify(appointments));
         localStorage.setItem('hms_prescriptions', JSON.stringify(prescriptions));
