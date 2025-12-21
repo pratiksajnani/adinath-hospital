@@ -18,9 +18,9 @@ const CONFIG = {
     
     // Address
     ADDRESS: {
-        line1: 'ShukanMall, Shahibaug Rd.',
-        line2: 'Near Rajasthan Hospitals',
-        city: 'Shahibag, Ahmedabad',
+        line1: 'Shukan Mall, 2nd Floor',
+        line2: 'Shahibaug Rd., Near Rajasthan Hospital',
+        city: 'Shahi Baug, Ahmedabad',
         state: 'Gujarat',
         pincode: '380004',
         country: 'India',
@@ -45,15 +45,20 @@ const CONFIG = {
     DOCTORS: {
         ashok: {
             name: 'Dr. Ashok Sajnani',
-            phone: '+919925450425',
+            title: 'M.S. Ortho',
+            phone: '+919824066854',
             specialty: 'Orthopedic & Joint Surgeon'
         },
         sunita: {
             name: 'Dr. Sunita Sajnani',
+            title: 'MD OB-GYN',
             phone: '+919925450425',
             specialty: 'OB-GYN Specialist'
         }
-    }
+    },
+    
+    // Hospital main line
+    PHONE_MAIN: '+919925450425'
 };
 
 // Helper to build URLs
