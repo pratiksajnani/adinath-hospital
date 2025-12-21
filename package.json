@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Adinath Hospital - Healthcare Website",
   "scripts": {
-    "test": "playwright test",
+    "test": "npm run test:unit",
     "test:unit": "jest --passWithNoTests",
     "test:e2e": "playwright test",
     "test:all": "npm run test:unit && npm run test:e2e",
@@ -14,12 +14,20 @@
     "test:links": "node tests/link-checker.js",
     "test:a11y": "playwright test --grep @accessibility",
     "serve": "npx serve -p 8080",
-    "pretest": "echo 'Running pre-test checks...'",
     "coverage": "jest --coverage",
-    "predeploy": "npm run test:unit",
+    "lint": "eslint js/**/*.js --format stylish",
+    "lint:fix": "eslint js/**/*.js --fix",
+    "lint:report": "eslint js/**/*.js --format json -o test-results/eslint-report.json || true",
+    "format": "prettier --write 'js/**/*.js' 'css/**/*.css'",
+    "format:check": "prettier --check 'js/**/*.js' 'css/**/*.css'",
+    "quality": "npm run lint && npm run format:check && npm run test:unit",
+    "quality:fix": "npm run lint:fix && npm run format",
+    "audit": "npm audit --audit-level=moderate",
+    "analyze": "npm run lint:report && npm run coverage",
+    "predeploy": "npm run quality",
     "deploy": "npm run predeploy && git push origin main",
-    "ci": "npm run test:unit && npm run test:e2e",
-    "validate": "npm run test:unit && echo '✅ All tests passed!'"
+    "ci": "npm run quality && npm run test:e2e",
+    "validate": "npm run quality && echo '✅ All quality checks passed!'"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0",
@@ -27,7 +35,11 @@
     "@jest/globals": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "axe-playwright": "^1.2.3",
-    "broken-link-checker": "^0.7.8"
+    "broken-link-checker": "^0.7.8",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-security": "^2.1.0",
+    "prettier": "^3.2.4"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -39,4 +51,3 @@
   "author": "Pratik Sajnani",
   "license": "MIT"
 }
-

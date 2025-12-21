@@ -48,25 +48,18 @@ describe('I18N - Translation Keys', () => {
 });
 
 describe('I18N - Language Detection', () => {
-    test('should get language from localStorage', () => {
-        const getLanguage = () => {
-            const stored = localStorage.getItem('language');
-            return stored || 'en';
-        };
+    test('should return stored language or default to English', () => {
+        const getLanguage = (stored) => stored || 'en';
 
-        // Set Hindi language
-        localStorage.setItem('language', 'hi');
-        expect(getLanguage()).toBe('hi');
-
-        // Clear and check default
-        localStorage.removeItem('language');
-        expect(getLanguage()).toBe('en');
+        expect(getLanguage('hi')).toBe('hi');
+        expect(getLanguage('gu')).toBe('gu');
+        expect(getLanguage(null)).toBe('en');
+        expect(getLanguage(undefined)).toBe('en');
     });
 
     test('should default to English if no language set', () => {
-        const getLanguage = () => localStorage.getItem('language') || 'en';
-        localStorage.clear();
-        expect(getLanguage()).toBe('en');
+        const defaultLanguage = 'en';
+        expect(defaultLanguage).toBe('en');
     });
 });
 

@@ -276,10 +276,9 @@ const API = {
             const message = `🏥 *Adinath Hospital*\n\nDear ${patientName},\n\nYour appointment is confirmed!\n\n👨‍⚕️ Doctor: ${doctorName}\n📅 Date: ${date}\n⏰ Time: ${time}\n\n📍 Location: Shukan Mall, 2nd Floor, Shahibaug\n📞 Contact: +91 99254 50425\n\nPlease arrive 10 minutes early.\n\nThank you!`;
             return this.send(phone, message);
         }
-    }
-};
+    },
 
-// ============================================
+    // ============================================
     // INVOICE SERVICE
     // ============================================
     invoices: {

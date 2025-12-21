@@ -3,108 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration | Adinath Hospital</title>
+    <title>Get Started | Adinath Hospital</title>
     <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(135deg, #0f766e 0%, #134e4a 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
+            padding: 40px 20px;
         }
         .container {
-            max-width: 500px;
+            max-width: 800px;
             width: 100%;
+        }
+        header {
             text-align: center;
+            margin-bottom: 40px;
         }
-        .header {
-            color: white;
-            margin-bottom: 32px;
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
         }
-        .header .icon { font-size: 4rem; margin-bottom: 16px; }
-        .header h1 { font-size: 1.75rem; margin-bottom: 8px; }
-        .header p { opacity: 0.9; }
-        
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 32px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        h1 {
+            color: #1a5f2a;
+            font-size: 2rem;
+            margin-bottom: 10px;
         }
-        .card h2 { margin-bottom: 24px; color: #1e293b; }
-        
-        .role-grid {
+        .subtitle {
+            color: #555;
+            font-size: 1.1rem;
+        }
+        .roles-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
         }
         .role-card {
-            padding: 24px 16px;
-            border: 2px solid #e2e8f0;
+            background: white;
             border-radius: 16px;
+            padding: 30px;
+            text-align: center;
             text-decoration: none;
-            color: #1e293b;
-            transition: all 0.2s;
+            color: inherit;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         .role-card:hover {
-            border-color: #0f766e;
-            background: #f0fdfa;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
         }
-        .role-card .icon { font-size: 2.5rem; margin-bottom: 12px; }
-        .role-card h3 { font-size: 1rem; margin-bottom: 4px; }
-        .role-card p { font-size: 0.8rem; color: #64748b; }
-        
+        .role-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        .role-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1a5f2a;
+            margin-bottom: 10px;
+        }
+        .role-desc {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
         .back-link {
-            display: block;
-            margin-top: 24px;
-            color: white;
+            display: inline-block;
+            margin-top: 40px;
+            color: #1a5f2a;
             text-decoration: none;
-            opacity: 0.8;
+            font-weight: 500;
         }
-        .back-link:hover { opacity: 1; }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .already-registered {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+        }
+        .already-registered a {
+            color: #1a5f2a;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <div class="icon">🏥</div>
-            <h1>Adinath Hospital</h1>
-            <p>Staff & Doctor Registration</p>
+        <header>
+            <div class="logo">🏥</div>
+            <h1>Welcome to Adinath Hospital</h1>
+            <p class="subtitle">Select your role to get started</p>
+        </header>
+
+        <div class="roles-grid">
+            <a href="patient.html" class="role-card">
+                <div class="role-icon">👤</div>
+                <div class="role-title">Patient</div>
+                <div class="role-desc">New patient? Register here to book appointments and access your health records.</div>
+            </a>
+
+            <a href="doctor.html" class="role-card">
+                <div class="role-icon">👨‍⚕️</div>
+                <div class="role-title">Doctor</div>
+                <div class="role-desc">Invited as a visiting doctor? Complete your registration here.</div>
+            </a>
+
+            <a href="staff.html" class="role-card">
+                <div class="role-icon">👥</div>
+                <div class="role-title">Staff</div>
+                <div class="role-desc">Hospital staff member? Set up your account to access staff portal.</div>
+            </a>
+
+            <a href="admin.html" class="role-card">
+                <div class="role-icon">🔧</div>
+                <div class="role-title">Administrator</div>
+                <div class="role-desc">Site administrator? Complete admin setup (requires invite code).</div>
+            </a>
         </div>
-        
-        <div class="card">
-            <h2>Select Your Role</h2>
-            
-            <div class="role-grid">
-                <a href="admin.html" class="role-card">
-                    <div class="icon">🔐</div>
-                    <h3>Admin</h3>
-                    <p>Site Administrator</p>
-                </a>
-                <a href="doctor.html" class="role-card">
-                    <div class="icon">👨‍⚕️</div>
-                    <h3>Doctor</h3>
-                    <p>Medical Staff</p>
-                </a>
-                <a href="staff.html" class="role-card">
-                    <div class="icon">👤</div>
-                    <h3>Staff</h3>
-                    <p>Reception/Nurse</p>
-                </a>
-                <a href="patient.html" class="role-card">
-                    <div class="icon">🏃</div>
-                    <h3>Patient</h3>
-                    <p>Create Account</p>
-                </a>
-            </div>
+
+        <div class="already-registered">
+            <p>Already have an account? <a href="../login.html">Sign in here →</a></p>
         </div>
-        
-        <a href="../index.html" class="back-link">← Back to Website</a>
+
+        <center>
+            <a href="../index.html" class="back-link">← Back to Homepage</a>
+        </center>
     </div>
 </body>
 </html>
-
