@@ -50,8 +50,45 @@ customHeaders:
       - key: 'Cache-Control'
         value: 'public, max-age=31536000, immutable'
 
-# Rewrites for clean URLs
+# Rewrites for clean URLs and onboarding
 customRules:
-  - source: '</^[^.]+$|\.(?!(css|gif|ico|jpg|jpeg|js|png|txt|svg|woff|woff2|ttf|map|json|webp)$)([^.]+$)/>'
-    target: /index.html
+  # Admin and Doctor onboarding (preserve paths)
+  - source: /onboard/admin
+    target: /onboard/admin.html
     status: '200'
+  - source: /onboard/doctor
+    target: /onboard/doctor.html
+    status: '200'
+  # Main pages
+  - source: /login
+    target: /login.html
+    status: '200'
+  - source: /book
+    target: /book.html
+    status: '200'
+  - source: /store
+    target: /store.html
+    status: '200'
+  - source: /check-status
+    target: /check-status.html
+    status: '200'
+  # Portal pages
+  - source: /portal
+    target: /portal/index.html
+    status: '200'
+  - source: /portal/admin
+    target: /portal/admin/index.html
+    status: '200'
+  - source: /portal/doctor
+    target: /portal/doctor/index.html
+    status: '200'
+  - source: /portal/staff
+    target: /portal/staff/index.html
+    status: '200'
+  - source: /portal/patient
+    target: /portal/patient/index.html
+    status: '200'
+  # SPA fallback (catch unmatched routes)
+  - source: '</^[^.]+$|\.(?!(css|gif|ico|jpg|jpeg|js|png|txt|svg|woff|woff2|ttf|map|json|webp|html)$)([^.]+$)/>'
+    target: /index.html
+    status: '404'

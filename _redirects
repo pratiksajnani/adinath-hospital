@@ -1,12 +1,24 @@
 # Adinath Hospital - AWS Amplify Redirects
-# Note: Amplify ignores _redirects, use amplify.yml or console for redirects
 
-# Keep this file for documentation purposes only
-# All redirects should be configured in AWS Amplify Console
-# or in amplify.yml customHeaders section
+# Admin onboarding (preserve query params)
+/onboard/admin /onboard/admin.html 200
+/onboard/doctor /onboard/doctor.html 200
 
-# Clean URLs (for reference):
-# /login      -> /login.html
-# /book       -> /book.html
-# /store      -> /store.html
-# /portal     -> /portal/index.html
+# Main pages
+/login /login.html 200
+/book /book.html 200
+/store /store.html 200
+/check-status /check-status.html 200
+
+# Portal pages
+/portal /portal/index.html 200
+/portal/admin /portal/admin/index.html 200
+/portal/doctor /portal/doctor/index.html 200
+/portal/staff /portal/staff/index.html 200
+/portal/patient /portal/patient/index.html 200
+
+# Documentation
+/docs /docs/index.html 200
+
+# Catch-all for SPA routing (only if file not found)
+/*  /index.html  404

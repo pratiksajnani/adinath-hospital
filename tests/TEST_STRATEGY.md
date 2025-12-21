@@ -4,7 +4,7 @@
 
 ### Admin
 - **Email:** pratik.sajnani@gmail.com
-- **Password:** admin123
+- **Password:** 1234
 - **Role:** Site Administrator
 
 ### Doctors

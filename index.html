@@ -187,9 +187,38 @@
                         <a href="forms/index.html">📋 Printable Forms</a>
                         <a href="store/index.html">💊 Store Dashboard</a>
                         <a href="docs/share-links.html">📲 Share Guide Links</a>
+                        <!-- Admin only links - shown via JS -->
+                        <div id="adminOnlyLinks" style="display: none;">
+                            <hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;">
+                            <a href="docs/test-matrix.html" style="color: #dc2626; font-weight: 600;">🧪 Test Matrix</a>
+                        </div>
                     </div>
                 </div>
                 <a href="#contact" data-i18n="nav_contact">Contact</a>
+                
+                <!-- User Status Indicator -->
+                <div class="nav-dropdown user-status" style="margin-left: 10px;">
+                    <a href="#" class="dropdown-trigger" style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: rgba(15,118,110,0.1); border-radius: 20px;">
+                        <span id="userIcon">👤</span> 
+                        <span id="userDisplayName" style="font-size: 13px;">Guest</span> 
+                        <span class="dropdown-arrow">▾</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-right">
+                        <div id="guestMenu">
+                            <a href="login.html">🔐 Staff/Doctor Login</a>
+                            <a href="portal/patient/index.html">🏥 Patient Portal</a>
+                        </div>
+                        <div id="loggedInMenu" style="display: none;">
+                            <div style="padding: 12px 16px; background: #f0fdf4; border-bottom: 1px solid #e2e8f0;">
+                                <div style="font-weight: 600;" id="loggedInName">User</div>
+                                <div style="font-size: 12px; color: #666; text-transform: capitalize;" id="loggedInRole">Role</div>
+                            </div>
+                            <a href="#" id="myPortalLink">📊 My Dashboard</a>
+                            <a href="#" onclick="logoutUser(); return false;">🚪 Logout</a>
+                        </div>
+                    </div>
+                </div>
+                
                 <a href="store.html" class="btn btn-outline btn-sm">💊 Medicines</a>
                 <a href="book.html" class="btn btn-primary btn-sm" data-i18n="nav_book">📅 Book</a>
             </nav>
