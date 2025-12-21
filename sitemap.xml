@@ -2,13 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <!-- Main Pages -->
     <url>
-        <loc>https://pratiksajnani.github.io/adinath-hospital/</loc>
+        <loc>https://adinathhealth.com/</loc>
         <lastmod>2025-12-21</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://pratiksajnani.github.io/adinath-hospital/book.html</loc>
+        <loc>https://adinathhealth.com/book.html</loc>
         <lastmod>2025-12-21</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
@@ -16,19 +16,19 @@
     
     <!-- Services -->
     <url>
-        <loc>https://pratiksajnani.github.io/adinath-hospital/services/orthopedic.html</loc>
+        <loc>https://adinathhealth.com/services/orthopedic.html</loc>
         <lastmod>2025-12-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://pratiksajnani.github.io/adinath-hospital/services/gynecology.html</loc>
+        <loc>https://adinathhealth.com/services/gynecology.html</loc>
         <lastmod>2025-12-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://pratiksajnani.github.io/adinath-hospital/services/yoga.html</loc>
+        <loc>https://adinathhealth.com/services/yoga.html</loc>
         <lastmod>2025-12-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
@@ -36,7 +36,7 @@
     
     <!-- Pharmacy -->
     <url>
-        <loc>https://pratiksajnani.github.io/adinath-hospital/store.html</loc>
+        <loc>https://adinathhealth.com/store.html</loc>
         <lastmod>2025-12-21</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
@@ -44,25 +44,25 @@
     
     <!-- Portals -->
     <url>
-        <loc>https://pratiksajnani.github.io/adinath-hospital/portal/index.html</loc>
+        <loc>https://adinathhealth.com/portal/index.html</loc>
         <lastmod>2025-12-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
     <url>
-        <loc>https://pratiksajnani.github.io/adinath-hospital/portal/patient/index.html</loc>
+        <loc>https://adinathhealth.com/portal/patient/index.html</loc>
         <lastmod>2025-12-21</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://pratiksajnani.github.io/adinath-hospital/portal/doctor/index.html</loc>
+        <loc>https://adinathhealth.com/portal/doctor/index.html</loc>
         <lastmod>2025-12-21</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://pratiksajnani.github.io/adinath-hospital/portal/admin/index.html</loc>
+        <loc>https://adinathhealth.com/portal/admin/index.html</loc>
         <lastmod>2025-12-21</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
@@ -70,7 +70,7 @@
     
     <!-- Login -->
     <url>
-        <loc>https://pratiksajnani.github.io/adinath-hospital/login.html</loc>
+        <loc>https://adinathhealth.com/login.html</loc>
         <lastmod>2025-12-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
@@ -78,7 +78,7 @@
     
     <!-- Staff Dashboard -->
     <url>
-        <loc>https://pratiksajnani.github.io/adinath-hospital/store/index.html</loc>
+        <loc>https://adinathhealth.com/store/index.html</loc>
         <lastmod>2025-12-21</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>

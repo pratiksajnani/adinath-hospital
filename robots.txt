@@ -1,12 +1,11 @@
 # Robots.txt for Adinath Hospital Website
-# https://pratiksajnani.github.io/adinath-hospital/
+# https://adinathhealth.com/
 
 User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://pratiksajnani.github.io/adinath-hospital/sitemap.xml
+Sitemap: https://adinathhealth.com/sitemap.xml
 
 # Crawl-delay (optional)
 Crawl-delay: 1
-
