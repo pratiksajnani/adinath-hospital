@@ -18,6 +18,9 @@
 /onboard /onboard/index.html 200
 /onboard/ /onboard/index.html 200
 
+# Admin setup (root level)
+/admin-setup /admin-setup.html 200
+
 # Main pages
 /login /login.html 200
 /book /book.html 200
