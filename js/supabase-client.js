@@ -132,7 +132,7 @@ const SupabaseAuth = {
             'pratik.sajnani@gmail.com': { role: 'admin', name: 'Pratik Sajnani' },
             'drsajnani@gmail.com': { role: 'doctor', name: 'Dr. Ashok Sajnani', doctor: 'ashok' },
             'sunita.sajnani9@gmail.com': { role: 'doctor', name: 'Dr. Sunita Sajnani', doctor: 'sunita' },
-            'poonam@adinathhospital.com': { role: 'staff', name: 'Poonam' }
+            'poonam@adinathhealth.com': { role: 'staff', name: 'Poonam' }
         };
 
         const user = demoUsers[email.toLowerCase()];

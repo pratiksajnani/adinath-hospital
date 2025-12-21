@@ -372,31 +372,13 @@
                     </div>
                     <div class="panel-body" style="padding: 0;">
                         <ul class="patient-queue" id="patientQueue">
-                            <li class="queue-item">
-                                <div class="queue-number">1</div>
-                                <div class="queue-info">
-                                    <div class="name">Ramesh Patel</div>
-                                    <div class="purpose">💊 Prescription pickup - Dr. Ashok</div>
-                                </div>
-                                <span class="queue-status ready">Ready</span>
-                            </li>
-                            <li class="queue-item">
-                                <div class="queue-number">2</div>
-                                <div class="queue-info">
-                                    <div class="name">Sunita Ben</div>
-                                    <div class="purpose">🖨️ Print reports - Consultation</div>
-                                </div>
-                                <span class="queue-status waiting">Waiting</span>
-                            </li>
-                            <li class="queue-item">
-                                <div class="queue-number">3</div>
-                                <div class="queue-info">
-                                    <div class="name">Jayesh Shah</div>
-                                    <div class="purpose">💊 Medicine refill - Monthly</div>
-                                </div>
-                                <span class="queue-status waiting">Waiting</span>
-                            </li>
+                            <!-- Loaded dynamically from HMS -->
                         </ul>
+                        <div id="emptyQueue" style="text-align: center; padding: 40px; color: #666; display: none;">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">👥</div>
+                            <p>No patients in queue</p>
+                            <button class="btn btn-outline" onclick="addPatientToQueue()" style="margin-top: 15px;">+ Add Patient</button>
+                        </div>
                     </div>
                 </div>
                 

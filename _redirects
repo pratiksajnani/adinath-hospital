@@ -2,9 +2,10 @@
 # Direct file access - no rewrites needed for static files
 
 # Ensure HTML files are served correctly
-/login     /login.html     200
-/book      /book.html      200
-/store     /store.html     200
+/login         /login.html         200
+/book          /book.html          200
+/store         /store.html         200
+/check-status  /check-status.html  200
 
 # Portal routes
 /portal                    /portal/index.html      200
