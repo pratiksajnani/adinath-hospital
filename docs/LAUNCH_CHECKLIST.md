@@ -1,129 +1,135 @@
-# 🚀 LAUNCH CHECKLIST - Adinath Hospital
+# 🚀 Production Launch Checklist - adinathhealth.com
 
-## Domain: adinathhealth.com
+## ✅ Pre-Launch Completed
 
----
-
-## ✅ PRE-LAUNCH (Before DNS Switch)
-
-### Technical
-- [x] All pages load correctly
-- [x] Mobile responsive on all devices
-- [x] HTTPS configured (AWS Amplify auto)
-- [x] Sitemap.xml updated with production URLs
-- [x] robots.txt configured
-- [x] Canonical URLs point to adinathhealth.com
-- [x] JSON-LD structured data for SEO
-- [x] Favicon & Apple touch icons
+- [x] Domain purchased: adinathhealth.com (Squarespace)
+- [x] AWS Amplify hosted zone created
+- [x] Nameservers configured on Squarespace
+- [x] Config updated for production domain
+- [x] Canonical URLs updated
+- [x] Sitemap.xml updated
+- [x] Robots.txt updated
+- [x] Open Graph meta tags added
+- [x] Twitter Card meta tags added
+- [x] Security headers configured (amplify.yml)
 - [x] PWA manifest configured
-- [x] 404 page customized
-
-### Content
-- [x] Doctor profiles complete
-- [x] Service pages complete (Orthopedic, Gynecology, Yoga)
-- [x] Contact information accurate
-- [x] WhatsApp links working
-- [x] Google Maps embedded
-- [x] FAQ section complete
-
-### Portals
-- [x] Staff portal functional
-- [x] Doctor portal functional
-- [x] Patient portal functional
-- [x] Admin portal functional
-- [x] Feedback system active
-
-### Forms
-- [x] Booking form working
-- [x] Patient intake form printable
-- [x] Prescription form printable
-- [x] Consent form printable
-- [x] Discharge form printable
+- [x] Google Analytics placeholder added
 
 ---
 
-## 🔧 DNS CONFIGURATION
+## 🔄 Pending DNS Propagation (10-48 hours)
 
-When your domain is ready:
-
-### Option A: Point to AWS Amplify
-1. Add CNAME record:
-   - Name: `www`
-   - Value: `main.d2a0i6erg1hmca.amplifyapp.com`
-   
-2. For root domain (adinathhealth.com):
-   - Use ALIAS/ANAME record to Amplify
-   - Or use redirect from www
-
-### Option B: Use CloudFlare (Recommended)
-1. Add site to CloudFlare
-2. Change nameservers at registrar
-3. Add CNAME for www → Amplify
-4. Enable "Proxied" for SSL
+After nameservers propagate:
+- [ ] Verify https://adinathhealth.com loads
+- [ ] Verify https://www.adinathhealth.com redirects
+- [ ] Verify SSL certificate is active (padlock icon)
+- [ ] Test on mobile devices
 
 ---
 
-## 📱 POST-LAUNCH TESTING
+## 📋 Post-Launch Tasks
 
-### Test on Real Devices
-- [ ] iPhone Safari
-- [ ] Android Chrome
-- [ ] Desktop Chrome
-- [ ] Desktop Firefox
+### Immediate (Day 1-2)
+- [ ] Submit sitemap to Google Search Console
+- [ ] Submit site to Bing Webmaster Tools
+- [ ] Test all pages load correctly
+- [ ] Test booking form works
+- [ ] Test WhatsApp button works
+- [ ] Test phone number is clickable
+- [ ] Verify language switching works (EN/HI/GU)
 
-### Test Core Flows
-- [ ] Book appointment (patient)
-- [ ] Register patient (staff)
-- [ ] View queue (doctor)
-- [ ] Print prescription
-- [ ] WhatsApp button works
-- [ ] Language switching
+### Short-term (Week 1)
+- [ ] Add real hospital photos
+- [ ] Add Dr. Ashok's photo
+- [ ] Add Dr. Sunita's photo
+- [ ] Setup Google Analytics (get GA4 ID)
+- [ ] Setup Google Business Profile
+- [ ] Create Facebook page
+- [ ] Create Instagram page
 
-### Test Each Portal
-- [ ] `/login.html` - Login works
-- [ ] `/portal/staff/index.html` - Staff features
-- [ ] `/portal/doctor/simple.html` - Doctor features
-- [ ] `/portal/patient/index.html` - Patient view
-- [ ] `/portal/admin/index.html` - Admin view
-
----
-
-## 📊 ANALYTICS SETUP (Optional)
-
-### Google Analytics
-Add to index.html:
-```html
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
-</script>
-```
-
-### Google Search Console
-1. Verify domain ownership
-2. Submit sitemap: `https://adinathhealth.com/sitemap.xml`
+### Medium-term (Month 1)
+- [ ] Gather patient testimonials
+- [ ] Add more service details
+- [ ] Create YouTube channel for Dr. Ashok's videos
+- [ ] Integrate real SMS service (MSG91)
+- [ ] Setup email forwarding (info@adinathhealth.com)
 
 ---
 
-## 📞 CONTACT FOR ISSUES
+## 🔍 SEO Checklist
 
-- **Technical:** Pratik Sajnani - pratik.sajnani@gmail.com
-- **Hospital:** +91 99254 50425
-
----
-
-## 🎉 GO LIVE!
-
-Once all checks pass:
-1. Update DNS
-2. Wait 10-48 hours for propagation
-3. Test on production domain
-4. Announce to patients!
+- [x] Title tags optimized
+- [x] Meta descriptions added
+- [x] H1 tags on all pages
+- [x] Alt text on images
+- [x] Structured data (JSON-LD)
+- [x] Canonical URLs
+- [x] Mobile-friendly design
+- [ ] Page speed optimization
+- [ ] Backlinks from local directories
 
 ---
 
-*Last Updated: December 21, 2025*
+## 📞 Contact Information Verification
 
+| Item | Value | Status |
+|------|-------|--------|
+| Phone | +91 99254 50425 | ✅ Verified |
+| WhatsApp | 919925450425 | ✅ Verified |
+| Address | Shukan Mall, 2nd Floor, Shahibaug | ✅ Verified |
+| Hours | 11 AM - 7 PM | ✅ Verified |
+| Email | info@adinathhealth.com | ⚠️ Setup needed |
+
+---
+
+## 🔐 Security Checklist
+
+- [x] HTTPS enforced
+- [x] X-Frame-Options header
+- [x] X-Content-Type-Options header
+- [x] X-XSS-Protection header
+- [x] Referrer-Policy header
+- [ ] Content Security Policy (future)
+
+---
+
+## 📱 PWA Checklist
+
+- [x] manifest.json configured
+- [x] Service worker registered
+- [x] App icons (192x192, 512x512)
+- [x] Theme color set
+- [ ] Offline fallback page
+
+---
+
+## 🌐 Multi-Language Status
+
+| Language | Homepage | Booking | Services |
+|----------|----------|---------|----------|
+| English | ✅ | ✅ | ✅ |
+| Hindi | ✅ | ⚠️ Partial | ⚠️ Partial |
+| Gujarati | ✅ | ⚠️ Partial | ⚠️ Partial |
+
+---
+
+## 📊 Monitoring Setup
+
+- [ ] Setup Uptime monitoring (UptimeRobot - free)
+- [ ] Setup Google Search Console
+- [ ] Setup Google Analytics
+- [ ] Review weekly analytics
+
+---
+
+## 🎉 Launch Day Announcement
+
+When site is live:
+1. Share on WhatsApp with friends/family
+2. Post on LinkedIn (Dr. Ashok & Dr. Sunita)
+3. Update Google Business Profile website URL
+4. Print QR code for hospital reception
+
+---
+
+Last Updated: December 21, 2025

@@ -1,0 +1,35 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f766e"/>
+      <stop offset="100%" style="stop-color:#14b8a6"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  
+  <!-- Hospital Icon -->
+  <text x="600" y="200" font-size="120" text-anchor="middle" fill="white">🏥</text>
+  
+  <!-- Hospital Name -->
+  <text x="600" y="320" font-family="Arial, sans-serif" font-size="72" font-weight="bold" text-anchor="middle" fill="white">
+    Adinath Hospital
+  </text>
+  
+  <!-- Tagline -->
+  <text x="600" y="400" font-family="Arial, sans-serif" font-size="36" text-anchor="middle" fill="rgba(255,255,255,0.9)">
+    Expert Orthopedic &amp; Gynecology Care
+  </text>
+  
+  <!-- Location -->
+  <text x="600" y="480" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="rgba(255,255,255,0.8)">
+    📍 Shahibaug, Ahmedabad | 35+ Years of Excellence
+  </text>
+  
+  <!-- Website -->
+  <text x="600" y="560" font-family="Arial, sans-serif" font-size="32" text-anchor="middle" fill="white">
+    adinathhealth.com
+  </text>
+</svg>
+
