@@ -3,30 +3,29 @@ frontend:
     phases:
         preBuild:
             commands:
-                - echo "Adinath Hospital - Static site deployment"
-                - echo "Domain: adinathhealth.com"
-                # Skip npm install entirely - this is a static site
+                - "echo 'Adinath Hospital - Static site deployment'"
+                - "echo 'Domain - adinathhealth.com'"
         build:
             commands:
-                - echo "No build step required - serving static files"
+                - "echo 'No build step required - serving static files'"
     artifacts:
         baseDirectory: /
         files:
             - '**/*'
         discard-paths: no
         excludes:
-            - node_modules/**/*
-            - .git/**/*
-            - test-results/**/*
-            - coverage/**/*
-            - playwright-report/**/*
-            - tests/**/*
-            - .husky/**/*
-            - scripts/**/*
-            - package.json
-            - package-lock.json
-            - jest.config.js
-            - playwright.config.js
+            - 'node_modules/**/*'
+            - '.git/**/*'
+            - 'test-results/**/*'
+            - 'coverage/**/*'
+            - 'playwright-report/**/*'
+            - 'tests/**/*'
+            - '.husky/**/*'
+            - 'scripts/**/*'
+            - 'package.json'
+            - 'package-lock.json'
+            - 'jest.config.js'
+            - 'playwright.config.js'
             - '*.config.js'
             - '.eslintrc*'
             - '.prettierrc'
@@ -36,52 +35,48 @@ frontend:
     cache:
         paths: []
 
-# Security and caching headers
 customHeaders:
     - pattern: '**/*'
       headers:
-          - key: 'X-Frame-Options'
-            value: 'SAMEORIGIN'
-          - key: 'X-Content-Type-Options'
-            value: 'nosniff'
-          - key: 'X-XSS-Protection'
+          - key: X-Frame-Options
+            value: SAMEORIGIN
+          - key: X-Content-Type-Options
+            value: nosniff
+          - key: X-XSS-Protection
             value: '1; mode=block'
-          - key: 'Referrer-Policy'
-            value: 'strict-origin-when-cross-origin'
-          - key: 'Permissions-Policy'
+          - key: Referrer-Policy
+            value: strict-origin-when-cross-origin
+          - key: Permissions-Policy
             value: 'camera=(), microphone=(), geolocation=(self)'
     - pattern: '*.html'
       headers:
-          - key: 'Cache-Control'
+          - key: Cache-Control
             value: 'no-cache, no-store, must-revalidate'
     - pattern: '/images/*'
       headers:
-          - key: 'Cache-Control'
+          - key: Cache-Control
             value: 'public, max-age=31536000, immutable'
     - pattern: '/css/*'
       headers:
-          - key: 'Cache-Control'
+          - key: Cache-Control
             value: 'public, max-age=31536000, immutable'
     - pattern: '/js/supabase-client.js'
       headers:
-          - key: 'Cache-Control'
+          - key: Cache-Control
             value: 'no-cache, must-revalidate'
     - pattern: '/js/config.js'
       headers:
-          - key: 'Cache-Control'
+          - key: Cache-Control
             value: 'no-cache, must-revalidate'
     - pattern: '/js/hms.js'
       headers:
-          - key: 'Cache-Control'
+          - key: Cache-Control
             value: 'public, max-age=3600'
     - pattern: '/js/*.js'
       headers:
-          - key: 'Cache-Control'
+          - key: Cache-Control
             value: 'public, max-age=86400'
     - pattern: '/fonts/*'
       headers:
-          - key: 'Cache-Control'
+          - key: Cache-Control
             value: 'public, max-age=31536000, immutable'
-
-# Rewrites defined in _redirects file for better control
-# See _redirects for all URL rewrite rules
