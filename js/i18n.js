@@ -25,6 +25,169 @@ const I18N = {
         nav_help: { en: 'Help', hi: 'सहायता', gu: 'મદદ' },
         nav_guest: { en: 'Guest', hi: 'अतिथि', gu: 'મહેમાન' },
 
+        // ===== DROPDOWN MENU ITEMS =====
+        // Services dropdown
+        menu_ortho_care: { en: 'Orthopedic Care', hi: 'हड्डी रोग देखभाल', gu: 'હાડકાની સંભાળ' },
+        menu_obgyn: {
+            en: 'OB-GYN Services',
+            hi: 'प्रसूति-स्त्री रोग सेवाएं',
+            gu: 'પ્રસૂતિ-સ્ત્રી રોગ સેવાઓ',
+        },
+        menu_yoga: { en: 'Yoga Classes', hi: 'योग कक्षाएं', gu: 'યોગ વર્ગો' },
+        menu_pharmacy: {
+            en: 'Pharmacy & Medicines',
+            hi: 'फार्मेसी और दवाइयाँ',
+            gu: 'ફાર્મસી અને દવાઓ',
+        },
+        menu_expect: { en: 'What to Expect', hi: 'क्या अपेक्षा करें', gu: 'શું અપેક્ષા રાખવી' },
+        // Doctors dropdown
+        menu_dr_ashok: { en: 'Dr. Ashok Sajnani', hi: 'डॉ. अशोक सजनानी', gu: 'ડૉ. અશોક સજનાની' },
+        menu_dr_sunita: {
+            en: 'Dr. Sunita Sajnani',
+            hi: 'डॉ. सुनीता सजनानी',
+            gu: 'ડૉ. સુનીતા સજનાની',
+        },
+        menu_health_videos: { en: 'Health Videos', hi: 'स्वास्थ्य वीडियो', gu: 'આરોગ્ય વિડિયો' },
+        // Help dropdown
+        menu_guides_header: {
+            en: 'GUIDES BY ROLE',
+            hi: 'भूमिका के अनुसार गाइड',
+            gu: 'ભૂમિકા મુજબ માર્ગદર્શિકા',
+        },
+        menu_patient_guide: { en: 'Patient Guide', hi: 'मरीज़ गाइड', gu: 'દર્દી માર્ગદર્શિકા' },
+        menu_doctor_guide: { en: 'Doctor Guide', hi: 'डॉक्टर गाइड', gu: 'ડૉક્ટર માર્ગદર્શિકા' },
+        menu_staff_guide: { en: 'Staff Guide', hi: 'स्टाफ गाइड', gu: 'સ્ટાફ માર્ગદર્શિકા' },
+        menu_admin_guide: { en: 'Admin Guide', hi: 'एडमिन गाइड', gu: 'એડમિન માર્ગદર્શિકા' },
+        menu_quick_access: { en: 'QUICK ACCESS', hi: 'त्वरित पहुंच', gu: 'ઝડપી ઍક્સેસ' },
+        menu_portal_login: { en: 'Portal Login', hi: 'पोर्टल लॉगिन', gu: 'પોર્ટલ લૉગિન' },
+        menu_printable_forms: {
+            en: 'Printable Forms',
+            hi: 'प्रिंट करने योग्य फॉर्म',
+            gu: 'પ્રિન્ટ કરી શકાય તેવા ફોર્મ',
+        },
+        menu_store_dashboard: { en: 'Store Dashboard', hi: 'स्टोर डैशबोर्ड', gu: 'સ્ટોર ડેશબોર્ડ' },
+        menu_share_links: {
+            en: 'Share Guide Links',
+            hi: 'गाइड लिंक साझा करें',
+            gu: 'માર્ગદર્શિકા લિંક્સ શેર કરો',
+        },
+        menu_test_matrix: { en: 'Test Matrix', hi: 'टेस्ट मैट्रिक्स', gu: 'ટેસ્ટ મેટ્રિક્સ' },
+        menu_clear_cache: { en: 'Clear Cache', hi: 'कैश साफ़ करें', gu: 'કેશ સાફ કરો' },
+        menu_admin_setup: { en: 'Admin Setup', hi: 'एडमिन सेटअप', gu: 'એડમિન સેટઅપ' },
+        // Guest/User dropdown
+        menu_staff_login: {
+            en: 'Staff/Doctor Login',
+            hi: 'स्टाफ/डॉक्टर लॉगिन',
+            gu: 'સ્ટાફ/ડૉક્ટર લૉગિન',
+        },
+        menu_patient_portal: { en: 'Patient Portal', hi: 'मरीज़ पोर्टल', gu: 'દર્દી પોર્ટલ' },
+        menu_my_dashboard: { en: 'My Dashboard', hi: 'मेरा डैशबोर्ड', gu: 'મારું ડેશબોર્ડ' },
+        menu_logout: { en: 'Logout', hi: 'लॉगआउट', gu: 'લૉગઆઉટ' },
+        label_user: { en: 'User', hi: 'उपयोगकर्ता', gu: 'વપરાશકર્તા' },
+        label_role: { en: 'Role', hi: 'भूमिका', gu: 'ભૂમિકા' },
+
+        // ===== FOOTER =====
+        footer_quick_links: { en: 'Quick Links', hi: 'त्वरित लिंक', gu: 'ઝડપી લિંક્સ' },
+        footer_our_doctors: { en: 'Our Doctors', hi: 'हमारे डॉक्टर', gu: 'અમારા ડૉક્ટર્સ' },
+        footer_yoga_classes: { en: 'Yoga Classes', hi: 'योग कक्षाएं', gu: 'યોગ વર્ગો' },
+        footer_book_appt: {
+            en: 'Book Appointment',
+            hi: 'अपॉइंटमेंट बुक करें',
+            gu: 'એપોઇન્ટમેન્ટ બુક કરો',
+        },
+        footer_contact_us: { en: 'Contact Us', hi: 'संपर्क करें', gu: 'સંપર્ક કરો' },
+        footer_services: { en: 'Services', hi: 'सेवाएं', gu: 'સેવાઓ' },
+        footer_ortho_care: { en: 'Orthopedic Care', hi: 'हड्डी रोग देखभाल', gu: 'હાડકાની સંભાળ' },
+        footer_gynecology: { en: 'Gynecology', hi: 'स्त्री रोग', gu: 'સ્ત્રી રોગ' },
+        footer_yoga_wellness: { en: 'Yoga & Wellness', hi: 'योग और कल्याण', gu: 'યોગ અને કલ્યાણ' },
+        footer_pharmacy: {
+            en: 'Pharmacy & Medicines',
+            hi: 'फार्मेसी और दवाइयाँ',
+            gu: 'ફાર્મસી અને દવાઓ',
+        },
+        footer_for_staff: { en: 'For Staff', hi: 'स्टाफ के लिए', gu: 'સ્ટાફ માટે' },
+        footer_doctor_login: { en: 'Doctor Login', hi: 'डॉक्टर लॉगिन', gu: 'ડૉક્ટર લૉગિન' },
+        footer_staff_login: { en: 'Staff Login', hi: 'स्टाफ लॉगिन', gu: 'સ્ટાફ લૉગિન' },
+        footer_admin_login: { en: 'Admin Login', hi: 'एडमिन लॉगिन', gu: 'એડમિન લૉગિન' },
+        footer_first_setup: { en: 'First-time Setup', hi: 'पहली बार सेटअप', gu: 'પ્રથમ વખત સેટઅપ' },
+        footer_copyright: {
+            en: '© 2025 Adinath Hospital. All rights reserved.',
+            hi: '© 2025 आदिनाथ हॉस्पिटल। सर्वाधिकार सुरक्षित।',
+            gu: '© 2025 આદિનાથ હોસ્પિટલ. બધા હકો અનામત.',
+        },
+        footer_made_with: {
+            en: 'Made with ❤️ in Ahmedabad',
+            hi: 'अहमदाबाद में ❤️ से बनाया',
+            gu: 'અમદાવાદમાં ❤️ સાથે બનાવેલ',
+        },
+        book_now: { en: 'Book Now', hi: 'अभी बुक करें', gu: 'હમણાં બુક કરો' },
+
+        // ===== QUICK ACTIONS SECTION =====
+        actions_tag: { en: 'Quick Actions', hi: 'त्वरित कार्य', gu: 'ઝડપી ક્રિયાઓ' },
+        actions_title: {
+            en: 'How Can We Help You Today?',
+            hi: 'आज हम आपकी कैसे मदद कर सकते हैं?',
+            gu: 'આજે અમે તમને કેવી રીતે મદદ કરી શકીએ?',
+        },
+        actions_subtitle: {
+            en: "Choose what you need - we'll guide you through",
+            hi: 'चुनें जो आपको चाहिए - हम आपको गाइड करेंगे',
+            gu: 'તમને જે જોઈએ તે પસંદ કરો - અમે તમને માર્ગદર્શન આપીશું',
+        },
+        action_book_appt: {
+            en: 'Book Appointment',
+            hi: 'अपॉइंटमेंट बुक करें',
+            gu: 'એપોઇન્ટમેન્ટ બુક કરો',
+        },
+        action_book_desc: {
+            en: 'Schedule a visit with Dr. Ashok or Dr. Sunita',
+            hi: 'डॉ. अशोक या डॉ. सुनीता से मिलने का समय तय करें',
+            gu: 'ડૉ. અશોક અથવા ડૉ. સુનીતા સાથે મુલાકાત નક્કી કરો',
+        },
+        action_order_meds: {
+            en: 'Order Medicines',
+            hi: 'दवाइयाँ ऑर्डर करें',
+            gu: 'દવાઓ ઓર્ડર કરો',
+        },
+        action_order_desc: {
+            en: 'Send your prescription via WhatsApp for home delivery',
+            hi: 'होम डिलीवरी के लिए WhatsApp पर प्रिस्क्रिप्शन भेजें',
+            gu: 'હોમ ડિલિવરી માટે WhatsApp દ્વારા પ્રિસ્ક્રિપ્શન મોકલો',
+        },
+        action_store: { en: 'Medical Store', hi: 'मेडिकल स्टोर', gu: 'મેડિકલ સ્ટોર' },
+        action_store_desc: {
+            en: 'View available medicines & health products',
+            hi: 'उपलब्ध दवाइयाँ और स्वास्थ्य उत्पाद देखें',
+            gu: 'ઉપલબ્ધ દવાઓ અને આરોગ્ય ઉત્પાદનો જુઓ',
+        },
+        action_check_status: { en: 'Check Status', hi: 'स्थिति जांचें', gu: 'સ્થિતિ તપાસો' },
+        action_check_desc: {
+            en: 'View your appointment status & history',
+            hi: 'अपनी अपॉइंटमेंट स्थिति और इतिहास देखें',
+            gu: 'તમારી એપોઇન્ટમેન્ટ સ્થિતિ અને ઇતિહાસ જુઓ',
+        },
+        action_call: { en: 'Call Us', hi: 'हमें कॉल करें', gu: 'અમને કૉલ કરો' },
+        action_call_desc: {
+            en: 'Speak directly with our staff',
+            hi: 'सीधे हमारे स्टाफ से बात करें',
+            gu: 'સીધા અમારા સ્ટાફ સાથે વાત કરો',
+        },
+        action_directions: {
+            en: 'Get Directions',
+            hi: 'दिशा निर्देश प्राप्त करें',
+            gu: 'દિશા નિર્દેશો મેળવો',
+        },
+        action_directions_desc: {
+            en: 'Navigate to Shukan Mall, 2nd Floor',
+            hi: 'शुकन मॉल, दूसरी मंज़िल पर पहुंचें',
+            gu: 'શુકન મોલ, 2જો માળ પર પહોંચો',
+        },
+        order_medicines_btn: {
+            en: 'Order Medicines →',
+            hi: 'दवाइयाँ ऑर्डर करें →',
+            gu: 'દવાઓ ઓર્ડર કરો →',
+        },
+
         // ===== HERO SECTION =====
         hero_badge: {
             en: 'Trusted Since 1990 • 35+ Years of Excellence',
@@ -242,6 +405,11 @@ const I18N = {
             en: 'Pharmacy & Medicines',
             hi: 'फार्मेसी और दवाइयां',
             gu: 'ફાર્મસી અને દવાઓ',
+        },
+        pharmacy_subtitle: {
+            en: 'In-house Medical Store',
+            hi: 'इन-हाउस मेडिकल स्टोर',
+            gu: 'ઇન-હાઉસ મેડિકલ સ્ટોર',
         },
         pharmacy_1: {
             en: 'Prescription Medicines',
