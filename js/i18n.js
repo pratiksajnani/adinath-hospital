@@ -188,6 +188,57 @@ const I18N = {
         },
         go_login: { en: 'Go to Login', hi: 'लॉगिन पर जाएं', gu: 'લૉગિન પર જાઓ' },
 
+        // ===== PLACEHOLDER TEXTS =====
+        ph_full_name: {
+            en: 'Enter your full name',
+            hi: 'अपना पूरा नाम दर्ज करें',
+            gu: 'તમારું પૂરું નામ દાખલ કરો',
+        },
+        ph_phone: {
+            en: 'Enter your phone number',
+            hi: 'अपना फोन नंबर दर्ज करें',
+            gu: 'તમારો ફોન નંબર દાખલ કરો',
+        },
+        ph_email: { en: 'Enter your email', hi: 'अपना ईमेल दर्ज करें', gu: 'તમારો ઇમેઇલ દાખલ કરો' },
+        ph_password: { en: 'Enter password', hi: 'पासवर्ड दर्ज करें', gu: 'પાસવર્ડ દાખલ કરો' },
+        ph_password_min: {
+            en: 'Min 8 characters, 1 number',
+            hi: 'कम से कम 8 अक्षर, 1 नंबर',
+            gu: 'ઓછામાં ઓછા 8 અક્ષરો, 1 નંબર',
+        },
+        ph_confirm_password: {
+            en: 'Re-enter password',
+            hi: 'पासवर्ड फिर से दर्ज करें',
+            gu: 'પાસવર્ડ ફરીથી દાખલ કરો',
+        },
+        ph_age: { en: 'Age in years', hi: 'वर्षों में उम्र', gu: 'વર્ષોમાં ઉંમર' },
+        ph_address: {
+            en: 'Enter your address',
+            hi: 'अपना पता दर्ज करें',
+            gu: 'તમારું સરનામું દાખલ કરો',
+        },
+        ph_search: { en: 'Search...', hi: 'खोजें...', gu: 'શોધો...' },
+        ph_emergency_name: {
+            en: 'Emergency contact name',
+            hi: 'आपातकालीन संपर्क नाम',
+            gu: 'ઇમરજન્સી સંપર્ક નામ',
+        },
+        ph_emergency_phone: {
+            en: 'Emergency contact phone',
+            hi: 'आपातकालीन संपर्क फोन',
+            gu: 'ઇમરજન્સી સંપર્ક ફોન',
+        },
+        ph_patient_name: {
+            en: "Enter patient's full name",
+            hi: 'मरीज़ का पूरा नाम दर्ज करें',
+            gu: 'દર્દીનું પૂરું નામ દાખલ કરો',
+        },
+        ph_reason: {
+            en: 'Briefly describe your concern',
+            hi: 'संक्षेप में अपनी समस्या बताएं',
+            gu: 'સંક્ષિપ્તમાં તમારી ચિંતા જણાવો',
+        },
+
         // ===== FOOTER =====
         footer_quick_links: { en: 'Quick Links', hi: 'त्वरित लिंक', gu: 'ઝડપી લિંક્સ' },
         footer_our_doctors: { en: 'Our Doctors', hi: 'हमारे डॉक्टर', gu: 'અમારા ડૉક્ટર્સ' },
