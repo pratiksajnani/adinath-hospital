@@ -282,3 +282,191 @@ describe('AccessControl - Session Timeout', () => {
         expect(typeof AccessControl.lastActivity).toBe('number');
     });
 });
+
+describe('AccessControl.canAccess() - Prefix Matching', () => {
+    test('should use prefix matching for unknown paths under known directories', () => {
+        localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_role', 'admin');
+        
+        // Path like /portal/admin/some-unknown-page.html should match /portal/admin/
+        expect(AccessControl.canAccess('/portal/admin/some-unknown-page.html')).toBe(true);
+    });
+
+    test('should return true for completely unknown paths (default public)', () => {
+        // An unknown path with no matching rule defaults to public
+        expect(AccessControl.canAccess('/some-random-unknown-path.html')).toBe(true);
+    });
+});
+
+describe('AccessControl.enforce()', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+        global.alert.mockClear();
+    });
+
+    test('should not throw when user has access', () => {
+        localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_role', 'admin');
+        window.location.pathname = '/portal/admin/index.html';
+        
+        expect(() => AccessControl.enforce()).not.toThrow();
+    });
+
+    test('should handle adinath-hospital path normalization', () => {
+        localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_role', 'admin');
+        window.location.pathname = '/adinath-hospital/portal/admin/index.html';
+        
+        expect(() => AccessControl.enforce()).not.toThrow();
+    });
+});
+
+describe('AccessControl.getBasePath() - Various Paths', () => {
+    test('should return ../../ for doctor portal pages', () => {
+        window.location.pathname = '/portal/doctor/index.html';
+        expect(AccessControl.getBasePath()).toBe('../../');
+    });
+
+    test('should return ../../ for staff portal pages', () => {
+        window.location.pathname = '/portal/staff/index.html';
+        expect(AccessControl.getBasePath()).toBe('../../');
+    });
+
+    test('should return ../../ for patient portal pages', () => {
+        window.location.pathname = '/portal/patient/index.html';
+        expect(AccessControl.getBasePath()).toBe('../../');
+    });
+
+    test('should return ../../ for data-collection forms', () => {
+        window.location.pathname = '/forms/data-collection/some-form.html';
+        expect(AccessControl.getBasePath()).toBe('../../');
+    });
+
+    test('should return ../ for docs pages', () => {
+        window.location.pathname = '/docs/ADMIN_GUIDE.html';
+        expect(AccessControl.getBasePath()).toBe('../');
+    });
+
+    test('should return ../ for services pages', () => {
+        window.location.pathname = '/services/orthopedic.html';
+        expect(AccessControl.getBasePath()).toBe('../');
+    });
+
+    test('should return ../ for forms pages', () => {
+        window.location.pathname = '/forms/some-form.html';
+        expect(AccessControl.getBasePath()).toBe('../');
+    });
+
+    test('should return ../ for store pages', () => {
+        window.location.pathname = '/store/checkout.html';
+        expect(AccessControl.getBasePath()).toBe('../');
+    });
+
+    test('should return ../ for onboard pages', () => {
+        window.location.pathname = '/onboard/admin.html';
+        expect(AccessControl.getBasePath()).toBe('../');
+    });
+});
+
+describe('AccessControl.redirectToRolePortal()', () => {
+    beforeEach(() => {
+        window.location.pathname = '/';
+        window.location.href = 'http://localhost/';
+    });
+
+    test('should redirect admin to admin portal', () => {
+        AccessControl.redirectToRolePortal('admin');
+        expect(window.location.href).toContain('portal/admin');
+    });
+
+    test('should redirect doctor to doctor portal', () => {
+        AccessControl.redirectToRolePortal('doctor');
+        expect(window.location.href).toContain('portal/doctor');
+    });
+
+    test('should redirect staff to staff portal', () => {
+        AccessControl.redirectToRolePortal('staff');
+        expect(window.location.href).toContain('portal/staff');
+    });
+
+    test('should redirect receptionist to staff portal', () => {
+        AccessControl.redirectToRolePortal('receptionist');
+        expect(window.location.href).toContain('portal/staff');
+    });
+
+    test('should redirect nurse to staff portal', () => {
+        AccessControl.redirectToRolePortal('nurse');
+        expect(window.location.href).toContain('portal/staff');
+    });
+
+    test('should redirect pharmacist to store', () => {
+        AccessControl.redirectToRolePortal('pharmacist');
+        expect(window.location.href).toContain('store');
+    });
+
+    test('should redirect patient to patient portal', () => {
+        AccessControl.redirectToRolePortal('patient');
+        expect(window.location.href).toContain('portal/patient');
+    });
+
+    test('should redirect unknown role to index', () => {
+        AccessControl.redirectToRolePortal('unknown');
+        expect(window.location.href).toContain('index.html');
+    });
+});
+
+describe('AccessControl.addSecurityMeta()', () => {
+    test('should not throw', () => {
+        expect(() => AccessControl.addSecurityMeta()).not.toThrow();
+    });
+});
+
+describe('AccessControl - Activity Tracking', () => {
+    test('should be able to set lastActivity', () => {
+        const before = AccessControl.lastActivity;
+        AccessControl.lastActivity = Date.now() + 1000;
+        expect(AccessControl.lastActivity).toBeGreaterThan(before);
+    });
+});
+
+describe('AccessControl.init()', () => {
+    beforeEach(() => {
+        localStorage.clear();
+        window.location.pathname = '/';
+    });
+
+    test('should not throw when initializing', () => {
+        expect(() => AccessControl.init()).not.toThrow();
+    });
+
+    test('should call addSecurityMeta', () => {
+        const spy = jest.spyOn(AccessControl, 'addSecurityMeta');
+        AccessControl.init();
+        expect(spy).toHaveBeenCalled();
+        spy.mockRestore();
+    });
+});
+
+describe('AccessControl.initSessionTimeout()', () => {
+    beforeEach(() => {
+        localStorage.setItem('hms_logged_in', 'true');
+        localStorage.setItem('hms_role', 'admin');
+    });
+
+    test('should not throw when initializing session timeout', () => {
+        expect(() => AccessControl.initSessionTimeout()).not.toThrow();
+    });
+
+    test('should have valid sessionTimeout value', () => {
+        expect(AccessControl.sessionTimeout).toBe(30 * 60 * 1000);
+    });
+});
+
+describe('AccessControl.canAccess() - Edge Cases', () => {
+    test('should return false for unmatched authenticated rule when not logged in', () => {
+        localStorage.clear();
+        expect(AccessControl.canAccess('/portal/')).toBe(false);
+    });
+});
+
+

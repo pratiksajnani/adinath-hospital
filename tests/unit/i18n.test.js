@@ -223,3 +223,82 @@ describe('I18N - Service Translations', () => {
         expect(I18N.translations[key]).toBeDefined();
     });
 });
+
+describe('I18N.applyTranslations()', () => {
+    beforeEach(() => {
+        document.body.innerHTML = '';
+        I18N.currentLanguage = 'en';
+    });
+
+    test('should translate data-i18n elements', () => {
+        document.body.innerHTML = '<span data-i18n="hospital_name"></span>';
+        I18N.applyTranslations();
+        const el = document.querySelector('[data-i18n]');
+        expect(el.textContent).toBe('Adinath Hospital');
+    });
+
+    test('should translate data-i18n-placeholder elements', () => {
+        document.body.innerHTML = '<input data-i18n-placeholder="search" placeholder="">';
+        I18N.applyTranslations();
+        const el = document.querySelector('[data-i18n-placeholder]');
+        // Will be the key if translation doesn't exist, or the translation if it does
+        expect(el.placeholder).toBeDefined();
+    });
+
+    test('should update language selector active state', () => {
+        document.body.innerHTML = `
+            <button data-lang="en">EN</button>
+            <button data-lang="hi">HI</button>
+            <button data-lang="gu">GU</button>
+        `;
+        I18N.currentLanguage = 'hi';
+        I18N.applyTranslations();
+        
+        const hiBtn = document.querySelector('[data-lang="hi"]');
+        const enBtn = document.querySelector('[data-lang="en"]');
+        expect(hiBtn.classList.contains('active')).toBe(true);
+        expect(enBtn.classList.contains('active')).toBe(false);
+    });
+
+    test('should not modify element if translation equals key', () => {
+        document.body.innerHTML = '<span data-i18n="nonexistent_key">Original</span>';
+        I18N.applyTranslations();
+        const el = document.querySelector('[data-i18n]');
+        // Element text should remain unchanged if key matches returned value
+        expect(el.textContent).toBe('Original');
+    });
+});
+
+describe('I18N.init() with language buttons', () => {
+    beforeEach(() => {
+        localStorage.clear();
+        document.body.innerHTML = `
+            <button data-lang="en">English</button>
+            <button data-lang="hi">Hindi</button>
+            <button data-lang="gu">Gujarati</button>
+        `;
+        I18N.currentLanguage = 'en';
+    });
+
+    test('should attach click handlers to language buttons', () => {
+        I18N.init();
+        
+        const hiBtn = document.querySelector('[data-lang="hi"]');
+        hiBtn.click();
+        
+        expect(I18N.currentLanguage).toBe('hi');
+    });
+
+    test('should load language from localStorage if valid', () => {
+        localStorage.setItem('hms_language', 'gu');
+        I18N.init();
+        expect(I18N.currentLanguage).toBe('gu');
+    });
+
+    test('should ignore invalid stored language', () => {
+        localStorage.setItem('hms_language', 'fr');
+        I18N.currentLanguage = 'en';
+        I18N.init();
+        expect(I18N.currentLanguage).toBe('en');
+    });
+});

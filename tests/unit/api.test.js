@@ -335,3 +335,50 @@ describe('API.healthCheck()', () => {
         expect(result).toBe(false);
     });
 });
+
+describe('API.payments.generateUPIQR()', () => {
+    test('should return URL when QRCode not available', () => {
+        window.QRCode = undefined;
+        const result = API.payments.generateUPIQR(500, 'Consultation');
+        expect(result.url).toBeDefined();
+        expect(result.url).toContain('upi://pay');
+        expect(result.url).toContain('am=500');
+    });
+
+    test('should include merchant name in URL', () => {
+        window.QRCode = undefined;
+        const result = API.payments.generateUPIQR(500, 'Test');
+        expect(result.url).toContain('Adinath');
+    });
+});
+
+describe('API.files', () => {
+    test('should have upload function', () => {
+        expect(typeof API.files.upload).toBe('function');
+    });
+
+    test('should have uploadPatientFile function', () => {
+        expect(typeof API.files.uploadPatientFile).toBe('function');
+    });
+
+    test('should have uploadHospitalImage function', () => {
+        expect(typeof API.files.uploadHospitalImage).toBe('function');
+    });
+
+    test('should have uploadDoctorContent function', () => {
+        expect(typeof API.files.uploadDoctorContent).toBe('function');
+    });
+
+    test('getPublicUrl() should construct correct URL', () => {
+        const url = API.files.getPublicUrl('patient-files', 'patients/P001/xray.jpg');
+        expect(url).toContain('supabase.co/storage/v1/object/public');
+        expect(url).toContain('patient-files');
+        expect(url).toContain('patients/P001/xray.jpg');
+    });
+});
+
+describe('API.invoices.openInvoice()', () => {
+    test('should have openInvoice function', () => {
+        expect(typeof API.invoices.openInvoice).toBe('function');
+    });
+});

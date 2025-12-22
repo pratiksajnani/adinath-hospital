@@ -220,3 +220,58 @@ describe('SMS - Provider Fallback', () => {
     });
 });
 
+describe('SMS - Twilio Provider', () => {
+    beforeEach(() => {
+        SMS.provider = 'twilio';
+        SMS.twilio.accountSid = 'test-account-sid';
+        SMS.twilio.authToken = 'test-auth-token';
+        SMS.twilio.fromNumber = '+1234567890';
+    });
+
+    test('sendViaTwilio should call fetch when configured', async () => {
+        fetch.mockResolvedValue({ ok: true });
+        await SMS.sendViaTwilio('919925450425', 'Test');
+        expect(fetch).toHaveBeenCalledWith('/api/sms/send', expect.any(Object));
+    });
+
+    test('sendViaTwilio should fallback to WhatsApp on fetch error', async () => {
+        fetch.mockRejectedValue(new Error('Network error'));
+        const result = await SMS.sendViaTwilio('919925450425', 'Test');
+        expect(mockOpen).toHaveBeenCalled();
+        expect(result.success).toBe(true);
+    });
+
+    test('sendViaTwilio should return true on success', async () => {
+        fetch.mockResolvedValue({ ok: true });
+        const result = await SMS.sendViaTwilio('919925450425', 'Test');
+        expect(result).toBe(true);
+    });
+});
+
+describe('SMS - MSG91 Provider', () => {
+    beforeEach(() => {
+        SMS.provider = 'msg91';
+        SMS.msg91.authKey = 'test-auth-key';
+        SMS.msg91.senderId = 'ADNHSP';
+    });
+
+    test('sendViaMsg91 should call fetch when configured', async () => {
+        fetch.mockResolvedValue({ ok: true });
+        await SMS.sendViaMsg91('919925450425', 'Test');
+        expect(fetch).toHaveBeenCalledWith('/api/sms/send', expect.any(Object));
+    });
+
+    test('sendViaMsg91 should fallback to WhatsApp on fetch error', async () => {
+        fetch.mockRejectedValue(new Error('Network error'));
+        const result = await SMS.sendViaMsg91('919925450425', 'Test');
+        expect(mockOpen).toHaveBeenCalled();
+        expect(result.success).toBe(true);
+    });
+
+    test('sendViaMsg91 should return true on success', async () => {
+        fetch.mockResolvedValue({ ok: true });
+        const result = await SMS.sendViaMsg91('919925450425', 'Test');
+        expect(result).toBe(true);
+    });
+});
+

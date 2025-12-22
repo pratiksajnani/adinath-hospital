@@ -291,6 +291,11 @@ if (typeof module !== 'undefined' && module.exports) {
         initSmoothScroll,
         initHeaderScroll,
         initAnimations,
-        toggleFAQ
+        toggleFAQ,
+        animateCounters,
+        validateForm,
+        showToast,
+        formatPhone,
+        getUrlParams
     };
 }
