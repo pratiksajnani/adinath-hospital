@@ -97,8 +97,8 @@ results.summary.eslint = {
 console.log(c('cyan', '\n🧪 3. TEST COVERAGE'));
 console.log('-'.repeat(40));
 
-runSilent('npm run coverage -- --silent 2>&1');
-const coverageFile = 'coverage/coverage-summary.json';
+runSilent('npm run coverage 2>&1');
+const coverageFile = 'test-results/coverage/coverage-summary.json';
 
 if (fs.existsSync(coverageFile)) {
     const coverage = JSON.parse(fs.readFileSync(coverageFile, 'utf8'));

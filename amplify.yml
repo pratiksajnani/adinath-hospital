@@ -1,150 +1,171 @@
 version: 1
 frontend:
-  phases:
-    preBuild:
-      commands:
-        - echo "Adinath Hospital - Building for production..."
-        - echo "Domain: adinathhealth.com"
-    build:
-      commands:
-        - echo "Static site - no build required"
-  artifacts:
-    baseDirectory: /
-    files:
-      - '**/*'
-  cache:
-    paths: []
+    phases:
+        preBuild:
+            commands:
+                - echo "Adinath Hospital - Static site deployment"
+                - echo "Domain: adinathhealth.com"
+                # Skip npm install entirely - this is a static site
+        build:
+            commands:
+                - echo "No build step required - serving static files"
+    artifacts:
+        baseDirectory: /
+        files:
+            - '**/*'
+        discard-paths: no
+        excludes:
+            - node_modules/**/*
+            - .git/**/*
+            - test-results/**/*
+            - coverage/**/*
+            - playwright-report/**/*
+            - tests/**/*
+            - .husky/**/*
+            - scripts/**/*
+            - package.json
+            - package-lock.json
+            - jest.config.js
+            - playwright.config.js
+            - '*.config.js'
+            - '.eslintrc*'
+            - '.prettierrc'
+            - '.editorconfig'
+            - '.jscpd.json'
+            - 'CONTRIBUTING.md'
+    cache:
+        paths: []
 
 # Security and caching headers
 customHeaders:
-  - pattern: '**/*'
-    headers:
-      - key: 'X-Frame-Options'
-        value: 'SAMEORIGIN'
-      - key: 'X-Content-Type-Options'
-        value: 'nosniff'
-      - key: 'X-XSS-Protection'
-        value: '1; mode=block'
-      - key: 'Referrer-Policy'
-        value: 'strict-origin-when-cross-origin'
-      - key: 'Permissions-Policy'
-        value: 'camera=(), microphone=(), geolocation=(self)'
-  - pattern: '*.html'
-    headers:
-      - key: 'Cache-Control'
-        value: 'no-cache, no-store, must-revalidate'
-  - pattern: '/images/*'
-    headers:
-      - key: 'Cache-Control'
-        value: 'public, max-age=31536000, immutable'
-  - pattern: '/css/*'
-    headers:
-      - key: 'Cache-Control'
-        value: 'public, max-age=31536000, immutable'
-  - pattern: '/js/supabase-client.js'
-    headers:
-      - key: 'Cache-Control'
-        value: 'no-cache, must-revalidate'
-  - pattern: '/js/config.js'
-    headers:
-      - key: 'Cache-Control'
-        value: 'no-cache, must-revalidate'
-  - pattern: '/js/hms.js'
-    headers:
-      - key: 'Cache-Control'
-        value: 'public, max-age=3600'
-  - pattern: '/js/*.js'
-    headers:
-      - key: 'Cache-Control'
-        value: 'public, max-age=86400'
-  - pattern: '/fonts/*'
-    headers:
-      - key: 'Cache-Control'
-        value: 'public, max-age=31536000, immutable'
+    - pattern: '**/*'
+      headers:
+          - key: 'X-Frame-Options'
+            value: 'SAMEORIGIN'
+          - key: 'X-Content-Type-Options'
+            value: 'nosniff'
+          - key: 'X-XSS-Protection'
+            value: '1; mode=block'
+          - key: 'Referrer-Policy'
+            value: 'strict-origin-when-cross-origin'
+          - key: 'Permissions-Policy'
+            value: 'camera=(), microphone=(), geolocation=(self)'
+    - pattern: '*.html'
+      headers:
+          - key: 'Cache-Control'
+            value: 'no-cache, no-store, must-revalidate'
+    - pattern: '/images/*'
+      headers:
+          - key: 'Cache-Control'
+            value: 'public, max-age=31536000, immutable'
+    - pattern: '/css/*'
+      headers:
+          - key: 'Cache-Control'
+            value: 'public, max-age=31536000, immutable'
+    - pattern: '/js/supabase-client.js'
+      headers:
+          - key: 'Cache-Control'
+            value: 'no-cache, must-revalidate'
+    - pattern: '/js/config.js'
+      headers:
+          - key: 'Cache-Control'
+            value: 'no-cache, must-revalidate'
+    - pattern: '/js/hms.js'
+      headers:
+          - key: 'Cache-Control'
+            value: 'public, max-age=3600'
+    - pattern: '/js/*.js'
+      headers:
+          - key: 'Cache-Control'
+            value: 'public, max-age=86400'
+    - pattern: '/fonts/*'
+      headers:
+          - key: 'Cache-Control'
+            value: 'public, max-age=31536000, immutable'
 
 # Rewrites for clean URLs and onboarding
 customRules:
-  # Onboarding index
-  - source: /onboard
-    target: /onboard/index.html
-    status: '200'
-  - source: /onboard/
-    target: /onboard/index.html
-    status: '200'
-  # Admin and Doctor onboarding (preserve paths) - with and without trailing slash
-  - source: /onboard/admin
-    target: /onboard/admin.html
-    status: '200'
-  - source: /onboard/admin/
-    target: /onboard/admin.html
-    status: '200'
-  - source: /onboard/doctor
-    target: /onboard/doctor.html
-    status: '200'
-  - source: /onboard/doctor/
-    target: /onboard/doctor.html
-    status: '200'
-  - source: /onboard/staff
-    target: /onboard/staff.html
-    status: '200'
-  - source: /onboard/staff/
-    target: /onboard/staff.html
-    status: '200'
-  - source: /onboard/patient
-    target: /onboard/patient.html
-    status: '200'
-  - source: /onboard/patient/
-    target: /onboard/patient.html
-    status: '200'
-  # Main pages
-  - source: /login
-    target: /login.html
-    status: '200'
-  - source: /book
-    target: /book.html
-    status: '200'
-  - source: /store
-    target: /store.html
-    status: '200'
-  - source: /check-status
-    target: /check-status.html
-    status: '200'
-  # Portal pages
-  - source: /portal
-    target: /portal/index.html
-    status: '200'
-  - source: /portal/admin
-    target: /portal/admin/index.html
-    status: '200'
-  - source: /portal/admin/
-    target: /portal/admin/index.html
-    status: '200'
-  - source: /portal/admin/manage
-    target: /portal/admin/manage.html
-    status: '200'
-  - source: /portal/admin/manage/
-    target: /portal/admin/manage.html
-    status: '200'
-  - source: /portal/admin/send-registration
-    target: /portal/admin/send-registration.html
-    status: '200'
-  - source: /portal/admin/send-registration/
-    target: /portal/admin/send-registration.html
-    status: '200'
-  - source: /portal/doctor
-    target: /portal/doctor/index.html
-    status: '200'
-  - source: /portal/staff
-    target: /portal/staff/index.html
-    status: '200'
-  - source: /portal/patient
-    target: /portal/patient/index.html
-    status: '200'
-  # Custom 404 page for all broken links
-  - source: '</^[^.]+$|\.(?!(css|gif|ico|jpg|jpeg|js|png|txt|svg|woff|woff2|ttf|map|json|webp|html)$)([^.]+$)/>'
-    target: /404.html
-    status: '404'
-  # Catch any remaining 404s
-  - source: '/<*>'
-    target: /404.html
-    status: '404'
+    # Onboarding index
+    - source: /onboard
+      target: /onboard/index.html
+      status: '200'
+    - source: /onboard/
+      target: /onboard/index.html
+      status: '200'
+    # Admin and Doctor onboarding (preserve paths) - with and without trailing slash
+    - source: /onboard/admin
+      target: /onboard/admin.html
+      status: '200'
+    - source: /onboard/admin/
+      target: /onboard/admin.html
+      status: '200'
+    - source: /onboard/doctor
+      target: /onboard/doctor.html
+      status: '200'
+    - source: /onboard/doctor/
+      target: /onboard/doctor.html
+      status: '200'
+    - source: /onboard/staff
+      target: /onboard/staff.html
+      status: '200'
+    - source: /onboard/staff/
+      target: /onboard/staff.html
+      status: '200'
+    - source: /onboard/patient
+      target: /onboard/patient.html
+      status: '200'
+    - source: /onboard/patient/
+      target: /onboard/patient.html
+      status: '200'
+    # Main pages
+    - source: /login
+      target: /login.html
+      status: '200'
+    - source: /book
+      target: /book.html
+      status: '200'
+    - source: /store
+      target: /store.html
+      status: '200'
+    - source: /check-status
+      target: /check-status.html
+      status: '200'
+    # Portal pages
+    - source: /portal
+      target: /portal/index.html
+      status: '200'
+    - source: /portal/admin
+      target: /portal/admin/index.html
+      status: '200'
+    - source: /portal/admin/
+      target: /portal/admin/index.html
+      status: '200'
+    - source: /portal/admin/manage
+      target: /portal/admin/manage.html
+      status: '200'
+    - source: /portal/admin/manage/
+      target: /portal/admin/manage.html
+      status: '200'
+    - source: /portal/admin/send-registration
+      target: /portal/admin/send-registration.html
+      status: '200'
+    - source: /portal/admin/send-registration/
+      target: /portal/admin/send-registration.html
+      status: '200'
+    - source: /portal/doctor
+      target: /portal/doctor/index.html
+      status: '200'
+    - source: /portal/staff
+      target: /portal/staff/index.html
+      status: '200'
+    - source: /portal/patient
+      target: /portal/patient/index.html
+      status: '200'
+    # Custom 404 page for all broken links
+    - source: '</^[^.]+$|\.(?!(css|gif|ico|jpg|jpeg|js|png|txt|svg|woff|woff2|ttf|map|json|webp|html)$)([^.]+$)/>'
+      target: /404.html
+      status: '404'
+    # Catch any remaining 404s
+    - source: '/<*>'
+      target: /404.html
+      status: '404'

@@ -35,7 +35,7 @@
     "deploy": "npm run predeploy && git push origin main",
     "ci": "npm run quality && npm run test:e2e",
     "validate": "npm run quality && echo '✅ All quality checks passed!'",
-    "prepare": "husky",
+    "prepare": "husky || true",
     "security:scan": "grep -rE 'password.*=.*[\"'][^\"']{4,}[\"']' js/ docs/ README.md || echo '✅ No hardcoded passwords found'"
   },
   "lint-staged": {
