@@ -15,19 +15,18 @@ const ENV = (() => {
         return 'staging'; // AWS Amplify staging
     } else if (HOSTNAME.includes('adinathhealth.com')) {
         return 'production'; // Production domain
-    } else {
-        return 'production'; // Custom domain
     }
+    return 'production'; // Custom domain
 })();
-
-// Production domain
-const PRODUCTION_DOMAIN = 'adinathhealth.com';
-const PRODUCTION_URL = 'https://adinathhealth.com';
 
 const CONFIG = {
     // Environment
-    ENV: ENV,
-    
+    ENV,
+
+    // Production domain info
+    PRODUCTION_DOMAIN: 'adinathhealth.com',
+    PRODUCTION_URL: 'https://adinathhealth.com',
+
     // Base URL configuration
     BASE_URL: (() => {
         switch (ENV) {
@@ -41,7 +40,7 @@ const CONFIG = {
                 return ''; // No prefix for Amplify/custom domain
         }
     })(),
-    
+
     // API endpoints (for future backend)
     API_URL: (() => {
         switch (ENV) {
@@ -55,7 +54,7 @@ const CONFIG = {
                 return ''; // No API for static demo
         }
     })(),
-    
+
     // Feature flags
     FEATURES: {
         // Enable real SMS in production only
@@ -67,20 +66,20 @@ const CONFIG = {
         // Enable local storage (always on for now)
         LOCAL_STORAGE: true,
         // Enable cloud sync when backend is ready
-        CLOUD_SYNC: false
+        CLOUD_SYNC: false,
     },
-    
+
     // Hospital Info
     HOSPITAL_NAME: 'Adinath Hospital',
     HOSPITAL_NAME_GU: 'આદિનાથ હોસ્પિટલ',
     HOSPITAL_NAME_HI: 'आदिनाथ हॉस्पिटल',
-    
+
     // Contact
     PHONE: '+919925450425',
     PHONE_DISPLAY: '+91 99254 50425',
     WHATSAPP: '919925450425',
     EMAIL: 'info@adinathhealth.com',
-    
+
     // Address
     ADDRESS: {
         line1: 'Shukan Mall, 2nd Floor',
@@ -90,26 +89,26 @@ const CONFIG = {
         pincode: '380004',
         country: 'India',
         plusCode: '3H3W+WJ6',
-        googleMapsUrl: 'https://www.google.com/maps/search/Shukan+Mall+Shahibaug+Ahmedabad'
+        googleMapsUrl: 'https://www.google.com/maps/search/Shukan+Mall+Shahibaug+Ahmedabad',
     },
-    
+
     // Working Hours
     HOURS: {
         weekdays: '11:00 AM - 7:00 PM',
         saturday: '11:00 AM - 7:00 PM',
         sunday: 'By Appointment',
-        display: 'Mon-Sat: 11 AM - 7 PM'
+        display: 'Mon-Sat: 11 AM - 7 PM',
     },
-    
+
     // Social Links
     SOCIAL: {
         instagram: '', // To be added
         facebook: '',
         youtube: '',
         linkedin_ashok: 'https://www.linkedin.com/in/ashok-sajnani-11937322/',
-        linkedin_sunita: 'https://www.linkedin.com/in/dr-sunita-sajnani-6b81b384/'
+        linkedin_sunita: 'https://www.linkedin.com/in/dr-sunita-sajnani-6b81b384/',
     },
-    
+
     // Doctors
     DOCTORS: {
         ashok: {
@@ -122,7 +121,7 @@ const CONFIG = {
             phone: '+919824066854',
             specialty: 'Orthopedic & Joint Surgeon',
             experience: '35+ years',
-            photo: 'images/dr-ashok-sajnani.jpg'
+            photo: 'images/dr-ashok-sajnani.jpg',
         },
         sunita: {
             id: 'sunita',
@@ -134,31 +133,33 @@ const CONFIG = {
             phone: '+919925450425',
             specialty: 'Obstetrics & Gynecology',
             experience: '30+ years',
-            photo: 'images/dr-sunita-sajnani.jpg'
-        }
+            photo: 'images/dr-sunita-sajnani.jpg',
+        },
     },
-    
+
     // Admin
     ADMIN: {
         email: 'pratik.sajnani@gmail.com',
-        name: 'Pratik Sajnani'
+        name: 'Pratik Sajnani',
     },
-    
+
     // SMS Provider (for production)
     SMS: {
         provider: 'msg91', // or 'twilio'
-        senderId: 'ADNHSP'
-    }
+        senderId: 'ADNHSP',
+    },
 };
 
 // Helper to build URLs
 function buildUrl(path) {
-    if (path.startsWith('http')) {return path;}
+    if (path.startsWith('http')) {
+        return path;
+    }
     const base = CONFIG.BASE_URL;
     if (path.startsWith('/')) {
         return base + path;
     }
-    return base + '/' + path;
+    return `${base}/${path}`;
 }
 
 // Helper to get asset URL
@@ -167,7 +168,7 @@ function assetUrl(path) {
 }
 
 // Log environment info (for debugging)
-console.log(`🏥 Adinath Hospital | Environment: ${ENV} | Base: ${CONFIG.BASE_URL || '/'}`);
+console.info(`🏥 Adinath Hospital | Environment: ${ENV} | Base: ${CONFIG.BASE_URL || '/'}`);
 
 // Export for use in other files
 if (typeof module !== 'undefined' && module.exports) {

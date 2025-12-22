@@ -1,0 +1,28 @@
+# CODEOWNERS - Define who reviews what
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything
+* @pratiksajnani
+
+# Core JavaScript
+/js/ @pratiksajnani
+
+# Portal and dashboards
+/portal/ @pratiksajnani
+
+# Forms and documents
+/forms/ @pratiksajnani
+
+# Configuration and deployment
+/amplify.yml @pratiksajnani
+/package.json @pratiksajnani
+/.github/ @pratiksajnani
+
+# Tests
+/tests/ @pratiksajnani
+
+# Documentation
+/docs/ @pratiksajnani
+README.md @pratiksajnani
+SECURITY.md @pratiksajnani
+

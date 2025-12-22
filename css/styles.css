@@ -10,11 +10,11 @@
     --primary-dark: #0f766e;
     --primary-light: #14b8a6;
     --primary-50: rgba(13, 148, 136, 0.1);
-    
+
     /* Secondary - Warm accent */
     --secondary: #f59e0b;
     --secondary-dark: #d97706;
-    
+
     /* Neutrals */
     --white: #ffffff;
     --gray-50: #f9fafb;
@@ -27,42 +27,44 @@
     --gray-700: #374151;
     --gray-800: #1f2937;
     --gray-900: #111827;
-    
+
     /* Semantic */
     --success: #10b981;
     --warning: #f59e0b;
     --error: #ef4444;
     --info: #3b82f6;
-    
+
     /* Typography */
     --font-primary: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-hindi: 'Noto Sans Devanagari', sans-serif;
     --font-gujarati: 'Noto Sans Gujarati', sans-serif;
-    
+
     /* Spacing */
     --section-padding: 80px;
     --container-max: 1200px;
-    
+
     /* Shadows */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    
+
     /* Border Radius */
     --radius-sm: 8px;
     --radius: 12px;
     --radius-lg: 16px;
     --radius-xl: 24px;
     --radius-full: 9999px;
-    
+
     /* Transitions */
     --transition: all 0.3s ease;
 }
 
 /* Reset & Base */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -82,11 +84,11 @@ body {
 }
 
 /* Hindi & Gujarati font support */
-body[data-lang="hi"] {
+body[data-lang='hi'] {
     font-family: var(--font-hindi), var(--font-primary);
 }
 
-body[data-lang="gu"] {
+body[data-lang='gu'] {
     font-family: var(--font-gujarati), var(--font-primary);
 }
 
@@ -113,15 +115,26 @@ ul {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-weight: 600;
     line-height: 1.3;
     color: var(--gray-900);
 }
 
-h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
-h2 { font-size: clamp(1.75rem, 4vw, 2.5rem); }
-h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
+h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+}
+h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+h3 {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+}
 
 .text-gradient {
     background: linear-gradient(135deg, var(--primary), var(--primary-light));
@@ -451,16 +464,16 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
         margin-top: 8px;
         transition: max-height 0.3s ease;
     }
-    
+
     .nav-dropdown.open .dropdown-menu {
         max-height: 300px;
         padding: 8px 0;
     }
-    
+
     .dropdown-arrow {
         transition: transform 0.3s ease;
     }
-    
+
     .nav-dropdown.open .dropdown-arrow {
         transform: rotate(180deg);
     }
@@ -488,7 +501,7 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
     .mobile-menu-btn {
         display: flex;
     }
-    
+
     .nav {
         position: fixed;
         top: 80px;
@@ -504,13 +517,13 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
         pointer-events: none;
         transition: var(--transition);
     }
-    
+
     .nav.active {
         transform: translateY(0);
         opacity: 1;
         pointer-events: all;
     }
-    
+
     .lang-selector {
         top: auto;
         bottom: 100px;
@@ -672,23 +685,23 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
     .hero {
         padding: 100px 0 60px; /* Reduced for mobile */
     }
-    
+
     .hero .container {
         grid-template-columns: 1fr;
     }
-    
+
     .hero-image {
         display: none;
     }
-    
+
     .hero-features {
         flex-wrap: wrap;
     }
-    
+
     .hero-cta {
         flex-direction: column;
     }
-    
+
     .hero-info {
         flex-direction: column;
         gap: 16px;
@@ -959,15 +972,15 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
     .doctors-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .doctor-card {
         grid-template-columns: 1fr;
     }
-    
+
     .doctor-image {
         min-height: 200px;
     }
-    
+
     .doctor-placeholder {
         font-size: 5rem;
     }
@@ -1022,7 +1035,7 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
     .yoga-content {
         grid-template-columns: 1fr;
     }
-    
+
     .yoga-image {
         display: none;
     }
@@ -1212,11 +1225,11 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
 }
 
 .quick-actions-section .section-header p {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .quick-actions-section .section-tag {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
     color: white;
 }
 
@@ -1239,7 +1252,7 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
 
 .action-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
 }
 
 .action-icon {
@@ -1349,7 +1362,7 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
     left: 0;
     right: 0;
     padding: 16px;
-    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
     color: var(--white);
     font-size: 0.9rem;
     font-weight: 500;
@@ -1366,11 +1379,11 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: auto;
     }
-    
+
     .gallery-item {
         min-height: 150px;
     }
-    
+
     .gallery-item.large {
         grid-column: span 2;
         grid-row: span 1;
@@ -1509,7 +1522,7 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
     .contact-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .contact-map iframe {
         height: 300px;
     }
@@ -1601,7 +1614,7 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
     .footer-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .footer-bottom {
         flex-direction: column;
         gap: 8px;
@@ -1639,7 +1652,6 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
     animation: fadeInUp 0.6s ease forwards;
 }
 
-
 /* ============================================
    FLOATING BOOK NOW BUTTON
    ============================================ */
@@ -1673,7 +1685,8 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
 }
 
 @keyframes pulse-glow {
-    0%, 100% {
+    0%,
+    100% {
         box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4);
     }
     50% {
@@ -1688,11 +1701,11 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
         padding: 12px 20px;
         font-size: 0.9rem;
     }
-    
+
     .floating-book-text {
         display: none;
     }
-    
+
     .floating-book-btn {
         width: 56px;
         height: 56px;
@@ -1700,7 +1713,7 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
         justify-content: center;
         border-radius: 50%;
     }
-    
+
     .floating-book-icon {
         font-size: 1.5rem;
     }
@@ -1891,21 +1904,6 @@ body.large-text-mode .btn {
 .star-rating {
     display: flex;
     gap: 8px;
-    font-size: 2rem;
-    margin: 20px 0;
-}
-
-.star-rating span {
-    cursor: pointer;
-    color: var(--gray-300);
-    transition: color 0.2s ease;
-}
-
-.star-rating span:hover,
-.star-rating span.active {
-    color: #fbbf24;
-}
-
     font-size: 2rem;
     margin: 20px 0;
 }

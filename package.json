@@ -27,18 +27,37 @@
     "predeploy": "npm run quality",
     "deploy": "npm run predeploy && git push origin main",
     "ci": "npm run quality && npm run test:e2e",
-    "validate": "npm run quality && echo '✅ All quality checks passed!'"
+    "validate": "npm run quality && echo '✅ All quality checks passed!'",
+    "prepare": "husky",
+    "security:scan": "grep -rE 'password.*=.*[\"'][^\"']{4,}[\"']' js/ docs/ README.md || echo '✅ No hardcoded passwords found'"
+  },
+  "lint-staged": {
+    "js/**/*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "css/**/*.css": [
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.0",
-    "jest": "^29.7.0",
+    "@commitlint/cli": "^18.4.0",
+    "@commitlint/config-conventional": "^18.4.0",
     "@jest/globals": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
+    "@playwright/test": "^1.40.0",
     "axe-playwright": "^1.2.3",
     "broken-link-checker": "^0.7.8",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-security": "^2.1.0",
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jscpd": "^4.0.5",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.2.4"
   },
   "engines": {

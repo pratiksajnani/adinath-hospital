@@ -7,7 +7,8 @@
 // Project: adinath-hospital (Mumbai region)
 const SUPABASE_CONFIG = {
     url: 'https://lhwqwloibxiiqtgaoxqp.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxod3F3bG9pYnhpaXF0Z2FveHFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMzMzMzksImV4cCI6MjA4MTkwOTMzOX0.s5IuG7e50dam4QAPpyTXEYoNHIWv8PupOgXx8Y_Rv0Y'
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxod3F3bG9pYnhpaXF0Z2FveHFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMzMzMzksImV4cCI6MjA4MTkwOTMzOX0.s5IuG7e50dam4QAPpyTXEYoNHIWv8PupOgXx8Y_Rv0Y',
 };
 
 // Initialize Supabase client (lazy load)
@@ -18,12 +19,9 @@ function getSupabase() {
         console.warn('Supabase not configured. Using demo mode.');
         return null;
     }
-    
+
     if (!_supabase && window.supabase) {
-        _supabase = window.supabase.createClient(
-            SUPABASE_CONFIG.url,
-            SUPABASE_CONFIG.anonKey
-        );
+        _supabase = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey);
     }
     return _supabase;
 }
@@ -40,17 +38,23 @@ const SupabaseAuth = {
     // Get current session
     async getSession() {
         const supabase = getSupabase();
-        if (!supabase) {return null;}
-        
-        const { data: { session } } = await supabase.auth.getSession();
+        if (!supabase) {
+            return null;
+        }
+
+        const {
+            data: { session },
+        } = await supabase.auth.getSession();
         return session;
     },
 
     // Get current user
     async getCurrentUser() {
         const session = await this.getSession();
-        if (!session) {return null;}
-        
+        if (!session) {
+            return null;
+        }
+
         // Get user profile from our users table
         const supabase = getSupabase();
         const { data: profile } = await supabase
@@ -58,7 +62,7 @@ const SupabaseAuth = {
             .select('*')
             .eq('auth_id', session.user.id)
             .single();
-        
+
         return profile;
     },
 
@@ -76,26 +80,26 @@ const SupabaseAuth = {
             options: {
                 data: {
                     name: userData.name,
-                    role: userData.role || 'patient'
-                }
-            }
+                    role: userData.role || 'patient',
+                },
+            },
         });
 
-        if (authError) {return { error: authError };}
+        if (authError) {
+            return { error: authError };
+        }
 
         // Create profile in users table
         if (authData.user) {
-            const { error: profileError } = await supabase
-                .from('users')
-                .insert({
-                    auth_id: authData.user.id,
-                    email: email,
-                    name: userData.name || '',
-                    phone: userData.phone || '',
-                    role: userData.role || 'patient',
-                    preferred_language: userData.language || 'en',
-                    created_at: new Date().toISOString()
-                });
+            const { error: profileError } = await supabase.from('users').insert({
+                auth_id: authData.user.id,
+                email,
+                name: userData.name || '',
+                phone: userData.phone || '',
+                role: userData.role || 'patient',
+                preferred_language: userData.language || 'en',
+                created_at: new Date().toISOString(),
+            });
 
             if (profileError) {
                 console.error('Profile creation error:', profileError);
@@ -115,10 +119,12 @@ const SupabaseAuth = {
 
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
-            password
+            password,
         });
 
-        if (error) {return { error };}
+        if (error) {
+            return { error };
+        }
 
         // Get user profile
         const profile = await this.getCurrentUser();
@@ -131,23 +137,30 @@ const SupabaseAuth = {
         const demoUsers = {
             'pratik.sajnani@gmail.com': { role: 'admin', name: 'Pratik Sajnani' },
             'drsajnani@gmail.com': { role: 'doctor', name: 'Dr. Ashok Sajnani', doctor: 'ashok' },
-            'sunita.sajnani9@gmail.com': { role: 'doctor', name: 'Dr. Sunita Sajnani', doctor: 'sunita' },
-            'reception@adinathhealth.com': { role: 'staff', name: 'Poonam' }
+            'sunita.sajnani9@gmail.com': {
+                role: 'doctor',
+                name: 'Dr. Sunita Sajnani',
+                doctor: 'sunita',
+            },
+            'reception@adinathhealth.com': { role: 'staff', name: 'Poonam' },
         };
 
         const user = demoUsers[email.toLowerCase()];
         if (user) {
             // Store in localStorage for demo
-            localStorage.setItem('hms_demo_user', JSON.stringify({
-                email,
-                ...user,
-                isDemo: true
-            }));
-            return { 
-                data: { 
+            localStorage.setItem(
+                'hms_demo_user',
+                JSON.stringify({
+                    email,
+                    ...user,
+                    isDemo: true,
+                })
+            );
+            return {
+                data: {
                     user: { email, ...user },
-                    isDemo: true 
-                } 
+                    isDemo: true,
+                },
             };
         }
 
@@ -160,12 +173,12 @@ const SupabaseAuth = {
         if (supabase) {
             await supabase.auth.signOut();
         }
-        
+
         // Clear demo mode too
         localStorage.removeItem('hms_demo_user');
         localStorage.removeItem('hms_logged_in');
         localStorage.removeItem('hms_role');
-        
+
         window.location.href = 'index.html';
     },
 
@@ -178,7 +191,7 @@ const SupabaseAuth = {
 
         // Supabase phone auth requires Twilio setup
         const { data, error } = await supabase.auth.signInWithOtp({
-            phone: phone.startsWith('+') ? phone : `+91${phone}`
+            phone: phone.startsWith('+') ? phone : `+91${phone}`,
         });
 
         return { data, error };
@@ -194,7 +207,7 @@ const SupabaseAuth = {
         const { data, error } = await supabase.auth.verifyOtp({
             phone: phone.startsWith('+') ? phone : `+91${phone}`,
             token,
-            type: 'sms'
+            type: 'sms',
         });
 
         return { data, error };
@@ -204,7 +217,9 @@ const SupabaseAuth = {
     async isAuthenticated() {
         // Check Supabase session
         const session = await this.getSession();
-        if (session) {return true;}
+        if (session) {
+            return true;
+        }
 
         // Check demo mode
         const demoUser = localStorage.getItem('hms_demo_user');
@@ -215,7 +230,9 @@ const SupabaseAuth = {
     async getUserRole() {
         // Try Supabase first
         const user = await this.getCurrentUser();
-        if (user) {return user.role;}
+        if (user) {
+            return user.role;
+        }
 
         // Check demo mode
         const demoUser = localStorage.getItem('hms_demo_user');
@@ -224,7 +241,7 @@ const SupabaseAuth = {
         }
 
         return null;
-    }
+    },
 };
 
 // ============================================
@@ -240,7 +257,7 @@ const SupabaseDB = {
         }
 
         let query = supabase.from(table).select('*');
-        
+
         Object.entries(filters).forEach(([key, value]) => {
             query = query.eq(key, value);
         });
@@ -265,13 +282,11 @@ const SupabaseDB = {
             return { data };
         }
 
-        const { data: result, error } = await supabase
-            .from(table)
-            .insert(data)
-            .select()
-            .single();
+        const { data: result, error } = await supabase.from(table).insert(data).select().single();
 
-        if (error) {return { error };}
+        if (error) {
+            return { error };
+        }
         return { data: result };
     },
 
@@ -280,7 +295,7 @@ const SupabaseDB = {
         const supabase = getSupabase();
         if (!supabase) {
             const existing = JSON.parse(localStorage.getItem(`hms_${table}`) || '[]');
-            const index = existing.findIndex(item => item.id === id);
+            const index = existing.findIndex((item) => item.id === id);
             if (index !== -1) {
                 existing[index] = { ...existing[index], ...data };
                 localStorage.setItem(`hms_${table}`, JSON.stringify(existing));
@@ -295,7 +310,9 @@ const SupabaseDB = {
             .select()
             .single();
 
-        if (error) {return { error };}
+        if (error) {
+            return { error };
+        }
         return { data: result };
     },
 
@@ -304,19 +321,18 @@ const SupabaseDB = {
         const supabase = getSupabase();
         if (!supabase) {
             const existing = JSON.parse(localStorage.getItem(`hms_${table}`) || '[]');
-            const filtered = existing.filter(item => item.id !== id);
+            const filtered = existing.filter((item) => item.id !== id);
             localStorage.setItem(`hms_${table}`, JSON.stringify(filtered));
             return { success: true };
         }
 
-        const { error } = await supabase
-            .from(table)
-            .delete()
-            .eq('id', id);
+        const { error } = await supabase.from(table).delete().eq('id', id);
 
-        if (error) {return { error };}
+        if (error) {
+            return { error };
+        }
         return { success: true };
-    }
+    },
 };
 
 // ============================================
@@ -327,13 +343,15 @@ const SupabaseAppointments = {
         return SupabaseDB.insert('appointments', {
             ...appointmentData,
             status: 'pending',
-            created_at: new Date().toISOString()
+            created_at: new Date().toISOString(),
         });
     },
 
     async getByDoctor(doctorId, date = null) {
         const filters = { doctor_id: doctorId };
-        if (date) {filters.date = date;}
+        if (date) {
+            filters.date = date;
+        }
         return SupabaseDB.fetch('appointments', filters);
     },
 
@@ -343,7 +361,7 @@ const SupabaseAppointments = {
 
     async updateStatus(id, status) {
         return SupabaseDB.update('appointments', id, { status });
-    }
+    },
 };
 
 // ============================================
@@ -353,7 +371,7 @@ const SupabasePatients = {
     async create(patientData) {
         return SupabaseDB.insert('patients', {
             ...patientData,
-            created_at: new Date().toISOString()
+            created_at: new Date().toISOString(),
         });
     },
 
@@ -366,9 +384,9 @@ const SupabasePatients = {
         const supabase = getSupabase();
         if (!supabase) {
             const all = JSON.parse(localStorage.getItem('hms_patients') || '[]');
-            return all.filter(p => 
-                p.name?.toLowerCase().includes(query.toLowerCase()) ||
-                p.phone?.includes(query)
+            return all.filter(
+                (p) =>
+                    p.name?.toLowerCase().includes(query.toLowerCase()) || p.phone?.includes(query)
             );
         }
 
@@ -376,9 +394,9 @@ const SupabasePatients = {
             .from('patients')
             .select('*')
             .or(`name.ilike.%${query}%,phone.ilike.%${query}%`);
-        
+
         return data || [];
-    }
+    },
 };
 
 // Export for use in other files
@@ -388,9 +406,10 @@ window.SupabaseAppointments = SupabaseAppointments;
 window.SupabasePatients = SupabasePatients;
 
 // Log mode on load
-console.log(SupabaseAuth.isConfigured() 
-    ? '✅ Supabase configured - using real auth' 
-    : '⚠️ Supabase not configured - using demo mode'
+console.log(
+    SupabaseAuth.isConfigured()
+        ? '✅ Supabase configured - using real auth'
+        : '⚠️ Supabase not configured - using demo mode'
 );
 
 /* Cache buster: 1766342676 */

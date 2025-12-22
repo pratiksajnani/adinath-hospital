@@ -15,19 +15,19 @@ document.addEventListener('DOMContentLoaded', () => {
 // Fix all internal links to use BASE_URL
 function fixBaseUrls() {
     const BASE_URL = typeof CONFIG !== 'undefined' ? CONFIG.BASE_URL : '';
-    
+
     // Fix all internal links that start with /
-    document.querySelectorAll('a[href^="/"]').forEach(link => {
+    document.querySelectorAll('a[href^="/"]').forEach((link) => {
         const href = link.getAttribute('href');
         // Don't modify external links or already fixed links
         if (!href.startsWith('http') && !href.startsWith(BASE_URL)) {
             link.setAttribute('href', BASE_URL + href);
         }
     });
-    
+
     // Fix logo link
-    document.querySelectorAll('a.logo[href="/"]').forEach(link => {
-        link.setAttribute('href', BASE_URL + '/');
+    document.querySelectorAll('a.logo[href="/"]').forEach((link) => {
+        link.setAttribute('href', `${BASE_URL}/`);
     });
 }
 
@@ -36,12 +36,13 @@ function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             const BASE_URL = typeof CONFIG !== 'undefined' ? CONFIG.BASE_URL : '';
-            const swPath = BASE_URL + '/sw.js';
-            navigator.serviceWorker.register(swPath)
-                .then(registration => {
+            const swPath = `${BASE_URL}/sw.js`;
+            navigator.serviceWorker
+                .register(swPath)
+                .then((registration) => {
                     console.log('SW registered:', registration.scope);
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.warn('SW registration failed:', error);
                 });
         });
@@ -52,15 +53,15 @@ function registerServiceWorker() {
 function initMobileMenu() {
     const menuBtn = document.querySelector('.mobile-menu-btn');
     const nav = document.querySelector('.nav');
-    
+
     if (menuBtn && nav) {
         menuBtn.addEventListener('click', () => {
             nav.classList.toggle('active');
             menuBtn.classList.toggle('active');
         });
-        
+
         // Close menu on link click
-        nav.querySelectorAll('a').forEach(link => {
+        nav.querySelectorAll('a').forEach((link) => {
             link.addEventListener('click', () => {
                 nav.classList.remove('active');
                 menuBtn.classList.remove('active');
@@ -72,23 +73,23 @@ function initMobileMenu() {
 // Mobile Dropdown Toggle
 function initDropdowns() {
     const dropdowns = document.querySelectorAll('.nav-dropdown');
-    
-    dropdowns.forEach(dropdown => {
+
+    dropdowns.forEach((dropdown) => {
         const trigger = dropdown.querySelector('.dropdown-trigger');
         const menu = dropdown.querySelector('.dropdown-menu');
-        
+
         if (trigger && menu) {
             // Toggle on click for mobile
             trigger.addEventListener('click', (e) => {
                 // Check if on mobile (nav is visible = mobile menu is open)
                 const isMobile = window.innerWidth <= 900;
-                
+
                 if (isMobile) {
                     e.preventDefault();
                     dropdown.classList.toggle('open');
-                    
+
                     // Close other dropdowns
-                    dropdowns.forEach(other => {
+                    dropdowns.forEach((other) => {
                         if (other !== dropdown) {
                             other.classList.remove('open');
                         }
@@ -97,11 +98,11 @@ function initDropdowns() {
             });
         }
     });
-    
+
     // Close dropdowns when clicking outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.nav-dropdown')) {
-            dropdowns.forEach(dropdown => {
+            dropdowns.forEach((dropdown) => {
                 dropdown.classList.remove('open');
             });
         }
@@ -110,21 +111,23 @@ function initDropdowns() {
 
 // Smooth Scroll for anchor links
 function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
-            if (href === '#') {return;}
-            
+            if (href === '#') {
+                return;
+            }
+
             const target = document.querySelector(href);
             if (target) {
                 e.preventDefault();
                 const headerOffset = 100;
                 const elementPosition = target.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                
+
                 window.scrollTo({
                     top: offsetPosition,
-                    behavior: 'smooth'
+                    behavior: 'smooth',
                 });
             }
         });
@@ -134,8 +137,10 @@ function initSmoothScroll() {
 // Header background on scroll
 function initHeaderScroll() {
     const header = document.querySelector('.header');
-    if (!header) {return;}
-    
+    if (!header) {
+        return;
+    }
+
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
@@ -149,20 +154,20 @@ function initHeaderScroll() {
 function initAnimations() {
     const observerOptions = {
         threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+        rootMargin: '0px 0px -50px 0px',
     };
-    
+
     const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry) => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('fade-in-up');
                 observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
-    
+
     // Observe sections
-    document.querySelectorAll('section').forEach(section => {
+    document.querySelectorAll('section').forEach((section) => {
         section.style.opacity = '0';
         section.style.transform = 'translateY(20px)';
         observer.observe(section);
@@ -172,14 +177,14 @@ function initAnimations() {
 // Animate counters
 function animateCounters() {
     const counters = document.querySelectorAll('.stat-number');
-    
-    counters.forEach(counter => {
+
+    counters.forEach((counter) => {
         const target = parseInt(counter.textContent.replace(/[^0-9]/g, ''));
         const suffix = counter.textContent.replace(/[0-9]/g, '');
         const duration = 2000;
         const step = target / (duration / 16);
         let current = 0;
-        
+
         const updateCounter = () => {
             current += step;
             if (current < target) {
@@ -189,7 +194,7 @@ function animateCounters() {
                 counter.textContent = target + suffix;
             }
         };
-        
+
         updateCounter();
     });
 }
@@ -198,8 +203,8 @@ function animateCounters() {
 function validateForm(form) {
     let isValid = true;
     const requiredFields = form.querySelectorAll('[required]');
-    
-    requiredFields.forEach(field => {
+
+    requiredFields.forEach((field) => {
         if (!field.value.trim()) {
             isValid = false;
             field.classList.add('error');
@@ -207,7 +212,7 @@ function validateForm(form) {
             field.classList.remove('error');
         }
     });
-    
+
     // Email validation
     const emailField = form.querySelector('input[type="email"]');
     if (emailField && emailField.value) {
@@ -217,7 +222,7 @@ function validateForm(form) {
             emailField.classList.add('error');
         }
     }
-    
+
     // Phone validation (Indian)
     const phoneField = form.querySelector('input[type="tel"]');
     if (phoneField && phoneField.value) {
@@ -228,7 +233,7 @@ function validateForm(form) {
             phoneField.classList.add('error');
         }
     }
-    
+
     return isValid;
 }
 
@@ -237,9 +242,9 @@ function showToast(message, type = 'info') {
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
     toast.textContent = message;
-    
+
     document.body.appendChild(toast);
-    
+
     setTimeout(() => toast.classList.add('show'), 100);
     setTimeout(() => {
         toast.classList.remove('show');
@@ -251,7 +256,7 @@ function showToast(message, type = 'info') {
 function formatPhone(phone) {
     const cleaned = phone.replace(/\D/g, '');
     if (cleaned.length === 10) {
-        return `+91 ${cleaned.slice(0,5)} ${cleaned.slice(5)}`;
+        return `+91 ${cleaned.slice(0, 5)} ${cleaned.slice(5)}`;
     }
     return phone;
 }
@@ -262,19 +267,18 @@ function getUrlParams() {
     return Object.fromEntries(params.entries());
 }
 
-
 // ============================================
 // FAQ ACCORDION
 // ============================================
 function toggleFAQ(button) {
     const faqItem = button.parentElement;
     const wasActive = faqItem.classList.contains('active');
-    
+
     // Close all other FAQs
-    document.querySelectorAll('.faq-item').forEach(item => {
+    document.querySelectorAll('.faq-item').forEach((item) => {
         item.classList.remove('active');
     });
-    
+
     // Toggle current FAQ
     if (!wasActive) {
         faqItem.classList.add('active');
@@ -296,6 +300,6 @@ if (typeof module !== 'undefined' && module.exports) {
         validateForm,
         showToast,
         formatPhone,
-        getUrlParams
+        getUrlParams,
     };
 }

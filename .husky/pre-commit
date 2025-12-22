@@ -1,0 +1,16 @@
+#!/bin/sh
+
+echo "🔍 Running pre-commit checks..."
+
+# Run lint-staged (linting + formatting)
+npx lint-staged
+
+# Check for exposed secrets
+echo "🔒 Checking for exposed secrets..."
+if grep -rE "password['\"]?\s*[:=]\s*['\"][^'\"]{4,}['\"]" README.md docs/*.html 2>/dev/null | grep -v "Contact admin\|Google Sign-In\|your-secure"; then
+    echo "❌ SECURITY: Hardcoded passwords found!"
+    echo "Please remove credentials before committing."
+    exit 1
+fi
+
+echo "✅ Pre-commit checks passed!"

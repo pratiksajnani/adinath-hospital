@@ -73,10 +73,10 @@ function injectUserStatus() {
             </div>
         </div>
     `;
-    
+
     // Add to page
     document.body.insertAdjacentHTML('beforeend', userStatusHTML);
-    
+
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
         const widget = document.getElementById('user-status-widget');
@@ -84,7 +84,7 @@ function injectUserStatus() {
             document.getElementById('user-status-menu').style.display = 'none';
         }
     });
-    
+
     // Update status on load
     updateUserStatusWidget();
 }
@@ -93,11 +93,17 @@ function injectUserStatus() {
 function getBasePath() {
     const path = window.location.pathname;
     const depth = (path.match(/\//g) || []).length - 1;
-    
-    if (path.includes('/portal/') || path.includes('/docs/') || path.includes('/services/') || 
-        path.includes('/forms/') || path.includes('/store/') || path.includes('/onboard/')) {
+
+    if (
+        path.includes('/portal/') ||
+        path.includes('/docs/') ||
+        path.includes('/services/') ||
+        path.includes('/forms/') ||
+        path.includes('/store/') ||
+        path.includes('/onboard/')
+    ) {
         // Nested pages
-        if (path.split('/').filter(p => p).length >= 3) {
+        if (path.split('/').filter((p) => p).length >= 3) {
             return '../../';
         }
         return '../';
@@ -115,8 +121,9 @@ function toggleUserMenu() {
 function updateUserStatusWidget() {
     const isLoggedIn = localStorage.getItem('hms_logged_in') === 'true';
     const role = localStorage.getItem('hms_role');
-    const userName = localStorage.getItem('hms_user_name') || localStorage.getItem('hms_user_email');
-    
+    const userName =
+        localStorage.getItem('hms_user_name') || localStorage.getItem('hms_user_email');
+
     const icon = document.getElementById('user-status-icon');
     const name = document.getElementById('user-status-name');
     const guestMenu = document.getElementById('guest-menu-items');
@@ -124,58 +131,73 @@ function updateUserStatusWidget() {
     const menuName = document.getElementById('menu-user-name');
     const menuRole = document.getElementById('menu-user-role');
     const portalLink = document.getElementById('menu-portal-link');
-    
-    if (!icon || !name) {return;}
-    
+
+    if (!icon || !name) {
+        return;
+    }
+
     if (isLoggedIn && role) {
         // Logged in state
         const roleIcons = {
-            'admin': '👑',
-            'doctor': '👨‍⚕️',
-            'staff': '💁',
-            'receptionist': '💁',
-            'nurse': '👩‍⚕️',
-            'patient': '🏥'
+            admin: '👑',
+            doctor: '👨‍⚕️',
+            staff: '💁',
+            receptionist: '💁',
+            nurse: '👩‍⚕️',
+            patient: '🏥',
         };
-        
+
         const roleColors = {
-            'admin': '#dc2626',
-            'doctor': '#0f766e',
-            'staff': '#7c3aed',
-            'receptionist': '#7c3aed',
-            'patient': '#2563eb'
+            admin: '#dc2626',
+            doctor: '#0f766e',
+            staff: '#7c3aed',
+            receptionist: '#7c3aed',
+            patient: '#2563eb',
         };
-        
+
         const displayName = userName ? userName.split('@')[0].split(' ')[0] : role;
-        
+
         icon.textContent = roleIcons[role] || '👤';
         name.textContent = displayName;
         name.style.color = roleColors[role] || '#1e293b';
-        
-        if (guestMenu) {guestMenu.style.display = 'none';}
-        if (loggedInMenu) {loggedInMenu.style.display = 'block';}
-        if (menuName) {menuName.textContent = userName || 'User';}
-        if (menuRole) {menuRole.textContent = role.charAt(0).toUpperCase() + role.slice(1);}
-        
+
+        if (guestMenu) {
+            guestMenu.style.display = 'none';
+        }
+        if (loggedInMenu) {
+            loggedInMenu.style.display = 'block';
+        }
+        if (menuName) {
+            menuName.textContent = userName || 'User';
+        }
+        if (menuRole) {
+            menuRole.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+        }
+
         // Set portal link
         const basePath = getBasePath();
         const portalLinks = {
-            'admin': basePath + 'portal/admin/index.html',
-            'doctor': basePath + 'portal/doctor/simple.html',
-            'staff': basePath + 'portal/staff/index.html',
-            'receptionist': basePath + 'portal/staff/index.html',
-            'patient': basePath + 'portal/patient/index.html'
+            admin: `${basePath}portal/admin/index.html`,
+            doctor: `${basePath}portal/doctor/simple.html`,
+            staff: `${basePath}portal/staff/index.html`,
+            receptionist: `${basePath}portal/staff/index.html`,
+            patient: `${basePath}portal/patient/index.html`,
         };
-        if (portalLink) {portalLink.href = portalLinks[role] || basePath + 'portal/index.html';}
-        
+        if (portalLink) {
+            portalLink.href = portalLinks[role] || `${basePath}portal/index.html`;
+        }
     } else {
         // Guest state
         icon.textContent = '👤';
         name.textContent = 'Guest';
         name.style.color = '#64748b';
-        
-        if (guestMenu) {guestMenu.style.display = 'block';}
-        if (loggedInMenu) {loggedInMenu.style.display = 'none';}
+
+        if (guestMenu) {
+            guestMenu.style.display = 'block';
+        }
+        if (loggedInMenu) {
+            loggedInMenu.style.display = 'none';
+        }
     }
 }
 
@@ -189,11 +211,11 @@ function doLogout() {
     localStorage.removeItem('hms_auth_method');
     localStorage.removeItem('hms_doctor_id');
     localStorage.removeItem('currentPatient');
-    
+
     updateUserStatusWidget();
-    
+
     // Redirect to home
-    window.location.href = getBasePath() + 'index.html';
+    window.location.href = `${getBasePath()}index.html`;
 }
 
 // Auto-inject when DOM is ready
@@ -205,6 +227,11 @@ if (document.readyState === 'loading') {
 
 // Export for testing
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { getBasePath, toggleUserMenu, updateUserStatusWidget, doLogout, injectUserStatus };
+    module.exports = {
+        getBasePath,
+        toggleUserMenu,
+        updateUserStatusWidget,
+        doLogout,
+        injectUserStatus,
+    };
 }
-
