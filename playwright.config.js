@@ -6,7 +6,8 @@ const { defineConfig, devices } = require('@playwright/test');
  * Tests all user flows and pages
  */
 module.exports = defineConfig({
-  testDir: './tests/e2e',
+  testDir: './tests',
+  testMatch: ['e2e/**/*.spec.js', 'smoke/**/*.spec.js'],
   
   // Run tests in parallel
   fullyParallel: true,
@@ -29,6 +30,15 @@ module.exports = defineConfig({
   
   // Output folder for test artifacts
   outputDir: 'test-results',
+  
+  // Snapshot configuration for visual regression testing
+  snapshotPathTemplate: '{testDir}/__screenshots__/{testFilePath}/{arg}{ext}',
+  expect: {
+    toHaveScreenshot: {
+      maxDiffPixels: 100,
+      threshold: 0.1,
+    },
+  },
   
   // Shared settings for all projects
   use: {

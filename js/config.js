@@ -148,6 +148,18 @@ const CONFIG = {
         provider: 'msg91', // or 'twilio'
         senderId: 'ADNHSP',
     },
+
+    // Error Tracking (Sentry)
+    // Set your Sentry DSN here for production error tracking
+    SENTRY_DSN: ENV === 'production' ? '' : null, // Add your Sentry DSN
+
+    // Session Recording (LogRocket)
+    // Set your LogRocket App ID for production session recording
+    LOGROCKET_ID: ENV === 'production' ? '' : null, // Add your LogRocket ID
+
+    // Version info
+    VERSION: '1.0.0',
+    BUILD_DATE: new Date().toISOString().split('T')[0],
 };
 
 // Helper to build URLs

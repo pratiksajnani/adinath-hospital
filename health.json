@@ -1,0 +1,12 @@
+{
+  "status": "healthy",
+  "version": "1.0.0",
+  "environment": "production",
+  "site": "adinathhealth.com",
+  "checks": {
+    "static_files": true,
+    "api_ready": true
+  },
+  "updated": "2025-12-21T00:00:00Z"
+}
+

@@ -400,17 +400,36 @@ const SupabasePatients = {
     },
 };
 
-// Export for use in other files
-window.SupabaseAuth = SupabaseAuth;
-window.SupabaseDB = SupabaseDB;
-window.SupabaseAppointments = SupabaseAppointments;
-window.SupabasePatients = SupabasePatients;
+// Export for use in browser
+if (typeof window !== 'undefined') {
+  window.SupabaseAuth = SupabaseAuth;
+  window.SupabaseDB = SupabaseDB;
+  window.SupabaseAppointments = SupabaseAppointments;
+  window.SupabasePatients = SupabasePatients;
 
-// Log mode on load
-console.log(
+  // Log mode on load
+  console.log(
     SupabaseAuth.isConfigured()
-        ? '✅ Supabase configured - using real auth'
-        : '⚠️ Supabase not configured - using demo mode'
-);
+      ? '✅ Supabase configured - using real auth'
+      : '⚠️ Supabase not configured - using demo mode'
+  );
+}
 
-/* Cache buster: 1766342676 */
+// Export for use in Node.js/Jest
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    SUPABASE_CONFIG,
+    SupabaseAuth,
+    SupabaseDB,
+    SupabaseAppointments,
+    SupabasePatients,
+    isDemoMode: () => !SupabaseAuth.isConfigured(),
+    utils: {
+      validateEmail: (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+      generateId: () =>
+        'id_' +
+        Date.now().toString(36) +
+        Math.random().toString(36).substring(2, 9),
+    },
+  };
+}
