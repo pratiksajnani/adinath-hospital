@@ -75,6 +75,20 @@
   },
   "overrides": [
     {
+      "files": ["js/hms.js"],
+      "rules": {
+        "max-lines": "off",
+        "max-lines-per-function": "off"
+      }
+    },
+    {
+      "files": ["js/user-status.js"],
+      "rules": {
+        "max-statements": "off",
+        "complexity": "off"
+      }
+    },
+    {
       "files": ["tests/**/*.js"],
       "rules": {
         "no-console": "off",

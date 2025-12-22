@@ -92,7 +92,6 @@ function injectUserStatus() {
 // Get base path for links
 function getBasePath() {
     const path = window.location.pathname;
-    const depth = (path.match(/\//g) || []).length - 1;
 
     if (
         path.includes('/portal/') ||

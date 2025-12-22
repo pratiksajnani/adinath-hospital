@@ -132,7 +132,8 @@ const SupabaseAuth = {
     },
 
     // Demo sign in (when Supabase not configured)
-    demoSignIn(email, password) {
+    demoSignIn(email, _password) {
+        void _password; // Password validation is done via HMS.auth in demo mode
         // Check against demo users
         const demoUsers = {
             'pratik.sajnani@gmail.com': { role: 'admin', name: 'Pratik Sajnani' },

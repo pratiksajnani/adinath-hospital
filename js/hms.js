@@ -1117,6 +1117,7 @@ window.initFeedbackWidget = function initFeedbackWidget(role = 'visitor') {
         };
 
         HMS.feedback.add(feedback);
+        // eslint-disable-next-line no-alert
         alert('✅ Thank you! Your feedback has been logged.');
         closeFeedbackModal();
         document.getElementById('feedback-form').reset();
