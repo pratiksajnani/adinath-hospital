@@ -47,6 +47,24 @@
     --font-medium: 500;
     --font-semibold: 600;
     --font-bold: 700;
+
+    /* Alert Colors */
+    --alert-success-bg: #d1fae5;
+    --alert-success-text: #065f46;
+    --alert-success-border: #a7f3d0;
+    --alert-warning-bg: #fef3c7;
+    --alert-warning-text: #92400e;
+    --alert-warning-border: #fde68a;
+    --alert-error-bg: #fee2e2;
+    --alert-error-text: #991b1b;
+    --alert-error-border: #fecaca;
+    --alert-info-bg: #dbeafe;
+    --alert-info-text: #1e40af;
+    --alert-info-border: #bfdbfe;
+
+    /* Status Colors */
+    --status-danger: #dc2626;
+    --status-warning: #f59e0b;
 }
 
 /* ============================================
@@ -341,6 +359,7 @@
 }
 .text-muted {
     color: var(--gray-500);
+    font-size: 0.9rem;
 }
 .text-dark {
     color: var(--gray-800);
@@ -704,27 +723,27 @@
 }
 
 .alert-success {
-    background: #d1fae5;
-    color: #065f46;
-    border: 1px solid #a7f3d0;
+    background: var(--alert-success-bg);
+    color: var(--alert-success-text);
+    border: 1px solid var(--alert-success-border);
 }
 
 .alert-warning {
-    background: #fef3c7;
-    color: #92400e;
-    border: 1px solid #fde68a;
+    background: var(--alert-warning-bg);
+    color: var(--alert-warning-text);
+    border: 1px solid var(--alert-warning-border);
 }
 
 .alert-error {
-    background: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
+    background: var(--alert-error-bg);
+    color: var(--alert-error-text);
+    border: 1px solid var(--alert-error-border);
 }
 
 .alert-info {
-    background: #dbeafe;
-    color: #1e40af;
-    border: 1px solid #bfdbfe;
+    background: var(--alert-info-bg);
+    color: var(--alert-info-text);
+    border: 1px solid var(--alert-info-border);
 }
 
 /* ============================================
@@ -746,28 +765,28 @@
 }
 
 .badge-success {
-    background: #d1fae5;
-    color: #065f46;
+    background: var(--alert-success-bg);
+    color: var(--alert-success-text);
 }
 
 .badge-warning {
-    background: #fef3c7;
-    color: #92400e;
+    background: var(--alert-warning-bg);
+    color: var(--alert-warning-text);
 }
 
 .badge-error {
-    background: #fee2e2;
-    color: #991b1b;
+    background: var(--alert-error-bg);
+    color: var(--alert-error-text);
 }
 
 /* Special Link Colors */
 .link-danger {
-    color: #dc2626;
+    color: var(--status-danger);
     font-weight: var(--font-semibold);
 }
 
 .link-warning {
-    color: #f59e0b;
+    color: var(--status-warning);
     font-weight: var(--font-semibold);
 }
 
@@ -1077,7 +1096,7 @@
    RESPONSIVE UTILITIES
    ============================================ */
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .hidden-mobile {
         display: none;
     }
@@ -1092,8 +1111,67 @@
     }
 }
 
-@media (min-width: 769px) {
+@media (width >= 769px) {
     .hidden-desktop {
         display: none;
     }
+}
+
+/* ============================================
+   COMMON COMPONENT PATTERNS
+   (To replace inline styles in HTML)
+   ============================================ */
+
+/* Doctor/Staff Card Subtitle */
+.card-subtitle {
+    margin: 4px 0 0;
+    font-size: 0.95rem;
+    color: var(--gray-800);
+}
+
+/* Small Label */
+.label-small {
+    font-size: 0.75rem;
+    color: var(--gray-500);
+}
+
+/* List Item with Border */
+.list-item-bordered {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+/* Pill Links */
+.pill-link {
+    padding: 10px 20px;
+    background: var(--gray-100);
+    border-radius: 25px;
+    color: var(--gray-700);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-block;
+}
+
+.pill-link:hover {
+    background: var(--primary-light);
+    color: var(--white);
+}
+
+/* Card with shadow */
+.card-shadow {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Large Icon */
+.icon-lg {
+    font-size: 32px;
+}
+
+/* Section Padding */
+.section-gradient {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f0fdfa 0%, #ecfdf5 100%);
 }
