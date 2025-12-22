@@ -325,36 +325,6 @@ body.large-text-mode .lang-btn.accessibility-btn {
 }
 
 /* ============================================
-   WHATSAPP FLOAT
-   ============================================ */
-.whatsapp-float {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 1000;
-    width: 60px;
-    height: 60px;
-    background: #25d366;
-    color: var(--white);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--shadow-lg);
-    transition: var(--transition);
-}
-
-.whatsapp-float:hover {
-    transform: scale(1.1);
-    box-shadow: var(--shadow-xl);
-}
-
-.whatsapp-float svg {
-    width: 32px;
-    height: 32px;
-}
-
-/* ============================================
    HEADER / NAVIGATION
    ============================================ */
 .header {
@@ -1749,73 +1719,6 @@ body.large-text-mode .lang-btn.accessibility-btn {
 
 .fade-in-up {
     animation: fadeInUp 0.6s ease forwards;
-}
-
-/* ============================================
-   FLOATING BOOK NOW BUTTON
-   ============================================ */
-.floating-book-btn {
-    position: fixed;
-    bottom: 100px;
-    right: 24px;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-    padding: 14px 24px;
-    border-radius: 50px;
-    box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    animation: pulse-glow 2s infinite;
-}
-
-.floating-book-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 12px 35px rgba(13, 148, 136, 0.5);
-}
-
-.floating-book-icon {
-    font-size: 1.3rem;
-}
-
-@keyframes pulse-glow {
-    0%,
-    100% {
-        box-shadow: 0 8px 25px rgba(13, 148, 136, 0.4);
-    }
-    50% {
-        box-shadow: 0 8px 35px rgba(13, 148, 136, 0.6);
-    }
-}
-
-@media (max-width: 768px) {
-    .floating-book-btn {
-        bottom: 80px;
-        right: 16px;
-        padding: 12px 20px;
-        font-size: 0.9rem;
-    }
-
-    .floating-book-text {
-        display: none;
-    }
-
-    .floating-book-btn {
-        width: 56px;
-        height: 56px;
-        padding: 0;
-        justify-content: center;
-        border-radius: 50%;
-    }
-
-    .floating-book-icon {
-        font-size: 1.5rem;
-    }
 }
 
 /* ============================================
