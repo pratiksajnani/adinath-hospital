@@ -230,7 +230,7 @@ h3 {
 }
 
 /* ============================================
-   LANGUAGE SELECTOR
+   LANGUAGE SELECTOR (Fixed Position - Sidebar)
    ============================================ */
 .lang-selector {
     position: fixed;
@@ -247,8 +247,9 @@ h3 {
 }
 
 .lang-btn {
-    width: 40px;
+    min-width: 40px;
     height: 40px;
+    padding: 8px 12px;
     border: none;
     background: var(--gray-100);
     border-radius: var(--radius-sm);
@@ -256,6 +257,10 @@ h3 {
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .lang-btn:hover {
@@ -265,6 +270,43 @@ h3 {
 .lang-btn.active {
     background: var(--primary);
     color: var(--white);
+}
+
+/* ============================================
+   LANGUAGE BAR (Inline - Inside Cards/Forms)
+   ============================================ */
+.language-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.language-bar .lang-btn {
+    min-width: 80px;
+    height: 40px;
+    padding: 8px 16px;
+    border: 2px solid var(--gray-200);
+    background: var(--white);
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.language-bar .lang-btn:hover {
+    border-color: var(--primary);
+    background: var(--primary-50);
+}
+
+.language-bar .lang-btn.active {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
 }
 
 /* ============================================
@@ -349,14 +391,15 @@ h3 {
 .nav {
     display: flex;
     align-items: center;
-    gap: 32px;
+    gap: 24px;
 }
 
 .nav a:not(.btn) {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
     color: var(--gray-600);
     position: relative;
+    white-space: nowrap;
 }
 
 .nav a:not(.btn):hover {
@@ -378,15 +421,33 @@ h3 {
     width: 100%;
 }
 
+/* Consistent nav button sizing */
+.nav .btn {
+    height: 38px;
+    padding: 0 16px;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.nav .btn-sm {
+    height: 38px;
+    padding: 0 16px;
+}
+
 /* Navigation Dropdowns */
 .nav-dropdown {
     position: relative;
 }
 
 .dropdown-trigger {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 4px;
+    white-space: nowrap;
 }
 
 .dropdown-arrow {
@@ -446,6 +507,29 @@ h3 {
 
 .nav-dropdown:hover .dropdown-right {
     transform: translateX(0) translateY(0);
+}
+
+/* User Status Widget in Nav */
+.nav-dropdown.user-status {
+    margin-left: 8px;
+}
+
+.nav-dropdown.user-status .dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: var(--primary-50);
+    border: 2px solid var(--primary);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    height: 38px;
+    white-space: nowrap;
+}
+
+.nav-dropdown.user-status .dropdown-trigger:hover {
+    background: var(--primary);
+    color: var(--white);
 }
 
 /* Mobile Dropdown State */
