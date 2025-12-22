@@ -60,9 +60,13 @@ function initMobileMenu() {
             menuBtn.classList.toggle('active');
         });
 
-        // Close menu on link click
+        // Close menu on link click (but not dropdown triggers)
         nav.querySelectorAll('a').forEach((link) => {
-            link.addEventListener('click', () => {
+            link.addEventListener('click', (e) => {
+                // Don't close menu if clicking a dropdown trigger
+                if (link.classList.contains('dropdown-trigger')) {
+                    return;
+                }
                 nav.classList.remove('active');
                 menuBtn.classList.remove('active');
             });
