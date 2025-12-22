@@ -16,7 +16,7 @@
     --secondary-dark: #d97706;
 
     /* Neutrals */
-    --white: #ffffff;
+    --white: #fff;
     --gray-50: #f9fafb;
     --gray-100: #f3f4f6;
     --gray-200: #e5e7eb;
@@ -35,7 +35,7 @@
     --info: #3b82f6;
 
     /* Typography */
-    --font-primary: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-primary: 'Poppins', -apple-system, blinkmacsystemfont, sans-serif;
     --font-hindi: 'Noto Sans Devanagari', sans-serif;
     --font-gujarati: 'Noto Sans Gujarati', sans-serif;
 
@@ -518,7 +518,7 @@ body.large-text-mode .lang-btn.accessibility-btn {
 }
 
 /* Mobile Dropdown State */
-@media (max-width: 900px) {
+@media (width <= 900px) {
     .dropdown-menu {
         position: static;
         transform: none;
@@ -566,7 +566,7 @@ body.large-text-mode .lang-btn.accessibility-btn {
     transition: var(--transition);
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
     .mobile-menu-btn {
         display: flex;
     }
@@ -750,7 +750,7 @@ body.large-text-mode .lang-btn.accessibility-btn {
     color: var(--primary);
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
     .hero {
         padding: 100px 0 60px; /* Reduced for mobile */
     }
@@ -791,23 +791,28 @@ body.large-text-mode .lang-btn.accessibility-btn {
     gap: 32px;
 }
 
-.stat-card {
+.stats-section .stat-card {
     text-align: center;
     color: var(--white);
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
 }
 
-.stat-number {
+.stats-section .stat-number {
     display: block;
     font-size: 2.5rem;
     font-weight: 700;
+    color: var(--white);
 }
 
-.stat-label {
+.stats-section .stat-label {
     font-size: 0.95rem;
     opacity: 0.9;
+    color: var(--white);
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -895,7 +900,7 @@ body.large-text-mode .lang-btn.accessibility-btn {
     margin-top: 24px;
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
     .services-grid {
         grid-template-columns: 1fr;
     }
@@ -1037,7 +1042,7 @@ body.large-text-mode .lang-btn.accessibility-btn {
     transform: translateY(-2px);
 }
 
-@media (max-width: 1100px) {
+@media (width <= 1100px) {
     .doctors-grid {
         grid-template-columns: 1fr;
     }
@@ -1100,7 +1105,7 @@ body.large-text-mode .lang-btn.accessibility-btn {
     opacity: 0.8;
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .yoga-content {
         grid-template-columns: 1fr;
     }
@@ -1184,7 +1189,7 @@ body.large-text-mode .lang-btn.accessibility-btn {
     font-weight: 500;
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .corner-grid {
         grid-template-columns: 1fr;
     }
@@ -1268,13 +1273,13 @@ body.large-text-mode .lang-btn.accessibility-btn {
     text-align: center;
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
     .expect-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
     .expect-grid {
         grid-template-columns: 1fr;
     }
@@ -1357,13 +1362,13 @@ body.large-text-mode .lang-btn.accessibility-btn {
     transform: translateX(0);
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
     .actions-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
     .actions-grid {
         grid-template-columns: 1fr;
     }
@@ -1443,7 +1448,7 @@ body.large-text-mode .lang-btn.accessibility-btn {
     opacity: 1;
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: auto;
@@ -1518,7 +1523,7 @@ body.large-text-mode .lang-btn.accessibility-btn {
     color: var(--gray-500);
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .testimonials-grid {
         grid-template-columns: 1fr;
     }
@@ -1587,7 +1592,7 @@ body.large-text-mode .lang-btn.accessibility-btn {
     text-decoration: underline;
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .contact-grid {
         grid-template-columns: 1fr;
     }
@@ -1673,13 +1678,13 @@ body.large-text-mode .lang-btn.accessibility-btn {
     color: var(--gray-500);
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
     .footer-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
     .footer-grid {
         grid-template-columns: 1fr;
     }
