@@ -131,7 +131,7 @@
     <!-- Floating Action Buttons (consolidated) -->
     <div class="fab-container">
         <a href="book.html" class="fab fab-primary" aria-label="Book Appointment" title="Book Appointment">
-            <span style="font-size: 24px;">📅</span>
+            <span class="fab-icon">📅</span>
         </a>
         <a href="https://wa.me/919925450425?text=Hello%20Adinath%20Hospital" class="fab fab-whatsapp" target="_blank" aria-label="Chat on WhatsApp" title="WhatsApp">
             <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -183,23 +183,23 @@
                 <div class="nav-dropdown nav-help">
                     <a href="#" class="dropdown-trigger"><span data-i18n="nav_help">Help</span> <span class="dropdown-arrow">▾</span></a>
                     <div class="dropdown-menu dropdown-right">
-                        <div style="padding: 8px 16px; font-weight: 600; color: #0f766e; font-size: 12px;" data-i18n="menu_guides_header">GUIDES BY ROLE</div>
+                        <div class="menu-header" data-i18n="menu_guides_header">GUIDES BY ROLE</div>
                         <a href="docs/PATIENT_GUIDE.html">👤 <span data-i18n="menu_patient_guide">Patient Guide</span></a>
                         <a href="docs/DOCTOR_GUIDE.html">👨‍⚕️ <span data-i18n="menu_doctor_guide">Doctor Guide</span></a>
                         <a href="docs/STAFF_GUIDE.html">👥 <span data-i18n="menu_staff_guide">Staff Guide</span></a>
                         <a href="docs/ADMIN_GUIDE.html">🔧 <span data-i18n="menu_admin_guide">Admin Guide</span></a>
-                        <hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;">
-                        <div style="padding: 8px 16px; font-weight: 600; color: #0f766e; font-size: 12px;" data-i18n="menu_quick_access">QUICK ACCESS</div>
+                        <hr class="menu-divider">
+                        <div class="menu-header" data-i18n="menu_quick_access">QUICK ACCESS</div>
                         <a href="portal/index.html">🚪 <span data-i18n="menu_portal_login">Portal Login</span></a>
                         <a href="forms/index.html">📋 <span data-i18n="menu_printable_forms">Printable Forms</span></a>
                         <a href="store/index.html">💊 <span data-i18n="menu_store_dashboard">Store Dashboard</span></a>
                         <a href="docs/share-links.html">📲 <span data-i18n="menu_share_links">Share Guide Links</span></a>
                         <!-- Admin only links - shown via JS -->
-                        <div id="adminOnlyLinks" style="display: none;">
-                            <hr style="margin: 8px 0; border: none; border-top: 1px solid #e2e8f0;">
-                            <a href="docs/test-matrix.html" style="color: #dc2626; font-weight: 600;">🧪 <span data-i18n="menu_test_matrix">Test Matrix</span></a>
-                            <a href="clear-cache.html" style="color: #f59e0b; font-weight: 600;">🧹 <span data-i18n="menu_clear_cache">Clear Cache</span></a>
-                            <a href="admin-setup.html?token=ADMIN2024SECURE" style="color: #7c3aed; font-weight: 600;">🔐 <span data-i18n="menu_admin_setup">Admin Setup</span></a>
+                        <div id="adminOnlyLinks" class="hidden">
+                            <hr class="menu-divider">
+                            <a href="docs/test-matrix.html" class="link-danger">🧪 <span data-i18n="menu_test_matrix">Test Matrix</span></a>
+                            <a href="clear-cache.html" class="link-warning">🧹 <span data-i18n="menu_clear_cache">Clear Cache</span></a>
+                            <a href="admin-setup.html?token=ADMIN2024SECURE" class="link-purple">🔐 <span data-i18n="menu_admin_setup">Admin Setup</span></a>
                         </div>
                     </div>
                 </div>
@@ -217,10 +217,10 @@
                             <a href="login.html">🔐 <span data-i18n="menu_staff_login">Staff/Doctor Login</span></a>
                             <a href="portal/patient/index.html">🏥 <span data-i18n="menu_patient_portal">Patient Portal</span></a>
                         </div>
-                        <div id="loggedInMenu" style="display: none;">
-                            <div style="padding: 12px 16px; background: #f0fdf4; border-bottom: 1px solid #e2e8f0;">
-                                <div style="font-weight: 600;" id="loggedInName" data-i18n="label_user">User</div>
-                                <div style="font-size: 12px; color: #666; text-transform: capitalize;" id="loggedInRole" data-i18n="label_role">Role</div>
+                        <div id="loggedInMenu" class="hidden">
+                            <div class="user-info">
+                                <div class="user-info-name" id="loggedInName" data-i18n="label_user">User</div>
+                                <div class="user-info-role" id="loggedInRole" data-i18n="label_role">Role</div>
                             </div>
                             <a href="#" id="myPortalLink">📊 <span data-i18n="menu_my_dashboard">My Dashboard</span></a>
                             <a href="#" onclick="logoutUser(); return false;">🚪 <span data-i18n="menu_logout">Logout</span></a>
@@ -282,7 +282,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="hero-notice" style="margin-top: 20px; padding: 12px 20px; background: rgba(255,255,255,0.1); border-radius: 8px; font-size: 0.9rem;">
+                <div class="hero-notice">
                     <strong>⚠️ Note:</strong> For emergencies, please call <strong>108</strong> or visit nearest trauma center.
                 </div>
             </div>
@@ -427,7 +427,7 @@
                 <!-- Dr. Ashok -->
                 <div class="doctor-card" id="dr-ashok">
                     <div class="doctor-image">
-                        <img src="images/dr-ashok-sajnani.jpg" alt="Dr. Ashok Sajnani - M.S. Ortho" style="width: 100%; height: 280px; object-fit: cover; object-position: center top; border-radius: var(--radius-lg);">
+                        <img src="images/dr-ashok-sajnani.jpg" alt="Dr. Ashok Sajnani - M.S. Ortho" class="img-doctor">
                     </div>
                     <div class="doctor-content">
                         <h3>Dr. Ashok Sajnani</h3>
@@ -461,7 +461,7 @@
                 <!-- Dr. Sunita -->
                 <div class="doctor-card" id="dr-sunita">
                     <div class="doctor-image">
-                        <img src="images/dr-sunita-sajnani.jpg" alt="Dr. Sunita Sajnani - MD OB-GYN" style="width: 100%; height: 280px; object-fit: cover; object-position: center top; border-radius: var(--radius-lg);">
+                        <img src="images/dr-sunita-sajnani.jpg" alt="Dr. Sunita Sajnani - MD OB-GYN" class="img-doctor">
                     </div>
                     <div class="doctor-content">
                         <h3>Dr. Sunita Sajnani</h3>
@@ -512,7 +512,7 @@
                 <div class="expect-step">
                     <div class="step-number">1</div>
                     <div class="step-image">
-                        <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&q=80" alt="Hospital Entrance" style="width:100%;height:150px;object-fit:cover;border-radius:12px;">
+                        <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&q=80" alt="Hospital Entrance" class="img-gallery">
                     </div>
                     <h3 data-i18n="step1_title">Arrive & Check-in</h3>
                     <p data-i18n="step1_desc">Find us at Shukan Mall, 2nd Floor. Our friendly staff will greet you and complete a quick registration.</p>
@@ -521,7 +521,7 @@
                 <div class="expect-step">
                     <div class="step-number">2</div>
                     <div class="step-image">
-                        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&q=80" alt="Waiting Area" style="width:100%;height:150px;object-fit:cover;border-radius:12px;">
+                        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&q=80" alt="Waiting Area" class="img-gallery">
                     </div>
                     <h3 data-i18n="step2_title">Comfortable Waiting</h3>
                     <p data-i18n="step2_desc">Relax in our clean, air-conditioned waiting area. We respect your time and minimize wait times.</p>
@@ -530,7 +530,7 @@
                 <div class="expect-step">
                     <div class="step-number">3</div>
                     <div class="step-image">
-                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&q=80" alt="Doctor Consultation" style="width:100%;height:150px;object-fit:cover;border-radius:12px;">
+                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&q=80" alt="Doctor Consultation" class="img-gallery">
                     </div>
                     <h3 data-i18n="step3_title">Personal Consultation</h3>
                     <p data-i18n="step3_desc">One-on-one time with your doctor. We listen carefully, explain clearly, and answer all your questions.</p>
@@ -539,7 +539,7 @@
                 <div class="expect-step">
                     <div class="step-number">4</div>
                     <div class="step-image">
-                        <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?w=400&q=80" alt="Treatment" style="width:100%;height:150px;object-fit:cover;border-radius:12px;">
+                        <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?w=400&q=80" alt="Treatment" class="img-gallery">
                     </div>
                     <h3 data-i18n="step4_title">Treatment & Care Plan</h3>
                     <p data-i18n="step4_desc">Receive your personalized treatment plan with clear instructions. Follow-up appointments scheduled as needed.</p>
@@ -617,23 +617,23 @@
             
             <div class="gallery-grid">
                 <div class="gallery-item large">
-                    <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80" alt="Modern Hospital Building" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80" alt="Modern Hospital Building" class="img-cover">
                     <div class="gallery-caption">Modern Healthcare Facility</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="images/D5A41C52-D4B2-4362-9705-8E1EB3AA76AC_1_105_c.jpeg" alt="Dr. Ashok consulting with patients" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="images/D5A41C52-D4B2-4362-9705-8E1EB3AA76AC_1_105_c.jpeg" alt="Dr. Ashok consulting with patients" class="img-cover">
                     <div class="gallery-caption">Personalized Consultations</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=600&q=80" alt="Operation Theatre" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="https://images.unsplash.com/photo-1551190822-a9333d879b1f?w=600&q=80" alt="Operation Theatre" class="img-cover">
                     <div class="gallery-caption">Advanced Operation Theatre</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=600&q=80" alt="Patient Room" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=600&q=80" alt="Patient Room" class="img-cover">
                     <div class="gallery-caption">Comfortable Private Rooms</div>
                 </div>
                 <div class="gallery-item">
-                    <img src="images/FB3EB535-BEED-42D0-9A62-4CB399D21AFD.jpeg" alt="Rotary Club of Ahmedabad Chandkheda" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="images/FB3EB535-BEED-42D0-9A62-4CB399D21AFD.jpeg" alt="Rotary Club of Ahmedabad Chandkheda" class="img-cover">
                     <div class="gallery-caption">Rotary Club Community Service</div>
                 </div>
             </div>
@@ -661,7 +661,7 @@
                     <a href="book.html?service=yoga" class="btn btn-primary" data-i18n="yoga_join">Join Yoga Classes</a>
                 </div>
                 <div class="yoga-image">
-                    <img src="images/414A642D-102C-4F92-A4BE-48D6F7B13AD4_4_5005_c.jpeg" alt="Dr. Sunita leading outdoor yoga class" style="width: 100%; height: 400px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);">
+                    <img src="images/414A642D-102C-4F92-A4BE-48D6F7B13AD4_4_5005_c.jpeg" alt="Dr. Sunita leading outdoor yoga class" class="img-yoga">
                 </div>
             </div>
         </div>
@@ -707,25 +707,25 @@
          Add real patient testimonials here when available
          
 <!-- Trust Section -->
-    <section class="trust-section" id="trust" style="padding: 60px 0; background: var(--gray-50);">
-        <div class="container" style="text-align: center;">
-            <h2 style="margin-bottom: 16px;">Trusted by the Community</h2>
-            <p style="color: var(--gray-600); margin-bottom: 32px;">
+    <section class="section-trust" id="trust">
+        <div class="container text-center">
+            <h2 class="mb-4">Trusted by the Community</h2>
+            <p class="text-muted mb-8">
                 Dr. Ashok and Dr. Sunita are active members of the Rotary Club, 
                 serving the community beyond healthcare.
             </p>
-            <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
-                <div style="text-align: center;">
-                    <div style="font-size: 3rem;">🔵</div>
-                    <p style="font-weight: 600; margin-top: 8px;">Rotary Club<br>Members</p>
+            <div class="trust-grid">
+                <div class="trust-item">
+                    <div class="trust-icon">🔵</div>
+                    <p class="trust-label">Rotary Club<br>Members</p>
                 </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 3rem;">🏥</div>
-                    <p style="font-weight: 600; margin-top: 8px;">35+ Years<br>Experience</p>
+                <div class="trust-item">
+                    <div class="trust-icon">🏥</div>
+                    <p class="trust-label">35+ Years<br>Experience</p>
                 </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 3rem;">💚</div>
-                    <p style="font-weight: 600; margin-top: 8px;">Organ Donation<br>Advocates</p>
+                <div class="trust-item">
+                    <div class="trust-icon">💚</div>
+                    <p class="trust-label">Organ Donation<br>Advocates</p>
                 </div>
             </div>
         </div>

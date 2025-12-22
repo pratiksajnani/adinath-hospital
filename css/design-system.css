@@ -760,6 +760,193 @@
     color: #991b1b;
 }
 
+/* Special Link Colors */
+.link-danger {
+    color: #dc2626;
+    font-weight: var(--font-semibold);
+}
+
+.link-warning {
+    color: #f59e0b;
+    font-weight: var(--font-semibold);
+}
+
+.link-purple {
+    color: #7c3aed;
+    font-weight: var(--font-semibold);
+}
+
+/* Image Utilities */
+.img-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.img-gallery {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: var(--radius);
+}
+
+.img-doctor {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: var(--radius-lg);
+}
+
+.img-yoga {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Section Patterns */
+.section-trust {
+    padding: 60px 0;
+    background: var(--gray-50);
+}
+
+.section-news {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f0fdfa 0%, #ecfdf5 100%);
+}
+
+/* Trust Icons Grid */
+.trust-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.trust-item {
+    text-align: center;
+}
+
+.trust-icon {
+    font-size: 3rem;
+}
+
+.trust-label {
+    font-weight: var(--font-semibold);
+    margin-top: var(--space-2);
+}
+
+/* News Cards */
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-6);
+}
+
+.news-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.news-card-header {
+    padding: var(--space-5);
+    color: var(--white);
+}
+
+.news-card-header.guj-health {
+    background: linear-gradient(135deg, #059669, #10b981);
+}
+
+.news-card-header.india-health {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+}
+
+.news-card-header.global-health {
+    background: linear-gradient(135deg, #0284c7, #0ea5e9);
+}
+
+.news-card-header-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.news-card-icon {
+    font-size: 32px;
+}
+
+.news-card-title {
+    margin: 0;
+    font-size: var(--text-lg);
+}
+
+.news-card-subtitle {
+    margin: var(--space-1) 0 0;
+    font-size: var(--text-sm);
+    opacity: 0.9;
+}
+
+.news-card-body {
+    padding: var(--space-5);
+}
+
+.news-item {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.news-item:last-child {
+    border-bottom: none;
+}
+
+.news-item-date {
+    font-size: var(--text-xs);
+    color: var(--gray-500);
+}
+
+.news-item-text {
+    margin: var(--space-1) 0 0;
+    font-size: var(--text-sm);
+    color: var(--gray-800);
+}
+
+.news-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    font-weight: var(--font-semibold);
+    text-decoration: none;
+}
+
+.news-link-green {
+    color: #059669;
+}
+.news-link-blue {
+    color: #2563eb;
+}
+.news-link-cyan {
+    color: #0284c7;
+}
+
+/* Hero Notice */
+.hero-notice {
+    margin-top: var(--space-5);
+    padding: var(--space-3) var(--space-5);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+}
+
+/* FAB icon size */
+.fab-icon {
+    font-size: 24px;
+}
+
 /* ============================================
    COMPONENT CLASSES - USER INFO DISPLAY
    ============================================ */
