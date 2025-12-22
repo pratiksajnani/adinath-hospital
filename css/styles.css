@@ -643,13 +643,17 @@ body.large-text-mode .lang-btn.accessibility-btn {
         right: 0;
         background: var(--white);
         flex-direction: column;
-        padding: 24px;
-        gap: 20px;
+        align-items: stretch;
+        padding: 16px;
+        gap: 4px;
         border-bottom: 1px solid var(--gray-200);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         transform: translateY(-100%);
         opacity: 0;
         pointer-events: none;
         transition: var(--transition);
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
     }
 
     .nav.active {
@@ -664,19 +668,43 @@ body.large-text-mode .lang-btn.accessibility-btn {
         right: 20px;
     }
     
-    /* Fix nav alignment - ensure consistent height for all nav items */
+    /* Fix nav alignment - all items left-aligned for consistency */
     .nav > a,
     .nav > .nav-dropdown > .dropdown-trigger {
         display: flex;
         align-items: center;
+        justify-content: flex-start;
         min-height: 44px;
-        padding: 12px 0;
+        padding: 12px 16px;
+        width: 100%;
+        text-align: left;
     }
     
-    /* Mobile dropdown trigger styling */
+    /* Mobile dropdown trigger styling - arrow at end */
     .nav-dropdown .dropdown-trigger {
         width: 100%;
         justify-content: space-between;
+    }
+    
+    /* Consistent styling for all nav items */
+    .nav > a:hover,
+    .nav > .nav-dropdown > .dropdown-trigger:hover {
+        background: var(--gray-50);
+        border-radius: 8px;
+    }
+    
+    /* User status dropdown - simpler styling on mobile */
+    .nav-dropdown.user-status .dropdown-trigger {
+        background: var(--primary-50);
+        border-radius: 10px;
+        border: 1px solid var(--primary-100);
+    }
+    
+    /* Nav action buttons (Medicines, Login) - consistent width */
+    .nav .btn {
+        width: 100%;
+        justify-content: center;
+        margin-top: 8px;
     }
     
     /* Help dropdown mobile fixes */
