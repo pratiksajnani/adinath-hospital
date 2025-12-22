@@ -1,18 +1,24 @@
 # 🏥 Adinath Hospital Website
 
 <!-- Status Badges -->
+
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fadinathhealth.com&label=adinathhealth.com)](https://adinathhealth.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org)
 
 <!-- Code Quality Badges -->
-[![ESLint](https://img.shields.io/badge/ESLint-enabled-4B32C3?logo=eslint)](https://eslint.org)
+
+![Quality Score: 90%](https://img.shields.io/badge/quality-90%25-brightgreen)
+![Test Coverage: 86.84%](https://img.shields.io/badge/coverage-86.84%25-brightgreen)
+![Tests: 429 passed](https://img.shields.io/badge/tests-429%20passed-brightgreen)
+![ESLint: 0 errors](https://img.shields.io/badge/eslint-0%20errors-brightgreen)
+![Security: 7 issues](https://img.shields.io/badge/security-7%20issues-yellow)
+![Duplication: 0.0%](https://img.shields.io/badge/duplication-0.0%25-brightgreen)
 [![Prettier](https://img.shields.io/badge/Prettier-enabled-F7B93E?logo=prettier)](https://prettier.io)
-[![Jest](https://img.shields.io/badge/Jest-218%20tests-C21325?logo=jest)](https://jestjs.io)
 [![Playwright](https://img.shields.io/badge/Playwright-E2E-2EAD33?logo=playwright)](https://playwright.dev)
-[![Security](https://img.shields.io/badge/Security-eslint--plugin--security-green?logo=shield)](https://github.com/nodesecurity/eslint-plugin-security)
 
 <!-- Database & Hosting -->
+
 [![Supabase](https://img.shields.io/badge/Database-Supabase-3ECF8E?logo=supabase)](https://supabase.com)
 [![AWS Amplify](https://img.shields.io/badge/Hosting-AWS%20Amplify-FF9900?logo=awsamplify)](https://aws.amazon.com/amplify/)
 
@@ -28,12 +34,12 @@ Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Mana
 
 ## 📱 SMS-READY LINKS (Copy & Send to Phone)
 
-| Role | TinyURL | Send This Link |
-|------|---------|----------------|
-| 👨‍⚕️ **Doctor** | https://tinyurl.com/doctor-demo | `Send to Dr. Ashok / Dr. Sunita` |
-| 👩‍💼 **Staff** | https://tinyurl.com/staff-demo | `Send to Poonam (Receptionist)` |
-| 👨‍👩‍👧 **Patient** | https://tinyurl.com/2xj66x22 | `Send to any patient` |
-| 🔧 **Admin** | https://tinyurl.com/siteadmin-demo | `Send to Pratik (Site Admin)` |
+| Role           | TinyURL                            | Send This Link                   |
+| -------------- | ---------------------------------- | -------------------------------- |
+| 👨‍⚕️ **Doctor**  | https://tinyurl.com/doctor-demo    | `Send to Dr. Ashok / Dr. Sunita` |
+| 👩‍💼 **Staff**   | https://tinyurl.com/staff-demo     | `Send to Poonam (Receptionist)`  |
+| 👨‍👩‍👧 **Patient** | https://tinyurl.com/2xj66x22       | `Send to any patient`            |
+| 🔧 **Admin**   | https://tinyurl.com/siteadmin-demo | `Send to Pratik (Site Admin)`    |
 
 ---
 
@@ -41,10 +47,10 @@ Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Mana
 
 ### 🎬 Demo Video
 
-| Resource | Link |
-|----------|------|
+| Resource         | Link                                         |
+| ---------------- | -------------------------------------------- |
 | **Video Script** | [docs/VIDEO_SCRIPT.md](docs/VIDEO_SCRIPT.md) |
-| Record with | [Loom](https://loom.com) (free) or QuickTime |
+| Record with      | [Loom](https://loom.com) (free) or QuickTime |
 
 > 📹 **To create the demo video:** Follow the script in VIDEO_SCRIPT.md, record your screen using Loom, then share the link here.
 
@@ -52,63 +58,63 @@ Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Mana
 
 ### 👨‍⚕️ Doctor Demo Guide
 
-| Resource | Link |
-|----------|------|
-| **TinyURL** | https://tinyurl.com/doctor-demo |
-| Full Guide | [docs/DOCTOR_GUIDE.html](docs/DOCTOR_GUIDE.html) |
+| Resource        | Link                                                                 |
+| --------------- | -------------------------------------------------------------------- |
+| **TinyURL**     | https://tinyurl.com/doctor-demo                                      |
+| Full Guide      | [docs/DOCTOR_GUIDE.html](docs/DOCTOR_GUIDE.html)                     |
 | CRUD Operations | View appointments, Write prescriptions, Update status, Send messages |
 
 ### 👩‍💼 Staff Demo Guide
 
-| Resource | Link |
-|----------|------|
-| **TinyURL** | https://tinyurl.com/staff-demo |
-| Full Guide | [docs/STAFF_GUIDE.html](docs/STAFF_GUIDE.html) |
+| Resource        | Link                                                             |
+| --------------- | ---------------------------------------------------------------- |
+| **TinyURL**     | https://tinyurl.com/staff-demo                                   |
+| Full Guide      | [docs/STAFF_GUIDE.html](docs/STAFF_GUIDE.html)                   |
 | CRUD Operations | Register patients, Book appointments, Send SMS/WhatsApp, Show QR |
 
 ### 👨‍👩‍👧 Patient Demo Guide
 
-| Resource | Link |
-|----------|------|
-| **TinyURL** | https://tinyurl.com/2xj66x22 |
-| Full Guide | [docs/PATIENT_DEMO.html](docs/PATIENT_DEMO.html) |
+| Resource        | Link                                                                    |
+| --------------- | ----------------------------------------------------------------------- |
+| **TinyURL**     | https://tinyurl.com/2xj66x22                                            |
+| Full Guide      | [docs/PATIENT_DEMO.html](docs/PATIENT_DEMO.html)                        |
 | CRUD Operations | Book appointment, View appointments, View prescriptions, Update profile |
 
 ### 🔧 Site Admin Demo Guide
 
-| Resource | Link |
-|----------|------|
-| **TinyURL** | https://tinyurl.com/siteadmin-demo |
-| Full Guide | [docs/SITEADMIN_DEMO.html](docs/SITEADMIN_DEMO.html) |
-| CRUD Operations | Full access to all data, Manage appointments, Manage patients, Reset demo
+| Resource        | Link                                                                      |
+| --------------- | ------------------------------------------------------------------------- |
+| **TinyURL**     | https://tinyurl.com/siteadmin-demo                                        |
+| Full Guide      | [docs/SITEADMIN_DEMO.html](docs/SITEADMIN_DEMO.html)                      |
+| CRUD Operations | Full access to all data, Manage appointments, Manage patients, Reset demo |
 
 ---
 
 ## 🔐 Demo Credentials
 
-| Role | Email | Password |
-|------|-------|----------|
-| **Site Admin** | pratik.sajnani@gmail.com | 1234 |
-| **Doctor (Dr. Ashok)** | drsajnani@gmail.com | doctor123 |
-| **Doctor (Dr. Sunita)** | sunita.sajnani9@gmail.com | doctor123 |
-| **Receptionist (Poonam)** | reception@adinathhealth.com | staff123 |
+| Role                      | Email                       | Password  |
+| ------------------------- | --------------------------- | --------- |
+| **Site Admin**            | pratik.sajnani@gmail.com    | 1234      |
+| **Doctor (Dr. Ashok)**    | drsajnani@gmail.com         | doctor123 |
+| **Doctor (Dr. Sunita)**   | sunita.sajnani9@gmail.com   | doctor123 |
+| **Receptionist (Poonam)** | reception@adinathhealth.com | staff123  |
 
 ---
 
 ## 📱 Quick Links
 
-| Page | Path | Status |
-|------|------|--------|
-| Homepage | `/` | ✅ |
-| Book Appointment | `/book.html` | ✅ |
-| Portal Hub | `/portal/index.html` | ✅ |
-| Doctor Dashboard (Simple) | `/portal/doctor/simple.html` | ✅ |
-| Patient Portal | `/portal/patient/index.html` | ✅ |
-| Staff Dashboard | `/portal/staff/index.html` | ⚠️ |
-| Admin Dashboard | `/portal/admin/index.html` | ✅ |
-| Forms Hub | `/forms/index.html` | ✅ |
-| Medical Store | `/store.html` | ✅ |
-| Staff Login | `/login.html` | ⚠️ |
+| Page                      | Path                         | Status |
+| ------------------------- | ---------------------------- | ------ |
+| Homepage                  | `/`                          | ✅     |
+| Book Appointment          | `/book.html`                 | ✅     |
+| Portal Hub                | `/portal/index.html`         | ✅     |
+| Doctor Dashboard (Simple) | `/portal/doctor/simple.html` | ✅     |
+| Patient Portal            | `/portal/patient/index.html` | ✅     |
+| Staff Dashboard           | `/portal/staff/index.html`   | ⚠️     |
+| Admin Dashboard           | `/portal/admin/index.html`   | ✅     |
+| Forms Hub                 | `/forms/index.html`          | ✅     |
+| Medical Store             | `/store.html`                | ✅     |
+| Staff Login               | `/login.html`                | ⚠️     |
 
 ---
 
@@ -118,10 +124,10 @@ Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Mana
 
 ### 👨‍⚕️ Doctors
 
-| Doctor | Specialty | Experience |
-|--------|-----------|------------|
-| **Dr. Ashok Sajnani** | Orthopedic & Joint Surgeon | 35+ years |
-| **Dr. Sunita Sajnani** | Obstetrics & Gynecology | 30+ years |
+| Doctor                 | Specialty                  | Experience |
+| ---------------------- | -------------------------- | ---------- |
+| **Dr. Ashok Sajnani**  | Orthopedic & Joint Surgeon | 35+ years  |
+| **Dr. Sunita Sajnani** | Obstetrics & Gynecology    | 30+ years  |
 
 ### 📍 Contact Information
 
@@ -136,13 +142,16 @@ Official website for Adinath Hospital, Ahmedabad - A comprehensive Hospital Mana
 
 ### Quality Tools
 
-| Tool | Purpose | Command |
-|------|---------|---------|
-| **ESLint** | JavaScript linting & security | `npm run lint` |
-| **Prettier** | Code formatting | `npm run format` |
-| **Jest** | Unit testing (139 tests) | `npm run test:unit` |
-| **Playwright** | E2E testing | `npm run test:e2e` |
-| **Security Plugin** | Security vulnerability detection | Built into ESLint |
+| Tool           | Purpose                       | Command              |
+| -------------- | ----------------------------- | -------------------- |
+| **ESLint**     | JavaScript linting & security | `npm run lint`       |
+| **Prettier**   | Code formatting               | `npm run format`     |
+| **Stylelint**  | CSS linting                   | `npm run lint:css`   |
+| **Jest**       | Unit testing (429 tests)      | `npm run test:unit`  |
+| **Playwright** | E2E testing                   | `npm run test:e2e`   |
+| **jscpd**      | Code duplication detection    | `npm run duplicates` |
+| **Husky**      | Git hooks (pre-commit)        | Automatic            |
+| **commitlint** | Commit message validation     | Automatic            |
 
 ### Run Quality Checks
 
@@ -153,18 +162,27 @@ npm run quality
 # Auto-fix linting and formatting issues
 npm run quality:fix
 
-# Generate reports
-npm run analyze
+# Generate comprehensive quality report
+npm run quality:report
+
+# Generate badges for README
+npm run badges
+
+# Check code duplication
+npm run duplicates
 ```
 
 ### Quality Metrics
 
-| Metric | Status | Details |
-|--------|--------|---------|
-| Unit Tests | ✅ 218 passing | 7 test suites |
-| ESLint | ✅ Configured | Security rules enabled |
-| Prettier | ✅ Configured | Consistent formatting |
-| Security | ✅ Enabled | eslint-plugin-security |
+| Metric           | Status         | Details                |
+| ---------------- | -------------- | ---------------------- |
+| Quality Score    | ✅ 90/100      | Grade A                |
+| Unit Tests       | ✅ 429 passing | 8 test suites          |
+| Coverage         | ✅ 86.84%      | Lines covered          |
+| ESLint           | ✅ 0 errors    | Security rules enabled |
+| Prettier         | ✅ Configured  | Consistent formatting  |
+| Code Duplication | ✅ 0.0%        | No duplicates          |
+| Security         | ⚠️ 7 issues    | npm audit (dev deps)   |
 
 ---
 
@@ -189,11 +207,11 @@ open http://localhost:8080
 
 ### Tech Stack
 
-| Component | Technology |
-|-----------|------------|
-| Frontend | Vanilla HTML5, CSS3, JavaScript |
-| Database | localStorage (client-side mock HMS) |
-| Hosting | AWS Amplify (auto-deploy from main) |
+| Component | Technology                                 |
+| --------- | ------------------------------------------ |
+| Frontend  | Vanilla HTML5, CSS3, JavaScript            |
+| Database  | localStorage (client-side mock HMS)        |
+| Hosting   | AWS Amplify (auto-deploy from main)        |
 | Languages | English, Hindi (हिंदी), Gujarati (ગુજરાતી) |
 
 ---
@@ -278,12 +296,12 @@ npm run test:report
 
 ### Test Coverage
 
-| Test Suite | Description | Files |
-|------------|-------------|-------|
-| **Unit Tests** | HMS, i18n, API logic | `tests/unit/*.test.js` |
-| **E2E Tests** | Full user flows | `tests/e2e/*.spec.js` |
-| **Link Checker** | All pages accessible | `tests/link-checker.js` |
-| **Accessibility** | WCAG compliance | `tests/e2e/accessibility.spec.js` |
+| Test Suite        | Description          | Files                             |
+| ----------------- | -------------------- | --------------------------------- |
+| **Unit Tests**    | HMS, i18n, API logic | `tests/unit/*.test.js`            |
+| **E2E Tests**     | Full user flows      | `tests/e2e/*.spec.js`             |
+| **Link Checker**  | All pages accessible | `tests/link-checker.js`           |
+| **Accessibility** | WCAG compliance      | `tests/e2e/accessibility.spec.js` |
 
 ### CI/CD Pipeline
 
@@ -298,12 +316,12 @@ Tests run automatically on every push via GitHub Actions:
 
 ## ⚠️ Known Issues
 
-| Issue | Status | Notes |
-|-------|--------|-------|
-| Domain DNS propagation | 🟡 Pending | adinathhealth.com - up in 10-48 hours |
-| Missing i18n translations | 🟡 Partial | Some keys need translation |
-| Real SMS integration | ⚪ Future | Requires MSG91/Twilio setup |
-| Cloud database | ⚪ Future | Currently using localStorage |
+| Issue                     | Status     | Notes                                 |
+| ------------------------- | ---------- | ------------------------------------- |
+| Domain DNS propagation    | 🟡 Pending | adinathhealth.com - up in 10-48 hours |
+| Missing i18n translations | 🟡 Partial | Some keys need translation            |
+| Real SMS integration      | ⚪ Future  | Requires MSG91/Twilio setup           |
+| Cloud database            | ⚪ Future  | Currently using localStorage          |
 
 ---
 
@@ -321,6 +339,7 @@ Tests run automatically on every push via GitHub Actions:
 ## 📞 Support
 
 For technical issues, contact:
+
 - **Pratik Sajnani** - pratik.sajnani@gmail.com
 
 ---
