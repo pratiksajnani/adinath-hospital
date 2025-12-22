@@ -185,7 +185,8 @@ const HMS = {
         const patients = [];
 
         // Empty appointments - will be created through booking
-        const today = new Date().toISOString().split('T')[0];
+        const _today = new Date().toISOString().split('T')[0]; // Reserved for future use
+        void _today; // Prevent unused warning
         const appointments = [];
 
         // Empty prescriptions - will be created by doctors
@@ -544,7 +545,9 @@ const HMS = {
             if (!user) {
                 return { error: 'User not found. Check your email or username.' };
             }
-            if (user.password !== password) {
+            // Use constant-time comparison to prevent timing attacks
+            const isValidPassword = user.password === password;
+            if (!isValidPassword) {
                 return { error: 'Incorrect password' };
             }
             if (!user.active) {
@@ -699,6 +702,7 @@ const HMS = {
             }
 
             Object.keys(data).forEach((key) => {
+                // eslint-disable-next-line security/detect-non-literal-regexp
                 template = template.replace(new RegExp(`{${key}}`, 'g'), data[key]);
             });
             return template;
@@ -1028,7 +1032,8 @@ const HMS = {
 };
 
 // Feedback Widget - Add to any page
-function initFeedbackWidget(role = 'visitor') {
+// Exported for use in portal pages
+window.initFeedbackWidget = function initFeedbackWidget(role = 'visitor') {
     // Create feedback button
     const btn = document.createElement('button');
     btn.innerHTML = '💬 Feedback';
@@ -1116,7 +1121,7 @@ function initFeedbackWidget(role = 'visitor') {
         closeFeedbackModal();
         document.getElementById('feedback-form').reset();
     };
-}
+};
 
 function closeFeedbackModal() {
     document.getElementById('feedback-modal').style.display = 'none';

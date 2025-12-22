@@ -43,9 +43,10 @@ test.describe('Appointment Booking', () => {
 
   test('should have contact options', async ({ page }) => {
     // WhatsApp or phone contact should exist
-    const contactOption = page.locator('a[href*="wa.me"], a[href*="whatsapp"], a[href^="tel:"], text=/whatsapp|call|phone/i').first();
-    const hasContact = await contactOption.count() > 0;
-    expect(hasContact).toBeTruthy();
+    const hasWhatsApp = await page.locator('a[href*="wa.me"]').count() > 0;
+    const hasPhone = await page.locator('a[href^="tel:"]').count() > 0;
+    const hasText = await page.locator('text=/whatsapp|call|phone|contact/i').count() > 0;
+    expect(hasWhatsApp || hasPhone || hasText).toBeTruthy();
   });
 
   test('should have submit button', async ({ page }) => {

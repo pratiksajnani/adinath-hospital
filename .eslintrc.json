@@ -60,7 +60,18 @@
     "object-shorthand": ["warn", "always"],
     "no-param-reassign": "warn",
     "default-case": "warn",
-    "default-case-last": "warn"
+    "default-case-last": "warn",
+
+    "complexity": ["warn", { "max": 15 }],
+    "max-depth": ["warn", { "max": 4 }],
+    "max-nested-callbacks": ["warn", { "max": 3 }],
+    "max-params": ["warn", { "max": 5 }],
+    "max-statements": ["warn", { "max": 25 }],
+    "max-lines-per-function": [
+      "warn",
+      { "max": 100, "skipBlankLines": true, "skipComments": true }
+    ],
+    "max-lines": ["warn", { "max": 500, "skipBlankLines": true, "skipComments": true }]
   },
   "overrides": [
     {
