@@ -37,13 +37,31 @@ Object.defineProperty(global, 'sessionStorage', {
   writable: true,
 });
 
+// Mock window.location with proper getter/setter
+const locationMock = {
+  _href: 'http://localhost/',
+  hostname: 'localhost',
+  pathname: '/',
+  origin: 'http://localhost',
+  protocol: 'http:',
+  host: 'localhost',
+  search: '',
+  hash: '',
+  get href() {
+    return this._href;
+  },
+  set href(value) {
+    this._href = value;
+    // Don't actually navigate in tests
+  },
+  assign: jest.fn(),
+  replace: jest.fn(),
+  reload: jest.fn(),
+};
+
 // Mock window object
 global.window = {
-  location: {
-    hostname: 'localhost',
-    pathname: '/',
-    href: 'http://localhost/',
-  },
+  location: locationMock,
   open: jest.fn(),
   alert: jest.fn(),
   confirm: jest.fn(() => true),
@@ -54,6 +72,12 @@ global.window = {
   onerror: null,
   onunhandledrejection: null,
 };
+
+// Also set on global for jsdom compatibility
+Object.defineProperty(global, 'location', {
+  value: locationMock,
+  writable: true,
+});
 
 // Mock document object
 global.document = {
@@ -164,6 +188,42 @@ global.URL = {
   createObjectURL: jest.fn(() => 'blob:mock-url'),
   revokeObjectURL: jest.fn(),
 };
+
+// Mock IntersectionObserver
+global.IntersectionObserver = jest.fn().mockImplementation((callback) => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+  root: null,
+  rootMargin: '',
+  thresholds: [],
+}));
+
+// Mock MutationObserver
+global.MutationObserver = class MutationObserver {
+  constructor(callback) {
+    this.callback = callback;
+  }
+  observe() {}
+  disconnect() {}
+  takeRecords() {
+    return [];
+  }
+};
+
+// Mock ResizeObserver
+global.ResizeObserver = class ResizeObserver {
+  constructor(callback) {
+    this.callback = callback;
+  }
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
+
+// Mock requestAnimationFrame
+global.requestAnimationFrame = (callback) => setTimeout(callback, 0);
+global.cancelAnimationFrame = (id) => clearTimeout(id);
 
 // Mock console methods for cleaner test output
 const originalConsole = { ...console };

@@ -182,6 +182,7 @@ describe('CircuitBreaker', () => {
 
     test('should reset failures and successes', () => {
       const circuit = CircuitBreaker.getCircuit('test');
+      circuit.state = CircuitBreaker.STATES.HALF_OPEN; // Must be non-CLOSED to trigger reset
       circuit.failures = 5;
       circuit.successes = 3;
 
