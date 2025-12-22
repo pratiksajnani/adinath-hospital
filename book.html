@@ -388,11 +388,11 @@
     </style>
 </head>
 <body>
-    <!-- Language Selector -->
-    <div class="lang-float" style="position: fixed; top: 10px; right: 20px; z-index: 1001; display: flex; gap: 5px;">
-        <button onclick="I18N.setLanguage('en')" data-lang="en" style="padding: 8px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">EN</button>
-        <button onclick="I18N.setLanguage('hi')" data-lang="hi" style="padding: 8px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">हि</button>
-        <button onclick="I18N.setLanguage('gu')" data-lang="gu" style="padding: 8px 12px; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer; font-size: 0.85rem;">ગુ</button>
+    <!-- Language Selector (uses styles from styles.css) -->
+    <div class="lang-selector">
+        <button class="lang-btn active" onclick="I18N.setLanguage('en')" data-lang="en">EN</button>
+        <button class="lang-btn" onclick="I18N.setLanguage('hi')" data-lang="hi">हि</button>
+        <button class="lang-btn" onclick="I18N.setLanguage('gu')" data-lang="gu">ગુ</button>
     </div>
     
     <!-- Header -->
