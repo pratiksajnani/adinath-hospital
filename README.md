@@ -2,6 +2,7 @@
 
 <!-- Status Badges -->
 
+[![CI](https://github.com/pratiksajnani/adinath-hospital/actions/workflows/ci.yml/badge.svg)](https://github.com/pratiksajnani/adinath-hospital/actions/workflows/ci.yml)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fadinathhealth.com&label=adinathhealth.com)](https://adinathhealth.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org)
