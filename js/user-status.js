@@ -5,6 +5,16 @@
 
 // Inject User Status UI into page
 function injectUserStatus() {
+    // Don't inject if page already has a nav-integrated user status
+    if (
+        document.querySelector('.nav .user-status') ||
+        document.getElementById('user-status-widget')
+    ) {
+        // Just update the existing widget instead
+        updateUserStatusWidget();
+        return;
+    }
+
     // Create the user status HTML
     const userStatusHTML = `
         <div id="user-status-widget" style="
@@ -123,15 +133,22 @@ function updateUserStatusWidget() {
     const userName =
         localStorage.getItem('hms_user_name') || localStorage.getItem('hms_user_email');
 
-    const icon = document.getElementById('user-status-icon');
-    const name = document.getElementById('user-status-name');
-    const guestMenu = document.getElementById('guest-menu-items');
-    const loggedInMenu = document.getElementById('logged-in-menu-items');
-    const menuName = document.getElementById('menu-user-name');
-    const menuRole = document.getElementById('menu-user-role');
-    const portalLink = document.getElementById('menu-portal-link');
+    // Try injected widget first, then nav-integrated version
+    const icon = document.getElementById('user-status-icon') || document.getElementById('userIcon');
+    const name =
+        document.getElementById('user-status-name') || document.getElementById('userDisplayName');
+    const guestMenu =
+        document.getElementById('guest-menu-items') || document.getElementById('guestMenu');
+    const loggedInMenu =
+        document.getElementById('logged-in-menu-items') || document.getElementById('loggedInMenu');
+    const menuName =
+        document.getElementById('menu-user-name') || document.getElementById('loggedInName');
+    const menuRole =
+        document.getElementById('menu-user-role') || document.getElementById('loggedInRole');
+    const portalLink =
+        document.getElementById('menu-portal-link') || document.getElementById('myPortalLink');
 
-    if (!icon || !name) {
+    if (!icon && !name) {
         return;
     }
 
@@ -156,9 +173,13 @@ function updateUserStatusWidget() {
 
         const displayName = userName ? userName.split('@')[0].split(' ')[0] : role;
 
-        icon.textContent = roleIcons[role] || '👤';
-        name.textContent = displayName;
-        name.style.color = roleColors[role] || '#1e293b';
+        if (icon) {
+            icon.textContent = roleIcons[role] || '👤';
+        }
+        if (name) {
+            name.textContent = displayName;
+            name.style.color = roleColors[role] || '#1e293b';
+        }
 
         if (guestMenu) {
             guestMenu.style.display = 'none';
@@ -187,9 +208,13 @@ function updateUserStatusWidget() {
         }
     } else {
         // Guest state
-        icon.textContent = '👤';
-        name.textContent = 'Guest';
-        name.style.color = '#64748b';
+        if (icon) {
+            icon.textContent = '👤';
+        }
+        if (name) {
+            name.textContent = 'Guest';
+            name.style.color = '#64748b';
+        }
 
         if (guestMenu) {
             guestMenu.style.display = 'block';
