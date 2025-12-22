@@ -180,7 +180,7 @@ const SupabaseAuth = {
         localStorage.removeItem('hms_logged_in');
         localStorage.removeItem('hms_role');
 
-        window.location.href = 'index.html';
+        window.location.assign('index.html');
     },
 
     // Send OTP to phone (for patient login)
@@ -402,34 +402,32 @@ const SupabasePatients = {
 
 // Export for use in browser
 if (typeof window !== 'undefined') {
-  window.SupabaseAuth = SupabaseAuth;
-  window.SupabaseDB = SupabaseDB;
-  window.SupabaseAppointments = SupabaseAppointments;
-  window.SupabasePatients = SupabasePatients;
+    window.SupabaseAuth = SupabaseAuth;
+    window.SupabaseDB = SupabaseDB;
+    window.SupabaseAppointments = SupabaseAppointments;
+    window.SupabasePatients = SupabasePatients;
 
-  // Log mode on load
-  console.log(
-    SupabaseAuth.isConfigured()
-      ? '✅ Supabase configured - using real auth'
-      : '⚠️ Supabase not configured - using demo mode'
-  );
+    // Log mode on load
+    console.log(
+        SupabaseAuth.isConfigured()
+            ? '✅ Supabase configured - using real auth'
+            : '⚠️ Supabase not configured - using demo mode'
+    );
 }
 
 // Export for use in Node.js/Jest
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    SUPABASE_CONFIG,
-    SupabaseAuth,
-    SupabaseDB,
-    SupabaseAppointments,
-    SupabasePatients,
-    isDemoMode: () => !SupabaseAuth.isConfigured(),
-    utils: {
-      validateEmail: (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
-      generateId: () =>
-        `id_${ 
-        Date.now().toString(36) 
-        }${Math.random().toString(36).substring(2, 9)}`,
-    },
-  };
+    module.exports = {
+        SUPABASE_CONFIG,
+        SupabaseAuth,
+        SupabaseDB,
+        SupabaseAppointments,
+        SupabasePatients,
+        isDemoMode: () => !SupabaseAuth.isConfigured(),
+        utils: {
+            validateEmail: (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+            generateId: () =>
+                `id_${Date.now().toString(36)}${Math.random().toString(36).substring(2, 9)}`,
+        },
+    };
 }

@@ -7,12 +7,8 @@
 const mockOpen = jest.fn();
 window.open = mockOpen;
 
-// Set up window.location
-Object.defineProperty(window, 'location', {
-    value: { origin: 'https://adinathhealth.com' },
-    writable: true,
-    configurable: true
-});
+// Jest 30+ with jsdom - use the existing location object
+// Note: Tests that rely on window.location.origin will use jsdom's default (http://localhost)
 
 // Mock fetch
 global.fetch = jest.fn();

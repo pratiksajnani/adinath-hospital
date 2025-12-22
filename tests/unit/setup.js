@@ -37,8 +37,19 @@ Object.defineProperty(global, 'sessionStorage', {
   writable: true,
 });
 
-// Mock window.location with proper getter/setter
-const locationMock = {
+// Mock location methods for jsdom - don't replace the object, just the methods
+// In Jest 30+ with jsdom, window.location cannot be deleted or redefined
+const mockLocationMethods = () => {
+  if (typeof window !== 'undefined' && window.location) {
+    // Mock navigation methods to prevent actual navigation
+    window.location.assign = jest.fn();
+    window.location.replace = jest.fn();
+    window.location.reload = jest.fn();
+  }
+};
+
+// Create a location mock for tests that need it
+const createLocationMock = () => ({
   _href: 'http://localhost/',
   hostname: 'localhost',
   pathname: '/',
@@ -52,16 +63,26 @@ const locationMock = {
   },
   set href(value) {
     this._href = value;
-    // Don't actually navigate in tests
   },
   assign: jest.fn(),
   replace: jest.fn(),
   reload: jest.fn(),
-};
+});
 
-// Mock window object
-global.window = {
-  location: locationMock,
+// Export for use in test files
+global.createLocationMock = createLocationMock;
+
+// Apply mock methods
+mockLocationMethods();
+
+// Mock window object for non-jsdom contexts
+if (typeof global.window === 'undefined') {
+  global.window = {
+    location: createLocationMock(),
+  };
+}
+
+Object.assign(global.window, {
   open: jest.fn(),
   alert: jest.fn(),
   confirm: jest.fn(() => true),
@@ -71,13 +92,12 @@ global.window = {
   removeEventListener: jest.fn(),
   onerror: null,
   onunhandledrejection: null,
-};
-
-// Also set on global for jsdom compatibility
-Object.defineProperty(global, 'location', {
-  value: locationMock,
-  writable: true,
 });
+
+// Set location on global for compatibility (works in non-jsdom)
+if (typeof global.location === 'undefined') {
+  global.location = createLocationMock();
+}
 
 // Mock document object
 global.document = {

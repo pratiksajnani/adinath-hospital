@@ -100,8 +100,9 @@ function injectUserStatus() {
 }
 
 // Get base path for links
-function getBasePath() {
-    const path = window.location.pathname;
+// Accepts optional path parameter for testing
+function getBasePath(testPath = null) {
+    const path = testPath || window.location.pathname;
 
     if (
         path.includes('/portal/') ||
@@ -239,7 +240,7 @@ function doLogout() {
     updateUserStatusWidget();
 
     // Redirect to home
-    window.location.href = `${getBasePath()}index.html`;
+    window.location.assign(`${getBasePath()}index.html`);
 }
 
 // Auto-inject when DOM is ready

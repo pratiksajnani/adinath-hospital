@@ -3,15 +3,9 @@
  * Tests for user status display, menus, and logout
  */
 
-// Mock window.location
-Object.defineProperty(window, 'location', {
-    value: { 
-        pathname: '/',
-        href: 'http://localhost/'
-    },
-    writable: true,
-    configurable: true
-});
+// Jest 30+ with jsdom - mock location methods, don't replace the object
+window.location.replace = jest.fn();
+window.location.assign = jest.fn();
 
 // Load user-status module
 const { getBasePath, toggleUserMenu, updateUserStatusWidget, doLogout, injectUserStatus } = require('../../js/user-status.js');
@@ -22,44 +16,37 @@ beforeEach(() => {
 });
 
 describe('getBasePath()', () => {
+    // Using testPath parameter for Jest 30+ jsdom compatibility
     test('should return empty string for root pages', () => {
-        window.location.pathname = '/index.html';
-        expect(getBasePath()).toBe('');
+        expect(getBasePath('/index.html')).toBe('');
     });
 
     test('should return ../ for portal pages', () => {
-        window.location.pathname = '/portal/index.html';
-        expect(getBasePath()).toBe('../');
+        expect(getBasePath('/portal/index.html')).toBe('../');
     });
 
     test('should return ../../ for nested portal pages', () => {
-        window.location.pathname = '/portal/admin/index.html';
-        expect(getBasePath()).toBe('../../');
+        expect(getBasePath('/portal/admin/index.html')).toBe('../../');
     });
 
     test('should return ../ for docs pages', () => {
-        window.location.pathname = '/docs/PATIENT_GUIDE.html';
-        expect(getBasePath()).toBe('../');
+        expect(getBasePath('/docs/PATIENT_GUIDE.html')).toBe('../');
     });
 
     test('should return ../ for services pages', () => {
-        window.location.pathname = '/services/orthopedic.html';
-        expect(getBasePath()).toBe('../');
+        expect(getBasePath('/services/orthopedic.html')).toBe('../');
     });
 
     test('should return ../ for forms pages', () => {
-        window.location.pathname = '/forms/intake.html';
-        expect(getBasePath()).toBe('../');
+        expect(getBasePath('/forms/intake.html')).toBe('../');
     });
 
     test('should return ../../ for nested forms', () => {
-        window.location.pathname = '/forms/data-collection/form.html';
-        expect(getBasePath()).toBe('../../');
+        expect(getBasePath('/forms/data-collection/form.html')).toBe('../../');
     });
 
     test('should return ../ for onboard pages', () => {
-        window.location.pathname = '/onboard/doctor.html';
-        expect(getBasePath()).toBe('../');
+        expect(getBasePath('/onboard/doctor.html')).toBe('../');
     });
 });
 

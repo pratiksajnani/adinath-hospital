@@ -159,7 +159,7 @@ const AccessControl = {
             if (!role) {
                 // Not logged in - redirect to login
                 const returnUrl = encodeURIComponent(window.location.href);
-                window.location.href = `${this.getBasePath()}login.html?redirect=${returnUrl}`;
+                window.location.assign(`${this.getBasePath()}login.html?redirect=${returnUrl}`);
             } else {
                 // Logged in but unauthorized - show error and redirect
                 // eslint-disable-next-line no-alert -- Intentional user notification
@@ -172,8 +172,9 @@ const AccessControl = {
     },
 
     // Get base path for current environment
-    getBasePath() {
-        const path = window.location.pathname;
+    // Accepts optional path parameter for testing
+    getBasePath(testPath = null) {
+        const path = testPath || window.location.pathname;
         if (
             path.includes('/portal/admin/') ||
             path.includes('/portal/doctor/') ||
@@ -210,7 +211,7 @@ const AccessControl = {
         };
 
         const portal = portals[role] || 'index.html';
-        window.location.href = basePath + portal;
+        window.location.assign(basePath + portal);
     },
 
     // Add security headers via meta tags (CSP, etc.)
@@ -277,7 +278,7 @@ const AccessControl = {
         localStorage.removeItem('hms_doctor');
         localStorage.removeItem('hms_demo_user');
 
-        window.location.href = `${this.getBasePath()}index.html`;
+        window.location.assign(`${this.getBasePath()}index.html`);
     },
 
     // Initialize
