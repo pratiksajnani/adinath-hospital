@@ -95,14 +95,26 @@
             right: 24px; 
         }
         .sidebar-footer a {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             color: white;
-            opacity: 0.8;
+            opacity: 0.85;
             text-decoration: none;
-            padding: 8px 0;
-            font-size: 0.9rem;
+            padding: 12px 0;
+            font-size: 1rem;
         }
         .sidebar-footer a:hover { opacity: 1; }
+        
+        /* Date display styling */
+        #currentDate {
+            white-space: nowrap;
+            background: rgba(124, 58, 237, 0.1);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: var(--primary);
+        }
         
         /* Main */
         .main { margin-left: 260px; padding: 32px; }
@@ -309,6 +321,11 @@
             .main { margin-left: 0; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .main-header { flex-direction: column; align-items: flex-start; }
+        }
+        
+        /* Hide user-status widget on admin pages - we have our own user menu */
+        #user-status-widget {
+            display: none !important;
         }
     </style>
 </head>
