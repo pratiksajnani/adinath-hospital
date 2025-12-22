@@ -4,6 +4,8 @@
  * @module SessionRecording
  */
 
+/* global LogRocket */
+
 // eslint-disable-next-line no-unused-vars
 const SessionRecording = {
   enabled: false,
@@ -15,7 +17,7 @@ const SessionRecording = {
    * @param {string} appId - LogRocket application ID
    */
   init(appId) {
-    if (this.initialized) return;
+    if (this.initialized) {return;}
 
     this.appId = appId || (typeof CONFIG !== 'undefined' ? CONFIG.LOGROCKET_ID : null);
 
@@ -84,7 +86,7 @@ const SessionRecording = {
    * Configure privacy settings - mask sensitive data
    */
   configurePrivacy() {
-    if (!this.enabled || typeof LogRocket === 'undefined') return;
+    if (!this.enabled || typeof LogRocket === 'undefined') {return;}
 
     // Mask sensitive input fields
     LogRocket.redaction({
@@ -128,10 +130,10 @@ const SessionRecording = {
     if (request.body) {
       try {
         const body = JSON.parse(request.body);
-        if (body.password) body.password = '[REDACTED]';
-        if (body.phone) body.phone = '[REDACTED]';
-        if (body.email) body.email = '[REDACTED]';
-        if (body.aadhar) body.aadhar = '[REDACTED]';
+        if (body.password) {body.password = '[REDACTED]';}
+        if (body.phone) {body.phone = '[REDACTED]';}
+        if (body.email) {body.email = '[REDACTED]';}
+        if (body.aadhar) {body.aadhar = '[REDACTED]';}
         request.body = JSON.stringify(body);
       } catch {
         // Not JSON, leave as is
@@ -151,8 +153,8 @@ const SessionRecording = {
     if (response.body) {
       try {
         const body = JSON.parse(response.body);
-        if (body.token) body.token = '[REDACTED]';
-        if (body.accessToken) body.accessToken = '[REDACTED]';
+        if (body.token) {body.token = '[REDACTED]';}
+        if (body.accessToken) {body.accessToken = '[REDACTED]';}
         if (body.patients) {
           body.patients = body.patients.map((p) => ({
             ...p,
@@ -173,7 +175,7 @@ const SessionRecording = {
    * Identify the current user
    */
   identifyUser() {
-    if (!this.enabled || typeof LogRocket === 'undefined') return;
+    if (!this.enabled || typeof LogRocket === 'undefined') {return;}
 
     try {
       const isLoggedIn = localStorage.getItem('hms_logged_in') === 'true';
@@ -213,7 +215,7 @@ const SessionRecording = {
    * @param {Object} data - Event data (will be sanitized)
    */
   track(event, data = {}) {
-    if (!this.enabled || typeof LogRocket === 'undefined') return;
+    if (!this.enabled || typeof LogRocket === 'undefined') {return;}
 
     // Sanitize data before tracking
     const sanitized = { ...data };
@@ -231,7 +233,7 @@ const SessionRecording = {
    * @param {Object} context - Additional context
    */
   captureException(error, context = {}) {
-    if (!this.enabled || typeof LogRocket === 'undefined') return;
+    if (!this.enabled || typeof LogRocket === 'undefined') {return;}
 
     LogRocket.captureException(error, {
       extra: context,
@@ -243,7 +245,7 @@ const SessionRecording = {
    * @returns {Promise<string|null>} - Session URL
    */
   async getSessionURL() {
-    if (!this.enabled || typeof LogRocket === 'undefined') return null;
+    if (!this.enabled || typeof LogRocket === 'undefined') {return null;}
 
     return new Promise((resolve) => {
       LogRocket.getSessionURL((sessionURL) => {
@@ -291,8 +293,8 @@ const SessionRecording = {
   hasConsent() {
     // Check for consent cookie/localStorage
     const consent = localStorage.getItem('recording_consent');
-    if (consent === 'true') return true;
-    if (consent === 'false') return false;
+    if (consent === 'true') {return true;}
+    if (consent === 'false') {return false;}
 
     // Default: require explicit consent for GDPR
     // For non-EU users, we could auto-consent

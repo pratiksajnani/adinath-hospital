@@ -427,9 +427,9 @@ if (typeof module !== 'undefined' && module.exports) {
     utils: {
       validateEmail: (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
       generateId: () =>
-        'id_' +
-        Date.now().toString(36) +
-        Math.random().toString(36).substring(2, 9),
+        `id_${ 
+        Date.now().toString(36) 
+        }${Math.random().toString(36).substring(2, 9)}`,
     },
   };
 }

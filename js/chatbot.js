@@ -167,8 +167,8 @@ const Chatbot = {
 
     // Check browser language
     const browserLang = navigator.language.toLowerCase();
-    if (browserLang.startsWith('hi')) return 'hi';
-    if (browserLang.startsWith('gu')) return 'gu';
+    if (browserLang.startsWith('hi')) {return 'hi';}
+    if (browserLang.startsWith('gu')) {return 'gu';}
 
     return 'en';
   },
@@ -362,7 +362,7 @@ const Chatbot = {
     const input = document.getElementById('chatbot-input');
     const message = input.value.trim();
 
-    if (!message) return;
+    if (!message) {return;}
 
     input.value = '';
     this.processMessage(message);
@@ -481,7 +481,7 @@ const Chatbot = {
    */
   hideTyping() {
     const typing = document.getElementById('chatbot-typing');
-    if (typing) typing.remove();
+    if (typing) {typing.remove();}
   },
 
   /**

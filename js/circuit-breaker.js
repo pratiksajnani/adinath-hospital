@@ -276,14 +276,12 @@ const CircuitBreaker = {
    * @returns {Function} - Wrapped function
    */
   wrap(name, fn, fallback, config = {}) {
-    return (...args) => {
-      return this.execute(
+    return (...args) => this.execute(
         name,
         () => fn(...args),
         () => (typeof fallback === 'function' ? fallback(...args) : fallback),
         config
       );
-    };
   },
 
   /**
@@ -299,7 +297,7 @@ const CircuitBreaker = {
             method: 'POST',
             body: JSON.stringify({ to, message }),
           });
-          if (!response.ok) throw new Error('SMS failed');
+          if (!response.ok) {throw new Error('SMS failed');}
           return response.json();
         },
         () => {
@@ -315,7 +313,7 @@ const CircuitBreaker = {
             method: 'POST',
             body: JSON.stringify({ amount, details }),
           });
-          if (!response.ok) throw new Error('Payment failed');
+          if (!response.ok) {throw new Error('Payment failed');}
           return response.json();
         },
         () => {
@@ -336,7 +334,7 @@ const CircuitBreaker = {
             method: 'POST',
             body: JSON.stringify({ to, message }),
           });
-          if (!response.ok) throw new Error('WhatsApp failed');
+          if (!response.ok) {throw new Error('WhatsApp failed');}
           return response.json();
         },
         (to, message) => {

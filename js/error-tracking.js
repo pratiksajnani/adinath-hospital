@@ -55,7 +55,7 @@ const ErrorTracking = {
    * @param {Object} context - Additional context
    */
   captureException(error, context = {}) {
-    if (!this.shouldSample()) return;
+    if (!this.shouldSample()) {return;}
 
     const payload = this.buildPayload(error, context);
     this.send(payload);
@@ -68,7 +68,7 @@ const ErrorTracking = {
    * @param {Object} context - Additional context
    */
   captureMessage(message, level = 'info', context = {}) {
-    if (!this.shouldSample()) return;
+    if (!this.shouldSample()) {return;}
 
     const payload = this.buildPayload(new Error(message), {
       ...context,
@@ -205,7 +205,7 @@ const ErrorTracking = {
    * Flush the error queue to the backend
    */
   async flush() {
-    if (!this.enabled || this.queue.length === 0) return;
+    if (!this.enabled || this.queue.length === 0) {return;}
 
     const errors = [...this.queue];
     this.queue = [];

@@ -259,15 +259,15 @@ const RateLimiter = {
 
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (!key || !key.startsWith(this.storagePrefix)) continue;
+        if (!key || !key.startsWith(this.storagePrefix)) {continue;}
 
         const record = this.getRecord(key);
         const actionMatch = key.match(prefixRegex);
-        if (!actionMatch) continue;
+        if (!actionMatch) {continue;}
 
         const action = actionMatch[1];
         const limit = this.limits[action];
-        if (!limit) continue;
+        if (!limit) {continue;}
 
         // Check if all attempts are expired
         const validAttempts = record.attempts.filter(
