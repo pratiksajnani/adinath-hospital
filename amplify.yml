@@ -4,10 +4,9 @@ frontend:
         preBuild:
             commands:
                 - "echo 'Adinath Hospital - Static site deployment'"
-                - "echo 'Domain - adinathhealth.com'"
         build:
             commands:
-                - "echo 'No build step required - serving static files'"
+                - "echo 'Serving static files'"
     artifacts:
         baseDirectory: /
         files:
@@ -26,12 +25,13 @@ frontend:
             - 'package-lock.json'
             - 'jest.config.js'
             - 'playwright.config.js'
-            - '*.config.js'
+            - 'commitlint.config.js'
             - '.eslintrc*'
             - '.prettierrc'
             - '.editorconfig'
             - '.jscpd.json'
             - 'CONTRIBUTING.md'
+            - '_redirects'
     cache:
         paths: []
 
@@ -46,8 +46,6 @@ customHeaders:
             value: '1; mode=block'
           - key: Referrer-Policy
             value: strict-origin-when-cross-origin
-          - key: Permissions-Policy
-            value: 'camera=(), microphone=(), geolocation=(self)'
     - pattern: '*.html'
       headers:
           - key: Cache-Control
@@ -60,23 +58,91 @@ customHeaders:
       headers:
           - key: Cache-Control
             value: 'public, max-age=31536000, immutable'
-    - pattern: '/js/supabase-client.js'
-      headers:
-          - key: Cache-Control
-            value: 'no-cache, must-revalidate'
-    - pattern: '/js/config.js'
-      headers:
-          - key: Cache-Control
-            value: 'no-cache, must-revalidate'
-    - pattern: '/js/hms.js'
-      headers:
-          - key: Cache-Control
-            value: 'public, max-age=3600'
     - pattern: '/js/*.js'
       headers:
           - key: Cache-Control
             value: 'public, max-age=86400'
-    - pattern: '/fonts/*'
-      headers:
-          - key: Cache-Control
-            value: 'public, max-age=31536000, immutable'
+
+customRules:
+    # Onboarding pages
+    - source: /onboard/admin
+      target: /onboard/admin.html
+      status: '200'
+    - source: /onboard/admin/
+      target: /onboard/admin.html
+      status: '200'
+    - source: '/onboard/admin/<*>'
+      target: /onboard/admin.html
+      status: '200'
+    - source: /onboard/doctor
+      target: /onboard/doctor.html
+      status: '200'
+    - source: /onboard/doctor/
+      target: /onboard/doctor.html
+      status: '200'
+    - source: /onboard/staff
+      target: /onboard/staff.html
+      status: '200'
+    - source: /onboard/staff/
+      target: /onboard/staff.html
+      status: '200'
+    - source: /onboard/patient
+      target: /onboard/patient.html
+      status: '200'
+    - source: /onboard/patient/
+      target: /onboard/patient.html
+      status: '200'
+    - source: /onboard
+      target: /onboard/index.html
+      status: '200'
+    - source: /onboard/
+      target: /onboard/index.html
+      status: '200'
+    # Main pages
+    - source: /login
+      target: /login.html
+      status: '200'
+    - source: /book
+      target: /book.html
+      status: '200'
+    - source: /store
+      target: /store.html
+      status: '200'
+    - source: /check-status
+      target: /check-status.html
+      status: '200'
+    # Portal pages
+    - source: /portal
+      target: /portal/index.html
+      status: '200'
+    - source: /portal/
+      target: /portal/index.html
+      status: '200'
+    - source: /portal/admin
+      target: /portal/admin/index.html
+      status: '200'
+    - source: /portal/admin/
+      target: /portal/admin/index.html
+      status: '200'
+    - source: /portal/doctor
+      target: /portal/doctor/index.html
+      status: '200'
+    - source: /portal/doctor/
+      target: /portal/doctor/index.html
+      status: '200'
+    - source: /portal/staff
+      target: /portal/staff/index.html
+      status: '200'
+    - source: /portal/staff/
+      target: /portal/staff/index.html
+      status: '200'
+    - source: /portal/patient
+      target: /portal/patient/index.html
+      status: '200'
+    - source: /portal/patient/
+      target: /portal/patient/index.html
+      status: '200'
+    # SPA fallback - only for paths without file extensions
+    - source: '/<*>'
+      target: /index.html
+      status: '404'
