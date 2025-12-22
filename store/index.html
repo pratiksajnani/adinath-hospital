@@ -19,13 +19,14 @@
         
         /* Sidebar */
         .store-sidebar {
-            background: var(--gray-800);
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
             color: white;
             padding: 24px;
             position: fixed;
             width: 240px;
             height: 100vh;
             overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
         }
         
         .store-logo {
@@ -33,13 +34,13 @@
             align-items: center;
             gap: 12px;
             padding-bottom: 24px;
-            border-bottom: 1px solid var(--gray-700);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 24px;
         }
         
         .store-logo .icon { font-size: 2rem; }
-        .store-logo h2 { font-size: 1rem; margin: 0; }
-        .store-logo span { font-size: 0.75rem; color: var(--gray-400); }
+        .store-logo h2 { font-size: 1.1rem; margin: 0; color: #fff; font-weight: 600; }
+        .store-logo span { font-size: 0.8rem; color: #94a3b8; }
         
         .store-nav a {
             display: flex;
@@ -47,14 +48,16 @@
             gap: 12px;
             padding: 12px 16px;
             border-radius: var(--radius);
-            color: var(--gray-300);
+            color: #e2e8f0;
             margin-bottom: 4px;
             transition: var(--transition);
+            font-weight: 500;
+            text-decoration: none;
         }
         
         .store-nav a:hover, .store-nav a.active {
-            background: var(--gray-700);
-            color: white;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
         }
         
         .store-nav .icon { font-size: 1.25rem; }
@@ -812,4 +815,6 @@
 <script src="../js/access-control.js"></script>
 </body>
 </html>
+
+
 
