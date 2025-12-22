@@ -75,7 +75,7 @@
   },
   "overrides": [
     {
-      "files": ["js/hms.js"],
+      "files": ["js/hms.js", "js/i18n.js"],
       "rules": {
         "max-lines": "off",
         "max-lines-per-function": "off"
