@@ -24,6 +24,7 @@
     "format:check": "prettier --check 'js/**/*.js' 'css/**/*.css'",
     "quality": "npm run lint && npm run format:check && npm run test:unit",
     "quality:fix": "npm run lint:fix && npm run format",
+    "i18n:validate": "node scripts/validate-i18n.js",
     "audit": "npm audit --audit-level=moderate",
     "analyze": "npm run lint:report && npm run coverage",
     "quality:report": "node scripts/quality-report.js",
