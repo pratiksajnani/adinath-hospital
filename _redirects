@@ -1,24 +1,32 @@
 # Adinath Hospital - AWS Amplify Redirects
+# Force rules (!) take priority and prevent further processing
 
-# EXPLICIT .html file mappings (highest priority)
+# Onboarding pages - force serve the correct HTML files
+/onboard/admin.html/* /onboard/admin.html 200!
+/onboard/admin/* /onboard/admin.html 200!
 /onboard/admin.html /onboard/admin.html 200!
-/onboard/doctor.html /onboard/doctor.html 200!
-/onboard/staff.html /onboard/staff.html 200!
-/onboard/patient.html /onboard/patient.html 200!
+/onboard/admin /onboard/admin.html 200!
 
-# Clean URL rewrites for onboarding
-/onboard/admin /onboard/admin.html 200
-/onboard/admin/ /onboard/admin.html 200
-/onboard/doctor /onboard/doctor.html 200
-/onboard/doctor/ /onboard/doctor.html 200
-/onboard/staff /onboard/staff.html 200
-/onboard/staff/ /onboard/staff.html 200
-/onboard/patient /onboard/patient.html 200
-/onboard/patient/ /onboard/patient.html 200
+/onboard/doctor.html/* /onboard/doctor.html 200!
+/onboard/doctor/* /onboard/doctor.html 200!
+/onboard/doctor.html /onboard/doctor.html 200!
+/onboard/doctor /onboard/doctor.html 200!
+
+/onboard/staff.html/* /onboard/staff.html 200!
+/onboard/staff/* /onboard/staff.html 200!
+/onboard/staff.html /onboard/staff.html 200!
+/onboard/staff /onboard/staff.html 200!
+
+/onboard/patient.html/* /onboard/patient.html 200!
+/onboard/patient/* /onboard/patient.html 200!
+/onboard/patient.html /onboard/patient.html 200!
+/onboard/patient /onboard/patient.html 200!
+
+# Onboarding index
 /onboard /onboard/index.html 200
 /onboard/ /onboard/index.html 200
 
-# Admin setup (root level)
+# Admin setup (root level alternative)
 /admin-setup /admin-setup.html 200
 
 # Main pages
@@ -30,13 +38,20 @@
 
 # Portal pages
 /portal /portal/index.html 200
+/portal/ /portal/index.html 200
 /portal/admin /portal/admin/index.html 200
+/portal/admin/ /portal/admin/index.html 200
 /portal/doctor /portal/doctor/index.html 200
+/portal/doctor/ /portal/doctor/index.html 200
 /portal/staff /portal/staff/index.html 200
+/portal/staff/ /portal/staff/index.html 200
 /portal/patient /portal/patient/index.html 200
+/portal/patient/ /portal/patient/index.html 200
 
 # Documentation
 /docs /docs/index.html 200
+/docs/ /docs/index.html 200
 
-# 404 for unknown paths (NOT for valid .html files)
-/*  /404.html  404
+# Static assets pass through (no rewrite needed)
+# 404 fallback for truly unknown paths
+/* /404.html 404
