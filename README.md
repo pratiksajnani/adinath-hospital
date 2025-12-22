@@ -10,8 +10,8 @@
 <!-- Code Quality Badges -->
 
 ![Quality Score: 90%](https://img.shields.io/badge/quality-90%25-brightgreen)
-![Test Coverage: 86.84%](https://img.shields.io/badge/coverage-86.84%25-brightgreen)
-![Tests: 429 passed](https://img.shields.io/badge/tests-429%20passed-brightgreen)
+![Test Coverage: 70.8%](https://img.shields.io/badge/coverage-70.8%25-yellow)
+![Tests: 615 passed](https://img.shields.io/badge/tests-615%20passed-brightgreen)
 ![ESLint: 0 errors](https://img.shields.io/badge/eslint-0%20errors-brightgreen)
 ![Security: 7 issues](https://img.shields.io/badge/security-7%20issues-yellow)
 ![Duplication: 0.0%](https://img.shields.io/badge/duplication-0.0%25-brightgreen)
@@ -178,8 +178,8 @@ npm run duplicates
 | Metric           | Status         | Details                |
 | ---------------- | -------------- | ---------------------- |
 | Quality Score    | ✅ 90/100      | Grade A                |
-| Unit Tests       | ✅ 429 passing | 8 test suites          |
-| Coverage         | ✅ 86.84%      | Lines covered          |
+| Unit Tests       | ✅ 615 passing | 14 test suites         |
+| Coverage         | ⚠️ 70.8%       | Lines covered          |
 | ESLint           | ✅ 0 errors    | Security rules enabled |
 | Prettier         | ✅ Configured  | Consistent formatting  |
 | Code Duplication | ✅ 0.0%        | No duplicates          |
