@@ -1091,7 +1091,7 @@ body.large-text-mode .lang-btn.accessibility-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 400px;
+    min-height: 300px;
     overflow: hidden;
 }
 
@@ -1099,9 +1099,10 @@ body.large-text-mode .lang-btn.accessibility-btn {
 .doctor-image .img-doctor {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: top center;
-    min-height: 400px;
+    object-fit: contain;
+    object-position: center center;
+    min-height: 300px;
+    background: linear-gradient(135deg, var(--primary-50), var(--primary-light));
 }
 
 .doctor-placeholder {
@@ -1219,12 +1220,12 @@ body.large-text-mode .lang-btn.accessibility-btn {
     }
 
     .doctor-image {
-        min-height: 300px;
+        min-height: 250px;
     }
 
     .doctor-image img,
     .doctor-image .img-doctor {
-        min-height: 300px;
+        min-height: 250px;
     }
 
     .doctor-placeholder {
