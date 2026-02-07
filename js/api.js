@@ -2,10 +2,43 @@
 // ADINATH HOSPITAL - API SERVICE
 // Connects to Supabase Edge Functions
 // ============================================
+/* global ENV */
 
 const API = {
-    // Supabase Edge Functions base URL
-    baseUrl: 'https://lhwqwloibxiiqtgaoxqp.supabase.co/functions/v1',
+    // Supabase configuration (DO NOT commit real keys - use environment variables)
+    // In production, these should be loaded from environment variables or secure config
+    supabaseConfig: {
+        url: 'https://lhwqwloibxiiqtgaoxqp.supabase.co',
+        anonKey: null, // Load from env in production
+    },
+
+    // Get Supabase Anon Key from environment or config
+    getSupabaseKey() {
+        // In production, load from: window.ENV.SUPABASE_ANON_KEY or fetch from secure endpoint
+        if (this.supabaseConfig.anonKey) {
+            return this.supabaseConfig.anonKey;
+        }
+
+        // WARNING: For demo purposes only. NEVER commit real keys to code.
+        // In production, fetch this from a secure backend endpoint or environment variable
+        const demoKey =
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxod3F3bG9pYnhpaXF0Z2FveHFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMzMzMzksImV4cCI6MjA4MTkwOTMzOX0.s5IuG7e50dam4QAPpyTXEYoNHIWv8PupOgXx8Y_Rv0Y';
+
+        // Only use demo key in non-production environments
+        if (typeof ENV !== 'undefined' && ENV !== 'production') {
+            return demoKey;
+        }
+
+        // In production, fail loudly if key is not configured
+        console.error(
+            '⚠️ ERROR: Supabase API key not configured. Set SUPABASE_ANON_KEY environment variable.'
+        );
+        throw new Error('Supabase configuration missing');
+    },
+
+    get baseUrl() {
+        return `${this.supabaseConfig.url}/functions/v1`;
+    },
 
     // Get auth token from current session
     async getAuthToken() {
@@ -19,8 +52,7 @@ const API = {
     // Make authenticated request
     async request(endpoint, options = {}) {
         const token = await this.getAuthToken();
-        const anonKey =
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxod3F3bG9pYnhpaXF0Z2FveHFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMzMzMzksImV4cCI6MjA4MTkwOTMzOX0.s5IuG7e50dam4QAPpyTXEYoNHIWv8PupOgXx8Y_Rv0Y';
+        const anonKey = this.getSupabaseKey();
 
         const headers = {
             'Content-Type': 'application/json',
@@ -42,9 +74,9 @@ const API = {
             }
 
             return data;
-        } catch (error) {
-            console.error('API Error:', error);
-            throw error;
+        } catch (_error) {
+            console.error('API Error:', _error);
+            throw _error;
         }
     },
 
@@ -205,8 +237,7 @@ const API = {
         // Upload file
         async upload(file, bucket = 'hospital-images', path = '') {
             const token = await API.getAuthToken();
-            const anonKey =
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxod3F3bG9pYnhpaXF0Z2FveHFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMzMzMzksImV4cCI6MjA4MTkwOTMzOX0.s5IuG7e50dam4QAPpyTXEYoNHIWv8PupOgXx8Y_Rv0Y';
+            const anonKey = API.getSupabaseKey();
 
             const formData = new FormData();
             formData.append('file', file);

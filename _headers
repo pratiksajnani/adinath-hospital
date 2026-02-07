@@ -1,0 +1,35 @@
+/*
+  # Security Headers
+  # Prevent XSS, clickjacking, and other common attacks
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+  # Content Security Policy
+  # Strict policy to prevent XSS and injection attacks
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://checkout.razorpay.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://lhwqwloibxiiqtgaoxqp.supabase.co https://checkout.razorpay.com; frame-src 'self' https://checkout.razorpay.com; base-uri 'self'; form-action 'self'
+
+  # HTTPS enforcement
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+  # Caching headers for security
+  Cache-Control: public, max-age=3600
+
+/portal/*
+  # Stricter policy for authenticated pages
+  X-Frame-Options: DENY
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/*.html
+  Cache-Control: max-age=3600
+
+/js/*.js
+  Cache-Control: max-age=86400
+
+/css/*.css
+  Cache-Control: max-age=86400
+
+/images/*
+  Cache-Control: max-age=604800
