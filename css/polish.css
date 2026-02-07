@@ -1,0 +1,366 @@
+/* ============================================
+   VISUAL POLISH & INTERACTIONS
+   Micro-interactions, smooth animations, enhanced states
+   ============================================ */
+
+/* Enhanced button states */
+button,
+.btn,
+a[class*="btn"] {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Button ripple effect on click */
+button::after,
+.btn::after,
+a[class*="btn"]::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+button:active::after,
+.btn:active::after,
+a[class*="btn"]:active::after {
+    width: 300px;
+    height: 300px;
+    animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+    from {
+        width: 0;
+        height: 0;
+        opacity: 1;
+    }
+    to {
+        width: 300px;
+        height: 300px;
+        opacity: 0;
+    }
+}
+
+/* Enhanced button hover effects */
+.btn-primary:hover,
+button.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(13, 148, 136, 0.3);
+}
+
+.btn-primary:active,
+button.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+}
+
+.btn-secondary:hover,
+button.btn-secondary:hover {
+    border-color: #0d9488;
+    color: #0d9488;
+    background-color: rgba(13, 148, 136, 0.05);
+}
+
+/* Form input focus animations */
+input:focus,
+textarea:focus,
+select:focus {
+    animation: inputFocus 0.3s ease;
+}
+
+@keyframes inputFocus {
+    from {
+        box-shadow: none;
+    }
+    to {
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    }
+}
+
+/* Input validation indicators */
+input:valid:not(:placeholder-shown) {
+    border-color: #10b981;
+    background-image: linear-gradient(135deg, transparent 0%, rgba(16, 185, 129, 0.05) 100%);
+}
+
+input:invalid:not(:placeholder-shown) {
+    border-color: #ef4444;
+    background-image: linear-gradient(135deg, transparent 0%, rgba(239, 68, 68, 0.05) 100%);
+}
+
+/* Link hover effects */
+a:not([class]) {
+    position: relative;
+}
+
+a:not([class])::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #0d9488;
+    transition: width 0.3s ease;
+}
+
+a:not([class]):hover::after {
+    width: 100%;
+}
+
+/* Scroll reveal animations */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.fade-in-up:nth-child(1) {
+    animation-delay: 0.1s;
+}
+.fade-in-up:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.fade-in-up:nth-child(3) {
+    animation-delay: 0.3s;
+}
+.fade-in-up:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Card hover effects */
+.doctor-card,
+.testimonial-card,
+.action-card,
+.news-card {
+    transition: all 0.3s ease;
+}
+
+.doctor-card:hover,
+.testimonial-card:hover,
+.news-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.action-card:hover {
+    transform: translateY(-4px);
+    background-color: rgba(13, 148, 136, 0.05);
+}
+
+/* Icon animations */
+.action-arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.action-card:hover .action-arrow {
+    transform: translateX(4px);
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading {
+    animation: spin 1s linear infinite;
+}
+
+/* Smooth page transitions */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Enhanced section transitions */
+section {
+    transition: opacity 0.6s ease;
+}
+
+/* Progress bar animation */
+.progress-step {
+    transition: all 0.4s ease;
+}
+
+.progress-step.active .step-number {
+    animation: pulse 0.6s ease;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Success checkmark animation */
+@keyframes checkmark {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.success-icon {
+    animation: checkmark 0.6s ease;
+}
+
+/* Smooth color transitions */
+* {
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Disable transitions for layout properties */
+button,
+.btn,
+input,
+textarea,
+select {
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Enhanced dropdown animations */
+.dropdown-menu {
+    animation: dropdownFade 0.3s ease;
+}
+
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Floating animation for FABs */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.fab {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Glow effect on hover */
+.fab:hover {
+    filter: drop-shadow(0 0 8px rgba(13, 148, 136, 0.6));
+}
+
+/* Toast notifications animation */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.toast {
+    animation: slideInRight 0.4s ease;
+}
+
+/* Badge pulse animation */
+.badge {
+    transition: all 0.3s ease;
+}
+
+.badge:hover {
+    transform: scale(1.05);
+}
+
+/* Enhanced typography animations */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    transition: color 0.3s ease;
+}
+
+/* Line height improvements */
+body {
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+}
+
+h1,
+h2,
+h3 {
+    line-height: 1.3;
+    letter-spacing: -0.5px;
+}
+
+/* Better spacing system */
+.container {
+    transition: padding 0.3s ease;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Dark mode transitions */
+@media (prefers-color-scheme: dark) {
+    body {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+}
+
+/* Print styles - disable animations */
+@media print {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
