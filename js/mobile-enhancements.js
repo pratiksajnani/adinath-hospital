@@ -2,6 +2,7 @@
 // MOBILE ENHANCEMENTS MODULE
 // Sticky buttons, improved mobile nav, etc.
 // ============================================
+/* global BookingWizard */
 
 const MobileEnhancements = {
     config: {
@@ -24,7 +25,9 @@ const MobileEnhancements = {
      */
     createStickyActionButtons() {
         // Only show on mobile
-        if (window.innerWidth > 768) return;
+        if (window.innerWidth > 768) {
+            return;
+        }
 
         const container = document.createElement('div');
         container.id = 'sticky-actions';
@@ -54,7 +57,9 @@ const MobileEnhancements = {
      */
     setupScrollListener() {
         const stickyActions = document.getElementById('sticky-actions');
-        if (!stickyActions) return;
+        if (!stickyActions) {
+            return;
+        }
 
         let ticking = false;
 
@@ -94,7 +99,9 @@ const MobileEnhancements = {
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const nav = document.querySelector('.nav');
 
-        if (!mobileMenuBtn || !nav) return;
+        if (!mobileMenuBtn || !nav) {
+            return;
+        }
 
         mobileMenuBtn.addEventListener('click', () => {
             nav.classList.toggle('active');
@@ -202,4 +209,8 @@ if (document.readyState === 'loading') {
     });
 } else {
     MobileEnhancements.init();
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = MobileEnhancements;
 }

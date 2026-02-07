@@ -2,6 +2,7 @@
 // TESTIMONIALS MODULE
 // Patient success stories and trust signals
 // ============================================
+/* global BookingWizard */
 
 const Testimonials = {
     // Sample testimonials (can be replaced with real data from API)
@@ -76,14 +77,20 @@ const Testimonials = {
      * Render testimonials section
      */
     renderTestimonials() {
-        // Create section container
         const section = document.createElement('section');
         section.className = 'testimonials-section';
         section.id = 'testimonials';
 
-        // Create section header
-        const headerContainer = document.createElement('div');
-        headerContainer.className = 'container';
+        section.appendChild(this._createHeader());
+        section.appendChild(this._createGrid());
+        section.appendChild(this._createCtaAndBadges());
+
+        this._insertSection(section);
+    },
+
+    _createHeader() {
+        const container = document.createElement('div');
+        container.className = 'container';
 
         const header = document.createElement('div');
         header.className = 'testimonials-header';
@@ -101,82 +108,91 @@ const Testimonials = {
         header.appendChild(tag);
         header.appendChild(title);
         header.appendChild(subtitle);
-        headerContainer.appendChild(header);
-        section.appendChild(headerContainer);
+        container.appendChild(header);
+        return container;
+    },
 
-        // Create testimonials grid
-        const gridContainer = document.createElement('div');
-        gridContainer.className = 'container';
+    _createGrid() {
+        const container = document.createElement('div');
+        container.className = 'container';
 
         const grid = document.createElement('div');
         grid.className = 'testimonials-grid';
 
         this.data.forEach((testimonial) => {
-            const card = this.createTestimonialCard(testimonial);
-            grid.appendChild(card);
+            grid.appendChild(this.createTestimonialCard(testimonial));
         });
 
-        gridContainer.appendChild(grid);
-        section.appendChild(gridContainer);
+        container.appendChild(grid);
+        return container;
+    },
 
-        // Add CTA and badges section
-        const ctaContainer = document.createElement('div');
-        ctaContainer.className = 'container';
+    _createCtaAndBadges() {
+        const container = document.createElement('div');
+        container.className = 'container';
 
-        const ctaContent = document.createElement('div');
-        ctaContent.className = 'testimonials-cta visible';
+        container.appendChild(this._createCta());
+        container.appendChild(this._createBadges());
+        return container;
+    },
 
-        const ctaText = document.createElement('p');
-        ctaText.className = 'testimonials-cta-text';
-        ctaText.textContent = 'Join thousands of satisfied patients. Schedule your appointment today.';
+    _createCta() {
+        const cta = document.createElement('div');
+        cta.className = 'testimonials-cta visible';
 
-        const ctaBtn = document.createElement('button');
-        ctaBtn.className = 'testimonials-cta-button';
-        ctaBtn.textContent = 'Book Your Consultation →';
-        ctaBtn.onclick = () => BookingWizard.open();
+        const text = document.createElement('p');
+        text.className = 'testimonials-cta-text';
+        text.textContent = 'Join thousands of satisfied patients. Schedule your appointment today.';
 
-        ctaContent.appendChild(ctaText);
-        ctaContent.appendChild(ctaBtn);
+        const btn = document.createElement('button');
+        btn.className = 'testimonials-cta-button';
+        btn.textContent = 'Book Your Consultation →';
+        btn.onclick = () => BookingWizard.open();
 
-        const badgesContent = document.createElement('div');
-        badgesContent.className = 'trust-badges visible';
+        cta.appendChild(text);
+        cta.appendChild(btn);
+        return cta;
+    },
+
+    _createBadges() {
+        const badges = document.createElement('div');
+        badges.className = 'trust-badges visible';
 
         this.badges.forEach((badge) => {
-            const badgeEl = document.createElement('div');
-            badgeEl.className = 'badge';
+            const el = document.createElement('div');
+            el.className = 'badge';
 
             const icon = document.createElement('span');
             icon.className = 'badge-icon';
             icon.textContent = badge.icon;
 
-            const titleEl = document.createElement('div');
-            titleEl.className = 'badge-title';
-            titleEl.textContent = badge.title;
+            const title = document.createElement('div');
+            title.className = 'badge-title';
+            title.textContent = badge.title;
 
             const desc = document.createElement('p');
             desc.className = 'badge-desc';
             desc.textContent = badge.desc;
 
-            badgeEl.appendChild(icon);
-            badgeEl.appendChild(titleEl);
-            badgeEl.appendChild(desc);
-            badgesContent.appendChild(badgeEl);
+            el.appendChild(icon);
+            el.appendChild(title);
+            el.appendChild(desc);
+            badges.appendChild(el);
         });
 
-        ctaContainer.appendChild(ctaContent);
-        ctaContainer.appendChild(badgesContent);
-        section.appendChild(ctaContainer);
+        return badges;
+    },
 
-        // Find insertion point - after "What to Expect" section
+    _insertSection(section) {
         const expectSection = document.getElementById('expect');
         if (expectSection) {
             expectSection.parentNode.insertBefore(section, expectSection.nextSibling);
-        } else {
-            // Fallback: insert after doctors section
-            const doctorsSection = document.getElementById('doctors');
-            if (doctorsSection) {
-                doctorsSection.parentNode.insertBefore(section, doctorsSection.nextSibling);
-            }
+            return;
+        }
+
+        const doctorsSection = document.getElementById('doctors');
+        if (doctorsSection) {
+            doctorsSection.parentNode.insertBefore(section, doctorsSection.nextSibling);
         }
     },
 
@@ -187,28 +203,39 @@ const Testimonials = {
         const card = document.createElement('div');
         card.className = 'testimonial-card';
 
-        // Create stars
+        card.appendChild(this._createStars(testimonial.rating));
+        card.appendChild(this._createQuote(testimonial.quote));
+        card.appendChild(this._createAuthor(testimonial));
+
+        return card;
+    },
+
+    _createStars(rating) {
         const starsDiv = document.createElement('div');
         starsDiv.className = 'testimonial-stars';
 
         for (let i = 0; i < 5; i++) {
             const star = document.createElement('span');
             star.className = 'star';
-            star.textContent = i < testimonial.rating ? '⭐' : '☆';
+            star.textContent = i < rating ? '⭐' : '☆';
             starsDiv.appendChild(star);
         }
 
         const ratingText = document.createElement('span');
         ratingText.className = 'star-text';
-        ratingText.textContent = `${testimonial.rating}.0 / 5.0`;
+        ratingText.textContent = `${rating}.0 / 5.0`;
         starsDiv.appendChild(ratingText);
+        return starsDiv;
+    },
 
-        // Quote
+    _createQuote(text) {
         const quote = document.createElement('p');
         quote.className = 'testimonial-quote';
-        quote.textContent = testimonial.quote;
+        quote.textContent = text;
+        return quote;
+    },
 
-        // Author section
+    _createAuthor(testimonial) {
         const authorDiv = document.createElement('div');
         authorDiv.className = 'testimonial-author';
 
@@ -231,13 +258,7 @@ const Testimonials = {
         infoDiv.appendChild(condition);
         authorDiv.appendChild(avatar);
         authorDiv.appendChild(infoDiv);
-
-        // Assemble card
-        card.appendChild(starsDiv);
-        card.appendChild(quote);
-        card.appendChild(authorDiv);
-
-        return card;
+        return authorDiv;
     },
 
     /**
@@ -326,23 +347,27 @@ const Testimonials = {
      * Get average rating
      */
     getAverageRating() {
-        if (this.data.length === 0) return 0;
+        if (this.data.length === 0) {
+            return 0;
+        }
         const sum = this.data.reduce((acc, t) => acc + (t.rating || 0), 0);
         return (sum / this.data.length).toFixed(1);
     }
 };
 
 // Initialize on page load
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        // Only initialize if booking wizard exists (for ordering)
-        if (typeof BookingWizard !== 'undefined') {
-            Testimonials.init();
-        }
-    });
-} else {
-    // Only initialize if booking wizard exists
+function initTestimonials() {
     if (typeof BookingWizard !== 'undefined') {
         Testimonials.init();
     }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTestimonials);
+} else {
+    initTestimonials();
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = Testimonials;
 }

@@ -2,6 +2,7 @@
 // BOOKING WIZARD
 // Step-by-step appointment booking flow
 // ============================================
+/* global SecurityUtils */
 
 const BookingWizard = {
     // Wizard state
@@ -245,7 +246,6 @@ const BookingWizard = {
      * Attach event listeners
      */
     attachEventListeners() {
-        const modal = document.getElementById('booking-wizard-modal');
         const nextBtn = document.getElementById('next-btn');
         const prevBtn = document.getElementById('prev-btn');
         const closeBtn = document.querySelector('.booking-close-btn');
@@ -407,88 +407,88 @@ const BookingWizard = {
     validateStep(step) {
         const errors = [];
 
-        switch (step) {
-            case 1:
-                if (!this.formData.doctorId) {
-                    errors.push('Please select a doctor');
-                    const errorEl = document.getElementById('step1-error');
-                    if (errorEl) errorEl.textContent = errors[0];
-                }
-                break;
-
-            case 2:
-                const dateInput = document.getElementById('appointment-date');
-                const timeInput = document.getElementById('appointment-time');
-                const dateValue = dateInput.value;
-                const timeValue = timeInput.value;
-
-                if (!dateValue) {
-                    errors.push('Please select a date');
-                    const errorEl = document.getElementById('date-error');
-                    if (errorEl) errorEl.textContent = errors[0];
-                }
-
-                if (!timeValue) {
-                    errors.push('Please select a time');
-                    const errorEl = document.getElementById('time-error');
-                    if (errorEl) errorEl.textContent = errors[0];
-                }
-
-                // Validate date is at least 2 days in future
-                if (dateValue) {
-                    const selectedDate = new Date(dateValue);
-                    const minDate = new Date();
-                    minDate.setDate(minDate.getDate() + 2);
-
-                    if (selectedDate < minDate) {
-                        errors.push('Please select a date at least 2 days from now');
-                        const errorEl = document.getElementById('date-error');
-                        if (errorEl) errorEl.textContent = errors[0];
-                    }
-                }
-                break;
-
-            case 3:
-                const nameInput = document.getElementById('patient-name');
-                const emailInput = document.getElementById('patient-email');
-                const phoneInput = document.getElementById('patient-phone');
-                const ageInput = document.getElementById('patient-age');
-
-                // Validate name
-                const nameValidation = SecurityUtils.validateInput(nameInput.value, 'name');
-                if (!nameValidation.valid) {
-                    const errorEl = document.getElementById('name-error');
-                    if (errorEl) errorEl.textContent = nameValidation.error;
-                    errors.push(nameValidation.error);
-                }
-
-                // Validate email
-                const emailValidation = SecurityUtils.validateInput(emailInput.value, 'email');
-                if (!emailValidation.valid) {
-                    const errorEl = document.getElementById('email-error');
-                    if (errorEl) errorEl.textContent = emailValidation.error;
-                    errors.push(emailValidation.error);
-                }
-
-                // Validate phone
-                const phoneValidation = SecurityUtils.validateInput(phoneInput.value, 'phone');
-                if (!phoneValidation.valid) {
-                    const errorEl = document.getElementById('phone-error');
-                    if (errorEl) errorEl.textContent = phoneValidation.error;
-                    errors.push(phoneValidation.error);
-                }
-
-                // Validate age
-                const age = parseInt(ageInput.value);
-                if (!age || age < 1 || age > 150) {
-                    const errorEl = document.getElementById('age-error');
-                    if (errorEl) errorEl.textContent = 'Please enter a valid age';
-                    errors.push('Invalid age');
-                }
-                break;
+        if (step === 1) {
+            this._validateDoctorStep(errors);
+        } else if (step === 2) {
+            this._validateDateTimeStep(errors);
+        } else if (step === 3) {
+            this._validatePatientInfoStep(errors);
         }
 
         return errors.length === 0;
+    },
+
+    _setError(elementId, message) {
+        const errorEl = document.getElementById(elementId);
+        if (errorEl) {
+            errorEl.textContent = message;
+        }
+    },
+
+    _validateDoctorStep(errors) {
+        if (!this.formData.doctorId) {
+            errors.push('Please select a doctor');
+            this._setError('step1-error', errors[0]);
+        }
+    },
+
+    _validateDateTimeStep(errors) {
+        const dateInput = document.getElementById('appointment-date');
+        const timeInput = document.getElementById('appointment-time');
+        const dateValue = dateInput ? dateInput.value : '';
+        const timeValue = timeInput ? timeInput.value : '';
+
+        if (!dateValue) {
+            errors.push('Please select a date');
+            this._setError('date-error', 'Please select a date');
+        }
+
+        if (!timeValue) {
+            errors.push('Please select a time');
+            this._setError('time-error', 'Please select a time');
+        }
+
+        if (dateValue) {
+            const selectedDate = new Date(dateValue);
+            const minDate = new Date();
+            minDate.setDate(minDate.getDate() + 2);
+
+            if (selectedDate < minDate) {
+                errors.push('Please select a date at least 2 days from now');
+                this._setError('date-error', 'Please select a date at least 2 days from now');
+            }
+        }
+    },
+
+    _validatePatientInfoStep(errors) {
+        const nameInput = document.getElementById('patient-name');
+        const emailInput = document.getElementById('patient-email');
+        const phoneInput = document.getElementById('patient-phone');
+        const ageInput = document.getElementById('patient-age');
+
+        const nameValidation = SecurityUtils.validateInput(nameInput.value, 'name');
+        if (!nameValidation.valid) {
+            this._setError('name-error', nameValidation.error);
+            errors.push(nameValidation.error);
+        }
+
+        const emailValidation = SecurityUtils.validateInput(emailInput.value, 'email');
+        if (!emailValidation.valid) {
+            this._setError('email-error', emailValidation.error);
+            errors.push(emailValidation.error);
+        }
+
+        const phoneValidation = SecurityUtils.validateInput(phoneInput.value, 'phone');
+        if (!phoneValidation.valid) {
+            this._setError('phone-error', phoneValidation.error);
+            errors.push(phoneValidation.error);
+        }
+
+        const age = parseInt(ageInput.value);
+        if (!age || age < 1 || age > 150) {
+            this._setError('age-error', 'Please enter a valid age');
+            errors.push('Invalid age');
+        }
     },
 
     /**
@@ -628,7 +628,9 @@ const BookingWizard = {
             // Focus on first input
             setTimeout(() => {
                 const firstRadio = document.querySelector('input[name="doctorId"]');
-                if (firstRadio) firstRadio.focus();
+                if (firstRadio) {
+                    firstRadio.focus();
+                }
             }, 100);
         }
     },
@@ -665,4 +667,8 @@ if (document.readyState === 'loading') {
     });
 } else {
     BookingWizard.init();
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = BookingWizard;
 }
