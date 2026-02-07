@@ -1,0 +1,353 @@
+/* ============================================
+   MOBILE ENHANCEMENTS
+   Sticky buttons, improved touch targets, responsive
+   ============================================ */
+
+/* Sticky action buttons for mobile */
+#sticky-actions {
+    position: fixed;
+    bottom: 20px;
+    left: 12px;
+    right: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    z-index: 999;
+    max-width: calc(100% - 24px);
+    animation: slideUp 0.4s ease;
+}
+
+#sticky-actions.hidden {
+    display: none !important;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sticky-action-btn {
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+}
+
+.sticky-action-btn.primary {
+    background-color: #0d9488;
+    color: white;
+}
+
+.sticky-action-btn.primary:active {
+    background-color: #0f766e;
+    transform: scale(0.98);
+}
+
+.sticky-action-btn.secondary {
+    background-color: white;
+    color: #374151;
+    border: 2px solid #0d9488;
+}
+
+.sticky-action-btn.secondary:active {
+    background-color: #f9fafb;
+    transform: scale(0.98);
+}
+
+/* Mobile menu improvements */
+@media (max-width: 768px) {
+    body.menu-open {
+        overflow: hidden;
+    }
+
+    .nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 60px;
+        background: white;
+        flex-direction: column;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 100;
+        max-height: calc(100vh - 60px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .nav.active {
+        transform: translateX(0);
+    }
+
+    .nav a {
+        padding: 16px 20px;
+        display: block;
+        border-bottom: 1px solid #f3f4f6;
+        font-weight: 500;
+        color: #374151;
+    }
+
+    .nav a:hover {
+        background-color: #f9fafb;
+        color: #0d9488;
+    }
+
+    .nav-dropdown {
+        position: relative;
+    }
+
+    .nav-dropdown .dropdown-menu {
+        position: static;
+        background-color: #f9fafb;
+        box-shadow: none;
+        border: none;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    .nav-dropdown.active .dropdown-menu {
+        max-height: 500px;
+    }
+
+    /* Mobile menu button animation */
+    .mobile-menu-btn {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .mobile-menu-btn span {
+        transition: transform 0.3s;
+    }
+
+    .mobile-menu-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translateY(12px);
+    }
+
+    .mobile-menu-btn.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .mobile-menu-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translateY(-12px);
+    }
+}
+
+/* Touch target optimization */
+@media (hover: none) and (pointer: coarse) {
+    button,
+    a.btn,
+    a.action-card,
+    input,
+    textarea,
+    select {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        padding: 8px;
+    }
+
+    /* Remove hover states on touch devices */
+    button:hover,
+    a:hover,
+    .btn:hover {
+        background-color: inherit;
+        transform: none;
+    }
+
+    button:active,
+    a:active,
+    .btn:active {
+        opacity: 0.8;
+    }
+}
+
+/* Form input improvements for mobile */
+@media (max-width: 768px) {
+    input,
+    textarea,
+    select {
+        font-size: 16px; /* Prevents auto-zoom on iOS */
+        min-height: 44px;
+        padding: 12px;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        font-size: 16px;
+    }
+
+    /* Improve form group spacing on mobile */
+    .form-group {
+        margin-bottom: 16px;
+    }
+
+    .form-group label {
+        padding-bottom: 8px;
+    }
+}
+
+/* Responsive modal improvements */
+@media (max-width: 480px) {
+    .booking-modal-content {
+        width: 95vw;
+        max-height: 100vh;
+    }
+
+    .booking-form {
+        padding: 12px;
+    }
+
+    .step-content h3 {
+        font-size: 18px;
+        margin-bottom: 16px;
+    }
+
+    .form-group {
+        margin-bottom: 12px;
+    }
+}
+
+/* Improved spacing for better mobile readability */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    h1,
+    h2,
+    h3 {
+        line-height: 1.3;
+    }
+
+    p {
+        line-height: 1.6;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        font-size: 15px;
+    }
+
+    section {
+        padding: 40px 0;
+    }
+}
+
+/* Optimize hero section for mobile */
+@media (max-width: 768px) {
+    .hero .container {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .hero-cta {
+        flex-direction: column;
+    }
+
+    .hero-cta .btn {
+        width: 100%;
+    }
+
+    .hero-info {
+        flex-direction: column;
+        gap: 16px;
+    }
+}
+
+/* Improve gallery/card layouts on mobile */
+@media (max-width: 768px) {
+    .doctor-card,
+    .testimonial-card,
+    .action-card {
+        margin-bottom: 16px;
+    }
+
+    .doctor-card {
+        flex-direction: column;
+    }
+
+    .doctor-image {
+        width: 100%;
+        min-height: 200px;
+    }
+}
+
+/* Safe zone for notch/safe area */
+@supports (padding: max(0px)) {
+    #sticky-actions {
+        left: max(12px, env(safe-area-inset-left));
+        right: max(12px, env(safe-area-inset-right));
+        bottom: max(20px, env(safe-area-inset-bottom));
+    }
+
+    .fab-container {
+        right: max(12px, env(safe-area-inset-right));
+        bottom: max(20px, env(safe-area-inset-bottom));
+    }
+}
+
+/* Reduce motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    #sticky-actions {
+        animation: none;
+    }
+}
+
+/* Print adjustments */
+@media print {
+    #sticky-actions {
+        display: none !important;
+    }
+
+    .mobile-menu-btn {
+        display: none !important;
+    }
+}
+
+/* Landscape mode adjustments */
+@media (max-height: 600px) and (orientation: landscape) {
+    #sticky-actions {
+        position: static;
+        margin-bottom: 16px;
+        gap: 8px;
+    }
+
+    .booking-modal-content {
+        max-height: 95vh;
+    }
+
+    .sticky-action-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
