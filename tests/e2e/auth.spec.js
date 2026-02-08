@@ -13,10 +13,13 @@ test.describe('Authentication', () => {
       await page.waitForLoadState('networkidle');
     });
 
-    test('should have login form with email and password fields', async ({ page }) => {
-      await expect(page.locator('#username')).toBeVisible();
+    test('should have login form with password field and doctor selector', async ({ page }) => {
+      // Doctor tab is active by default - email is hidden, doctor select is visible
+      await expect(page.locator('#doctorSelect')).toBeVisible();
       await expect(page.locator('#password')).toBeVisible();
       await expect(page.locator('button[type="submit"]')).toBeVisible();
+      // Email field hidden on doctor tab
+      await expect(page.locator('#usernameGroup')).not.toBeVisible();
     });
 
     test('should have role selection tabs', async ({ page }) => {
@@ -24,10 +27,16 @@ test.describe('Authentication', () => {
       expect(hasRoleInfo).toBeTruthy();
     });
 
-    test('should have doctor selection dropdown', async ({ page }) => {
-      await expect(page.locator('#doctorSelect')).toBeAttached();
+    test('should have doctor selection dropdown with both doctors', async ({ page }) => {
+      await expect(page.locator('#doctorSelect')).toBeVisible();
       await expect(page.locator('#doctorSelect option[value="ashok"]')).toBeAttached();
       await expect(page.locator('#doctorSelect option[value="sunita"]')).toBeAttached();
+    });
+
+    test('should show email field when switching to staff tab', async ({ page }) => {
+      await page.locator('button:has-text("Staff")').click();
+      await expect(page.locator('#usernameGroup')).toBeVisible();
+      await expect(page.locator('#doctorSelectGroup')).not.toBeVisible();
     });
   });
 
@@ -36,9 +45,9 @@ test.describe('Authentication', () => {
       await page.goto('/login.html');
       await page.waitForLoadState('networkidle');
 
-      await page.locator('#username').fill('drsajnani@gmail.com');
-      await page.locator('#password').fill('doctor123');
+      // Doctor tab is default - just select doctor and enter password
       await page.locator('#doctorSelect').selectOption('ashok');
+      await page.locator('#password').fill('doctor123');
       await page.locator('button[type="submit"]').click();
 
       // Should redirect to doctor portal
@@ -54,9 +63,8 @@ test.describe('Authentication', () => {
       await page.goto('/login.html');
       await page.waitForLoadState('networkidle');
 
-      await page.locator('#username').fill('sunita.sajnani9@gmail.com');
-      await page.locator('#password').fill('doctor123');
       await page.locator('#doctorSelect').selectOption('sunita');
+      await page.locator('#password').fill('doctor123');
       await page.locator('button[type="submit"]').click();
 
       await page.waitForURL(/portal\/doctor/, { timeout: 5000 });
@@ -68,6 +76,10 @@ test.describe('Authentication', () => {
     test('should login as admin and redirect to admin portal', async ({ page }) => {
       await page.goto('/login.html');
       await page.waitForLoadState('networkidle');
+
+      // Switch to Admin tab to reveal email field
+      await page.locator('button:has-text("Admin")').click();
+      await expect(page.locator('#usernameGroup')).toBeVisible();
 
       await page.locator('#username').fill('psaj');
       await page.locator('#password').fill('1234');
@@ -86,8 +98,9 @@ test.describe('Authentication', () => {
       await page.goto('/login.html');
       await page.waitForLoadState('networkidle');
 
-      // Click the Staff tab first
+      // Switch to Staff tab to reveal email field
       await page.locator('button:has-text("Staff")').click();
+      await expect(page.locator('#usernameGroup')).toBeVisible();
 
       await page.locator('#username').fill('reception@adinathhealth.com');
       await page.locator('#password').fill('staff123');
@@ -106,6 +119,9 @@ test.describe('Authentication', () => {
       await page.goto('/login.html');
       await page.waitForLoadState('networkidle');
 
+      // Switch to Admin tab to reveal email field
+      await page.locator('button:has-text("Admin")').click();
+
       await page.locator('#username').fill('nobody@example.com');
       await page.locator('#password').fill('wrongpassword');
       await page.locator('button[type="submit"]').click();
@@ -122,6 +138,9 @@ test.describe('Authentication', () => {
     test('should persist login state in localStorage', async ({ page }) => {
       await page.goto('/login.html');
       await page.waitForLoadState('networkidle');
+
+      // Switch to Admin tab to reveal email field
+      await page.locator('button:has-text("Admin")').click();
 
       await page.locator('#username').fill('psaj');
       await page.locator('#password').fill('1234');

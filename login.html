@@ -382,15 +382,15 @@
                 <form id="loginForm">
                     <div class="form-group" id="doctorSelectGroup">
                         <label>Select Doctor</label>
-                        <select id="doctorSelect">
+                        <select id="doctorSelect" onchange="if(doctorEmails){document.getElementById('username').value=doctorEmails[this.value]||'';}">
                             <option value="ashok">Dr. Ashok Sajnani</option>
                             <option value="sunita">Dr. Sunita Sajnani</option>
                         </select>
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group" id="usernameGroup" style="display: none;">
                         <label>Email or Username</label>
-                        <input type="text" id="username" placeholder="Enter email or username" required>
+                        <input type="text" id="username" placeholder="Enter email or username">
                     </div>
                     
                     <div class="form-group">
@@ -494,31 +494,53 @@
         
         // Production credentials (no demo display)
         
+        const doctorEmails = {
+            ashok: 'drsajnani@gmail.com',
+            sunita: 'sunita.sajnani9@gmail.com'
+        };
+
         function switchRole(role) {
             currentRole = role;
-            
+
             // Update tabs
             document.querySelectorAll('.role-tab').forEach(tab => {
                 tab.classList.toggle('active', tab.dataset.role === role);
             });
-            
-            // Show/hide doctor select
-            document.getElementById('doctorSelectGroup').style.display = 
-                role === 'doctor' ? 'block' : 'none';
-            
-            // Update features
+
+            // Show/hide doctor select and email field
+            const isDoctor = role === 'doctor';
+            document.getElementById('doctorSelectGroup').style.display =
+                isDoctor ? 'block' : 'none';
+            document.getElementById('usernameGroup').style.display =
+                isDoctor ? 'none' : 'block';
+
+            // Auto-fill email for doctors
+            if (isDoctor) {
+                const selected = document.getElementById('doctorSelect').value;
+                document.getElementById('username').value = doctorEmails[selected] || '';
+            } else {
+                document.getElementById('username').value = '';
+            }
+
+            // Update features list (uses only hardcoded feature data, no user input)
             const featureList = document.getElementById('featureList');
-            featureList.innerHTML = `
-                <h4>${role === 'doctor' ? 'Doctor' : role === 'staff' ? 'Staff' : 'Admin'} Features</h4>
-                ${features[role].map(f => `
-                    <div class="feature-item">
-                        <div class="icon">${f.icon}</div>
-                        <span>${f.text}</span>
-                    </div>
-                `).join('')}
-            `;
-            
-            // No demo hint in production mode
+            const roleName = role === 'doctor' ? 'Doctor' : role === 'staff' ? 'Staff' : 'Admin';
+            featureList.textContent = '';
+            const heading = document.createElement('h4');
+            heading.textContent = roleName + ' Features';
+            featureList.appendChild(heading);
+            features[role].forEach(f => {
+                const item = document.createElement('div');
+                item.className = 'feature-item';
+                const icon = document.createElement('div');
+                icon.className = 'icon';
+                icon.textContent = f.icon;
+                const span = document.createElement('span');
+                span.textContent = f.text;
+                item.appendChild(icon);
+                item.appendChild(span);
+                featureList.appendChild(item);
+            });
         }
         
         // Initialize

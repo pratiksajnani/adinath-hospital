@@ -113,14 +113,13 @@ test.describe('Login Form', () => {
   });
 
   test('should display login form', async ({ page }) => {
-    await expect(page.locator('form, .login-form, .auth-form')).toBeVisible();
+    await expect(page.locator('#loginForm')).toBeVisible();
   });
 
-  test('should have email/username input', async ({ page }) => {
-    const emailInput = page.locator(
-      'input[name="email"], input[type="email"], input[type="text"]'
-    );
-    await expect(emailInput.first()).toBeVisible();
+  test('should have doctor selector and password input on default tab', async ({ page }) => {
+    // Doctor tab is active by default - doctor select visible, email hidden
+    await expect(page.locator('#doctorSelect')).toBeVisible();
+    await expect(page.locator('input[type="password"]').first()).toBeVisible();
   });
 
   test('should have password input', async ({ page }) => {
@@ -129,13 +128,11 @@ test.describe('Login Form', () => {
   });
 
   test('should show error for invalid credentials', async ({ page }) => {
-    const emailInput = page
-      .locator('input[name="email"], input[type="email"], input[type="text"]')
-      .first();
-    await emailInput.fill('wrong@email.com');
+    // Switch to Admin tab to reveal email field
+    await page.locator('button:has-text("Admin")').click();
 
-    const passwordInput = page.locator('input[type="password"]').first();
-    await passwordInput.fill('wrongpassword');
+    await page.locator('#username').fill('wrong@email.com');
+    await page.locator('input[type="password"]').first().fill('wrongpassword');
 
     const submitBtn = page
       .locator('button[type="submit"], .login-btn, .submit-btn')
@@ -151,13 +148,11 @@ test.describe('Login Form', () => {
   });
 
   test('should login with valid credentials', async ({ page }) => {
-    const emailInput = page
-      .locator('input[name="email"], input[type="email"], input[type="text"]')
-      .first();
-    await emailInput.fill('psaj');
+    // Switch to Admin tab to reveal email field
+    await page.locator('button:has-text("Admin")').click();
 
-    const passwordInput = page.locator('input[type="password"]').first();
-    await passwordInput.fill('1234');
+    await page.locator('#username').fill('psaj');
+    await page.locator('input[type="password"]').first().fill('1234');
 
     const submitBtn = page
       .locator('button[type="submit"], .login-btn, .submit-btn')
@@ -269,17 +264,12 @@ test.describe('Contact Form', () => {
 
 test.describe('Doctor Portal Forms', () => {
   test.beforeEach(async ({ page }) => {
-    // Login as doctor first
+    // Login as doctor first - doctor tab is default, just select + password
     await page.goto('/login.html');
     await page.waitForLoadState('networkidle');
 
-    const emailInput = page
-      .locator('input[name="email"], input[type="email"], input[type="text"]')
-      .first();
-    await emailInput.fill('drsajnani@gmail.com');
-
-    const passwordInput = page.locator('input[type="password"]').first();
-    await passwordInput.fill('doctor123');
+    await page.locator('#doctorSelect').selectOption('ashok');
+    await page.locator('input[type="password"]').first().fill('doctor123');
 
     const submitBtn = page
       .locator('button[type="submit"], .login-btn, .submit-btn')
@@ -303,17 +293,13 @@ test.describe('Doctor Portal Forms', () => {
 
 test.describe('Staff Portal Forms', () => {
   test.beforeEach(async ({ page }) => {
-    // Login as staff first
+    // Login as staff first - switch to Staff tab to reveal email field
     await page.goto('/login.html');
     await page.waitForLoadState('networkidle');
 
-    const emailInput = page
-      .locator('input[name="email"], input[type="email"], input[type="text"]')
-      .first();
-    await emailInput.fill('reception@adinathhealth.com');
-
-    const passwordInput = page.locator('input[type="password"]').first();
-    await passwordInput.fill('staff123');
+    await page.locator('button:has-text("Staff")').click();
+    await page.locator('#username').fill('reception@adinathhealth.com');
+    await page.locator('input[type="password"]').first().fill('staff123');
 
     const submitBtn = page
       .locator('button[type="submit"], .login-btn, .submit-btn')
