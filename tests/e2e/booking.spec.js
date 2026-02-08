@@ -12,68 +12,97 @@ test.describe('Appointment Booking', () => {
     await page.waitForLoadState('networkidle');
   });
 
-  test('should load booking page', async ({ page }) => {
+  test('should load booking page with form', async ({ page }) => {
     await expect(page).toHaveTitle(/Book|Appointment|Adinath/i);
+    await expect(page.locator('#bookingForm')).toBeVisible();
   });
 
-  test('should display page content', async ({ page }) => {
-    // Page should have visible content
-    await expect(page.locator('body')).toBeVisible();
-    const hasContent = await page.locator('h1, h2, h3, form, .container, main').count() > 0;
-    expect(hasContent).toBeTruthy();
+  test('should have both doctors as options', async ({ page }) => {
+    await expect(page.locator('#dr-ashok')).toBeAttached();
+    await expect(page.locator('#dr-sunita')).toBeAttached();
   });
 
-  test('should have interactive elements', async ({ page }) => {
-    // Page should have some interactive elements
-    const interactiveCount = await page.locator('input, select, button, a').count();
-    expect(interactiveCount).toBeGreaterThan(0);
+  test('should have date and time selection', async ({ page }) => {
+    await expect(page.locator('#date')).toBeVisible();
+    await expect(page.locator('input[name="time"]').first()).toBeAttached();
   });
 
-  test('should have booking-related content', async ({ page }) => {
-    // Look for any booking-related text or elements
-    const hasBookingContent = await page.locator('text=/book|appointment|schedule|doctor/i').count() > 0;
-    expect(hasBookingContent).toBeTruthy();
+  test('should have patient info fields', async ({ page }) => {
+    await expect(page.locator('#name')).toBeVisible();
+    await expect(page.locator('#phone')).toBeVisible();
+    await expect(page.locator('#age')).toBeVisible();
+    await expect(page.locator('#gender')).toBeVisible();
   });
 
-  test('should have contact input fields', async ({ page }) => {
-    // Name or phone input should exist
-    const contactField = page.locator('input[type="text"], input[type="tel"], input[name*="name"], input[name*="phone"]').first();
-    await expect(contactField).toBeVisible();
+  test('should complete booking and show confirmation', async ({ page }) => {
+    // Select doctor
+    await page.locator('label[for="dr-ashok"]').click();
+
+    // Set date to tomorrow
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const dateStr = tomorrow.toISOString().split('T')[0];
+    await page.locator('#date').fill(dateStr);
+
+    // Select time
+    await page.locator('label[for="time-11"]').click();
+
+    // Fill patient info
+    await page.locator('#name').fill('Test Patient');
+    await page.locator('#phone').fill('9876543210');
+    await page.locator('#age').fill('35');
+    await page.locator('#gender').selectOption('Male');
+    await page.locator('#reason').fill('Knee pain');
+
+    // Submit
+    await page.locator('button[type="submit"]').click();
+
+    // Should show confirmation
+    const confirmation = page.locator('#confirmationSection');
+    await expect(confirmation).toBeVisible({ timeout: 5000 });
+    await expect(confirmation).toContainText('Dr. Ashok Sajnani');
+    await expect(confirmation).toContainText('Test Patient');
+
+    // Booking form should be hidden
+    await expect(page.locator('#bookingForm')).not.toBeVisible();
   });
 
-  test('should have contact options', async ({ page }) => {
-    // WhatsApp or phone contact should exist
-    const hasWhatsApp = await page.locator('a[href*="wa.me"]').count() > 0;
-    const hasPhone = await page.locator('a[href^="tel:"]').count() > 0;
-    const hasText = await page.locator('text=/whatsapp|call|phone|contact/i').count() > 0;
-    expect(hasWhatsApp || hasPhone || hasText).toBeTruthy();
+  test('should save appointment to HMS data', async ({ page }) => {
+    // Select doctor and fill form
+    await page.locator('label[for="dr-sunita"]').click();
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    await page.locator('#date').fill(tomorrow.toISOString().split('T')[0]);
+    await page.locator('label[for="time-2"]').click();
+
+    await page.locator('#name').fill('Data Test Patient');
+    await page.locator('#phone').fill('9999888877');
+    await page.locator('#age').fill('28');
+    await page.locator('#gender').selectOption('Female');
+    await page.locator('#reason').fill('Routine checkup');
+
+    await page.locator('button[type="submit"]').click();
+    await expect(page.locator('#confirmationSection')).toBeVisible({ timeout: 5000 });
+
+    // Verify HMS stored the appointment
+    const appointments = await page.evaluate(() => {
+      return JSON.parse(localStorage.getItem('hms_appointments') || '[]');
+    });
+
+    const found = appointments.find(a => a.patientName === 'Data Test Patient');
+    expect(found).toBeTruthy();
+    expect(found.doctor).toBe('sunita');
+    expect(found.reason).toBe('Routine checkup');
   });
 
-  test('should have submit button', async ({ page }) => {
-    const submitButton = page.locator('button[type="submit"], button:has-text("Book"), button:has-text("Submit"), button:has-text("Confirm"), input[type="submit"]').first();
-    await expect(submitButton).toBeVisible();
-  });
-
-  test('should allow form interaction', async ({ page }) => {
-    // Try to interact with form elements
-    const nameField = page.locator('input[name*="name"], input[placeholder*="name" i]').first();
-    
-    if (await nameField.isVisible()) {
-      await nameField.fill('Test Patient');
-      await expect(nameField).toHaveValue('Test Patient');
-    }
-    
-    const phoneField = page.locator('input[name*="phone"], input[type="tel"], input[placeholder*="phone" i]').first();
-    
-    if (await phoneField.isVisible()) {
-      await phoneField.fill('9876543210');
-      await expect(phoneField).toHaveValue('9876543210');
-    }
+  test('should have WhatsApp booking option', async ({ page }) => {
+    const whatsappBtn = page.locator('a[href*="wa.me"], button:has-text("WhatsApp")').first();
+    await expect(whatsappBtn).toBeVisible();
   });
 
   test('should have navigation back to home', async ({ page }) => {
-    // Any link to go back to homepage
-    const homeLink = page.locator('a[href="/"], a[href="./"], a[href="../"], a:has-text("Home"), .logo a, header a').first();
+    const homeLink = page.locator('a[href="/"], a[href="./"], a[href="../"], a:has-text("Home"), header a').first();
     await expect(homeLink).toBeVisible();
   });
 });
