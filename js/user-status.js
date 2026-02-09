@@ -34,7 +34,7 @@ function injectUserStatus() {
                 box-shadow: 0 2px 10px rgba(0,0,0,0.15);
                 cursor: pointer;
                 font-size: 14px;
-                border: 2px solid #0f766e;
+                border: 2px solid #236b48;
                 transition: all 0.2s;
             " onclick="toggleUserMenu()">
                 <span id="user-status-icon">👤</span>
@@ -66,8 +66,8 @@ function injectUserStatus() {
                 
                 <!-- Logged In Menu -->
                 <div id="logged-in-menu-items" style="display: none;">
-                    <div style="padding: 16px; background: linear-gradient(135deg, #f0fdf4, #ecfdf5); border-bottom: 1px solid #e2e8f0;">
-                        <div id="menu-user-name" style="font-weight: 600; color: #0f766e; font-size: 15px;">User</div>
+                    <div style="padding: 16px; background: linear-gradient(135deg, #f0fdf4, #e8f5e9); border-bottom: 1px solid #e2e8f0;">
+                        <div id="menu-user-name" style="font-weight: 600; color: #236b48; font-size: 15px;">User</div>
                         <div id="menu-user-role" style="font-size: 12px; color: #64748b; text-transform: capitalize; margin-top: 2px;">Role</div>
                     </div>
                     <a href="#" id="menu-portal-link" style="display: block; padding: 12px 16px; text-decoration: none; color: #1e293b; border-bottom: 1px solid #e2e8f0;">
@@ -166,7 +166,7 @@ function updateUserStatusWidget() {
 
         const roleColors = {
             admin: '#dc2626',
-            doctor: '#0f766e',
+            doctor: '#236b48',
             staff: '#7c3aed',
             receptionist: '#7c3aed',
             patient: '#2563eb',

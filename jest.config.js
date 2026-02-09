@@ -8,6 +8,7 @@ module.exports = {
     '**/tests/unit/**/*.test.js',
     '**/tests/integration/**/*.test.js',
   ],
+  testPathIgnorePatterns: ['/node_modules/', '/.worktrees/'],
   collectCoverageFrom: [
     'js/**/*.js',
     '!js/config.js', // Configuration file

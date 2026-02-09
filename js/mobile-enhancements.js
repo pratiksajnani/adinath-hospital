@@ -199,7 +199,7 @@ const MobileEnhancements = {
             isTablet: window.innerWidth > 768 && window.innerWidth <= 1024,
             isDesktop: window.innerWidth > 1024,
         };
-    }
+    },
 };
 
 // Initialize on document ready

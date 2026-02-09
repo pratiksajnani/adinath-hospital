@@ -51,7 +51,7 @@
     /* Alert Colors */
     --alert-success-bg: #d1fae5;
     --alert-success-text: #065f46;
-    --alert-success-border: #a7f3d0;
+    --alert-success-border: #a8d8bc;
     --alert-warning-bg: #fef3c7;
     --alert-warning-text: #92400e;
     --alert-warning-border: #fde68a;
@@ -64,7 +64,7 @@
 
     /* Status Colors */
     --status-danger: #dc2626;
-    --status-warning: #f59e0b;
+    --status-warning: #c4704b;
 }
 
 /* ============================================
@@ -833,7 +833,7 @@
 
 .section-news {
     padding: 80px 0;
-    background: linear-gradient(135deg, #f0fdfa 0%, #ecfdf5 100%);
+    background: linear-gradient(135deg, #f0faf4 0%, #e8f5e9 100%);
 }
 
 /* Trust Icons Grid */
@@ -868,7 +868,7 @@
     background: var(--white);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgb(0, 0, 0, 0.06);
 }
 
 .news-card-header {
@@ -877,7 +877,7 @@
 }
 
 .news-card-header.guj-health {
-    background: linear-gradient(135deg, #059669, #10b981);
+    background: linear-gradient(135deg, #236b48, #2d8a5e);
 }
 
 .news-card-header.india-health {
@@ -943,7 +943,7 @@
 }
 
 .news-link-green {
-    color: #059669;
+    color: #236b48;
 }
 .news-link-blue {
     color: #2563eb;
@@ -956,14 +956,9 @@
 .hero-notice {
     margin-top: var(--space-5);
     padding: var(--space-3) var(--space-5);
-    background: rgba(255, 255, 255, 0.1);
+    background: rgb(255, 255, 255, 0.1);
     border-radius: var(--radius-sm);
     font-size: var(--text-sm);
-}
-
-/* FAB icon size */
-.fab-icon {
-    font-size: 24px;
 }
 
 /* ============================================
@@ -1043,56 +1038,6 @@
 }
 
 /* ============================================
-   COMPONENT CLASSES - FLOATING ACTION BUTTON
-   ============================================ */
-
-.fab-container {
-    position: fixed;
-    bottom: var(--space-6);
-    right: var(--space-6);
-    z-index: var(--z-fixed);
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    gap: var(--space-3);
-}
-
-.fab {
-    width: 56px;
-    height: 56px;
-    border-radius: var(--radius-full);
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: var(--shadow-lg);
-    transition: var(--transition);
-}
-
-.fab:hover {
-    transform: scale(1.1);
-}
-
-.fab-primary {
-    background: var(--primary);
-    color: var(--white);
-}
-
-.fab-whatsapp {
-    background: #25d366;
-    color: var(--white);
-}
-
-.fab-secondary {
-    width: 48px;
-    height: 48px;
-    background: var(--white);
-    color: var(--gray-700);
-    border: 1px solid var(--gray-200);
-}
-
-/* ============================================
    RESPONSIVE UTILITIES
    ============================================ */
 
@@ -1162,7 +1107,7 @@
     background: var(--white);
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgb(0, 0, 0, 0.06);
 }
 
 /* Large Icon */
@@ -1173,5 +1118,5 @@
 /* Section Padding */
 .section-gradient {
     padding: 80px 0;
-    background: linear-gradient(135deg, #f0fdfa 0%, #ecfdf5 100%);
+    background: linear-gradient(135deg, #f0faf4 0%, #e8f5e9 100%);
 }

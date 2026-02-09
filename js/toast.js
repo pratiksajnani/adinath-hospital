@@ -67,7 +67,7 @@ const Toast = {
             
             .toast.success::before { background: #22c55e; }
             .toast.error::before { background: #ef4444; }
-            .toast.warning::before { background: #f59e0b; }
+            .toast.warning::before { background: #c4704b; }
             .toast.info::before { background: #3b82f6; }
             
             .toast-icon {

@@ -26,7 +26,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgb(0, 0, 0, 0.5);
     cursor: pointer;
 }
 
@@ -34,21 +34,21 @@
     position: relative;
     background: white;
     border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgb(0, 0, 0, 0.3);
     max-width: 100%;
     max-height: 90vh;
     overflow-y: auto;
     width: 90%;
 }
 
-@media (min-width: 640px) {
+@media (width >= 640px) {
     .booking-modal-content {
         width: 95%;
         max-width: 600px;
     }
 }
 
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
     .booking-modal-content {
         width: 600px;
     }
@@ -80,7 +80,9 @@
     justify-content: center;
     color: #6b7280;
     border-radius: 6px;
-    transition: background-color 0.2s, color 0.2s;
+    transition:
+        background-color 0.2s,
+        color 0.2s;
 }
 
 .booking-close-btn:hover {
@@ -125,11 +127,13 @@
     justify-content: center;
     font-weight: 700;
     font-size: 16px;
-    transition: background-color 0.3s, color 0.3s;
+    transition:
+        background-color 0.3s,
+        color 0.3s;
 }
 
 .progress-step.active .step-number {
-    background-color: #0d9488;
+    background-color: #236b48;
     color: white;
 }
 
@@ -141,7 +145,7 @@
     display: none;
 }
 
-@media (min-width: 640px) {
+@media (width >= 640px) {
     .step-label {
         display: block;
     }
@@ -159,7 +163,7 @@
 }
 
 .progress-step.active ~ .progress-line {
-    background-color: #0d9488;
+    background-color: #236b48;
 }
 
 /* Form container */
@@ -218,7 +222,9 @@
     border-radius: 8px;
     font-size: 16px;
     font-family: inherit;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    transition:
+        border-color 0.3s,
+        box-shadow 0.3s;
     box-sizing: border-box;
 }
 
@@ -226,8 +232,8 @@
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #0d9488;
-    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    border-color: #236b48;
+    box-shadow: 0 0 0 3px rgb(35, 107, 72, 0.1);
 }
 
 .form-group input:invalid:not(:placeholder-shown),
@@ -236,7 +242,7 @@
 }
 
 .form-group input:valid:not(:placeholder-shown) {
-    border-color: #10b981;
+    border-color: #2d8a5e;
 }
 
 .form-group small {
@@ -277,7 +283,7 @@
     transition: all 0.3s;
 }
 
-.doctor-option input[type="radio"] {
+.doctor-option input[type='radio'] {
     width: auto;
     height: auto;
     margin: 2px;
@@ -292,21 +298,21 @@
     background-color: #f0f9ff;
 }
 
-.doctor-option input[type="radio"]:checked + .option-content {
-    color: #0d9488;
+.doctor-option input[type='radio']:checked + .option-content {
+    color: #236b48;
 }
 
-.doctor-option input[type="radio"]:checked ~ .option-content {
-    color: #0d9488;
+.doctor-option input[type='radio']:checked ~ .option-content {
+    color: #236b48;
 }
 
-.doctor-option input[type="radio"]:checked {
-    border-color: #0d9488;
+.doctor-option input[type='radio']:checked {
+    border-color: #236b48;
 }
 
-.doctor-option:has(input[type="radio"]:checked) {
-    border-color: #0d9488;
-    background-color: rgba(13, 148, 136, 0.05);
+.doctor-option:has(input[type='radio']:checked) {
+    border-color: #236b48;
+    background-color: rgb(35, 107, 72, 0.05);
 }
 
 .option-content {
@@ -345,7 +351,7 @@
     margin: 0 0 8px;
     font-size: 13px;
     font-weight: 700;
-    color: #059669;
+    color: #236b48;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -390,7 +396,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #10b981;
+    color: #2d8a5e;
 }
 
 .success-icon svg {
@@ -432,7 +438,7 @@
     flex-direction: column-reverse;
 }
 
-@media (min-width: 640px) {
+@media (width >= 640px) {
     .booking-actions {
         flex-direction: row;
         justify-content: flex-end;
@@ -455,20 +461,20 @@
 }
 
 .btn-primary {
-    background-color: #0d9488;
+    background-color: #236b48;
     color: white;
     flex: 1;
 }
 
-@media (min-width: 640px) {
+@media (width >= 640px) {
     .btn-primary {
         flex: 0 1 auto;
     }
 }
 
 .btn-primary:hover:not(:disabled) {
-    background-color: #0f766e;
-    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+    background-color: #236b48;
+    box-shadow: 0 4px 12px rgb(35, 107, 72, 0.3);
 }
 
 .btn-primary:active:not(:disabled) {
@@ -489,7 +495,7 @@
     flex: 1;
 }
 
-@media (min-width: 640px) {
+@media (width >= 640px) {
     .btn-secondary {
         flex: 0 1 auto;
     }
@@ -506,19 +512,12 @@
 
 /* Accessibility */
 .booking-close-btn:focus {
-    outline: 2px solid #0d9488;
-    outline-offset: 2px;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: 2px solid #0d9488;
+    outline: 2px solid #236b48;
     outline-offset: 2px;
 }
 
 /* Responsive adjustments */
-@media (max-width: 480px) {
+@media (width <= 480px) {
     .booking-modal-content {
         width: 100%;
         border-radius: 12px 12px 0 0;

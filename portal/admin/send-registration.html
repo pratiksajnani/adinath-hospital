@@ -8,7 +8,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
             background: #f8fafc;
             padding: 40px 20px;
             min-height: 100vh;
@@ -18,7 +18,7 @@
             margin: 0 auto;
         }
         h1 {
-            color: #0f766e;
+            color: #236b48;
             margin-bottom: 8px;
         }
         .subtitle {
@@ -50,7 +50,7 @@
             height: 80px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #0f766e;
+            border: 3px solid #236b48;
         }
         .doctor-info {
             flex: 1;
@@ -66,7 +66,7 @@
         }
         .doctor-contact {
             font-size: 0.9rem;
-            color: #0f766e;
+            color: #236b48;
         }
         .doctor-status {
             padding: 6px 12px;
@@ -139,7 +139,7 @@
         }
         .back-link {
             display: inline-block;
-            color: #0f766e;
+            color: #236b48;
             text-decoration: none;
             margin-bottom: 24px;
         }
@@ -150,7 +150,7 @@
             position: fixed;
             bottom: 24px;
             right: 24px;
-            background: #10b981;
+            background: #2d8a5e;
             color: white;
             padding: 16px 24px;
             border-radius: 12px;
@@ -163,7 +163,7 @@
         }
         .note {
             background: #fef3c7;
-            border-left: 4px solid #f59e0b;
+            border-left: 4px solid #c4704b;
             padding: 16px;
             margin-bottom: 24px;
             border-radius: 0 8px 8px 0;
@@ -271,7 +271,7 @@
                         document.getElementById(`${id}-status`).className = 'doctor-status status-registered';
                         document.getElementById(`${id}-card`).classList.add('sent');
                         document.getElementById(`${id}-link`).innerHTML = 
-                            '<span style="color:#059669;">✓ Already registered. No link needed.</span>';
+                            '<span style="color:#236b48;">✓ Already registered. No link needed.</span>';
                         return;
                     }
                     

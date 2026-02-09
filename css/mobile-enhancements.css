@@ -44,24 +44,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgb(0, 0, 0, 0.15);
     text-decoration: none;
 }
 
 .sticky-action-btn.primary {
-    background-color: #0d9488;
+    background-color: #236b48;
     color: white;
 }
 
 .sticky-action-btn.primary:active {
-    background-color: #0f766e;
+    background-color: #236b48;
     transform: scale(0.98);
 }
 
 .sticky-action-btn.secondary {
     background-color: white;
     color: #374151;
-    border: 2px solid #0d9488;
+    border: 2px solid #236b48;
 }
 
 .sticky-action-btn.secondary:active {
@@ -70,7 +70,7 @@
 }
 
 /* Mobile menu improvements */
-@media (max-width: 768px) {
+@media (width <= 768px) {
     body.menu-open {
         overflow: hidden;
     }
@@ -105,7 +105,7 @@
 
     .nav a:hover {
         background-color: #f9fafb;
-        color: #0d9488;
+        color: #236b48;
     }
 
     .nav-dropdown {
@@ -186,7 +186,7 @@
 }
 
 /* Form input improvements for mobile */
-@media (max-width: 768px) {
+@media (width <= 768px) {
     input,
     textarea,
     select {
@@ -212,7 +212,7 @@
 }
 
 /* Responsive modal improvements */
-@media (max-width: 480px) {
+@media (width <= 480px) {
     .booking-modal-content {
         width: 95vw;
         max-height: 100vh;
@@ -233,7 +233,7 @@
 }
 
 /* Improved spacing for better mobile readability */
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .container {
         padding: 0 16px;
     }
@@ -259,7 +259,7 @@
 }
 
 /* Optimize hero section for mobile */
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .hero .container {
         grid-template-columns: 1fr;
         gap: 32px;
@@ -280,7 +280,7 @@
 }
 
 /* Improve gallery/card layouts on mobile */
-@media (max-width: 768px) {
+@media (width <= 768px) {
     .doctor-card,
     .testimonial-card,
     .action-card {
@@ -335,7 +335,7 @@
 }
 
 /* Landscape mode adjustments */
-@media (max-height: 600px) and (orientation: landscape) {
+@media (height <= 600px) and (orientation: landscape) {
     #sticky-actions {
         position: static;
         margin-bottom: 16px;

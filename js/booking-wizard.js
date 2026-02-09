@@ -51,7 +51,8 @@ const BookingWizard = {
         const closeBtn = document.createElement('button');
         closeBtn.className = 'booking-close-btn';
         closeBtn.setAttribute('aria-label', 'Close booking wizard');
-        closeBtn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+        closeBtn.innerHTML =
+            '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
 
         header.appendChild(title);
         header.appendChild(closeBtn);
@@ -273,14 +274,24 @@ const BookingWizard = {
         if (doctorCards.length === 0) {
             // Fallback to sample doctors
             doctors.push(
-                { id: 'dr-ashok', name: 'Dr. Ashok Jain', specialty: 'Orthopedic Surgeon, General Practitioner' },
-                { id: 'dr-sunita', name: 'Dr. Sunita Sharma', specialty: 'Gynecologist, Yoga Therapist' }
+                {
+                    id: 'dr-ashok',
+                    name: 'Dr. Ashok Jain',
+                    specialty: 'Orthopedic Surgeon, General Practitioner',
+                },
+                {
+                    id: 'dr-sunita',
+                    name: 'Dr. Sunita Sharma',
+                    specialty: 'Gynecologist, Yoga Therapist',
+                }
             );
         } else {
             doctorCards.forEach((card) => {
                 const name = card.querySelector('h3')?.textContent || '';
                 const specialty = card.querySelector('.specialty')?.textContent || '';
-                const id = card.getAttribute('data-doctor-id') || `dr-${name.toLowerCase().replace(/\s+/g, '-')}`;
+                const id =
+                    card.getAttribute('data-doctor-id') ||
+                    `dr-${name.toLowerCase().replace(/\s+/g, '-')}`;
 
                 if (name) {
                     doctors.push({ id, name, specialty });
@@ -290,7 +301,7 @@ const BookingWizard = {
 
         // Render doctor options
         doctorsContainer.innerHTML = '';
-        doctors.forEach(doc => {
+        doctors.forEach((doc) => {
             const label = document.createElement('label');
             label.className = 'doctor-option';
 
@@ -330,7 +341,7 @@ const BookingWizard = {
      */
     renderStep(step) {
         // Hide all steps
-        document.querySelectorAll('.booking-step').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.booking-step').forEach((el) => el.classList.remove('active'));
 
         // Show current step
         const currentStepEl = document.querySelector(`.booking-step[data-step="${step}"]`);
@@ -339,7 +350,7 @@ const BookingWizard = {
         }
 
         // Update progress indicator
-        document.querySelectorAll('.progress-step').forEach(el => {
+        document.querySelectorAll('.progress-step').forEach((el) => {
             el.classList.toggle('active', parseInt(el.getAttribute('data-step')) <= step);
         });
 
@@ -519,7 +530,9 @@ const BookingWizard = {
     populateConfirmation() {
         // Find doctor name
         const doctorRadio = document.querySelector(`input[value="${this.formData.doctorId}"]`);
-        const doctorName = doctorRadio?.closest('.doctor-option')?.querySelector('.option-name')?.textContent || 'Doctor';
+        const doctorName =
+            doctorRadio?.closest('.doctor-option')?.querySelector('.option-name')?.textContent ||
+            'Doctor';
 
         // Format date
         const dateObj = new Date(this.formData.date);
@@ -527,7 +540,7 @@ const BookingWizard = {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
-            day: 'numeric'
+            day: 'numeric',
         });
 
         // Format time
@@ -535,12 +548,13 @@ const BookingWizard = {
         const timeObj = new Date(2024, 0, 1, parseInt(hours), parseInt(minutes));
         const formattedTime = timeObj.toLocaleTimeString('en-IN', {
             hour: '2-digit',
-            minute: '2-digit'
+            minute: '2-digit',
         });
 
         // Update confirmation display
         document.getElementById('confirm-doctor').textContent = doctorName;
-        document.getElementById('confirm-datetime').textContent = `${formattedDate}, ${formattedTime}`;
+        document.getElementById('confirm-datetime').textContent =
+            `${formattedDate}, ${formattedTime}`;
 
         const detailsEl = document.getElementById('confirm-details');
         detailsEl.innerHTML = '';

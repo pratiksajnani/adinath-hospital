@@ -127,7 +127,7 @@ const HMS = {
                 id: 'doctor',
                 name: 'Doctor',
                 icon: '👨‍⚕️',
-                color: '#0f766e',
+                color: '#236b48',
                 permissions: ['patients', 'appointments', 'prescriptions', 'reports'],
             },
             {
@@ -148,7 +148,7 @@ const HMS = {
                 id: 'pharmacist',
                 name: 'Pharmacist',
                 icon: '💊',
-                color: '#059669',
+                color: '#236b48',
                 permissions: ['inventory', 'sales', 'prescriptions'],
             },
             {
@@ -169,7 +169,7 @@ const HMS = {
                 id: 'accountant',
                 name: 'Accountant',
                 icon: '📊',
-                color: '#f59e0b',
+                color: '#c4704b',
                 permissions: ['sales', 'reports'],
             },
             {
@@ -1039,7 +1039,7 @@ window.initFeedbackWidget = function initFeedbackWidget(role = 'visitor') {
     btn.innerHTML = '💬 Feedback';
     btn.id = 'feedback-btn';
     btn.style.cssText =
-        'position: fixed; bottom: 80px; left: 20px; z-index: 9999; background: #0d9488; color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2);';
+        'position: fixed; bottom: 80px; left: 20px; z-index: 9999; background: #236b48; color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2);';
 
     // Create modal
     const modal = document.createElement('div');
@@ -1049,7 +1049,7 @@ window.initFeedbackWidget = function initFeedbackWidget(role = 'visitor') {
     modal.innerHTML = `
         <div style="background: white; border-radius: 16px; padding: 30px; max-width: 450px; width: 90%; max-height: 80vh; overflow-y: auto;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="margin: 0; color: #0d9488;">💬 Send Feedback</h3>
+                <h3 style="margin: 0; color: #236b48;">💬 Send Feedback</h3>
                 <button onclick="closeFeedbackModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">×</button>
             </div>
             <form id="feedback-form">
@@ -1085,7 +1085,7 @@ window.initFeedbackWidget = function initFeedbackWidget(role = 'visitor') {
                     <input type="text" id="fb-name" placeholder="Your name" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
                 </div>
                 
-                <button type="submit" style="width: 100%; padding: 12px; background: #0d9488; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Submit Feedback</button>
+                <button type="submit" style="width: 100%; padding: 12px; background: #236b48; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Submit Feedback</button>
             </form>
             <p style="text-align: center; margin-top: 15px; font-size: 12px; color: #666;">Feedback is logged locally and reviewed by the admin.</p>
         </div>

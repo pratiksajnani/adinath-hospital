@@ -189,7 +189,7 @@ const API = {
                     contact: orderData.customer?.phone || '',
                 },
                 theme: {
-                    color: '#0f766e',
+                    color: '#236b48',
                 },
                 modal: {
                     ondismiss() {

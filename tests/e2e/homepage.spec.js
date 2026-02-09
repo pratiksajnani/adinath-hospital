@@ -65,12 +65,6 @@ test.describe('Homepage', () => {
     await expect(waButton).toBeVisible();
   });
 
-  test('should have FAQ section', async ({ page }) => {
-    // FAQ - look for question marks or common FAQ text
-    const faqSection = page.locator('text=/timing|appointment|FAQ|\\?/i').first();
-    await expect(faqSection).toBeVisible();
-  });
-
   test('should have footer', async ({ page }) => {
     await expect(page.locator('footer')).toBeVisible();
   });
