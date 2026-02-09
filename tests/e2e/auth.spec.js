@@ -156,4 +156,20 @@ test.describe('Authentication', () => {
       expect(method).toBe('password');
     });
   });
+
+  test.describe('Redirect', () => {
+    test('should redirect to ?redirect= URL after login instead of portal', async ({ page }) => {
+      await page.goto('/login?redirect=/mockup/');
+      await page.waitForLoadState('networkidle');
+
+      // Login as doctor
+      await page.locator('#doctorSelect').selectOption('ashok');
+      await page.locator('#password').fill('doctor123');
+      await page.locator('button[type="submit"]').click();
+
+      // Should redirect to /mockup/ not /portal/doctor/
+      await page.waitForURL(/mockup/, { timeout: 5000 });
+      expect(page.url()).toContain('/mockup/');
+    });
+  });
 });

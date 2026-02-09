@@ -875,8 +875,16 @@
         // Helpers
         // ============================================
         function redirectToPortal(role) {
+            // Honor ?redirect= param (e.g. from mockup auth gate)
+            const params = new URLSearchParams(window.location.search);
+            const redirectTo = params.get('redirect');
+            if (redirectTo && redirectTo.startsWith('/')) {
+                window.location.href = redirectTo;
+                return;
+            }
+
             const doctor = document.getElementById('doctorSelect').value;
-            
+
             if (role === 'doctor') {
                 window.location.href = `portal/doctor/simple.html?doctor=${doctor}`;
             } else if (role === 'staff' || role === 'receptionist' || role === 'nurse' || role === 'pharmacist') {
