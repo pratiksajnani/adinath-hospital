@@ -10,10 +10,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Hosting:** AWS Amplify (auto-deploy from `main` branch)
 - **Tech Stack:** HTML5, CSS3, Vanilla JavaScript (no frameworks), localStorage for data
 
+## Product Principles
+
+1. **Patient safety first** — Real hospital, real doctors, real patients. Never ship fake data. Verify names, contacts, and medical info against AGENT.md before committing.
+2. **Accessibility is non-negotiable** — WCAG compliance, multilingual (EN/HI/GU), mobile-first. Every feature must work across languages and devices.
+3. **Vanilla simplicity** — No frameworks (React, Vue, etc.). HTML/CSS/JS with localStorage. Complexity comes from the domain, not the tooling.
+4. **Progressive enhancement** — Core features work without JavaScript where possible. Service worker for offline, but pages degrade gracefully.
+5. **Hospital staff are the users** — Receptionist Poonam, Dr. Ashok, Dr. Sunita use this daily. Optimize for their workflows, not developer convenience.
+
 ## Architecture & Key Modules
 
 ### Core Data Layer (`js/hms.js`)
+
 The Hospital Management System is a localStorage-backed database abstraction providing:
+
 - **Users**: Authentication and role-based access (admin, doctor, staff, patient)
 - **Patients**: Patient registry with contact info and medical history
 - **Appointments**: Scheduling, status tracking, and queue management
@@ -22,6 +32,7 @@ The Hospital Management System is a localStorage-backed database abstraction pro
 - **PatientLinks**: QR-code-based patient signup/access links
 
 Key methods follow a consistent pattern:
+
 - `Entity.add(data)` - Create with auto-generated ID
 - `Entity.get(id)` - Retrieve by ID
 - `Entity.getAll()` - List all records
@@ -32,14 +43,18 @@ Key methods follow a consistent pattern:
 **Note:** Data is stored in `localStorage` with key `adinath_hospital_hms`. In production, migrate to a real database (Supabase/Firebase).
 
 ### Internationalization (`js/i18n.js`)
+
 Provides translations for EN (English), HI (Hindi), GU (Gujarati):
+
 - `I18N.t(key)` - Get translation by key
 - `I18N.setLanguage(code)` - Switch language
 - `data-i18n="key"` - HTML attribute for auto-translation
 - `data-i18n-placeholder="key"` - Placeholder translation
 
 ### UI & Interactions (`js/main.js`)
+
 Central entry point for:
+
 - Service worker registration (offline support)
 - Global event listeners
 - Page initialization based on current URL
@@ -47,7 +62,9 @@ Central entry point for:
 - Form handling and validation
 
 ### Configuration (`js/config.js`)
+
 Environment-specific settings. Key variables:
+
 - `CONFIG.API_BASE_URL` - Base URL for API calls (localhost for dev, adinathhealth.com for prod)
 - Update this if running against a different backend
 
@@ -85,6 +102,7 @@ git push origin main # Amplify auto-deploys
 ## Code Style & Naming
 
 ### JavaScript
+
 - Use `const`/`let` (never `var`)
 - camelCase for variables and functions: `getPatientById()`
 - UPPER_SNAKE_CASE for constants: `API_BASE_URL`
@@ -94,6 +112,7 @@ git push origin main # Amplify auto-deploys
 - Strict equality: `===` and `!==`
 
 ### CSS & HTML
+
 - kebab-case for CSS classes: `.patient-card`, `.menu-item`
 - No inline styles (use utility classes in `css/design-system.css`)
 - No page-specific `<style>` blocks; all styles in CSS files
@@ -103,6 +122,7 @@ git push origin main # Amplify auto-deploys
 - BEM-like naming with modifiers: `.card__header--active`
 
 ### File Organization
+
 ```
 adinath-hospital/
 ├── index.html              # Homepage
@@ -137,30 +157,33 @@ adinath-hospital/
 
 The system uses **real people** (not fake demo data):
 
-| Role | Name | Email | Status |
-|------|------|-------|--------|
-| Site Admin | Pratik Sajnani | pratik.sajnani@gmail.com | ✅ Active |
-| Doctor | Dr. Ashok Sajnani | drsajnani@gmail.com | ✅ Active |
-| Doctor | Dr. Sunita Sajnani | sunita.sajnani9@gmail.com | ✅ Active |
-| Receptionist | Poonam | reception@adinathhealth.com | ⏳ Phone # pending |
+| Role         | Name               | Email                       | Status             |
+| ------------ | ------------------ | --------------------------- | ------------------ |
+| Site Admin   | Pratik Sajnani     | pratik.sajnani@gmail.com    | ✅ Active          |
+| Doctor       | Dr. Ashok Sajnani  | drsajnani@gmail.com         | ✅ Active          |
+| Doctor       | Dr. Sunita Sajnani | sunita.sajnani9@gmail.com   | ✅ Active          |
+| Receptionist | Poonam             | reception@adinathhealth.com | ⏳ Phone # pending |
 
 **Important:** Always check that you're using the correct real names and contact info. Never commit test/fake data; use the real hospital information from AGENT.md.
 
 ## Testing Strategy
 
 ### Test Organization
+
 - **Unit tests:** `tests/unit/*.test.js` - Logic testing with Jest
 - **E2E tests:** `tests/e2e/*.spec.js` - Full user flows with Playwright
 - **Link validation:** `tests/link-checker.js` - All pages accessible
 - **Manual testing:** `tests/TEST_STRATEGY.md` - Step-by-step user flows
 
 ### Key Test Flows
+
 1. **Patient:** Book appointment → View portal → Check status
 2. **Doctor:** Login → View appointments → Write prescriptions → Send SMS
 3. **Staff:** Login → Send patient links → Manage queue → View bills
 4. **Admin:** View stats → Manage users → Content management
 
 ### Running Tests
+
 ```bash
 npm run test:unit           # Jest unit tests
 npm run test:e2e            # Playwright E2E tests
@@ -173,7 +196,9 @@ npm run coverage            # Test coverage report
 ## Deployment & CI/CD
 
 ### GitHub Actions Workflow
+
 On every push to `main`:
+
 1. Install dependencies
 2. Lint JavaScript (ESLint)
 3. Check formatting (Prettier)
@@ -182,6 +207,7 @@ On every push to `main`:
 6. AWS Amplify auto-deploys successful builds
 
 ### Manual Deployment
+
 ```bash
 # Make changes locally
 git add -A
@@ -191,7 +217,9 @@ git push origin main
 ```
 
 ### Pre-commit Hooks
+
 Husky + lint-staged runs automatically before commits:
+
 - ESLint fix + format JavaScript files
 - Stylelint fix + format CSS files
 - Prettier format JSON, Markdown, YAML
@@ -202,6 +230,7 @@ If pre-commit checks fail, fix issues and commit again (never use `--no-verify`)
 ## Important Guidelines
 
 ### Real Hospital Data
+
 - Hospital: **Adinath Hospital**, Ahmedabad
 - Address: 2nd Floor, Shukan Mall, Shahibaug Rd, Ahmedabad 380004
 - Phone: +91 99254 50425
@@ -209,18 +238,21 @@ If pre-commit checks fail, fix issues and commit again (never use `--no-verify`)
 - Doctors: Dr. Ashok Sajnani (Orthopedic), Dr. Sunita Sajnani (OB-GYN)
 
 ### Data Persistence
+
 - All data stored in `localStorage` (key: `adinath_hospital_hms`)
 - Data persists between page reloads within same browser
 - **Testing:** Use `HMS.reset()` in browser console to reinitialize demo data
 - **Production migration:** Needs cloud database (Supabase/Firebase recommended)
 
 ### Security Considerations
+
 - No hardcoded credentials or sensitive data in repository
 - Patient data currently demo-only (localStorage); production needs encryption
 - Real SMS integration (MSG91/Twilio) is a future enhancement
 - Real payment gateway is a future enhancement
 
 ### Accessibility & Multilingual
+
 - WCAG compliance required for all new features
 - All user-facing text must support i18n (EN/HI/GU)
 - Use `data-i18n="key"` for HTML content
@@ -228,6 +260,7 @@ If pre-commit checks fail, fix issues and commit again (never use `--no-verify`)
 - Test language switching on modified pages
 
 ### Design System & Styling
+
 - Use CSS variables (design-system.css) for all colors and spacing
 - Utility classes for layout and spacing (no inline styles)
 - Component classes for cards, alerts, badges (see STYLE_GUIDE.md)
@@ -236,19 +269,20 @@ If pre-commit checks fail, fix issues and commit again (never use `--no-verify`)
 
 ## Key Files to Know
 
-| File | Purpose | Size |
-|------|---------|------|
-| `js/hms.js` | HMS database abstraction | Core system
-| `js/i18n.js` | Translation system | Multi-language support
-| `js/main.js` | UI interactions | Page initialization
-| `js/config.js` | Environment config | API base URL
-| `css/design-system.css` | Design tokens | Single source of truth
-| `tests/TEST_STRATEGY.md` | Manual test cases | 8+ detailed flows
-| `AGENT.md` | AI agent context | Real user data, TODO list
+| File                     | Purpose                  | Size                      |
+| ------------------------ | ------------------------ | ------------------------- |
+| `js/hms.js`              | HMS database abstraction | Core system               |
+| `js/i18n.js`             | Translation system       | Multi-language support    |
+| `js/main.js`             | UI interactions          | Page initialization       |
+| `js/config.js`           | Environment config       | API base URL              |
+| `css/design-system.css`  | Design tokens            | Single source of truth    |
+| `tests/TEST_STRATEGY.md` | Manual test cases        | 8+ detailed flows         |
+| `AGENT.md`               | AI agent context         | Real user data, TODO list |
 
 ## Common Tasks
 
 ### Add New User Role
+
 1. Update `HMS.users.add()` in `js/hms.js` with role type
 2. Add role checks in `js/main.js` page initialization
 3. Create role-specific page in `portal/[role]/`
@@ -256,6 +290,7 @@ If pre-commit checks fail, fix issues and commit again (never use `--no-verify`)
 5. Add translation keys for new role labels
 
 ### Fix a Page
+
 1. Check which file(s) need changes (HTML, CSS, JS)
 2. Verify current styling in `design-system.css` and `styles.css`
 3. For logic changes, check if HMS methods are involved
@@ -263,11 +298,13 @@ If pre-commit checks fail, fix issues and commit again (never use `--no-verify`)
 5. Push to `main` to trigger auto-deploy
 
 ### Add Translations
+
 1. Add key-value pairs to all language sections in `js/i18n.js`
 2. Use `data-i18n="key"` for HTML or `I18N.t('key')` in JS
 3. Test in all 3 languages (language switcher on portal pages)
 
 ### Modify Form Fields
+
 1. Update form HTML with new inputs
 2. Add validation in form handler (usually in `js/main.js` or page-specific JS)
 3. Update HMS model if storing new data
@@ -277,21 +314,26 @@ If pre-commit checks fail, fix issues and commit again (never use `--no-verify`)
 ## Troubleshooting
 
 ### Data Not Persisting
+
 Run `HMS.reset()` in browser console to reinitialize localStorage, then refresh page.
 
 ### Tests Failing
+
 - Ensure `npm install` has run
 - Check that Playwright browsers are installed: `npx playwright install`
 - Review test output in `test-results/` directory
 - Run failing test in isolation: `npm test -- --testPathPattern="filename"`
 
 ### Deployment Blocked
+
 Check GitHub Actions status. Usually due to:
+
 - ESLint/Prettier errors (run `npm run quality:fix`)
 - Test failures (run `npm run test:all` locally first)
 - Pre-commit hook failures (commit again after fixing)
 
 ### Local Server Issues
+
 - Port 8080 already in use? Change: `npx serve -p 8081`
 - Clear browser cache if seeing old code: Cmd+Shift+R (Mac) or Ctrl+Shift+R (PC)
 - Check browser console for JavaScript errors
@@ -308,5 +350,6 @@ Check GitHub Actions status. Usually due to:
 ## Contact & Support
 
 For questions about the codebase or deployment:
+
 - **Site Admin:** Pratik Sajnani (pratik.sajnani@gmail.com)
 - **Repository:** pratiksajnani/adinath-hospital
