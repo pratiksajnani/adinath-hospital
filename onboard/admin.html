@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Registration | Adinath Hospital</title>
     <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #7c3aed;
-            --primary-dark: #6d28d9;
+            --primary: #236b48;
+            --primary-dark: #1e4d35;
             --success: #2d8a5e;
             --warning: #c4704b;
-            --bg: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
+            --bg: linear-gradient(135deg, #1e4d35 0%, #236b48 50%, #1e4d35 100%);
         }
         body {
             font-family: 'Inter', -apple-system, system-ui, sans-serif;
@@ -33,12 +36,12 @@
             margin-bottom: 32px;
         }
         .header .logo { font-size: 4rem; margin-bottom: 16px; }
-        .header h1 { font-size: 1.75rem; margin-bottom: 8px; }
+        .header h1 { font-family: 'Playfair Display', serif; font-size: 1.75rem; margin-bottom: 8px; }
         .header p { opacity: 0.8; }
         .header .badge {
             display: inline-block;
             background: var(--warning);
-            color: #1e293b;
+            color: #2d2a26;
             padding: 6px 16px;
             border-radius: 20px;
             font-size: 0.8rem;
@@ -82,8 +85,8 @@
             justify-content: center;
             font-weight: 700;
             font-size: 0.9rem;
-            background: #e2e8f0;
-            color: #64748b;
+            background: #e8e4dc;
+            color: #8a8279;
         }
         .step.active {
             background: var(--primary);
@@ -96,7 +99,7 @@
         .step-line {
             width: 40px;
             height: 3px;
-            background: #e2e8f0;
+            background: #e8e4dc;
             align-self: center;
         }
         .step-line.active {
@@ -111,12 +114,12 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #1e293b;
+            color: #2d2a26;
         }
         .form-group input {
             width: 100%;
             padding: 14px 18px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #e8e4dc;
             border-radius: 12px;
             font-size: 1rem;
         }
@@ -125,11 +128,11 @@
             border-color: var(--primary);
         }
         .form-group input:disabled {
-            background: #f8fafc;
-            color: #64748b;
+            background: #faf8f3;
+            color: #8a8279;
         }
         .form-group small {
-            color: #64748b;
+            color: #8a8279;
             font-size: 0.85rem;
             margin-top: 6px;
             display: block;
@@ -179,7 +182,7 @@
             align-items: center;
             gap: 16px;
             padding: 20px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #e8e4dc;
             border-radius: 16px;
             margin-bottom: 12px;
             cursor: pointer;
@@ -187,11 +190,11 @@
         }
         .security-option:hover {
             border-color: var(--primary);
-            background: #faf5ff;
+            background: rgba(35,107,72,0.1);
         }
         .security-option.selected {
             border-color: var(--primary);
-            background: #faf5ff;
+            background: rgba(35,107,72,0.1);
         }
         .security-option.selected::after {
             content: '✓';
@@ -210,12 +213,12 @@
             font-size: 2rem;
         }
         .security-info h4 {
-            color: #1e293b;
+            color: #2d2a26;
             margin-bottom: 4px;
         }
         .security-info p {
             font-size: 0.85rem;
-            color: #64748b;
+            color: #8a8279;
         }
         .security-badge {
             font-size: 0.7rem;
@@ -229,8 +232,8 @@
             color: #166534;
         }
         .badge-secure {
-            background: #dbeafe;
-            color: #1d4ed8;
+            background: rgba(35,107,72,0.15);
+            color: #236b48;
         }
         
         /* 2FA Setup */
@@ -241,7 +244,7 @@
         .qr-placeholder {
             width: 180px;
             height: 180px;
-            background: #f1f5f9;
+            background: #f5f3ef;
             border-radius: 16px;
             margin: 20px auto;
             display: flex;
@@ -287,7 +290,7 @@
             text-align: center;
             font-size: 1.5rem;
             font-weight: 700;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #e8e4dc;
             border-radius: 12px;
         }
         .otp-inputs input:focus {
@@ -323,7 +326,7 @@
             margin-bottom: 12px;
         }
         .success-state p {
-            color: #64748b;
+            color: #8a8279;
             margin-bottom: 24px;
         }
         
@@ -419,7 +422,7 @@
                 <!-- Step 2: Security Setup -->
                 <div class="step-content" id="step2">
                     <h3 style="margin-bottom: 8px; text-align: center;">🛡️ Choose Security Method</h3>
-                    <p style="text-align: center; color: #64748b; margin-bottom: 24px;">Add an extra layer of protection to your admin account</p>
+                    <p style="text-align: center; color: #8a8279; margin-bottom: 24px;">Add an extra layer of protection to your admin account</p>
                     
                     <div class="security-options">
                         <div class="security-option" onclick="selectSecurity('passkey')" id="optPasskey">
@@ -458,7 +461,7 @@
                 <!-- Step 3A: Passkey Setup -->
                 <div class="step-content" id="step3Passkey">
                     <h3 style="margin-bottom: 8px; text-align: center;">🔐 Register Passkey</h3>
-                    <p style="text-align: center; color: #64748b; margin-bottom: 24px;">Use Face ID, Touch ID, or Windows Hello</p>
+                    <p style="text-align: center; color: #8a8279; margin-bottom: 24px;">Use Face ID, Touch ID, or Windows Hello</p>
                     
                     <div class="passkey-info">
                         <div class="icon">👆</div>
@@ -477,11 +480,11 @@
                 <!-- Step 3B: TOTP Setup -->
                 <div class="step-content" id="step3TOTP">
                     <h3 style="margin-bottom: 8px; text-align: center;">📱 Authenticator Setup</h3>
-                    <p style="text-align: center; color: #64748b; margin-bottom: 24px;">Scan this QR code with your authenticator app</p>
+                    <p style="text-align: center; color: #8a8279; margin-bottom: 24px;">Scan this QR code with your authenticator app</p>
                     
                     <div class="twofa-setup">
                         <div class="qr-placeholder" id="qrCode">📲</div>
-                        <p style="font-family: monospace; font-size: 0.9rem; color: #64748b; margin-top: 12px;">
+                        <p style="font-family: monospace; font-size: 0.9rem; color: #8a8279; margin-top: 12px;">
                             Manual code: <strong id="totpSecret">ADINATH-ADMIN-2FA</strong>
                         </p>
                     </div>
@@ -520,9 +523,9 @@
                 <!-- Step 3C: SMS Setup -->
                 <div class="step-content" id="step3SMS">
                     <h3 style="margin-bottom: 8px; text-align: center;">💬 SMS Verification</h3>
-                    <p style="text-align: center; color: #64748b; margin-bottom: 24px;">We'll send a code to your phone</p>
+                    <p style="text-align: center; color: #8a8279; margin-bottom: 24px;">We'll send a code to your phone</p>
                     
-                    <div class="passkey-info" style="background: #dbeafe; border-color: #60a5fa;">
+                    <div class="passkey-info" style="background: rgba(35,107,72,0.15); border-color: #2d8a5e;">
                         <div class="icon">📱</div>
                         <h3>Sending OTP to</h3>
                         <p style="font-size: 1.25rem; font-weight: 700; margin-top: 8px;" id="smsPhone">+91 •••••••XXX</p>
@@ -540,7 +543,7 @@
                         </div>
                     </div>
                     
-                    <p style="text-align: center; color: #64748b; font-size: 0.9rem;">
+                    <p style="text-align: center; color: #8a8279; font-size: 0.9rem;">
                         Didn't receive? <a href="#" onclick="resendSMS(); return false;" style="color: var(--primary);">Resend OTP</a>
                     </p>
                     
@@ -580,7 +583,7 @@
                 <div class="invalid-state">
                     <div class="icon">⚠️</div>
                     <h2 style="color: #991b1b;">Invalid or Expired Link</h2>
-                    <p style="color: #64748b;">This registration link is not valid or has already been used.</p>
+                    <p style="color: #8a8279;">This registration link is not valid or has already been used.</p>
                     <a href="../index.html" style="color: var(--primary);">← Back to Website</a>
                 </div>
             </div>

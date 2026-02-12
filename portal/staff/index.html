@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Dashboard | Adinath Hospital</title>
     <link rel="icon" type="image/svg+xml" href="../../images/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../css/components.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #8b5cf6;
-            --primary-dark: #7c3aed;
+            --primary: #236b48;
+            --primary-dark: #1e4d35;
             --success: #22c55e;
-            --bg: #f8fafc;
+            --bg: #faf8f3;
         }
         body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: var(--bg); min-height: 100vh; }
         
@@ -24,13 +27,13 @@
             justify-content: space-between;
             align-items: center;
         }
-        .header h1 { font-size: 1.5rem; }
+        .header h1 { font-size: 1.5rem; font-family: 'Playfair Display', serif; }
         .header .user { display: flex; align-items: center; gap: 12px; }
         
         .main { max-width: 1200px; margin: 0 auto; padding: 30px; }
         
         .welcome-banner {
-            background: white;
+            background: #fefdfb;
             padding: 30px;
             border-radius: 16px;
             margin-bottom: 30px;
@@ -39,8 +42,8 @@
             align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         }
-        .welcome-banner h2 { font-size: 1.75rem; color: #1e293b; margin-bottom: 5px; }
-        .welcome-banner p { color: #64748b; }
+        .welcome-banner h2 { font-size: 1.75rem; color: #2d2a26; margin-bottom: 5px; font-family: 'Playfair Display', serif; }
+        .welcome-banner p { color: #8a8279; }
         
         .quick-actions {
             display: grid;
@@ -50,7 +53,7 @@
         }
         
         .quick-action {
-            background: white;
+            background: #fefdfb;
             padding: 30px;
             border-radius: 16px;
             text-align: center;
@@ -64,25 +67,25 @@
             transform: translateY(-3px);
         }
         .quick-action .icon { font-size: 2.5rem; margin-bottom: 15px; }
-        .quick-action h3 { font-size: 1.1rem; color: #1e293b; margin-bottom: 5px; }
-        .quick-action p { font-size: 0.9rem; color: #64748b; }
+        .quick-action h3 { font-size: 1.1rem; color: #2d2a26; margin-bottom: 5px; }
+        .quick-action p { font-size: 0.9rem; color: #8a8279; }
         
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         
         .card {
-            background: white;
+            background: #fefdfb;
             border-radius: 16px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.08);
             overflow: hidden;
         }
         .card-header {
             padding: 20px 24px;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e8e4dc;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .card-header h3 { font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        .card-header h3 { font-size: 1.1rem; display: flex; align-items: center; gap: 10px; font-family: 'Playfair Display', serif; }
         .card-body { padding: 24px; }
         
         /* Send Link Form */
@@ -92,7 +95,7 @@
         .form-group input, .form-group select {
             width: 100%;
             padding: 14px 18px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #e8e4dc;
             border-radius: 12px;
             font-size: 1rem;
         }
@@ -114,7 +117,7 @@
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: var(--primary-dark); }
         .btn-success { background: var(--success); color: white; }
-        .btn-outline { background: white; border: 2px solid #e2e8f0; }
+        .btn-outline { background: #fefdfb; border: 2px solid #e8e4dc; }
         .btn-block { width: 100%; }
         
         .send-options { display: flex; gap: 12px; margin-top: 16px; }
@@ -131,7 +134,7 @@
         .link-result.show { display: block; }
         .link-result h4 { color: #16a34a; margin-bottom: 10px; }
         .link-url {
-            background: white;
+            background: #fefdfb;
             padding: 12px;
             border-radius: 8px;
             font-family: monospace;
@@ -148,7 +151,7 @@
             align-items: center;
             gap: 16px;
             padding: 16px;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 1px solid #f5f3ef;
         }
         .queue-item:last-child { border-bottom: none; }
         .queue-number {
@@ -164,7 +167,7 @@
         }
         .queue-info { flex: 1; }
         .queue-info .name { font-weight: 600; }
-        .queue-info .detail { font-size: 0.9rem; color: #64748b; }
+        .queue-info .detail { font-size: 0.9rem; color: #8a8279; }
         .queue-status { font-size: 0.85rem; padding: 6px 14px; border-radius: 20px; }
         .queue-status.waiting { background: #fef3c7; color: #b45309; }
         .queue-status.called { background: #dcfce7; color: #16a34a; }
@@ -173,8 +176,8 @@
         .lang-selector { display: flex; gap: 8px; }
         .lang-btn {
             padding: 8px 14px;
-            border: 1px solid #e2e8f0;
-            background: white;
+            border: 1px solid #e8e4dc;
+            background: #fefdfb;
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.85rem;
@@ -220,7 +223,7 @@
             </div>
             <div style="text-align: right;">
                 <div style="font-size: 2rem; font-weight: 700; color: var(--primary);" id="waitingCount">0</div>
-                <div style="color: #64748b;">Patients Waiting</div>
+                <div style="color: #8a8279;">Patients Waiting</div>
             </div>
         </div>
         
@@ -298,7 +301,7 @@
                         <h4>✅ Link Generated!</h4>
                         <div class="link-url" id="generatedLink"></div>
                         <div class="qr-container" id="qrContainer"></div>
-                        <p style="color: #64748b; font-size: 0.9rem; margin-top: 10px;">
+                        <p style="color: #8a8279; font-size: 0.9rem; margin-top: 10px;">
                             Patient can scan this QR or click the link to register.
                         </p>
                     </div>
@@ -327,7 +330,7 @@
             <div class="card-body">
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
-                        <tr style="border-bottom: 2px solid #e2e8f0;">
+                        <tr style="border-bottom: 2px solid #e8e4dc;">
                             <th style="text-align: left; padding: 12px;">Patient</th>
                             <th style="text-align: left; padding: 12px;">Phone</th>
                             <th style="text-align: left; padding: 12px;">Sent At</th>
@@ -336,7 +339,7 @@
                     </thead>
                     <tbody id="recentLinks">
                         <tr>
-                            <td style="padding: 12px; color: #64748b;" colspan="4">No links sent yet today</td>
+                            <td style="padding: 12px; color: #8a8279;" colspan="4">No links sent yet today</td>
                         </tr>
                     </tbody>
                 </table>
@@ -365,7 +368,7 @@
             
             const list = document.getElementById('queueList');
             if (waiting.length === 0) {
-                list.innerHTML = '<li style="padding: 30px; text-align: center; color: #64748b;">No patients waiting</li>';
+                list.innerHTML = '<li style="padding: 30px; text-align: center; color: #8a8279;">No patients waiting</li>';
                 return;
             }
             
@@ -445,9 +448,9 @@
             
             // Generate QR code (using simple text for now - would use QRCode.js in production)
             document.getElementById('qrContainer').innerHTML = `
-                <div style="background: #f1f5f9; padding: 40px; border-radius: 12px; display: inline-block;">
+                <div style="background: #f5f3ef; padding: 40px; border-radius: 12px; display: inline-block;">
                     <div style="font-size: 4rem;">📱</div>
-                    <div style="font-size: 0.9rem; color: #64748b; margin-top: 10px;">
+                    <div style="font-size: 0.9rem; color: #8a8279; margin-top: 10px;">
                         QR Code would appear here<br>
                         <small>(Install QRCode.js for actual QR)</small>
                     </div>

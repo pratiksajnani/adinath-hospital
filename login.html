@@ -5,16 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Login | Adinath Hospital</title>
     <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --primary: #236b48;
             --primary-dark: #1e4d35;
-            --bg: linear-gradient(135deg, #236b48 0%, #1a3a2a 100%);
-            --card: #ffffff;
-            --text: #1e293b;
-            --text-light: #64748b;
-            --border: #e2e8f0;
+            --primary-light: #2d8a5e;
+            --bg: #faf8f3;
+            --card: #fefdfb;
+            --text: #2d2a26;
+            --text-light: #8a8279;
+            --border: #e8e4dc;
             --google: #ea4335;
             --phone: #22c55e;
         }
@@ -22,36 +27,42 @@
             font-family: 'Inter', -apple-system, system-ui, sans-serif;
             background: var(--bg);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            padding: 0;
         }
         
+        .login-page {
+            padding-top: 120px;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-bottom: 40px;
+        }
         .login-container {
             width: 100%;
             max-width: 450px;
+            padding: 0 20px;
         }
         
         .login-header {
             text-align: center;
-            color: white;
+            color: var(--text);
             margin-bottom: 32px;
         }
         .login-header .logo { font-size: 4rem; margin-bottom: 16px; }
-        .login-header h1 { font-size: 1.75rem; margin-bottom: 8px; }
-        .login-header p { opacity: 0.9; }
+        .login-header h1 { font-family: 'Playfair Display', serif; font-size: 1.75rem; margin-bottom: 8px; color: var(--primary); }
+        .login-header p { color: var(--text-light); }
         
         .login-card {
             background: var(--card);
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 30px rgba(45,42,38,0.1);
             overflow: hidden;
         }
         
         .role-tabs {
             display: flex;
-            background: #f1f5f9;
+            background: #f5f3ef;
         }
         .role-tab {
             flex: 1;
@@ -66,7 +77,7 @@
         }
         .role-tab:hover { color: var(--text); }
         .role-tab.active {
-            background: white;
+            background: var(--card);
             color: var(--primary);
             box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
         }
@@ -99,7 +110,7 @@
         }
         
         .oauth-btn:hover {
-            background: #f8fafc;
+            background: #f5f3ef;
             transform: translateY(-1px);
         }
         
@@ -120,11 +131,11 @@
         }
         
         .oauth-btn.magic {
-            border-color: #8b5cf6;
-            color: #7c3aed;
+            border-color: #b8860b;
+            color: #96700a;
         }
         .oauth-btn.magic:hover {
-            background: #f5f3ff;
+            background: #fdf8ef;
         }
         
         .oauth-btn svg {
@@ -192,7 +203,7 @@
         .login-footer {
             text-align: center;
             padding: 24px;
-            background: #f8fafc;
+            background: #f5f3ef;
             border-top: 1px solid var(--border);
         }
         .login-footer a {
@@ -223,7 +234,7 @@
         .feature-item .icon {
             width: 32px;
             height: 32px;
-            background: #f0fdf4;
+            background: rgba(35,107,72,0.1);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -231,15 +242,15 @@
         }
         
         .demo-note {
-            background: #dbeafe;
-            border: 1px solid #3b82f6;
+            background: rgba(35,107,72,0.1);
+            border: 1px solid var(--primary);
             border-radius: 10px;
             padding: 14px;
             margin-bottom: 20px;
             font-size: 0.9rem;
-            color: #1e40af;
+            color: var(--primary-dark);
         }
-        .demo-note strong { color: #1d4ed8; }
+        .demo-note strong { color: var(--primary); }
         
         /* Phone OTP Modal */
         .modal-overlay {
@@ -325,13 +336,30 @@
     </style>
 </head>
 <body>
-    <!-- Language Selector -->
-    <div style="position: fixed; top: 15px; right: 20px; z-index: 100; display: flex; gap: 5px;">
-        <button onclick="setLang('en')" style="padding: 6px 10px; border: none; background: rgba(255,255,255,0.2); color: white; border-radius: 4px; cursor: pointer;">EN</button>
-        <button onclick="setLang('hi')" style="padding: 6px 10px; border: none; background: rgba(255,255,255,0.2); color: white; border-radius: 4px; cursor: pointer;">हि</button>
-        <button onclick="setLang('gu')" style="padding: 6px 10px; border: none; background: rgba(255,255,255,0.2); color: white; border-radius: 4px; cursor: pointer;">ગુ</button>
-    </div>
-    
+    <header class="header">
+        <div class="container header-content">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🏥</span>
+                <div class="logo-text">
+                    <span class="logo-name">Adinath Hospital</span>
+                    <span class="logo-tagline">Care with Compassion</span>
+                </div>
+            </a>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="index.html#services">Services</a>
+                <a href="index.html#doctors">Doctors</a>
+                <a href="index.html#contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="login-page">
     <div class="login-container">
         <div class="login-header">
             <div class="logo">🏥</div>
@@ -410,12 +438,12 @@
             
             <div class="login-footer">
                 <a href="index.html">← Back to Website</a>
-                <span style="margin: 0 12px; color: var(--border);">|</span>
-                <a href="portal/patient/index.html">Patient Portal</a>
             </div>
         </div>
     </div>
     
+    </main>
+
     <!-- Phone OTP Modal -->
     <div class="modal-overlay" id="phoneModal">
         <div class="modal">
@@ -464,6 +492,7 @@
     </div>
     
     <!-- Scripts -->
+    <script src="js/main.js"></script>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
     <script src="js/hms.js"></script>

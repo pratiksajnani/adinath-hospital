@@ -5,17 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Management | Adinath Hospital</title>
     <link rel="icon" type="image/svg+xml" href="../../images/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../css/styles.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, system-ui, sans-serif;
-            background: #f1f5f9;
+            background: #faf8f3;
             min-height: 100vh;
         }
         
         .admin-header {
-            background: linear-gradient(135deg, #dc2626, #f97316);
+            background: linear-gradient(135deg, #236b48, #2d8a5e);
             color: white;
             padding: 20px;
             display: flex;
@@ -26,7 +29,7 @@
         .admin-header a { color: white; text-decoration: none; }
         
         .admin-nav {
-            background: #1e293b;
+            background: #2d2a26;
             padding: 0 20px;
             display: flex;
             gap: 4px;
@@ -41,7 +44,7 @@
             transition: all 0.2s;
         }
         .admin-nav a:hover { color: white; background: rgba(255,255,255,0.1); }
-        .admin-nav a.active { color: white; border-bottom-color: #f97316; }
+        .admin-nav a.active { color: white; border-bottom-color: #c4704b; }
         
         .container {
             max-width: 1400px;
@@ -62,11 +65,11 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            color: #64748b;
+            color: #8a8279;
             transition: all 0.2s;
         }
-        .tab-btn:hover { background: #e2e8f0; }
-        .tab-btn.active { background: #dc2626; color: white; }
+        .tab-btn:hover { background: #e8e4dc; }
+        .tab-btn.active { background: #236b48; color: white; }
         
         .tab-content { display: none; }
         .tab-content.active { display: block; }
@@ -79,10 +82,11 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         .card h2 {
-            color: #1e293b;
+            font-family: 'Playfair Display', serif;
+            color: #2d2a26;
             margin-bottom: 20px;
             padding-bottom: 12px;
-            border-bottom: 2px solid #e2e8f0;
+            border-bottom: 2px solid #e8e4dc;
         }
         .card h3 {
             color: #475569;
@@ -95,19 +99,19 @@
             gap: 20px;
         }
         .invite-card {
-            background: #f8fafc;
-            border: 2px solid #e2e8f0;
+            background: #faf8f3;
+            border: 2px solid #e8e4dc;
             border-radius: 12px;
             padding: 20px;
             text-align: center;
         }
-        .invite-card.doctor { border-color: #3b82f6; }
-        .invite-card.staff { border-color: #8b5cf6; }
+        .invite-card.doctor { border-color: #236b48; }
+        .invite-card.staff { border-color: #b8860b; }
         .invite-card.patient { border-color: #2d8a5e; }
         
         .invite-card .icon { font-size: 48px; margin-bottom: 12px; }
-        .invite-card h4 { color: #1e293b; margin-bottom: 8px; }
-        .invite-card p { color: #64748b; font-size: 14px; margin-bottom: 16px; }
+        .invite-card h4 { color: #2d2a26; margin-bottom: 8px; }
+        .invite-card p { color: #8a8279; font-size: 14px; margin-bottom: 16px; }
         
         .btn {
             display: inline-block;
@@ -119,17 +123,17 @@
             text-decoration: none;
             transition: all 0.2s;
         }
-        .btn-primary { background: #dc2626; color: white; }
-        .btn-primary:hover { background: #b91c1c; }
-        .btn-blue { background: #3b82f6; color: white; }
-        .btn-purple { background: #8b5cf6; color: white; }
+        .btn-primary { background: #236b48; color: white; }
+        .btn-primary:hover { background: #1e4d35; }
+        .btn-blue { background: #236b48; color: white; }
+        .btn-purple { background: #b8860b; color: white; }
         .btn-green { background: #2d8a5e; color: white; }
         .btn-outline {
             background: transparent;
-            border: 2px solid #e2e8f0;
-            color: #64748b;
+            border: 2px solid #e8e4dc;
+            color: #8a8279;
         }
-        .btn-outline:hover { background: #f8fafc; }
+        .btn-outline:hover { background: #faf8f3; }
         .btn-sm { padding: 8px 16px; font-size: 14px; }
         
         .form-group {
@@ -144,13 +148,13 @@
         .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #e8e4dc;
             border-radius: 8px;
             font-size: 16px;
         }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             outline: none;
-            border-color: #dc2626;
+            border-color: #236b48;
         }
         
         .form-row {
@@ -160,7 +164,7 @@
         }
         
         .link-box {
-            background: #f1f5f9;
+            background: #faf8f3;
             border: 2px dashed #cbd5e1;
             border-radius: 8px;
             padding: 16px;
@@ -178,7 +182,7 @@
         }
         .link-box button {
             padding: 8px 16px;
-            background: #1e293b;
+            background: #2d2a26;
             color: white;
             border: none;
             border-radius: 6px;
@@ -198,9 +202,9 @@
         th, td {
             padding: 12px;
             text-align: left;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e8e4dc;
         }
-        th { background: #f8fafc; font-weight: 600; color: #475569; }
+        th { background: #faf8f3; font-weight: 600; color: #475569; }
         tr:hover { background: #fafafa; }
         
         .status-badge {
@@ -222,7 +226,7 @@
             cursor: pointer;
             font-size: 12px;
         }
-        .action-btn.edit { background: #dbeafe; color: #1e40af; }
+        .action-btn.edit { background: rgba(35,107,72,0.1); color: #236b48; }
         .action-btn.delete { background: #fee2e2; color: #991b1b; }
         .action-btn.view { background: #f0fdf4; color: #166534; }
         
@@ -231,13 +235,13 @@
             border-radius: 12px;
             padding: 40px;
             text-align: center;
-            background: #f8fafc;
+            background: #faf8f3;
             cursor: pointer;
             transition: all 0.2s;
         }
-        .upload-zone:hover { border-color: #dc2626; background: #fef2f2; }
+        .upload-zone:hover { border-color: #236b48; background: rgba(35,107,72,0.05); }
         .upload-zone .icon { font-size: 48px; color: #94a3b8; }
-        .upload-zone p { color: #64748b; margin-top: 12px; }
+        .upload-zone p { color: #8a8279; margin-top: 12px; }
         
         .content-grid {
             display: grid;
@@ -246,7 +250,7 @@
             margin-top: 20px;
         }
         .content-item {
-            background: #f8fafc;
+            background: #faf8f3;
             border-radius: 8px;
             padding: 12px;
             text-align: center;
@@ -272,7 +276,7 @@
         .search-bar input {
             flex: 1;
             padding: 12px 16px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #e8e4dc;
             border-radius: 8px;
             font-size: 16px;
         }
@@ -310,7 +314,7 @@
             border: none;
             font-size: 24px;
             cursor: pointer;
-            color: #64748b;
+            color: #8a8279;
         }
         
         .stats-grid {
@@ -325,8 +329,8 @@
             padding: 20px;
             text-align: center;
         }
-        .stat-card .number { font-size: 32px; font-weight: bold; color: #1e293b; }
-        .stat-card .label { color: #64748b; font-size: 14px; }
+        .stat-card .number { font-size: 32px; font-weight: bold; color: #2d2a26; }
+        .stat-card .label { color: #8a8279; font-size: 14px; }
         
         @media (max-width: 768px) {
             .admin-nav { flex-wrap: nowrap; }
@@ -388,7 +392,7 @@
         <div id="invites" class="tab-content active">
             <div class="card">
                 <h2>📨 Send Registration Invites</h2>
-                <p style="color: #64748b; margin-bottom: 20px;">Generate invite links for new users to register on the system.</p>
+                <p style="color: #8a8279; margin-bottom: 20px;">Generate invite links for new users to register on the system.</p>
                 
                 <div class="invite-grid">
                     <!-- Doctor Invite -->
@@ -735,7 +739,7 @@
             tbody.innerHTML = '';
             
             if (invites.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#64748b;">No pending invites</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#8a8279;">No pending invites</td></tr>';
                 return;
             }
             

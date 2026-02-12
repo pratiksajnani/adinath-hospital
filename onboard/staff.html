@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Staff Registration | Adinath Hospital</title>
     <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, system-ui, sans-serif;
-            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            background: linear-gradient(135deg, #236b48 0%, #2d8a5e 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -17,7 +20,7 @@
             padding: 20px;
         }
         .container {
-            background: white;
+            background: #fefdfb;
             border-radius: 20px;
             padding: 40px;
             max-width: 500px;
@@ -29,17 +32,17 @@
             margin-bottom: 30px;
         }
         .header .icon { font-size: 60px; margin-bottom: 12px; }
-        .header h1 { color: #7c3aed; font-size: 24px; }
-        .header p { color: #64748b; margin-top: 8px; }
+        .header h1 { color: #236b48; font-size: 24px; font-family: 'Playfair Display', serif; }
+        .header p { color: #8a8279; margin-top: 8px; }
         
         .invite-info {
-            background: #ede9fe;
+            background: rgba(35,107,72,0.1);
             border-radius: 12px;
             padding: 16px;
             margin-bottom: 24px;
             text-align: center;
         }
-        .invite-info .name { font-size: 20px; font-weight: bold; color: #7c3aed; }
+        .invite-info .name { font-size: 20px; font-weight: bold; color: #236b48; }
         
         .form-group {
             margin-bottom: 20px;
@@ -48,18 +51,18 @@
             display: block;
             margin-bottom: 6px;
             font-weight: 600;
-            color: #334155;
+            color: #2d2a26;
         }
         .form-group input, .form-group select {
             width: 100%;
             padding: 14px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #e8e4dc;
             border-radius: 10px;
             font-size: 16px;
         }
         .form-group input:focus, .form-group select:focus {
             outline: none;
-            border-color: #7c3aed;
+            border-color: #236b48;
         }
         
         .form-row {
@@ -71,7 +74,7 @@
         .btn {
             width: 100%;
             padding: 16px;
-            background: #7c3aed;
+            background: #236b48;
             color: white;
             border: none;
             border-radius: 10px;
@@ -79,7 +82,7 @@
             font-weight: 600;
             cursor: pointer;
         }
-        .btn:hover { background: #6d28d9; }
+        .btn:hover { background: #1e4d35; }
         
         .success {
             text-align: center;
@@ -91,7 +94,7 @@
             display: inline-block;
             margin-top: 20px;
             padding: 12px 24px;
-            background: #7c3aed;
+            background: #236b48;
             color: white;
             text-decoration: none;
             border-radius: 8px;
