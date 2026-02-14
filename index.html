@@ -114,12 +114,19 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Sans+Gujarati:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Core fonts (English) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Indic fonts (loaded async, needed only for Hindi/Gujarati) -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Sans+Gujarati:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600&family=Noto+Sans+Gujarati:wght@400;500;600&display=swap" rel="stylesheet"></noscript>
 
-    <link rel="stylesheet" href="css/design-system.css">
-    <link rel="stylesheet" href="css/styles.css?v=3.0">
-    <link rel="stylesheet" href="css/booking-wizard.css">
-    <link rel="stylesheet" href="css/mobile-enhancements.css">
+    <link rel="stylesheet" href="css/design-system.css?v=759b9998">
+    <link rel="stylesheet" href="css/styles.css?v=3.1">
+    <!-- Defer non-critical CSS -->
+    <link rel="preload" href="css/booking-wizard.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/booking-wizard.css"></noscript>
+    <link rel="preload" href="css/mobile-enhancements.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/mobile-enhancements.css"></noscript>
 </head>
 <body>
     <!-- Skip to content -->
@@ -127,9 +134,9 @@
 
     <!-- ==================== NAV ==================== -->
     <header>
-        <nav class="nav">
+        <nav class="nav" role="navigation" aria-label="Main navigation">
             <div class="nav-inner">
-                <a href="index.html" class="nav-brand">
+                <a href="index.html" class="nav-brand" aria-label="Adinath Hospital - Home">
                     <div class="nav-logo">A</div>
                     <div class="nav-name">
                         <span data-i18n="hospital_name">Adinath Hospital</span>
@@ -171,10 +178,10 @@
                     <li><a href="tel:+919925450425" class="nav-cta" data-i18n="nav_call_now">Call Now</a></li>
                 </ul>
                 <!-- Language Buttons (in nav) -->
-                <div class="nav-lang-buttons">
-                    <button class="lang-btn active" data-lang="en">EN</button>
-                    <button class="lang-btn" data-lang="hi">&#x0939;&#x093F;</button>
-                    <button class="lang-btn" data-lang="gu">&#x0A97;&#x0AC1;</button>
+                <div class="nav-lang-buttons" role="group" aria-label="Language selection">
+                    <button class="lang-btn active" data-lang="en" aria-label="English">EN</button>
+                    <button class="lang-btn" data-lang="hi" aria-label="Hindi">&#x0939;&#x093F;</button>
+                    <button class="lang-btn" data-lang="gu" aria-label="Gujarati">&#x0A97;&#x0AC1;</button>
                 </div>
                 <button class="nav-mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('mobile-open')" aria-label="Menu">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -190,7 +197,7 @@
                 <div class="hero-grid">
                     <div>
                         <div class="hero-badge">
-                            &#x1f3e5; <span data-i18n="hero_badge">Trusted Since 1990</span>
+                            <span aria-hidden="true">&#x1f3e5;</span> <span data-i18n="hero_badge">Trusted Since 1990</span>
                         </div>
                         <h1 class="hero-title">
                             <span data-i18n="hero_title_1">Your Family's Health,</span><br>
@@ -200,15 +207,19 @@
                             For over 35 years, Dr. Ashok and Dr. Sunita Sajnani have been providing compassionate orthopaedic and gynaecological care to families across Ahmedabad.
                         </p>
                         <div class="hero-actions">
-                            <a href="tel:+919925450425" class="btn btn-primary btn-lg">
-                                &#x1f4de; <span data-i18n="hero_call">Call +91 99254 50425</span>
+                            <a href="tel:+919925450425" class="btn btn-primary btn-lg" aria-label="Call Adinath Hospital at +91 99254 50425">
+                                <span aria-hidden="true">&#x1f4de;</span> <span data-i18n="hero_call">Call +91 99254 50425</span>
                             </a>
-                            <button class="btn btn-secondary btn-lg" onclick="BookingWizard.open()" data-i18n="hero_book">Book Online</button>
-                            <a href="https://wa.me/919925450425" class="btn btn-outline btn-lg" target="_blank" rel="noopener" data-i18n="hero_whatsapp">WhatsApp Us</a>
+                            <button class="btn btn-secondary btn-lg" onclick="BookingWizard.open()" data-i18n="hero_book" aria-label="Book an appointment online">Book Online</button>
+                            <a href="https://wa.me/919925450425" class="btn btn-outline btn-lg" target="_blank" rel="noopener" data-i18n="hero_whatsapp" aria-label="Message us on WhatsApp">WhatsApp Us</a>
                         </div>
                     </div>
                     <div class="hero-image">
-                        <img src="images/D5A41C52-D4B2-4362-9705-8E1EB3AA76AC_1_105_c.jpeg" alt="Dr. Ashok Sajnani consulting with a patient at Adinath Hospital" loading="eager">
+                        <picture>
+                            <source srcset="images/dr-ashok-consulting-480w.webp 480w, images/dr-ashok-consulting-800w.webp 800w, images/dr-ashok-consulting.webp 1200w" sizes="(max-width: 768px) 480px, (max-width: 1024px) 800px, 1200px" type="image/webp">
+                            <source srcset="images/dr-ashok-consulting-480w.jpeg 480w, images/dr-ashok-consulting-800w.jpeg 800w, images/dr-ashok-consulting.jpeg 1200w" sizes="(max-width: 768px) 480px, (max-width: 1024px) 800px, 1200px" type="image/jpeg">
+                            <img src="images/dr-ashok-consulting.jpeg" alt="Dr. Ashok Sajnani consulting with a patient at Adinath Hospital" loading="eager" width="1200" height="900">
+                        </picture>
                         <div class="hero-image-accent"></div>
                     </div>
                 </div>
@@ -220,28 +231,28 @@
             <div class="container">
                 <div class="trust-items">
                     <div class="trust-item">
-                        <div class="trust-icon">&#x1f3c6;</div>
+                        <div class="trust-icon" aria-hidden="true">&#x1f3c6;</div>
                         <div class="trust-text">
                             <strong data-i18n="trust_years">35+ Years</strong>
                             <span data-i18n="trust_years_sub">Of Trusted Care</span>
                         </div>
                     </div>
                     <div class="trust-item">
-                        <div class="trust-icon">&#x1f468;&#x200d;&#x2695;&#xfe0f;</div>
+                        <div class="trust-icon" aria-hidden="true">&#x1f468;&#x200d;&#x2695;&#xfe0f;</div>
                         <div class="trust-text">
                             <strong data-i18n="trust_specialists">2 Specialists</strong>
                             <span data-i18n="trust_specialists_sub">Ortho &amp; OB-GYN</span>
                         </div>
                     </div>
                     <div class="trust-item">
-                        <div class="trust-icon">&#x1f3e5;</div>
+                        <div class="trust-icon" aria-hidden="true">&#x1f3e5;</div>
                         <div class="trust-text">
                             <strong data-i18n="trust_facilities">Modern Facilities</strong>
                             <span data-i18n="trust_facilities_sub">OT, X-Ray, AC Rooms</span>
                         </div>
                     </div>
                     <div class="trust-item">
-                        <div class="trust-icon">&#x2764;&#xfe0f;</div>
+                        <div class="trust-icon" aria-hidden="true">&#x2764;&#xfe0f;</div>
                         <div class="trust-text">
                             <strong data-i18n="trust_family">Family Practice</strong>
                             <span data-i18n="trust_family_sub">Personal Attention</span>
@@ -304,7 +315,10 @@
                 </div>
                 <div class="doctors-grid">
                     <div class="doctor-card">
-                        <img class="doctor-photo" src="images/dr-ashok-sajnani.jpg" alt="Dr. Ashok Sajnani - Orthopaedic Surgeon" loading="lazy">
+                        <picture>
+                                    <source srcset="images/dr-ashok-sajnani.webp" type="image/webp">
+                                    <img class="doctor-photo" src="images/dr-ashok-sajnani.jpg" alt="Dr. Ashok Sajnani - Orthopaedic Surgeon" loading="lazy">
+                                </picture>
                         <div class="doctor-info">
                             <h3 data-i18n="dr_ashok_name">Dr. Ashok Sajnani</h3>
                             <div class="doctor-title" data-i18n="dr_ashok_title">M.S. (Ortho), D.Ortho &mdash; Orthopaedic &amp; Joint Surgeon</div>
@@ -318,7 +332,10 @@
                         </div>
                     </div>
                     <div class="doctor-card">
-                        <img class="doctor-photo" src="images/dr-sunita-sajnani.jpg" alt="Dr. Sunita Sajnani - OB-GYN Specialist" loading="lazy">
+                        <picture>
+                                    <source srcset="images/dr-sunita-sajnani.webp" type="image/webp">
+                                    <img class="doctor-photo" src="images/dr-sunita-sajnani.jpg" alt="Dr. Sunita Sajnani - OB-GYN Specialist" loading="lazy">
+                                </picture>
                         <div class="doctor-info">
                             <h3 data-i18n="dr_sunita_name">Dr. Sunita Sajnani</h3>
                             <div class="doctor-title" data-i18n="dr_sunita_title">M.D. (OB-GYN) &mdash; Obstetrics &amp; Gynaecology</div>
@@ -392,7 +409,7 @@
                 <div class="contact-grid">
                     <div class="contact-info-list">
                         <div class="contact-item">
-                            <div class="contact-icon">&#x1f4cd;</div>
+                            <div class="contact-icon" aria-hidden="true">&#x1f4cd;</div>
                             <div>
                                 <div class="contact-label" data-i18n="contact_address_label">Address</div>
                                 <div class="contact-value" data-i18n="contact_address">
@@ -403,7 +420,7 @@
                             </div>
                         </div>
                         <div class="contact-item">
-                            <div class="contact-icon">&#x1f4de;</div>
+                            <div class="contact-icon" aria-hidden="true">&#x1f4de;</div>
                             <div>
                                 <div class="contact-label" data-i18n="contact_phone_label">Phone</div>
                                 <div class="contact-value">
@@ -412,7 +429,7 @@
                             </div>
                         </div>
                         <div class="contact-item">
-                            <div class="contact-icon">&#x1f553;</div>
+                            <div class="contact-icon" aria-hidden="true">&#x1f553;</div>
                             <div>
                                 <div class="contact-label" data-i18n="contact_hours_label">Hours</div>
                                 <div class="contact-value" data-i18n="contact_hours">
@@ -422,7 +439,7 @@
                             </div>
                         </div>
                         <div class="contact-item">
-                            <div class="contact-icon">&#x1f4f1;</div>
+                            <div class="contact-icon" aria-hidden="true">&#x1f4f1;</div>
                             <div>
                                 <div class="contact-label" data-i18n="contact_whatsapp_label">WhatsApp</div>
                                 <div class="contact-value">
@@ -433,7 +450,7 @@
                     </div>
                     <div class="contact-map">
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.1!2d72.58!3d23.054!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sShukan+Mall+Shahibaug+Ahmedabad!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBVtqEkL1HSoC7stagR5Eh3E0qIUGlhWSA&q=place_id:ChIJp3cU7w2EXjkRf1P6ceA-zSI"
                             allowfullscreen
                             loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade"
@@ -479,12 +496,12 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="js/config.js"></script>
-    <script src="js/security.js"></script>
-    <script src="js/booking-wizard.js"></script>
-    <script src="js/hms.js"></script>
-    <script src="js/i18n.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/config.js?v=759b9998"></script>
+    <script src="js/security.js?v=759b9998"></script>
+    <script src="js/booking-wizard.js?v=759b9998"></script>
+    <script src="js/hms.js?v=759b9998"></script>
+    <script src="js/i18n.js?v=759b9998"></script>
+    <script src="js/main.js?v=759b9998"></script>
 
     <script>
         // Accessibility - Large Text Mode
@@ -570,6 +587,6 @@
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', updateUserStatus);
     </script>
-    <script src="js/user-status.js"></script>
+    <script src="js/user-status.js?v=759b9998"></script>
 </body>
 </html>

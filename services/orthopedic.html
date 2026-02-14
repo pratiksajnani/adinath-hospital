@@ -74,6 +74,47 @@
             .doctor-sidebar { position: static; }
         }
     </style>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "MedicalWebPage",
+        "name": "Orthopedic Care at Adinath Hospital",
+        "description": "Expert orthopedic care by Dr. Ashok Sajnani - Joint preservation, knee treatment, orthobiology, and fracture management in Ahmedabad.",
+        "url": "https://adinathhealth.com/services/orthopedic.html",
+        "mainEntity": {
+            "@type": "Physician",
+            "name": "Dr. Ashok Sajnani",
+            "honorificPrefix": "Dr.",
+            "givenName": "Ashok",
+            "familyName": "Sajnani",
+            "jobTitle": "Orthopaedic & Joint Surgeon",
+            "medicalSpecialty": "Orthopedic",
+            "qualification": "M.S. (Ortho), D.Ortho",
+            "description": "Orthopaedic surgeon with 35+ years of experience specializing in joint preservation and orthobiology.",
+            "worksFor": {
+                "@type": "Hospital",
+                "name": "Adinath Hospital",
+                "telephone": "+91-99254-50425",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "2nd Floor, Shukan Mall, Shahibaug Road",
+                    "addressLocality": "Ahmedabad",
+                    "addressRegion": "Gujarat",
+                    "postalCode": "380004",
+                    "addressCountry": "IN"
+                }
+            },
+            "availableService": [
+                {"@type": "MedicalProcedure", "name": "Joint Preservation", "description": "Non-surgical knee and joint treatment using advanced orthobiology"},
+                {"@type": "MedicalProcedure", "name": "Fracture Management", "description": "Comprehensive fracture care and surgical fixation"},
+                {"@type": "MedicalProcedure", "name": "Sports Injury Treatment", "description": "Diagnosis and treatment of sports-related injuries"},
+                {"@type": "MedicalProcedure", "name": "Arthritis Care", "description": "Conservative and surgical management of arthritis"}
+            ]
+        }
+    }
+    </script>
 </head>
 <body>
     <header class="header">

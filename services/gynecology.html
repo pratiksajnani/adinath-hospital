@@ -89,6 +89,47 @@
             .doctor-sidebar { position: static; }
         }
     </style>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "MedicalWebPage",
+        "name": "Gynecology & Obstetrics at Adinath Hospital",
+        "description": "Comprehensive women's healthcare by Dr. Sunita Sajnani - OB-GYN, adolescent gynecology, cosmetic gynecology, and pregnancy care in Ahmedabad.",
+        "url": "https://adinathhealth.com/services/gynecology.html",
+        "mainEntity": {
+            "@type": "Physician",
+            "name": "Dr. Sunita Sajnani",
+            "honorificPrefix": "Dr.",
+            "givenName": "Sunita",
+            "familyName": "Sajnani",
+            "jobTitle": "Obstetrician & Gynaecologist",
+            "medicalSpecialty": "Gynecologic",
+            "qualification": "M.D. (OB-GYN)",
+            "description": "OB-GYN specialist with 30+ years of compassionate care for women's health, with special focus on adolescent education and holistic wellness.",
+            "worksFor": {
+                "@type": "Hospital",
+                "name": "Adinath Hospital",
+                "telephone": "+91-99254-50425",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "2nd Floor, Shukan Mall, Shahibaug Road",
+                    "addressLocality": "Ahmedabad",
+                    "addressRegion": "Gujarat",
+                    "postalCode": "380004",
+                    "addressCountry": "IN"
+                }
+            },
+            "availableService": [
+                {"@type": "MedicalProcedure", "name": "Obstetrics & Delivery", "description": "Complete pregnancy care from prenatal checkups through delivery"},
+                {"@type": "MedicalProcedure", "name": "Adolescent Gynecology", "description": "Specialized care and education for young women's health"},
+                {"@type": "MedicalProcedure", "name": "Cosmetic Gynecology", "description": "Aesthetic and reconstructive gynecological procedures"},
+                {"@type": "MedicalProcedure", "name": "Women's Health Consultation", "description": "Comprehensive women's health checkups and consultations"}
+            ]
+        }
+    }
+    </script>
 </head>
 <body>
     <header class="header">
