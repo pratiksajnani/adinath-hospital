@@ -1,5 +1,9 @@
 # CLAUDE.md
 
+> Inherits from: ~/src/CLAUDE.md (workspace principles)
+> Narrows: #1 Real data → real hospital, real doctors
+> Adds: Patient content accuracy, accessibility, vanilla simplicity
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
