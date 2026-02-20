@@ -13,6 +13,7 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+.cursor/
 
 # Logs
 *.log
@@ -26,6 +27,9 @@ npm-debug.log*
 # Build artifacts
 dist/
 build/
+
+# Supabase CLI temp
+supabase/.temp/
 
 # Git worktrees
 .worktrees/

@@ -74,15 +74,15 @@ describe('I18N.t() - Translation Function', () => {
     });
 
     test('should translate navigation items', () => {
-        expect(I18N.t('nav_home')).toBe('Home');
         expect(I18N.t('nav_services')).toBe('Services');
         expect(I18N.t('nav_doctors')).toBe('Doctors');
+        expect(I18N.t('nav_patients')).toBe('Patients');
     });
 
-    test('should translate CTA buttons', () => {
-        expect(I18N.t('cta_book')).toBeDefined();
-        expect(I18N.t('cta_call')).toBeDefined();
-        expect(I18N.t('book_appointment')).toBeDefined();
+    test('should translate hero buttons', () => {
+        expect(I18N.t('hero_call')).toBeDefined();
+        expect(I18N.t('hero_book')).toBeDefined();
+        expect(I18N.t('hero_whatsapp')).toBeDefined();
     });
 
     test('should accept explicit language parameter', () => {
@@ -148,7 +148,7 @@ describe('I18N.init()', () => {
 });
 
 describe('Translation Coverage - Navigation', () => {
-    const navKeys = ['nav_home', 'nav_services', 'nav_doctors', 'nav_contact', 'nav_book'];
+    const navKeys = ['nav_services', 'nav_doctors', 'nav_patients', 'nav_contact', 'nav_call_now'];
 
     test.each(navKeys)('should have translation for %s', (key) => {
         expect(I18N.translations[key]).toBeDefined();
@@ -161,33 +161,25 @@ describe('Translation Coverage - Navigation', () => {
     });
 });
 
-describe('Translation Coverage - CTAs', () => {
-    const ctaKeys = ['cta_book', 'cta_call', 'book_appointment', 'learn_more'];
+describe('Translation Coverage - Homepage Sections', () => {
+    const homepageKeys = ['hero_call', 'hero_book', 'services_tag', 'doctors_tag', 'testimonials_tag', 'contact_tag'];
 
-    test.each(ctaKeys)('should have translation for %s', (key) => {
+    test.each(homepageKeys)('should have translation for %s', (key) => {
         expect(I18N.translations[key]).toBeDefined();
     });
 });
 
 describe('Translation Coverage - Doctor Info', () => {
-    test('should have Dr. Ashok title translation', () => {
+    test('should have Dr. Ashok name and title', () => {
+        expect(I18N.translations.dr_ashok_name).toBeDefined();
         expect(I18N.translations.dr_ashok_title).toBeDefined();
-        expect(I18N.translations.dr_ashok_title.en).toBe('Orthopedic Surgeon');
+        expect(I18N.translations.dr_ashok_desc).toBeDefined();
     });
 
-    test('should have Dr. Sunita title translation', () => {
+    test('should have Dr. Sunita name and title', () => {
+        expect(I18N.translations.dr_sunita_name).toBeDefined();
         expect(I18N.translations.dr_sunita_title).toBeDefined();
-        expect(I18N.translations.dr_sunita_title.en).toBeDefined();
-    });
-
-    test('should have Dr. Ashok experience translation', () => {
-        expect(I18N.translations.dr_ashok_exp).toBeDefined();
-        expect(I18N.translations.dr_ashok_exp.en).toContain('Years');
-    });
-
-    test('should have Dr. Sunita experience translation', () => {
-        expect(I18N.translations.dr_sunita_exp).toBeDefined();
-        expect(I18N.translations.dr_sunita_exp.en).toContain('Years');
+        expect(I18N.translations.dr_sunita_desc).toBeDefined();
     });
 });
 
@@ -217,7 +209,7 @@ describe('I18N - Hero Section Translations', () => {
 });
 
 describe('I18N - Service Translations', () => {
-    const serviceKeys = ['feature_ortho', 'feature_gyn', 'feature_yoga'];
+    const serviceKeys = ['service_joint', 'service_ortho', 'service_obstetrics', 'service_gyn', 'service_yoga', 'service_pharmacy'];
 
     test.each(serviceKeys)('should have translation for %s', (key) => {
         expect(I18N.translations[key]).toBeDefined();
