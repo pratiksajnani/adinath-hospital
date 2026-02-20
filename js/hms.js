@@ -121,72 +121,10 @@ const HMS = {
             },
         ];
 
-        // Staff roles configuration
-        const staffRoles = [
-            {
-                id: 'doctor',
-                name: 'Doctor',
-                icon: '👨‍⚕️',
-                color: '#236b48',
-                permissions: ['patients', 'appointments', 'prescriptions', 'reports'],
-            },
-            {
-                id: 'nurse',
-                name: 'Nurse',
-                icon: '👩‍⚕️',
-                color: '#ec4899',
-                permissions: ['patients', 'appointments'],
-            },
-            {
-                id: 'receptionist',
-                name: 'Receptionist',
-                icon: '💁',
-                color: '#8b5cf6',
-                permissions: ['appointments', 'patients'],
-            },
-            {
-                id: 'pharmacist',
-                name: 'Pharmacist',
-                icon: '💊',
-                color: '#236b48',
-                permissions: ['inventory', 'sales', 'prescriptions'],
-            },
-            {
-                id: 'lab_tech',
-                name: 'Lab Technician',
-                icon: '🔬',
-                color: '#0ea5e9',
-                permissions: ['reports', 'patients'],
-            },
-            {
-                id: 'admin',
-                name: 'Administrator',
-                icon: '🔐',
-                color: '#dc2626',
-                permissions: ['all'],
-            },
-            {
-                id: 'accountant',
-                name: 'Accountant',
-                icon: '📊',
-                color: '#c4704b',
-                permissions: ['sales', 'reports'],
-            },
-            {
-                id: 'housekeeping',
-                name: 'Housekeeping',
-                icon: '🧹',
-                color: '#64748b',
-                permissions: [],
-            },
-        ];
-
         // Empty patient list - real patients will be added as they register
         const patients = [];
 
         // Empty appointments - will be created through booking
-        const _today = new Date().toISOString().split('T')[0]; // Reserved for future use
-        void _today; // Prevent unused warning
         const appointments = [];
 
         // Empty prescriptions - will be created by doctors
@@ -273,7 +211,6 @@ const HMS = {
 
         // Store all data
         localStorage.setItem('hms_users', JSON.stringify(users));
-        localStorage.setItem('hms_staff_roles', JSON.stringify(staffRoles));
         localStorage.setItem('hms_patients', JSON.stringify(patients));
         localStorage.setItem('hms_appointments', JSON.stringify(appointments));
         localStorage.setItem('hms_prescriptions', JSON.stringify(prescriptions));
@@ -487,12 +424,6 @@ const HMS = {
                     (u.username && u.username.toLowerCase() === lower)
             );
         },
-        getByRole(role) {
-            return this.getAll().filter((u) => u.role === role);
-        },
-        getDoctors() {
-            return this.getAll().filter((u) => u.role === 'doctor');
-        },
         getStaff() {
             return this.getAll().filter((u) => u.role !== 'doctor' && u.role !== 'admin');
         },
@@ -582,50 +513,9 @@ const HMS = {
             return !!this.getCurrentUser();
         },
 
-        hasPermission(permission) {
-            const user = this.getCurrentUser();
-            if (!user) {
-                return false;
-            }
-            if (user.permissions.includes('all')) {
-                return true;
-            }
-            return user.permissions.includes(permission);
-        },
-
-        isAdmin() {
-            const user = this.getCurrentUser();
-            return user && user.role === 'admin';
-        },
-
         isDoctor() {
             const user = this.getCurrentUser();
             return user && user.role === 'doctor';
-        },
-
-        signup(userData) {
-            // For staff signup, requires admin approval
-            userData.active = false; // Pending approval
-            userData.password = userData.password || 'temp123';
-            const result = HMS.users.add(userData);
-            if (result.error) {
-                return result;
-            }
-            return {
-                success: true,
-                message: 'Account created. Pending admin approval.',
-                user: result,
-            };
-        },
-    },
-
-    // Staff Roles Configuration
-    staffRoles: {
-        getAll() {
-            return JSON.parse(localStorage.getItem('hms_staff_roles') || '[]');
-        },
-        get(id) {
-            return this.getAll().find((r) => r.id === id);
         },
     },
 
@@ -711,86 +601,10 @@ const HMS = {
 
     // Notification System
     notifications: {
-        queue: [],
-
-        add(notification) {
-            notification.id = HMS.utils.generateId('N');
-            notification.createdAt = new Date().toISOString();
-            notification.read = false;
-            this.queue.push(notification);
-            this.saveQueue();
-            return notification;
-        },
-
-        getForUser(userId) {
-            return this.getAll().filter((n) => n.userId === userId);
-        },
-
-        getAll() {
-            return JSON.parse(localStorage.getItem('hms_notifications') || '[]');
-        },
-
-        saveQueue() {
-            const existing = this.getAll();
-            localStorage.setItem('hms_notifications', JSON.stringify([...existing, ...this.queue]));
-            this.queue = [];
-        },
-
-        markRead(id) {
-            const notifications = this.getAll();
-            const index = notifications.findIndex((n) => n.id === id);
-            if (index !== -1) {
-                notifications[index].read = true;
-                localStorage.setItem('hms_notifications', JSON.stringify(notifications));
-            }
-        },
-
         sendSMS(phone, message, language = 'en') {
             // In production, this would call an SMS API (MSG91, Twilio, etc.)
             console.log(`📱 SMS to ${phone} [${language}]: ${message}`);
             return { success: true, message: 'SMS queued', preview: message };
-        },
-
-        sendWhatsApp(phone, message) {
-            // Generate WhatsApp link
-            const url = `https://wa.me/91${phone}?text=${encodeURIComponent(message)}`;
-            return { success: true, url };
-        },
-
-        notifyDoctor(doctorId, type, data) {
-            const doctor = HMS.users.get(doctorId);
-            if (!doctor) {
-                return;
-            }
-
-            const message = this.formatNotification(type, data, doctor.preferredLanguage || 'en');
-
-            if (doctor.notifyViaSMS) {
-                this.sendSMS(doctor.phone, message);
-            }
-
-            this.add({
-                userId: doctorId,
-                type,
-                message,
-                data,
-            });
-        },
-
-        formatNotification(type, data, lang) {
-            const messages = {
-                new_appointment: {
-                    en: `New appointment: ${data.patientName} at ${data.time}`,
-                    hi: `नया अपॉइंटमेंट: ${data.patientName} ${data.time} बजे`,
-                    gu: `નવી એપોઇન્ટમેન્ટ: ${data.patientName} ${data.time} વાગ્યે`,
-                },
-                patient_arrived: {
-                    en: `Patient arrived: ${data.patientName} is waiting`,
-                    hi: `मरीज आ गया: ${data.patientName} इंतजार कर रहा है`,
-                    gu: `દર્દી આવ્યા: ${data.patientName} રાહ જોઈ રહ્યા છે`,
-                },
-            };
-            return messages[type]?.[lang] || messages[type]?.['en'] || type;
         },
     },
 
@@ -848,91 +662,6 @@ const HMS = {
                 links[index].usedAt = new Date().toISOString();
                 localStorage.setItem('hms_patient_links', JSON.stringify(links));
             }
-        },
-    },
-
-    // QR Code URLs (for mobile app / easy access)
-    qrCodes: {
-        getUrl(type, params = {}) {
-            const baseUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
-            const urls = {
-                book_appointment: `${baseUrl}book.html`,
-                patient_portal: `${baseUrl}portal/patient/index.html`,
-                patient_signup: `${baseUrl}patient-signup.html`,
-                upload_images: `${baseUrl}patient-upload.html?patientId=${params.patientId || ''}`,
-                prescription: `${baseUrl}rx.html?id=${params.rxId || ''}`,
-                yoga_registration: `${baseUrl}book.html?service=yoga`,
-                feedback: `${baseUrl}feedback.html`,
-                whatsapp: `https://wa.me/919925450425`,
-            };
-            return urls[type] || baseUrl;
-        },
-
-        generateQRData(type, params) {
-            return {
-                url: this.getUrl(type, params),
-                type,
-                params,
-            };
-        },
-    },
-
-    // Content Management (for doctor posts, health tips, etc.)
-    content: {
-        getAll() {
-            return JSON.parse(localStorage.getItem('hms_content') || '[]');
-        },
-
-        add(item) {
-            const content = this.getAll();
-            item.id = HMS.utils.generateId('C');
-            item.createdAt = new Date().toISOString();
-            item.published = false;
-            content.push(item);
-            localStorage.setItem('hms_content', JSON.stringify(content));
-            return item;
-        },
-
-        getByDoctor(doctorId) {
-            return this.getAll().filter((c) => c.authorId === doctorId);
-        },
-
-        getPublished() {
-            return this.getAll().filter((c) => c.published);
-        },
-
-        publish(id) {
-            const content = this.getAll();
-            const index = content.findIndex((c) => c.id === id);
-            if (index !== -1) {
-                content[index].published = true;
-                content[index].publishedAt = new Date().toISOString();
-                localStorage.setItem('hms_content', JSON.stringify(content));
-            }
-        },
-    },
-
-    // Image Management
-    images: {
-        getAll() {
-            return JSON.parse(localStorage.getItem('hms_images') || '[]');
-        },
-
-        add(image) {
-            const images = this.getAll();
-            image.id = HMS.utils.generateId('IMG');
-            image.uploadedAt = new Date().toISOString();
-            images.push(image);
-            localStorage.setItem('hms_images', JSON.stringify(images));
-            return image;
-        },
-
-        getByPatient(patientId) {
-            return this.getAll().filter((i) => i.patientId === patientId);
-        },
-
-        getByUploader(userId) {
-            return this.getAll().filter((i) => i.uploadedBy === userId);
         },
     },
 
@@ -1023,7 +752,6 @@ const HMS = {
         localStorage.removeItem('hms_sales');
         localStorage.removeItem('hms_queue');
         localStorage.removeItem('hms_users');
-        localStorage.removeItem('hms_staff_roles');
         localStorage.removeItem('hms_current_user');
         localStorage.removeItem('hms_logged_in');
         localStorage.removeItem('hms_feedback');

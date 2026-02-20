@@ -62,7 +62,7 @@ function initMobileMenu() {
 
         // Close menu on link click (but not dropdown triggers)
         nav.querySelectorAll('a').forEach((link) => {
-            link.addEventListener('click', (e) => {
+            link.addEventListener('click', (_e) => {
                 // Don't close menu if clicking a dropdown trigger
                 if (link.classList.contains('dropdown-trigger')) {
                     return;
@@ -178,99 +178,6 @@ function initAnimations() {
     });
 }
 
-// Animate counters
-function animateCounters() {
-    const counters = document.querySelectorAll('.stat-number');
-
-    counters.forEach((counter) => {
-        const target = parseInt(counter.textContent.replace(/[^0-9]/g, ''));
-        const suffix = counter.textContent.replace(/[0-9]/g, '');
-        const duration = 2000;
-        const step = target / (duration / 16);
-        let current = 0;
-
-        const updateCounter = () => {
-            current += step;
-            if (current < target) {
-                counter.textContent = Math.floor(current) + suffix;
-                requestAnimationFrame(updateCounter);
-            } else {
-                counter.textContent = target + suffix;
-            }
-        };
-
-        updateCounter();
-    });
-}
-
-// Form validation helper
-function validateForm(form) {
-    let isValid = true;
-    const requiredFields = form.querySelectorAll('[required]');
-
-    requiredFields.forEach((field) => {
-        if (!field.value.trim()) {
-            isValid = false;
-            field.classList.add('error');
-        } else {
-            field.classList.remove('error');
-        }
-    });
-
-    // Email validation
-    const emailField = form.querySelector('input[type="email"]');
-    if (emailField && emailField.value) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(emailField.value)) {
-            isValid = false;
-            emailField.classList.add('error');
-        }
-    }
-
-    // Phone validation (Indian)
-    const phoneField = form.querySelector('input[type="tel"]');
-    if (phoneField && phoneField.value) {
-        const phoneRegex = /^[6-9]\d{9}$/;
-        const cleanPhone = phoneField.value.replace(/[\s\-+91]/g, '');
-        if (!phoneRegex.test(cleanPhone)) {
-            isValid = false;
-            phoneField.classList.add('error');
-        }
-    }
-
-    return isValid;
-}
-
-// Show toast notification
-function showToast(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.textContent = message;
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => toast.classList.add('show'), 100);
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
-
-// Format phone number for display
-function formatPhone(phone) {
-    const cleaned = phone.replace(/\D/g, '');
-    if (cleaned.length === 10) {
-        return `+91 ${cleaned.slice(0, 5)} ${cleaned.slice(5)}`;
-    }
-    return phone;
-}
-
-// Get URL parameters
-function getUrlParams() {
-    const params = new URLSearchParams(window.location.search);
-    return Object.fromEntries(params.entries());
-}
-
 // ============================================
 // FAQ ACCORDION
 // ============================================
@@ -300,10 +207,5 @@ if (typeof module !== 'undefined' && module.exports) {
         initHeaderScroll,
         initAnimations,
         toggleFAQ,
-        animateCounters,
-        validateForm,
-        showToast,
-        formatPhone,
-        getUrlParams,
     };
 }

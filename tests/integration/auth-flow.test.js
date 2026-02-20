@@ -18,14 +18,14 @@ describe('Authentication Flow Integration', () => {
 
   describe('User Registration to Login Flow', () => {
     test('should register new patient and allow login', () => {
-      // Register (signup takes an object, not positional args)
-      const signupResult = HMS.auth.signup({
+      // Register via users.add (the production API)
+      const user = HMS.users.add({
         email: 'newpatient@test.com',
         password: 'password123',
         role: 'patient',
         name: 'New Patient',
       });
-      expect(signupResult.success).toBe(true);
+      expect(user.id).toBeDefined();
 
       // Logout
       HMS.auth.logout();
@@ -39,7 +39,7 @@ describe('Authentication Flow Integration', () => {
 
     test('should prevent duplicate email registration', () => {
       // First registration
-      HMS.auth.signup({
+      HMS.users.add({
         email: 'duplicate@test.com',
         password: 'password123',
         role: 'patient',
@@ -47,7 +47,7 @@ describe('Authentication Flow Integration', () => {
       });
 
       // Second registration with same email
-      const result = HMS.auth.signup({
+      const result = HMS.users.add({
         email: 'duplicate@test.com',
         password: 'password456',
         role: 'patient',
@@ -64,7 +64,7 @@ describe('Authentication Flow Integration', () => {
       const result = HMS.auth.login('pratik.sajnani@gmail.com', '1234');
 
       expect(result.success).toBe(true);
-      expect(HMS.auth.isAdmin()).toBe(true);
+      expect(HMS.auth.getCurrentUser().role).toBe('admin');
       expect(HMS.auth.isDoctor()).toBe(false);
     });
 
@@ -73,7 +73,7 @@ describe('Authentication Flow Integration', () => {
 
       expect(result.success).toBe(true);
       expect(HMS.auth.isDoctor()).toBe(true);
-      expect(HMS.auth.isAdmin()).toBe(false);
+      expect(HMS.auth.getCurrentUser().role).not.toBe('admin');
     });
 
     test('staff should have staff role', () => {
@@ -87,7 +87,7 @@ describe('Authentication Flow Integration', () => {
       const result = HMS.auth.login('psaj', '1234');
 
       expect(result.success).toBe(true);
-      expect(HMS.auth.isAdmin()).toBe(true);
+      expect(HMS.auth.getCurrentUser().role).toBe('admin');
     });
   });
 

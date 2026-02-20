@@ -111,12 +111,6 @@ describe('HMS.users', () => {
         expect(result.error).toContain('already registered');
     });
 
-    test('getDoctors() should return only doctor users', () => {
-        const doctors = HMS.users.getDoctors();
-        expect(doctors.length).toBeGreaterThan(0);
-        expect(doctors.every(d => d.role === 'doctor')).toBe(true);
-    });
-
     test('getStaff() should return non-doctor, non-admin users', () => {
         // Add a staff user first
         HMS.users.add({
@@ -128,11 +122,6 @@ describe('HMS.users', () => {
         expect(staff.every(s => s.role !== 'doctor' && s.role !== 'admin')).toBe(true);
     });
 
-    test('getByRole() should filter by role', () => {
-        const admins = HMS.users.getByRole('admin');
-        expect(admins.length).toBeGreaterThan(0);
-        expect(admins.every(a => a.role === 'admin')).toBe(true);
-    });
 });
 
 describe('HMS.patients', () => {
@@ -371,18 +360,6 @@ describe('HMS.auth', () => {
         expect(user).toBeDefined();
     });
 
-    test('hasPermission() should check specific permission', () => {
-        HMS.auth.login('psaj', '1234'); // Admin has 'all' permissions
-        // Since admin has 'all', any permission returns true
-        expect(HMS.auth.hasPermission('manage_users')).toBe(true);
-    });
-
-    test('hasPermission() should return false for non-permitted action', () => {
-        // Login as doctor who doesn't have 'all' permissions
-        HMS.auth.login('drsajnani@gmail.com', 'doctor123');
-        // Doctor doesn't have 'manage_users' permission
-        expect(HMS.auth.hasPermission('manage_users')).toBe(false);
-    });
 });
 
 describe('HMS.users extended', () => {
@@ -395,12 +372,6 @@ describe('HMS.users extended', () => {
         const user = HMS.users.getByUsername('psaj');
         expect(user).toBeDefined();
         expect(user.role).toBe('admin');
-    });
-
-    test('getByRole() should filter by role', () => {
-        const doctors = HMS.users.getByRole('doctor');
-        expect(doctors.length).toBe(2);
-        expect(doctors.every(u => u.role === 'doctor')).toBe(true);
     });
 
     test('getStaff() should return non-doctor non-admin users', () => {
@@ -444,29 +415,8 @@ describe('HMS.users extended', () => {
 describe('HMS.auth extended', () => {
     beforeEach(() => {
         localStorage.clear();
-        HMS.auth.currentUser = null; // Clear in-memory user
+        HMS.auth.currentUser = null;
         HMS.init();
-    });
-
-    test('hasPermission() should return false when not logged in', () => {
-        // This test runs first to ensure no user is logged in
-        expect(HMS.auth.hasPermission('users')).toBe(false);
-    });
-
-    test('hasPermission() should return true for admin with all permissions', () => {
-        HMS.auth.login('psaj', '1234');
-        expect(HMS.auth.hasPermission('users')).toBe(true);
-        expect(HMS.auth.hasPermission('anything')).toBe(true);
-    });
-
-    test('isAdmin() should return true for admin', () => {
-        HMS.auth.login('psaj', '1234');
-        expect(HMS.auth.isAdmin()).toBe(true);
-    });
-
-    test('isAdmin() should return false for doctor', () => {
-        HMS.auth.login('drsajnani@gmail.com', 'doctor123');
-        expect(HMS.auth.isAdmin()).toBe(false);
     });
 
     test('isDoctor() should return true for doctor', () => {
@@ -477,53 +427,6 @@ describe('HMS.auth extended', () => {
     test('isDoctor() should return false for admin', () => {
         HMS.auth.login('psaj', '1234');
         expect(HMS.auth.isDoctor()).toBe(false);
-    });
-
-    test('signup() should create user pending approval', () => {
-        const result = HMS.auth.signup({
-            email: 'newuser@test.com',
-            name: 'New User',
-            role: 'staff'
-        });
-        expect(result.success).toBe(true);
-        expect(result.message).toContain('Pending');
-        expect(result.user.id).toBeDefined();
-    });
-
-    test('signup() should reject duplicate email', () => {
-        const result = HMS.auth.signup({
-            email: 'pratik.sajnani@gmail.com',
-            name: 'Duplicate'
-        });
-        expect(result.error).toBeDefined();
-    });
-});
-
-describe('HMS.staffRoles', () => {
-    beforeEach(() => {
-        localStorage.clear();
-        HMS.init();
-    });
-
-    test('getAll() should return staff roles', () => {
-        const roles = HMS.staffRoles.getAll();
-        expect(Array.isArray(roles)).toBe(true);
-    });
-
-    test('get() should return role by ID', () => {
-        // Add a staff role first
-        const roles = HMS.staffRoles.getAll();
-        roles.push({ id: 'SR001', name: 'Receptionist', permissions: ['view_patients'] });
-        localStorage.setItem('hms_staff_roles', JSON.stringify(roles));
-        
-        const role = HMS.staffRoles.get('SR001');
-        expect(role).toBeDefined();
-        expect(role.name).toBe('Receptionist');
-    });
-
-    test('get() should return undefined for unknown ID', () => {
-        const role = HMS.staffRoles.get('unknown');
-        expect(role).toBeUndefined();
     });
 });
 
@@ -597,109 +500,10 @@ describe('HMS.smsTemplates', () => {
 });
 
 describe('HMS.notifications', () => {
-    beforeEach(() => {
-        localStorage.clear();
-        HMS.notifications.queue = [];
-        HMS.init();
-    });
-
-    test('add() should create notification with ID', () => {
-        const notification = HMS.notifications.add({
-            userId: 'U001',
-            type: 'test',
-            message: 'Test notification'
-        });
-        expect(notification.id).toBeDefined();
-        expect(notification.id).toMatch(/^N/);
-        expect(notification.read).toBe(false);
-    });
-
-    test('getAll() should return all notifications', () => {
-        HMS.notifications.add({ userId: 'U001', type: 'test', message: 'Test' });
-        const all = HMS.notifications.getAll();
-        expect(all.length).toBeGreaterThan(0);
-    });
-
-    test('getForUser() should filter by user', () => {
-        HMS.notifications.add({ userId: 'U001', type: 'test', message: 'For U001' });
-        HMS.notifications.add({ userId: 'U002', type: 'test', message: 'For U002' });
-        const forUser = HMS.notifications.getForUser('U001');
-        expect(forUser.every(n => n.userId === 'U001')).toBe(true);
-    });
-
-    test('markRead() should mark notification as read', () => {
-        const notification = HMS.notifications.add({
-            userId: 'U001',
-            type: 'test',
-            message: 'Test'
-        });
-        HMS.notifications.markRead(notification.id);
-        const all = HMS.notifications.getAll();
-        const found = all.find(n => n.id === notification.id);
-        expect(found.read).toBe(true);
-    });
-
     test('sendSMS() should return success', () => {
         const result = HMS.notifications.sendSMS('9925450425', 'Test message');
         expect(result.success).toBe(true);
         expect(result.message).toBe('SMS queued');
-    });
-
-    test('sendWhatsApp() should return URL', () => {
-        const result = HMS.notifications.sendWhatsApp('9925450425', 'Test message');
-        expect(result.success).toBe(true);
-        expect(result.url).toContain('wa.me');
-        expect(result.url).toContain('9925450425');
-    });
-
-    test('formatNotification() should format new_appointment', () => {
-        const message = HMS.notifications.formatNotification('new_appointment', {
-            patientName: 'Ramesh',
-            time: '11:00 AM'
-        }, 'en');
-        expect(message).toContain('Ramesh');
-        expect(message).toContain('11:00 AM');
-    });
-
-    test('formatNotification() should format patient_arrived', () => {
-        const message = HMS.notifications.formatNotification('patient_arrived', {
-            patientName: 'Ramesh'
-        }, 'en');
-        expect(message).toContain('Ramesh');
-        expect(message).toContain('waiting');
-    });
-
-    test('formatNotification() should use Hindi when requested', () => {
-        const message = HMS.notifications.formatNotification('new_appointment', {
-            patientName: 'Ramesh',
-            time: '11:00 AM'
-        }, 'hi');
-        expect(message).toContain('नया');
-    });
-
-    test('formatNotification() should fallback for unknown type', () => {
-        const message = HMS.notifications.formatNotification('unknown_type', {}, 'en');
-        expect(message).toBe('unknown_type');
-    });
-
-    test('notifyDoctor() should do nothing for invalid doctor', () => {
-        // Should not throw
-        expect(() => HMS.notifications.notifyDoctor('invalid-doctor-id', 'test', {})).not.toThrow();
-    });
-
-    test('notifyDoctor() should add notification for valid doctor', () => {
-        // First get a valid doctor ID
-        const users = HMS.users.getAll();
-        const doctor = users.find(u => u.role === 'doctor');
-        if (doctor) {
-            const beforeCount = HMS.notifications.getForUser(doctor.id).length;
-            HMS.notifications.notifyDoctor(doctor.id, 'new_appointment', {
-                patientName: 'Test',
-                time: '10:00 AM'
-            });
-            const afterCount = HMS.notifications.getForUser(doctor.id).length;
-            expect(afterCount).toBeGreaterThan(beforeCount);
-        }
     });
 });
 
@@ -742,104 +546,6 @@ describe('HMS.patientLinks', () => {
         const result = HMS.patientLinks.validate(token);
         expect(result.valid).toBe(false);
         expect(result.error).toContain('used');
-    });
-});
-
-describe('HMS.qrCodes', () => {
-    test('getUrl() should return URLs for different types', () => {
-        expect(HMS.qrCodes.getUrl('book_appointment')).toContain('book.html');
-        expect(HMS.qrCodes.getUrl('patient_portal')).toContain('patient');
-        expect(HMS.qrCodes.getUrl('feedback')).toContain('feedback');
-        expect(HMS.qrCodes.getUrl('whatsapp')).toContain('wa.me');
-    });
-
-    test('getUrl() should include params', () => {
-        const url = HMS.qrCodes.getUrl('upload_images', { patientId: 'P001' });
-        expect(url).toContain('patientId=P001');
-    });
-
-    test('generateQRData() should return data object', () => {
-        const data = HMS.qrCodes.generateQRData('book_appointment', {});
-        expect(data.url).toBeDefined();
-        expect(data.type).toBe('book_appointment');
-    });
-});
-
-describe('HMS.content', () => {
-    beforeEach(() => {
-        localStorage.clear();
-        HMS.init();
-    });
-
-    test('add() should create content item', () => {
-        const item = HMS.content.add({
-            title: 'Health Tip',
-            body: 'Stay hydrated',
-            authorId: 'U002'
-        });
-        expect(item.id).toBeDefined();
-        expect(item.id).toMatch(/^C/);
-        expect(item.published).toBe(false);
-    });
-
-    test('getAll() should return all content', () => {
-        HMS.content.add({ title: 'Tip 1', body: 'Body 1' });
-        HMS.content.add({ title: 'Tip 2', body: 'Body 2' });
-        const all = HMS.content.getAll();
-        expect(all.length).toBe(2);
-    });
-
-    test('getByDoctor() should filter by author', () => {
-        HMS.content.add({ title: 'Tip 1', body: 'Body', authorId: 'U002' });
-        HMS.content.add({ title: 'Tip 2', body: 'Body', authorId: 'U003' });
-        const byDoctor = HMS.content.getByDoctor('U002');
-        expect(byDoctor.length).toBe(1);
-    });
-
-    test('publish() should mark as published', () => {
-        const item = HMS.content.add({ title: 'Tip', body: 'Body' });
-        HMS.content.publish(item.id);
-        const published = HMS.content.getPublished();
-        expect(published.some(c => c.id === item.id)).toBe(true);
-    });
-});
-
-describe('HMS.images', () => {
-    beforeEach(() => {
-        localStorage.clear();
-        HMS.init();
-    });
-
-    test('getAll() should return empty array initially', () => {
-        const images = HMS.images.getAll();
-        expect(Array.isArray(images)).toBe(true);
-    });
-
-    test('add() should create image with ID', () => {
-        const image = HMS.images.add({
-            patientId: 'P001',
-            type: 'xray',
-            url: 'http://example.com/xray.jpg',
-            uploadedBy: 'U002'
-        });
-        expect(image.id).toBeDefined();
-        expect(image.id).toMatch(/^IMG/);
-        expect(image.uploadedAt).toBeDefined();
-    });
-
-    test('getByPatient() should filter by patient', () => {
-        HMS.images.add({ patientId: 'P001', url: 'img1.jpg' });
-        HMS.images.add({ patientId: 'P002', url: 'img2.jpg' });
-        HMS.images.add({ patientId: 'P001', url: 'img3.jpg' });
-        const p1Images = HMS.images.getByPatient('P001');
-        expect(p1Images.length).toBe(2);
-    });
-
-    test('getByUploader() should filter by uploader', () => {
-        HMS.images.add({ uploadedBy: 'U001', url: 'img1.jpg' });
-        HMS.images.add({ uploadedBy: 'U002', url: 'img2.jpg' });
-        const u1Images = HMS.images.getByUploader('U001');
-        expect(u1Images.length).toBe(1);
     });
 });
 
