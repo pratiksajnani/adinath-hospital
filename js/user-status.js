@@ -25,28 +25,106 @@ function getBasePath(testPath = null) {
     return '';
 }
 
-// Inject User Status UI into page
-function injectUserStatus() {
-    if (
-        document.querySelector('.nav .user-status') ||
-        document.getElementById('user-status-widget')
-    ) {
-        updateUserStatusWidget();
+// Inject component styles (once)
+function injectUserStatusStyles() {
+    if (document.getElementById('user-status-styles')) {
         return;
     }
+    const style = document.createElement('style');
+    style.id = 'user-status-styles';
+    style.textContent = `
+        /* Floating widget (pages without nav) */
+        body > #user-status-widget {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 99;
+            font-family: "Segoe UI", system-ui, sans-serif;
+        }
+        /* Nav-integrated: flows as flex child */
+        .nav > #user-status-widget {
+            position: relative;
+        }
+        /* Button pill */
+        #user-status-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            cursor: pointer;
+            font-size: 14px;
+            border: 2px solid #236b48;
+            transition: all 0.2s;
+        }
+        .nav > #user-status-widget #user-status-btn {
+            box-shadow: none;
+            padding: 6px 14px;
+        }
+        #user-status-name {
+            font-weight: 500;
+            color: #1e293b;
+        }
+        #user-status-btn .us-arrow {
+            color: #64748b;
+            font-size: 10px;
+        }
+        /* Dropdown menu (display: none set inline for JS toggle) */
+        #user-status-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            min-width: 220px;
+            overflow: hidden;
+            z-index: 999;
+        }
+        #user-status-menu a {
+            display: block;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: #1e293b;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        /* Override nav link styles that bleed into menu */
+        #user-status-menu a::after { content: none; }
+        #user-status-menu a:last-child { border-bottom: none; }
+        #user-status-menu a:hover { background: #f8fafc; }
+        #user-status-menu .us-logout { color: #dc2626; }
+        .us-header {
+            padding: 16px;
+            background: linear-gradient(135deg, #f0fdf4, #e8f5e9);
+            border-bottom: 1px solid #e2e8f0;
+        }
+        #menu-user-name {
+            font-weight: 600;
+            color: #236b48;
+            font-size: 15px;
+        }
+        #menu-user-role {
+            font-size: 12px;
+            color: #64748b;
+            text-transform: capitalize;
+            margin-top: 2px;
+        }
+    `;
+    document.head.appendChild(style);
+}
 
-    // Build widget using safe DOM methods
+// Build the widget DOM tree (no inline styles)
+function buildUserStatusWidget() {
+    const basePath = getBasePath();
+
     const widget = document.createElement('div');
     widget.id = 'user-status-widget';
-    // Push below fixed header (72px) when one exists, otherwise sit at top
-    const hasHeader = document.querySelector('header, .header');
-    const topPos = hasHeader ? '80px' : '15px';
-    widget.style.cssText = `position: fixed; top: ${topPos}; right: 20px; z-index: 9999; font-family: "Segoe UI", system-ui, sans-serif;`;
 
     const btn = document.createElement('div');
     btn.id = 'user-status-btn';
-    btn.style.cssText =
-        'display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: white; border-radius: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.15); cursor: pointer; font-size: 14px; border: 2px solid #236b48; transition: all 0.2s;';
     btn.onclick = toggleUserMenu;
 
     const iconSpan = Object.assign(document.createElement('span'), {
@@ -57,35 +135,27 @@ function injectUserStatus() {
         id: 'user-status-name',
         textContent: 'Guest',
     });
-    nameSpan.style.cssText = 'font-weight: 500; color: #1e293b;';
     const arrow = document.createElement('span');
+    arrow.className = 'us-arrow';
     arrow.textContent = '▼';
-    arrow.style.cssText = 'color: #64748b; font-size: 10px;';
     btn.append(iconSpan, nameSpan, arrow);
 
     const menu = document.createElement('div');
     menu.id = 'user-status-menu';
-    menu.style.cssText =
-        'display: none; position: absolute; top: 100%; right: 0; margin-top: 8px; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); min-width: 220px; overflow: hidden;';
+    menu.style.display = 'none'; // inline so toggleUserMenu() can read it
 
     // Guest menu
     const guestMenu = document.createElement('div');
     guestMenu.id = 'guest-menu-items';
-    const basePath = getBasePath();
 
     const loginLink = Object.assign(document.createElement('a'), {
         href: `${basePath}login.html`,
         textContent: '🔐 Staff/Doctor Login',
     });
-    loginLink.style.cssText =
-        'display: block; padding: 12px 16px; text-decoration: none; color: #1e293b; border-bottom: 1px solid #e2e8f0;';
-
     const patientLink = Object.assign(document.createElement('a'), {
         href: `${basePath}portal/patient/index.html`,
         textContent: '🏥 Patient Portal',
     });
-    patientLink.style.cssText =
-        'display: block; padding: 12px 16px; text-decoration: none; color: #1e293b;';
     guestMenu.append(loginLink, patientLink);
 
     // Logged-in menu
@@ -94,19 +164,15 @@ function injectUserStatus() {
     loggedInMenu.style.display = 'none';
 
     const userHeader = document.createElement('div');
-    userHeader.style.cssText =
-        'padding: 16px; background: linear-gradient(135deg, #f0fdf4, #e8f5e9); border-bottom: 1px solid #e2e8f0;';
+    userHeader.className = 'us-header';
     const menuUserName = Object.assign(document.createElement('div'), {
         id: 'menu-user-name',
         textContent: 'User',
     });
-    menuUserName.style.cssText = 'font-weight: 600; color: #236b48; font-size: 15px;';
     const menuUserRole = Object.assign(document.createElement('div'), {
         id: 'menu-user-role',
         textContent: 'Role',
     });
-    menuUserRole.style.cssText =
-        'font-size: 12px; color: #64748b; text-transform: capitalize; margin-top: 2px;';
     userHeader.append(menuUserName, menuUserRole);
 
     const portalLink = Object.assign(document.createElement('a'), {
@@ -114,22 +180,15 @@ function injectUserStatus() {
         href: '#',
         textContent: '📊 My Dashboard',
     });
-    portalLink.style.cssText =
-        'display: block; padding: 12px 16px; text-decoration: none; color: #1e293b; border-bottom: 1px solid #e2e8f0;';
-
     const homeLink = Object.assign(document.createElement('a'), {
         href: `${basePath}index.html`,
         textContent: '🏠 Home',
     });
-    homeLink.style.cssText =
-        'display: block; padding: 12px 16px; text-decoration: none; color: #1e293b; border-bottom: 1px solid #e2e8f0;';
-
     const logoutLink = Object.assign(document.createElement('a'), {
         href: '#',
         textContent: '🚪 Logout',
+        className: 'us-logout',
     });
-    logoutLink.style.cssText =
-        'display: block; padding: 12px 16px; text-decoration: none; color: #dc2626;';
     logoutLink.onclick = (e) => {
         e.preventDefault();
         doLogout();
@@ -138,12 +197,43 @@ function injectUserStatus() {
     loggedInMenu.append(userHeader, portalLink, homeLink, logoutLink);
     menu.append(guestMenu, loggedInMenu);
     widget.append(btn, menu);
-    document.body.appendChild(widget);
 
-    // Close menu when clicking outside
+    return widget;
+}
+
+// Inject User Status UI into page
+function injectUserStatus() {
+    // Skip if inline user-status exists in nav (e.g., index.html)
+    if (document.querySelector('.nav .user-status')) {
+        updateUserStatusWidget();
+        return;
+    }
+    // Skip if already injected
+    if (document.getElementById('user-status-widget')) {
+        updateUserStatusWidget();
+        return;
+    }
+
+    injectUserStatusStyles();
+    const widget = buildUserStatusWidget();
+
+    // Integrate into nav if one exists — flows as flex child, no overlap.
+    // All <header class="header"> pages have .nav inside, so this covers
+    // every fixed-header page. Pages without a nav get the floating widget.
+    const nav = document.querySelector('.header .nav');
+    if (nav) {
+        nav.appendChild(widget);
+    } else {
+        document.body.appendChild(widget);
+    }
+
+    // Close menu on outside click
     document.addEventListener('click', (e) => {
-        if (widget && !widget.contains(e.target)) {
-            menu.style.display = 'none';
+        if (!widget.contains(e.target)) {
+            const menu = document.getElementById('user-status-menu');
+            if (menu) {
+                menu.style.display = 'none';
+            }
         }
     });
 
@@ -153,7 +243,9 @@ function injectUserStatus() {
 // Toggle menu visibility
 function toggleUserMenu() {
     const menu = document.getElementById('user-status-menu');
-    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    if (menu) {
+        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    }
 }
 
 // Update the widget based on Supabase session
