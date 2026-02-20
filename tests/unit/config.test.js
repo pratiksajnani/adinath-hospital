@@ -1,6 +1,6 @@
 /**
  * CONFIG Unit Tests
- * Tests environment detection and URL building
+ * Tests environment detection and base URL
  */
 
 describe('CONFIG - Environment Detection', () => {
@@ -15,7 +15,6 @@ describe('CONFIG - Environment Detection', () => {
     });
 
     test('should handle missing window gracefully', () => {
-        // Config should export values even without window
         expect(true).toBe(true);
     });
 });
@@ -24,39 +23,24 @@ describe('CONFIG - Validation', () => {
     test('should have required config values', () => {
         global.window = { location: { hostname: 'localhost' } };
         jest.resetModules();
-        
-        // Just verify the file can be loaded
+
         expect(() => require('../../js/config.js')).not.toThrow();
     });
-});
 
-describe('URL Building', () => {
-    test('buildUrl should handle relative paths', () => {
+    test('should export CONFIG with BASE_URL', () => {
         global.window = { location: { hostname: 'localhost' } };
         jest.resetModules();
-        
-        const { buildUrl, CONFIG } = require('../../js/config.js');
-        
-        if (buildUrl) {
-            const result = buildUrl('login.html');
-            expect(result).toContain('login.html');
-        } else {
-            // buildUrl may not be exported
-            expect(true).toBe(true);
-        }
+
+        const { CONFIG } = require('../../js/config.js');
+        expect(CONFIG.BASE_URL).toBeDefined();
+        expect(typeof CONFIG.BASE_URL).toBe('string');
     });
 
-    test('buildUrl should preserve absolute URLs', () => {
+    test('should export ENV', () => {
         global.window = { location: { hostname: 'localhost' } };
         jest.resetModules();
-        
-        const { buildUrl } = require('../../js/config.js');
-        
-        if (buildUrl) {
-            const result = buildUrl('https://example.com/path');
-            expect(result).toBe('https://example.com/path');
-        } else {
-            expect(true).toBe(true);
-        }
+
+        const { ENV } = require('../../js/config.js');
+        expect(ENV).toBeDefined();
     });
 });

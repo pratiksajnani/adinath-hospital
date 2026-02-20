@@ -1,22 +1,10 @@
 // ============================================
 // SECURITY UTILITIES
-// Prevents XSS, CSRF, and protects sensitive data
+// Input validation and security logging
 // ============================================
 /* global ENV */
 
 const SecurityUtils = {
-    /**
-     * Sanitize HTML - remove script tags and dangerous attributes
-     */
-    sanitizeHTML(html) {
-        if (!html || typeof html !== 'string') {
-            return '';
-        }
-        const div = document.createElement('div');
-        div.textContent = html;
-        return div.innerHTML;
-    },
-
     /**
      * Escape HTML special characters
      */
@@ -85,93 +73,6 @@ const SecurityUtils = {
     },
 
     /**
-     * Generate CSRF token
-     */
-    generateCSRFToken() {
-        const array = new Uint8Array(32);
-        crypto.getRandomValues(array);
-        const token = Array.from(array, (b) => b.toString(16).padStart(2, '0')).join('');
-        sessionStorage.setItem('csrf_token', token);
-        return token;
-    },
-
-    /**
-     * Get stored CSRF token
-     */
-    getCSRFToken() {
-        let token = sessionStorage.getItem('csrf_token');
-        if (!token) {
-            token = this.generateCSRFToken();
-        }
-        return token;
-    },
-
-    /**
-     * Verify CSRF token
-     */
-    verifyCSRFToken(token) {
-        const stored = sessionStorage.getItem('csrf_token');
-        return stored && token === stored;
-    },
-
-    /**
-     * Basic encryption for localStorage (NOT for production - use real encryption)
-     */
-    encrypt(data) {
-        if (!data) {
-            return '';
-        }
-        try {
-            return btoa(JSON.stringify({ data, timestamp: Date.now() }));
-        } catch {
-            return '';
-        }
-    },
-
-    /**
-     * Basic decryption for localStorage (NOT for production)
-     */
-    decrypt(encrypted) {
-        if (!encrypted) {
-            return '';
-        }
-        try {
-            const decoded = atob(encrypted);
-            const obj = JSON.parse(decoded);
-            if (Date.now() - obj.timestamp > 30 * 24 * 60 * 60 * 1000) {
-                return '';
-            }
-            return obj.data;
-        } catch {
-            return '';
-        }
-    },
-
-    /**
-     * Check if request is from trusted origin
-     */
-    isTrustedOrigin(origin) {
-        const trustedOrigins = [
-            'https://adinathhealth.com',
-            'https://main.d2a0i6erg1hmca.amplifyapp.com',
-            'http://localhost:8080',
-            'http://localhost:3000',
-            'http://127.0.0.1:8080',
-        ];
-        return trustedOrigins.includes(origin);
-    },
-
-    /**
-     * Validate object references - prevent IDOR
-     */
-    canAccessResource(userId, resourceOwnerId, userRole) {
-        if (userRole === 'admin') {
-            return true;
-        }
-        return userId === resourceOwnerId;
-    },
-
-    /**
      * Log security event
      */
     logSecurityEvent(event, details = {}) {
@@ -196,66 +97,6 @@ const SecurityUtils = {
         } catch {
             // Ignore storage errors
         }
-    },
-
-    /**
-     * Check for common XSS patterns in input
-     */
-    containsXSSPattern(input) {
-        if (!input || typeof input !== 'string') {
-            return false;
-        }
-        const xssPatterns = [
-            /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-            /on\w+\s*=/gi,
-            /javascript:/gi,
-            /eval\(/gi,
-            /expression\(/gi,
-            /<iframe/gi,
-        ];
-        return xssPatterns.some((pattern) => pattern.test(input));
-    },
-
-    /**
-     * Rate limit helper - track attempts in sessionStorage
-     */
-    checkRateLimit(key, maxAttempts = 5, windowMs = 5 * 60 * 1000) {
-        try {
-            const stored = sessionStorage.getItem(`ratelimit_${key}`);
-            const now = Date.now();
-            const record = stored ? JSON.parse(stored) : { attempts: [], firstAttempt: now };
-            record.attempts = record.attempts.filter((t) => now - t < windowMs);
-            if (record.attempts.length >= maxAttempts) {
-                const oldestAttempt = Math.min(...record.attempts);
-                const resetIn = windowMs - (now - oldestAttempt);
-                return { allowed: false, remaining: 0, resetIn };
-            }
-            record.attempts.push(now);
-            sessionStorage.setItem(`ratelimit_${key}`, JSON.stringify(record));
-            return { allowed: true, remaining: maxAttempts - record.attempts.length, resetIn: 0 };
-        } catch {
-            return { allowed: true, remaining: maxAttempts, resetIn: 0 };
-        }
-    },
-
-    /**
-     * Get security headers for server-side
-     */
-    getSecurityHeaders() {
-        return {
-            'X-Content-Type-Options': 'nosniff',
-            'X-Frame-Options': 'SAMEORIGIN',
-            'X-XSS-Protection': '1; mode=block',
-            'Referrer-Policy': 'strict-origin-when-cross-origin',
-            'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
-        };
-    },
-
-    /**
-     * Check if running in secure context (HTTPS)
-     */
-    isSecureContext() {
-        return window.location.protocol === 'https:' || window.location.hostname === 'localhost';
     },
 
     /**

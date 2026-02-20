@@ -276,7 +276,9 @@ const AccessControl = {
         localStorage.removeItem('hms_current_user');
         localStorage.removeItem('hms_auth_method');
         localStorage.removeItem('hms_doctor');
+        localStorage.removeItem('hms_doctor_id');
         localStorage.removeItem('hms_demo_user');
+        localStorage.removeItem('currentPatient');
 
         window.location.assign(`${this.getBasePath()}index.html`);
     },

@@ -33,7 +33,6 @@ const {
     initSmoothScroll,
     initHeaderScroll,
     initAnimations,
-    toggleFAQ,
 } = require('../../js/main.js');
 
 beforeEach(() => {
@@ -70,9 +69,6 @@ describe('Main Module Structure', () => {
         expect(typeof initAnimations).toBe('function');
     });
 
-    test('should export toggleFAQ function', () => {
-        expect(typeof toggleFAQ).toBe('function');
-    });
 });
 
 describe('fixBaseUrls()', () => {
@@ -351,59 +347,6 @@ describe('initAnimations()', () => {
         initAnimations();
         
         expect(mockObserve).toHaveBeenCalled();
-    });
-});
-
-describe('toggleFAQ()', () => {
-    test('should toggle FAQ item', () => {
-        document.body.innerHTML = `
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">Question</button>
-                <div class="faq-answer">Answer</div>
-            </div>
-        `;
-        
-        const button = document.querySelector('.faq-question');
-        toggleFAQ(button);
-        
-        const faqItem = document.querySelector('.faq-item');
-        expect(faqItem.classList.contains('active')).toBe(true);
-    });
-
-    test('should close other FAQs when opening one', () => {
-        document.body.innerHTML = `
-            <div class="faq-item active">
-                <button class="faq-question" onclick="toggleFAQ(this)">Q1</button>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">Q2</button>
-            </div>
-        `;
-        
-        const button2 = document.querySelectorAll('.faq-question')[1];
-        toggleFAQ(button2);
-        
-        const faqItems = document.querySelectorAll('.faq-item');
-        expect(faqItems[0].classList.contains('active')).toBe(false);
-        expect(faqItems[1].classList.contains('active')).toBe(true);
-    });
-
-    test('should close FAQ when clicking same button twice', () => {
-        document.body.innerHTML = `
-            <div class="faq-item">
-                <button class="faq-question">Question</button>
-            </div>
-        `;
-        
-        const button = document.querySelector('.faq-question');
-        
-        // First click - open
-        toggleFAQ(button);
-        expect(document.querySelector('.faq-item').classList.contains('active')).toBe(true);
-        
-        // Second click - close
-        toggleFAQ(button);
-        expect(document.querySelector('.faq-item').classList.contains('active')).toBe(false);
     });
 });
 

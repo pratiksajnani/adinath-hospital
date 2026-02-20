@@ -178,24 +178,6 @@ function initAnimations() {
     });
 }
 
-// ============================================
-// FAQ ACCORDION
-// ============================================
-function toggleFAQ(button) {
-    const faqItem = button.parentElement;
-    const wasActive = faqItem.classList.contains('active');
-
-    // Close all other FAQs
-    document.querySelectorAll('.faq-item').forEach((item) => {
-        item.classList.remove('active');
-    });
-
-    // Toggle current FAQ
-    if (!wasActive) {
-        faqItem.classList.add('active');
-    }
-}
-
 // Export for Node.js/Jest testing
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
@@ -206,6 +188,5 @@ if (typeof module !== 'undefined' && module.exports) {
         initSmoothScroll,
         initHeaderScroll,
         initAnimations,
-        toggleFAQ,
     };
 }
