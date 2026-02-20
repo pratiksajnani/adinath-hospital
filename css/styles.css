@@ -726,7 +726,7 @@ header > .nav {
     .nav-dropdown.user-status .dropdown-trigger {
         background: var(--primary-50);
         border-radius: 10px;
-        border: 1px solid var(--primary-100);
+        border: 1px solid var(--primary-50);
     }
 
     /* Mobile dropdown trigger styling */

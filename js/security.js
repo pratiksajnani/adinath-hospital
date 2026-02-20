@@ -55,7 +55,7 @@ const SecurityUtils = {
             }
             case 'phone': {
                 const phoneRegex = /^[6-9]\d{9}$/;
-                const cleanPhone = trimmed.replace(/[\s\-+91]/g, '');
+                const cleanPhone = trimmed.replace(/^\+91/, '').replace(/[\s-]/g, '');
                 if (!phoneRegex.test(cleanPhone)) {
                     return { valid: false, value: '', error: 'Invalid phone number' };
                 }

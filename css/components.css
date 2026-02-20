@@ -141,36 +141,3 @@
     outline: none;
     border-color: var(--primary);
 }
-
-/* ============================================
-   UTILITY CLASSES
-   ============================================ */
-.flex {
-    display: flex;
-}
-
-.flex-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.gap-2 {
-    gap: 8px;
-}
-
-.gap-4 {
-    gap: 16px;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.mb-4 {
-    margin-bottom: 16px;
-}
-
-.mt-4 {
-    margin-top: 16px;
-}
