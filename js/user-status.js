@@ -160,13 +160,17 @@ async function updateUserStatusWidget() {
     let userName = null;
 
     try {
-        const profile = await HMS.auth.getProfile();
-        if (profile) {
-            role = profile.role;
-            userName = profile.name || profile.email;
+        if (typeof HMS !== 'undefined') {
+            // Ensure HMS is initialized (processes #access_token hash if present)
+            await HMS.init();
+            const profile = await HMS.auth.getProfile();
+            if (profile) {
+                role = profile.role;
+                userName = profile.name || profile.email;
+            }
         }
     } catch {
-        // HMS not initialized yet or no session
+        // HMS not available or no session
     }
 
     const icon = document.getElementById('user-status-icon') || document.getElementById('userIcon');
@@ -266,6 +270,19 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', injectUserStatus);
 } else {
     injectUserStatus();
+}
+
+// Re-render widget when auth state changes (e.g., after OAuth redirect processes #access_token)
+if (typeof HMS !== 'undefined' && typeof HMS.init === 'function') {
+    HMS.init()
+        .then(() => {
+            if (typeof HMS.auth.onAuthStateChange === 'function') {
+                HMS.auth.onAuthStateChange(() => {
+                    updateUserStatusWidget();
+                });
+            }
+        })
+        .catch(() => {});
 }
 
 // Export for testing
