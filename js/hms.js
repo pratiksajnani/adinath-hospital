@@ -259,7 +259,7 @@ const HMS = {
                     phone: patient.phone,
                     email: patient.email,
                     age: patient.age,
-                    gender: patient.gender,
+                    gender: patient.gender ? patient.gender.toLowerCase() : null,
                     address: patient.address,
                     blood_group: patient.bloodGroup || patient.blood_group,
                     medical_history: patient.medicalHistory || patient.medical_history,
