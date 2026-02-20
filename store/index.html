@@ -582,6 +582,7 @@
         </main>
     </div>
     
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="../js/config.js"></script>
     <script src="../js/hms.js"></script>
     <script src="../js/main.js"></script>
@@ -595,48 +596,49 @@
         });
         
         // Initialize dashboard with real data
-        function initStoreDashboard() {
+        async function initStoreDashboard() {
+            await HMS.init();
             // Update stats from HMS
-            document.getElementById('todaySales').textContent = HMS.sales.getTodayTotal().toLocaleString();
-            
-            const lowStockItems = HMS.inventory.getLowStock();
+            document.getElementById('todaySales').textContent = (await HMS.sales.getTodayTotal()).toLocaleString();
+
+            const lowStockItems = await HMS.inventory.getLowStock();
             document.getElementById('lowStock').textContent = lowStockItems.length;
             document.getElementById('lowStockNote').textContent = lowStockItems.length > 0 ? 'Needs attention' : 'Stock OK';
             document.getElementById('lowStockNote').style.color = lowStockItems.length > 0 ? '#dc2626' : '#16a34a';
-            
+
             // Update queue stats
-            const queue = HMS.queue.getAll();
+            const queue = await HMS.queue.getAll();
             document.getElementById('patientsWaiting').textContent = queue.length + ' currently waiting';
-            document.getElementById('patientsServed').textContent = HMS.sales.getAll().filter(s => s.date === new Date().toISOString().split('T')[0]).length;
-            
+            document.getElementById('patientsServed').textContent = (await HMS.sales.getAll()).filter(s => s.date === new Date().toISOString().split('T')[0]).length;
+
             // Update prescriptions filled
-            const todayRx = HMS.prescriptions.getAll().filter(rx => rx.date === new Date().toISOString().split('T')[0]);
+            const todayRx = (await HMS.prescriptions.getAll()).filter(rx => rx.date === new Date().toISOString().split('T')[0]);
             document.getElementById('rxFilled').textContent = todayRx.length;
-            
+
             // Load queue
-            loadQueue();
-            
+            await loadQueue();
+
             // Load inventory
-            loadInventory();
-            
+            await loadInventory();
+
             // Load recent sales
-            loadRecentSales();
+            await loadRecentSales();
         }
-        
-        function loadQueue() {
-            const queue = HMS.queue.getAll();
+
+        async function loadQueue() {
+            const queue = await HMS.queue.getAll();
             const queueList = document.getElementById('patientQueue');
             const emptyQueue = document.getElementById('emptyQueue');
-            
+
             if (queue.length === 0) {
                 queueList.style.display = 'none';
                 emptyQueue.style.display = 'block';
                 return;
             }
-            
+
             queueList.style.display = 'block';
             emptyQueue.style.display = 'none';
-            
+
             queueList.innerHTML = queue.map((patient, index) => `
                 <li class="queue-item">
                     <div class="queue-number">${index + 1}</div>
@@ -649,31 +651,31 @@
                 </li>
             `).join('');
         }
-        
-        function addPatientToQueue() {
+
+        async function addPatientToQueue() {
             const name = prompt('Patient Name:');
             if (!name) return;
             const purpose = prompt('Purpose (e.g., Prescription pickup, Medicine purchase):');
-            
-            HMS.queue.add({
+
+            await HMS.queue.add({
                 id: 'Q' + Date.now(),
                 name: name,
                 purpose: purpose || 'General',
                 status: 'waiting'
             });
-            
-            loadQueue();
-            initStoreDashboard();
+
+            await loadQueue();
+            await initStoreDashboard();
         }
-        
-        function removeFromQueue(id) {
-            HMS.queue.remove(id);
-            loadQueue();
-            initStoreDashboard();
+
+        async function removeFromQueue(id) {
+            await HMS.queue.remove(id);
+            await loadQueue();
+            await initStoreDashboard();
         }
-        
-        function loadInventory() {
-            const inventory = HMS.inventory.getAll();
+
+        async function loadInventory() {
+            const inventory = await HMS.inventory.getAll();
             const tbody = document.getElementById('inventoryTable');
             tbody.innerHTML = inventory.map(item => `
                 <tr>
@@ -688,9 +690,9 @@
                 </tr>
             `).join('');
         }
-        
-        function loadRecentSales() {
-            const sales = HMS.sales.getAll().slice(-5).reverse();
+
+        async function loadRecentSales() {
+            const sales = (await HMS.sales.getAll()).slice(-5).reverse();
             const salesList = document.getElementById('recentSales');
             if (sales.length === 0) {
                 salesList.innerHTML = '<li style="padding: 20px; text-align: center; color: var(--gray-500);">No sales yet today</li>';
@@ -706,14 +708,14 @@
                 </li>
             `).join('');
         }
-        
-        function updateStock(id, qty, operation) {
-            HMS.inventory.updateStock(id, qty, operation);
-            loadInventory();
+
+        async function updateStock(id, qty, operation) {
+            await HMS.inventory.updateStock(id, qty, operation);
+            await loadInventory();
         }
-        
+
         // Initialize on load
-        document.addEventListener('DOMContentLoaded', initStoreDashboard);
+        document.addEventListener('DOMContentLoaded', () => initStoreDashboard());
         
         // Cart functionality
         let cart = [];
@@ -759,29 +761,29 @@
             updateCart();
         }
         
-        function completeSale() {
+        async function completeSale() {
             if (cart.length === 0) {
                 alert('Add items to cart first');
                 return;
             }
-            
+
             const total = cart.reduce((sum, item) => sum + item.total, 0);
             const method = document.getElementById('paymentMethod').value;
             const patientName = prompt('Patient Name (or leave empty for Walk-in):', 'Walk-in');
-            
+
             // Save to HMS
-            HMS.sales.add({
+            await HMS.sales.add({
                 patientName: patientName || 'Walk-in',
                 items: cart,
                 total: total,
                 paymentMethod: method
             });
-            
+
             // Clear cart and refresh
             cart = [];
             updateCart();
-            initStoreDashboard();
-            
+            await initStoreDashboard();
+
             alert('✅ Sale completed! Total: ₹' + total);
         }
         

@@ -524,13 +524,16 @@
         </div>
     </div>
     
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="../../js/hms.js"></script>
     <script>
         let selectedAppointment = null;
         let currentDoctor = 'ashok';
-        
+
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            await HMS.init();
+
             // Set date
             const now = new Date();
             document.getElementById('dateDisplay').textContent = now.toLocaleDateString('en-IN', {
@@ -538,31 +541,31 @@
                 day: 'numeric',
                 month: 'long'
             });
-            
+
             // Update time every second
             updateTime();
             setInterval(updateTime, 1000);
-            
+
             // Check URL for doctor
             const params = new URLSearchParams(window.location.search);
             if (params.get('doctor') === 'sunita') {
                 currentDoctor = 'sunita';
                 document.getElementById('doctorName').textContent = '👩‍⚕️ Dr. Sunita Sajnani';
             }
-            
-            loadPatients();
+
+            await loadPatients();
         });
-        
+
         function updateTime() {
             document.getElementById('currentTime').textContent = new Date().toLocaleTimeString('en-IN', {
                 hour: '2-digit',
                 minute: '2-digit'
             });
         }
-        
-        function loadPatients() {
+
+        async function loadPatients() {
             const today = new Date().toISOString().split('T')[0];
-            const appointments = HMS.appointments.getByDoctor(currentDoctor, today);
+            const appointments = await HMS.appointments.getByDoctor(currentDoctor, today);
             
             // Update stats
             document.getElementById('statTotal').textContent = appointments.length;
@@ -617,9 +620,9 @@
             }).join('');
         }
         
-        function openPatient(id) {
-            selectedAppointment = HMS.appointments.get(id);
-            const patient = HMS.patients.get(selectedAppointment.patientId);
+        async function openPatient(id) {
+            selectedAppointment = await HMS.appointments.get(id);
+            const patient = await HMS.patients.get(selectedAppointment.patientId);
             
             document.getElementById('modalPatientName').textContent = selectedAppointment.patientName;
             document.getElementById('modalAge').textContent = patient?.age ? patient.age + ' years' : '-';
@@ -635,22 +638,22 @@
             document.getElementById('patientModal').classList.remove('active');
         }
         
-        function markComplete() {
+        async function markComplete() {
             if (!selectedAppointment) return;
-            HMS.appointments.updateStatus(selectedAppointment.id, 'completed');
+            await HMS.appointments.updateStatus(selectedAppointment.id, 'completed');
             closeModal();
-            loadPatients();
+            await loadPatients();
             alert('✅ Patient visit completed!');
         }
-        
-        function callNextPatient() {
+
+        async function callNextPatient() {
             const today = new Date().toISOString().split('T')[0];
-            const appointments = HMS.appointments.getByDoctor(currentDoctor, today)
+            const appointments = (await HMS.appointments.getByDoctor(currentDoctor, today))
                 .filter(a => a.status !== 'completed')
                 .sort((a, b) => a.time.localeCompare(b.time));
-            
+
             if (appointments.length > 0) {
-                openPatient(appointments[0].id);
+                await openPatient(appointments[0].id);
             } else {
                 alert('✅ All patients completed for today!');
             }
@@ -661,9 +664,9 @@
             alert(`📱 SMS sent to patient:\n\n"Please come to the consultation room. - Dr. ${currentDoctor === 'ashok' ? 'Ashok' : 'Sunita'} Sajnani"`);
         }
         
-        function viewHistory() {
+        async function viewHistory() {
             if (!selectedAppointment) return;
-            const prescriptions = HMS.prescriptions.getByPatient(selectedAppointment.patientId);
+            const prescriptions = await HMS.prescriptions.getByPatient(selectedAppointment.patientId);
             alert(`📋 Patient History\n\nPrescriptions: ${prescriptions.length}\n\n(Full history in advanced view)`);
         }
     </script>

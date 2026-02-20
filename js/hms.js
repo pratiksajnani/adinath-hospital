@@ -1,545 +1,918 @@
 // ============================================
 // ADINATH HOSPITAL MANAGEMENT SYSTEM (HMS)
-// Client-side data management with localStorage
+// Supabase-backed data layer
 // ============================================
-
 const HMS = {
-    // Data version - increment this when changing default users/data
-    // v2.1: Fixed login with username support (psaj/1234)
-    DATA_VERSION: '2.1',
+    _supabase: null,
 
-    // Initialize default data
-    init() {
-        const storedVersion = localStorage.getItem('hms_data_version');
-        if (!localStorage.getItem('hms_initialized') || storedVersion !== this.DATA_VERSION) {
-            console.info('HMS: Initializing/updating data to version', this.DATA_VERSION);
-            this.seedData();
-            localStorage.setItem('hms_initialized', 'true');
-            localStorage.setItem('hms_data_version', this.DATA_VERSION);
+    // Initialize Supabase client
+    async init() {
+        if (this._supabase) {
+            return this._supabase;
         }
-    },
 
-    // Seed demo data
-    seedData() {
-        // Default users (doctors, admin, staff)
-        const users = [
-            // Site Admin (Owner)
-            {
-                id: 'U001',
-                username: 'psaj',
-                email: 'pratik.sajnani@gmail.com',
-                password: '1234',
-                name: 'Pratik Sajnani',
-                role: 'admin',
-                permissions: ['all'],
-                photo: 'https://avatars.githubusercontent.com/u/7103539',
-                phone: '9925450425',
-                preferredLanguage: 'en',
-                active: true,
-                createdAt: '2025-01-01',
-                // OAuth providers (for future Google integration)
-                providers: ['password', 'google'],
-                googleId: null, // Will be set when Google OAuth is configured
-            },
-            // Doctors
-            {
-                id: 'U002',
-                email: 'drsajnani@gmail.com',
-                password: 'doctor123',
-                name: 'Dr. Ashok Sajnani',
-                nameGu: 'ડૉ. અશોક સજનાની',
-                nameHi: 'डॉ. अशोक सजनानी',
-                role: 'doctor',
-                specialty: 'Orthopedic Surgery',
-                specialtyGu: 'હાડકાની સર્જરી',
-                specialtyHi: 'हड्डी रोग विशेषज्ञ',
-                permissions: [
-                    'patients',
-                    'appointments',
-                    'prescriptions',
-                    'reports',
-                    'content',
-                    'images',
-                ],
-                photo: 'images/1723730611450.jpeg',
-                phone: '9925450425',
-                linkedIn: 'https://www.linkedin.com/in/ashok-sajnani-11937322/',
-                experience: '35+ years',
-                preferredLanguage: 'en',
-                notifyViaSMS: true,
-                notifyViaWhatsApp: true,
-                active: true,
-                createdAt: '2025-01-01',
-            },
-            {
-                id: 'U003',
-                email: 'sunita.sajnani9@gmail.com',
-                password: 'doctor123',
-                name: 'Dr. Sunita Sajnani',
-                nameGu: 'ડૉ. સુનિતા સજનાની',
-                nameHi: 'डॉ. सुनीता सजनानी',
-                role: 'doctor',
-                specialty: 'Obstetrics & Gynecology',
-                specialtyGu: 'પ્રસૂતિ અને સ્ત્રીરોગ',
-                specialtyHi: 'प्रसूति एवं स्त्री रोग',
-                permissions: [
-                    'patients',
-                    'appointments',
-                    'prescriptions',
-                    'reports',
-                    'content',
-                    'images',
-                ],
-                photo: 'images/1516926564161.jpeg',
-                phone: '9925450425',
-                linkedIn: 'https://www.linkedin.com/in/dr-sunita-sajnani-6b81b384/',
-                experience: '30+ years',
-                preferredLanguage: 'en',
-                notifyViaSMS: true,
-                notifyViaWhatsApp: true,
-                active: true,
-                createdAt: '2025-01-01',
-            },
-            // Staff
-            // Receptionist - Real staff
-            {
-                id: 'U004',
-                email: 'reception@adinathhealth.com',
-                password: 'staff123',
-                name: 'Poonam',
-                nameGu: 'પૂનમ',
-                nameHi: 'पूनम',
-                role: 'receptionist',
-                department: 'Front Desk',
-                permissions: ['appointments', 'patients', 'send_patient_link', 'queue'],
-                photo: '',
-                phone: '9925450425', // Hospital main number
-                preferredLanguage: 'gu',
-                shift: 'full-day',
-                active: true,
-                createdAt: '2025-01-01',
-            },
-        ];
-
-        // Empty patient list - real patients will be added as they register
-        const patients = [];
-
-        // Empty appointments - will be created through booking
-        const appointments = [];
-
-        // Empty prescriptions - will be created by doctors
-        const prescriptions = [];
-
-        // Sample inventory
-        const inventory = [
-            {
-                id: 'M001',
-                name: 'Paracetamol 500mg',
-                category: 'General',
-                stock: 500,
-                unit: 'tablets',
-                price: 2,
-                reorderLevel: 100,
-            },
-            {
-                id: 'M002',
-                name: 'Diclofenac 50mg',
-                category: 'Painkillers',
-                stock: 200,
-                unit: 'tablets',
-                price: 5,
-                reorderLevel: 50,
-            },
-            {
-                id: 'M003',
-                name: 'Glucosamine Sulfate 500mg',
-                category: 'Orthopedic',
-                stock: 150,
-                unit: 'tablets',
-                price: 15,
-                reorderLevel: 30,
-            },
-            {
-                id: 'M004',
-                name: 'Calcium + D3 Tablets',
-                category: 'Supplements',
-                stock: 300,
-                unit: 'tablets',
-                price: 8,
-                reorderLevel: 50,
-            },
-            {
-                id: 'M005',
-                name: 'Knee Support Brace',
-                category: 'Orthopedic',
-                stock: 25,
-                unit: 'pieces',
-                price: 450,
-                reorderLevel: 5,
-            },
-            {
-                id: 'M006',
-                name: 'Folic Acid 5mg',
-                category: 'Prenatal',
-                stock: 400,
-                unit: 'tablets',
-                price: 3,
-                reorderLevel: 100,
-            },
-            {
-                id: 'M007',
-                name: 'Iron + Folic Acid',
-                category: 'Prenatal',
-                stock: 350,
-                unit: 'tablets',
-                price: 5,
-                reorderLevel: 80,
-            },
-            {
-                id: 'M008',
-                name: 'Crepe Bandage 4"',
-                category: 'First Aid',
-                stock: 50,
-                unit: 'rolls',
-                price: 45,
-                reorderLevel: 10,
-            },
-        ];
-
-        // Empty sales - will be added as transactions occur
-        const sales = [];
-
-        // Store all data
-        localStorage.setItem('hms_users', JSON.stringify(users));
-        localStorage.setItem('hms_patients', JSON.stringify(patients));
-        localStorage.setItem('hms_appointments', JSON.stringify(appointments));
-        localStorage.setItem('hms_prescriptions', JSON.stringify(prescriptions));
-        localStorage.setItem('hms_inventory', JSON.stringify(inventory));
-        localStorage.setItem('hms_sales', JSON.stringify(sales));
-        localStorage.setItem('hms_queue', JSON.stringify([]));
-    },
-
-    // Patient Management
-    patients: {
-        getAll() {
-            return JSON.parse(localStorage.getItem('hms_patients') || '[]');
-        },
-        get(id) {
-            return this.getAll().find((p) => p.id === id);
-        },
-        add(patient) {
-            const patients = this.getAll();
-            patient.id = `P${String(patients.length + 1).padStart(3, '0')}`;
-            patient.createdAt = new Date().toISOString().split('T')[0];
-            patient.visits = 0;
-            patients.push(patient);
-            localStorage.setItem('hms_patients', JSON.stringify(patients));
-            return patient;
-        },
-        update(id, data) {
-            const patients = this.getAll();
-            const index = patients.findIndex((p) => p.id === id);
-            if (index !== -1) {
-                patients[index] = { ...patients[index], ...data };
-                localStorage.setItem('hms_patients', JSON.stringify(patients));
-            }
-        },
-        search(query) {
-            return this.getAll().filter(
-                (p) => p.name.toLowerCase().includes(query.toLowerCase()) || p.phone.includes(query)
+        if (typeof supabase !== 'undefined' && supabase.createClient) {
+            this._supabase = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+        } else if (typeof window !== 'undefined' && window.supabase?.createClient) {
+            this._supabase = window.supabase.createClient(
+                CONFIG.SUPABASE_URL,
+                CONFIG.SUPABASE_ANON_KEY
             );
+        } else {
+            console.error('HMS: Supabase client library not loaded');
+        }
+        return this._supabase;
+    },
+
+    // Get Supabase client (lazy init)
+    _db() {
+        if (!this._supabase) {
+            throw new Error('HMS not initialized. Call await HMS.init() first.');
+        }
+        return this._supabase;
+    },
+
+    // ============================================
+    // AUTHENTICATION (wraps Supabase Auth)
+    // ============================================
+    auth: {
+        async signIn(email, password) {
+            const { data, error } = await HMS._db().auth.signInWithPassword({
+                email,
+                password,
+            });
+            if (error) {
+                return { error: error.message };
+            }
+            return { success: true, user: data.user, session: data.session };
+        },
+
+        async signInWithOAuth(provider, options = {}) {
+            const { data, error } = await HMS._db().auth.signInWithOAuth({
+                provider,
+                options,
+            });
+            if (error) {
+                return { error: error.message };
+            }
+            return { success: true, data };
+        },
+
+        async signInWithOtp(params) {
+            const { data, error } = await HMS._db().auth.signInWithOtp(params);
+            if (error) {
+                return { error: error.message };
+            }
+            return { success: true, data };
+        },
+
+        async verifyOtp(params) {
+            const { data, error } = await HMS._db().auth.verifyOtp(params);
+            if (error) {
+                return { error: error.message };
+            }
+            return { success: true, user: data.user, session: data.session };
+        },
+
+        async signOut() {
+            const { error } = await HMS._db().auth.signOut();
+            if (error) {
+                console.error('Sign out error:', error.message);
+            }
+        },
+
+        async getSession() {
+            const {
+                data: { session },
+            } = await HMS._db().auth.getSession();
+            return session;
+        },
+
+        async getUser() {
+            const {
+                data: { user },
+            } = await HMS._db().auth.getUser();
+            return user;
+        },
+
+        async getRole() {
+            const session = await this.getSession();
+            if (!session) {
+                return null;
+            }
+            const { data } = await HMS._db()
+                .from('profiles')
+                .select('role')
+                .eq('id', session.user.id)
+                .single();
+            return data?.role || null;
+        },
+
+        async getProfile() {
+            const session = await this.getSession();
+            if (!session) {
+                return null;
+            }
+            const { data } = await HMS._db()
+                .from('profiles')
+                .select('*')
+                .eq('id', session.user.id)
+                .single();
+            return data;
+        },
+
+        async isLoggedIn() {
+            const session = await this.getSession();
+            return !!session;
+        },
+
+        onAuthStateChange(callback) {
+            return HMS._db().auth.onAuthStateChange(callback);
         },
     },
 
-    // Appointment Management
-    appointments: {
-        getAll() {
-            return JSON.parse(localStorage.getItem('hms_appointments') || '[]');
+    // ============================================
+    // USERS / PROFILES
+    // ============================================
+    users: {
+        async getAll() {
+            const { data, error } = await HMS._db()
+                .from('profiles')
+                .select('*')
+                .order('created_at');
+            if (error) {
+                console.error('HMS.users.getAll error:', error.message);
+                return [];
+            }
+            return data;
         },
-        get(id) {
-            return this.getAll().find((a) => a.id === id);
+
+        async get(id) {
+            const { data } = await HMS._db().from('profiles').select('*').eq('id', id).single();
+            return data;
         },
-        getByDate(date) {
-            return this.getAll().filter((a) => a.date === date);
+
+        async getByEmail(email) {
+            const { data } = await HMS._db()
+                .from('profiles')
+                .select('*')
+                .eq('email', email.toLowerCase())
+                .single();
+            return data;
         },
-        getByDoctor(doctor, date) {
-            return this.getAll().filter((a) => a.doctor === doctor && a.date === date);
+
+        async getStaff() {
+            const { data, error } = await HMS._db()
+                .from('profiles')
+                .select('*')
+                .not('role', 'in', '("doctor","admin")');
+            if (error) {
+                return [];
+            }
+            return data;
         },
-        getByPatient(patientId) {
-            return this.getAll().filter((a) => a.patientId === patientId);
+
+        async add(user) {
+            const existing = await this.getByEmail(user.email);
+            if (existing) {
+                return { error: 'Email already registered' };
+            }
+
+            const { data, error } = await HMS._db()
+                .from('profiles')
+                .insert({
+                    id: user.id, // Must match auth.users.id
+                    email: user.email,
+                    name: user.name,
+                    name_gu: user.nameGu,
+                    name_hi: user.nameHi,
+                    phone: user.phone,
+                    role: user.role || 'patient',
+                    photo_url: user.photo || user.photo_url,
+                    department: user.department,
+                    specialty: user.specialty,
+                    specialty_gu: user.specialtyGu,
+                    specialty_hi: user.specialtyHi,
+                    permissions: user.permissions || [],
+                    preferred_language: user.preferredLanguage || 'en',
+                    active: user.active !== false,
+                })
+                .select()
+                .single();
+            if (error) {
+                return { error: error.message };
+            }
+            return data;
         },
-        add(appointment) {
-            const appointments = this.getAll();
-            appointment.id = `A${String(appointments.length + 1).padStart(3, '0')}`;
-            appointment.status = 'pending';
-            appointment.createdAt = new Date().toISOString();
-            appointments.push(appointment);
-            localStorage.setItem('hms_appointments', JSON.stringify(appointments));
-            return appointment;
+
+        async update(id, updates) {
+            const { data, error } = await HMS._db()
+                .from('profiles')
+                .update(updates)
+                .eq('id', id)
+                .select()
+                .single();
+            if (error) {
+                return null;
+            }
+            return data;
         },
-        updateStatus(id, status, notes = '') {
-            const appointments = this.getAll();
-            const index = appointments.findIndex((a) => a.id === id);
-            if (index !== -1) {
-                appointments[index].status = status;
-                if (notes) {
-                    appointments[index].notes = notes;
-                }
-                localStorage.setItem('hms_appointments', JSON.stringify(appointments));
+
+        async delete(id) {
+            await HMS._db().from('profiles').delete().eq('id', id);
+        },
+
+        async toggleActive(id) {
+            const user = await this.get(id);
+            if (user) {
+                await this.update(id, { active: !user.active });
             }
         },
-        getTodayStats() {
+    },
+
+    // ============================================
+    // PATIENTS
+    // ============================================
+    patients: {
+        async getAll() {
+            const { data, error } = await HMS._db()
+                .from('patients')
+                .select('*')
+                .order('created_at', { ascending: false });
+            if (error) {
+                console.error('HMS.patients.getAll error:', error.message);
+                return [];
+            }
+            return data;
+        },
+
+        async get(id) {
+            const { data } = await HMS._db().from('patients').select('*').eq('id', id).single();
+            return data;
+        },
+
+        async add(patient) {
+            const { data, error } = await HMS._db()
+                .from('patients')
+                .insert({
+                    name: patient.name,
+                    phone: patient.phone,
+                    email: patient.email,
+                    age: patient.age,
+                    gender: patient.gender,
+                    address: patient.address,
+                    blood_group: patient.bloodGroup || patient.blood_group,
+                    medical_history: patient.medicalHistory || patient.medical_history,
+                    allergies: patient.allergies,
+                    emergency_contact: patient.emergencyContact || patient.emergency_contact,
+                    preferred_language:
+                        patient.preferredLanguage || patient.preferred_language || 'hi',
+                })
+                .select()
+                .single();
+            if (error) {
+                console.error('HMS.patients.add error:', error.message);
+                return { error: error.message };
+            }
+            return data;
+        },
+
+        async update(id, updates) {
+            const { data, error } = await HMS._db()
+                .from('patients')
+                .update(updates)
+                .eq('id', id)
+                .select()
+                .single();
+            if (error) {
+                return null;
+            }
+            return data;
+        },
+
+        async search(query) {
+            const lower = query.toLowerCase();
+            const { data, error } = await HMS._db()
+                .from('patients')
+                .select('*')
+                .or(`name.ilike.%${lower}%,phone.ilike.%${lower}%`);
+            if (error) {
+                return [];
+            }
+            return data;
+        },
+
+        async delete(id) {
+            await HMS._db().from('patients').delete().eq('id', id);
+        },
+    },
+
+    // ============================================
+    // APPOINTMENTS
+    // ============================================
+    appointments: {
+        async getAll() {
+            const { data, error } = await HMS._db()
+                .from('appointments')
+                .select('*')
+                .order('date', { ascending: false });
+            if (error) {
+                console.error('HMS.appointments.getAll error:', error.message);
+                return [];
+            }
+            return data;
+        },
+
+        async get(id) {
+            const { data } = await HMS._db().from('appointments').select('*').eq('id', id).single();
+            return data;
+        },
+
+        async getByDate(date) {
+            const { data, error } = await HMS._db()
+                .from('appointments')
+                .select('*')
+                .eq('date', date)
+                .order('time');
+            if (error) {
+                return [];
+            }
+            return data;
+        },
+
+        async getByDoctor(doctor, date) {
+            let query = HMS._db().from('appointments').select('*').eq('doctor_id', doctor);
+            if (date) {
+                query = query.eq('date', date);
+            }
+            const { data, error } = await query.order('time');
+            if (error) {
+                return [];
+            }
+            return data;
+        },
+
+        async getByPatient(patientId) {
+            const { data, error } = await HMS._db()
+                .from('appointments')
+                .select('*')
+                .eq('patient_id', patientId)
+                .order('date', { ascending: false });
+            if (error) {
+                return [];
+            }
+            return data;
+        },
+
+        async add(appointment) {
+            const { data, error } = await HMS._db()
+                .from('appointments')
+                .insert({
+                    patient_id: appointment.patientId || appointment.patient_id,
+                    patient_name:
+                        appointment.patientName || appointment.patient_name || appointment.name,
+                    patient_phone:
+                        appointment.patientPhone || appointment.patient_phone || appointment.phone,
+                    doctor_id: appointment.doctor || appointment.doctor_id,
+                    date: appointment.date,
+                    time: appointment.time,
+                    reason: appointment.reason,
+                    notes: appointment.notes,
+                    status: 'pending',
+                })
+                .select()
+                .single();
+            if (error) {
+                console.error('HMS.appointments.add error:', error.message);
+                return { error: error.message };
+            }
+            return data;
+        },
+
+        async updateStatus(id, status, notes = '') {
+            const updates = { status };
+            if (notes) {
+                updates.notes = notes;
+            }
+            const { error } = await HMS._db().from('appointments').update(updates).eq('id', id);
+            if (error) {
+                console.error('HMS.appointments.updateStatus error:', error.message);
+            }
+        },
+
+        async getTodayStats() {
             const today = new Date().toISOString().split('T')[0];
-            const todayAppts = this.getByDate(today);
+            const appts = await this.getByDate(today);
             return {
-                total: todayAppts.length,
-                pending: todayAppts.filter((a) => a.status === 'pending').length,
-                confirmed: todayAppts.filter((a) => a.status === 'confirmed').length,
-                waiting: todayAppts.filter((a) => a.status === 'waiting').length,
-                completed: todayAppts.filter((a) => a.status === 'completed').length,
-                cancelled: todayAppts.filter((a) => a.status === 'cancelled').length,
+                total: appts.length,
+                pending: appts.filter((a) => a.status === 'pending').length,
+                confirmed: appts.filter((a) => a.status === 'confirmed').length,
+                waiting: appts.filter((a) => a.status === 'waiting').length,
+                completed: appts.filter((a) => a.status === 'completed').length,
+                cancelled: appts.filter((a) => a.status === 'cancelled').length,
             };
         },
     },
 
-    // Prescription Management
+    // ============================================
+    // PRESCRIPTIONS
+    // ============================================
     prescriptions: {
-        getAll() {
-            return JSON.parse(localStorage.getItem('hms_prescriptions') || '[]');
+        async getAll() {
+            const { data, error } = await HMS._db()
+                .from('prescriptions')
+                .select('*')
+                .order('created_at', { ascending: false });
+            if (error) {
+                return [];
+            }
+            return data;
         },
-        getByPatient(patientId) {
-            return this.getAll().filter((rx) => rx.patientId === patientId);
+
+        async getByPatient(patientId) {
+            const { data, error } = await HMS._db()
+                .from('prescriptions')
+                .select('*')
+                .eq('patient_id', patientId)
+                .order('created_at', { ascending: false });
+            if (error) {
+                return [];
+            }
+            return data;
         },
-        add(rx) {
-            const prescriptions = this.getAll();
-            rx.id = `RX${String(prescriptions.length + 1).padStart(3, '0')}`;
-            rx.date = new Date().toISOString().split('T')[0];
-            prescriptions.push(rx);
-            localStorage.setItem('hms_prescriptions', JSON.stringify(prescriptions));
-            return rx;
+
+        async add(rx) {
+            const { data, error } = await HMS._db()
+                .from('prescriptions')
+                .insert({
+                    patient_id: rx.patientId || rx.patient_id,
+                    doctor_id: rx.doctorId || rx.doctor_id || rx.doctor,
+                    appointment_id: rx.appointmentId || rx.appointment_id,
+                    diagnosis: rx.diagnosis,
+                    medicines: rx.medicines || [],
+                    advice: rx.advice,
+                    follow_up_date: rx.followUpDate || rx.follow_up_date,
+                })
+                .select()
+                .single();
+            if (error) {
+                console.error('HMS.prescriptions.add error:', error.message);
+                return { error: error.message };
+            }
+            return data;
         },
     },
 
-    // Inventory Management
+    // ============================================
+    // INVENTORY
+    // ============================================
     inventory: {
-        getAll() {
-            return JSON.parse(localStorage.getItem('hms_inventory') || '[]');
-        },
-        get(id) {
-            return this.getAll().find((i) => i.id === id);
-        },
-        getLowStock() {
-            return this.getAll().filter((i) => i.stock <= i.reorderLevel);
-        },
-        updateStock(id, quantity, operation = 'subtract') {
-            const inventory = this.getAll();
-            const index = inventory.findIndex((i) => i.id === id);
-            if (index !== -1) {
-                if (operation === 'subtract') {
-                    inventory[index].stock -= quantity;
-                } else {
-                    inventory[index].stock += quantity;
-                }
-                localStorage.setItem('hms_inventory', JSON.stringify(inventory));
+        async getAll() {
+            const { data, error } = await HMS._db().from('inventory').select('*').order('name');
+            if (error) {
+                return [];
             }
+            return data;
         },
-        add(item) {
-            const inventory = this.getAll();
-            item.id = `M${String(inventory.length + 1).padStart(3, '0')}`;
-            inventory.push(item);
-            localStorage.setItem('hms_inventory', JSON.stringify(inventory));
-            return item;
+
+        async get(id) {
+            const { data } = await HMS._db().from('inventory').select('*').eq('id', id).single();
+            return data;
+        },
+
+        async getLowStock() {
+            const items = await this.getAll();
+            return items.filter((i) => i.stock <= i.reorder_level);
+        },
+
+        async updateStock(id, quantity, operation = 'subtract') {
+            const item = await this.get(id);
+            if (!item) {
+                return;
+            }
+            const newStock =
+                operation === 'subtract' ? item.stock - quantity : item.stock + quantity;
+            await HMS._db().from('inventory').update({ stock: newStock }).eq('id', id);
+        },
+
+        async add(item) {
+            const { data, error } = await HMS._db()
+                .from('inventory')
+                .insert({
+                    name: item.name,
+                    category: item.category,
+                    stock: item.stock || 0,
+                    unit: item.unit,
+                    price: item.price,
+                    expiry_date: item.expiryDate || item.expiry_date,
+                    reorder_level: item.reorderLevel || item.reorder_level || 10,
+                    supplier: item.supplier,
+                })
+                .select()
+                .single();
+            if (error) {
+                return { error: error.message };
+            }
+            return data;
         },
     },
 
-    // Sales Management
+    // ============================================
+    // SALES
+    // ============================================
     sales: {
-        getAll() {
-            return JSON.parse(localStorage.getItem('hms_sales') || '[]');
+        async getAll() {
+            const { data, error } = await HMS._db()
+                .from('sales')
+                .select('*')
+                .order('created_at', { ascending: false });
+            if (error) {
+                return [];
+            }
+            return data;
         },
-        getByDate(date) {
-            return this.getAll().filter((s) => s.date === date);
+
+        async getByDate(date) {
+            const { data, error } = await HMS._db().from('sales').select('*').eq('date', date);
+            if (error) {
+                return [];
+            }
+            return data;
         },
-        add(sale) {
-            const sales = this.getAll();
-            sale.id = `S${String(sales.length + 1).padStart(3, '0')}`;
-            sale.date = new Date().toISOString().split('T')[0];
-            sale.time = new Date().toLocaleTimeString();
-            sales.push(sale);
-            localStorage.setItem('hms_sales', JSON.stringify(sales));
-            return sale;
+
+        async add(sale) {
+            const { data, error } = await HMS._db()
+                .from('sales')
+                .insert({
+                    patient_name: sale.patientName || sale.patient_name,
+                    items: sale.items || [],
+                    total: sale.total,
+                    payment_method: sale.paymentMethod || sale.payment_method || 'cash',
+                    date: sale.date || new Date().toISOString().split('T')[0],
+                    time: sale.time || new Date().toLocaleTimeString(),
+                })
+                .select()
+                .single();
+            if (error) {
+                return { error: error.message };
+            }
+            return data;
         },
-        getTodayTotal() {
+
+        async getTodayTotal() {
             const today = new Date().toISOString().split('T')[0];
-            return this.getByDate(today).reduce((sum, s) => sum + s.total, 0);
+            const todaySales = await this.getByDate(today);
+            return todaySales.reduce((sum, s) => sum + Number(s.total || 0), 0);
         },
     },
 
-    // Queue Management
+    // ============================================
+    // QUEUE
+    // ============================================
     queue: {
-        getAll() {
-            return JSON.parse(localStorage.getItem('hms_queue') || '[]');
+        async getAll() {
+            const today = new Date().toISOString().split('T')[0];
+            const { data, error } = await HMS._db()
+                .from('queue')
+                .select('*')
+                .eq('date', today)
+                .order('queue_number');
+            if (error) {
+                return [];
+            }
+            return data;
         },
-        add(patient) {
-            const queue = this.getAll();
-            patient.queueNumber = queue.length + 1;
-            patient.addedAt = new Date().toISOString();
-            patient.status = 'waiting';
-            queue.push(patient);
-            localStorage.setItem('hms_queue', JSON.stringify(queue));
-            return patient;
+
+        async add(entry) {
+            const existing = await this.getAll();
+            const queueNumber = existing.length + 1;
+
+            const { data, error } = await HMS._db()
+                .from('queue')
+                .insert({
+                    appointment_id: entry.appointmentId || entry.appointment_id,
+                    patient_name: entry.patientName || entry.patient_name || entry.name,
+                    patient_phone: entry.patientPhone || entry.patient_phone || entry.phone,
+                    doctor_id: entry.doctorId || entry.doctor_id || entry.doctor,
+                    queue_number: queueNumber,
+                    status: 'waiting',
+                })
+                .select()
+                .single();
+            if (error) {
+                return { error: error.message };
+            }
+            return data;
         },
-        remove(id) {
-            const queue = this.getAll().filter((q) => q.id !== id);
-            localStorage.setItem('hms_queue', JSON.stringify(queue));
+
+        async remove(id) {
+            await HMS._db().from('queue').delete().eq('id', id);
         },
-        clear() {
-            localStorage.setItem('hms_queue', JSON.stringify([]));
+
+        async clear() {
+            const today = new Date().toISOString().split('T')[0];
+            await HMS._db().from('queue').delete().eq('date', today);
         },
     },
 
-    // User & Authentication Management
-    users: {
-        getAll() {
-            return JSON.parse(localStorage.getItem('hms_users') || '[]');
-        },
-        get(id) {
-            return this.getAll().find((u) => u.id === id);
-        },
-        getByEmail(email) {
-            return this.getAll().find(
-                (u) => u.email && u.email.toLowerCase() === email.toLowerCase()
-            );
-        },
-        getByUsername(username) {
-            return this.getAll().find(
-                (u) => u.username && u.username.toLowerCase() === username.toLowerCase()
-            );
-        },
-        getByEmailOrUsername(identifier) {
-            const lower = identifier.toLowerCase();
-            return this.getAll().find(
-                (u) =>
-                    (u.email && u.email.toLowerCase() === lower) ||
-                    (u.username && u.username.toLowerCase() === lower)
-            );
-        },
-        getStaff() {
-            return this.getAll().filter((u) => u.role !== 'doctor' && u.role !== 'admin');
-        },
+    // ============================================
+    // PATIENT LINKS (QR-code registration links)
+    // ============================================
+    patientLinks: {
+        async generate(patientData, staffId) {
+            const token = HMS.utils.generateToken();
+            const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
 
-        add(user) {
-            const users = this.getAll();
-            // Check if email already exists
-            if (this.getByEmail(user.email)) {
-                return { error: 'Email already registered' };
+            const { data, error } = await HMS._db()
+                .from('patient_links')
+                .insert({
+                    token,
+                    patient_phone: patientData.phone,
+                    patient_name: patientData.name,
+                    created_by: staffId,
+                    expires_at: expiresAt,
+                })
+                .select()
+                .single();
+
+            if (error) {
+                return { error: error.message };
             }
-            user.id = `U${String(users.length + 1).padStart(3, '0')}`;
-            user.createdAt = new Date().toISOString().split('T')[0];
-            user.active = true;
-            users.push(user);
-            localStorage.setItem('hms_users', JSON.stringify(users));
-            return user;
+
+            const baseUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
+            return {
+                token: data.token,
+                url: `${baseUrl}patient-signup.html?token=${data.token}`,
+                shortUrl: `adinath.link/${data.token.substring(0, 8)}`,
+            };
         },
 
-        update(id, data) {
-            const users = this.getAll();
-            const index = users.findIndex((u) => u.id === id);
-            if (index !== -1) {
-                users[index] = { ...users[index], ...data };
-                localStorage.setItem('hms_users', JSON.stringify(users));
-                return users[index];
+        async getAll() {
+            const { data, error } = await HMS._db()
+                .from('patient_links')
+                .select('*')
+                .order('created_at', { ascending: false });
+            if (error) {
+                return [];
             }
-            return null;
+            return data;
         },
 
-        delete(id) {
-            const users = this.getAll().filter((u) => u.id !== id);
-            localStorage.setItem('hms_users', JSON.stringify(users));
-        },
+        async validate(token) {
+            const { data: link } = await HMS._db()
+                .from('patient_links')
+                .select('*')
+                .eq('token', token)
+                .single();
 
-        toggleActive(id) {
-            const user = this.get(id);
-            if (user) {
-                this.update(id, { active: !user.active });
+            if (!link) {
+                return { valid: false, error: 'Invalid link' };
             }
+            if (link.used) {
+                return { valid: false, error: 'Link already used' };
+            }
+            if (new Date(link.expires_at) < new Date()) {
+                return { valid: false, error: 'Link expired' };
+            }
+            return { valid: true, link };
+        },
+
+        async markUsed(token) {
+            await HMS._db()
+                .from('patient_links')
+                .update({ used: true, used_at: new Date().toISOString() })
+                .eq('token', token);
         },
     },
 
-    // Authentication
-    auth: {
-        currentUser: null,
-
-        login(identifier, password) {
-            // Support login by email OR username
-            const user = HMS.users.getByEmailOrUsername(identifier);
-            if (!user) {
-                return { error: 'User not found. Check your email or username.' };
+    // ============================================
+    // TOKENS (onboarding invitation tokens)
+    // ============================================
+    tokens: {
+        generateUUID() {
+            if (crypto && crypto.randomUUID) {
+                return crypto.randomUUID();
             }
-            // Use constant-time comparison to prevent timing attacks
-            const isValidPassword = user.password === password;
-            if (!isValidPassword) {
-                return { error: 'Incorrect password' };
-            }
-            if (!user.active) {
-                return { error: 'Account is deactivated. Contact admin.' };
-            }
-
-            this.currentUser = user;
-            localStorage.setItem('hms_current_user', JSON.stringify(user));
-            localStorage.setItem('hms_logged_in', 'true');
-            return { success: true, user };
-        },
-
-        logout() {
-            this.currentUser = null;
-            localStorage.removeItem('hms_current_user');
-            localStorage.removeItem('hms_logged_in');
-        },
-
-        getCurrentUser() {
-            if (this.currentUser) {
-                return this.currentUser;
-            }
-            const stored = localStorage.getItem('hms_current_user');
-            if (stored) {
-                this.currentUser = JSON.parse(stored);
-                return this.currentUser;
-            }
-            return null;
-        },
-
-        isLoggedIn() {
-            return !!this.getCurrentUser();
-        },
-
-        isDoctor() {
-            const user = this.getCurrentUser();
-            return user && user.role === 'doctor';
-        },
-    },
-
-    // Utility functions
-    utils: {
-        formatDate(dateStr) {
-            return new Date(dateStr).toLocaleDateString('en-IN', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric',
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+                const r = crypto.getRandomValues(new Uint8Array(1))[0] % 16;
+                const v = c === 'x' ? r : (r & 0x3) | 0x8;
+                return v.toString(16);
             });
         },
-        formatCurrency(amount) {
-            return `₹${amount.toLocaleString('en-IN')}`;
+
+        async getAll() {
+            const { data, error } = await HMS._db()
+                .from('tokens')
+                .select('*')
+                .order('created_at', { ascending: false });
+            if (error) {
+                return [];
+            }
+            return data;
         },
-        generateId(prefix) {
-            return prefix + Date.now().toString(36).toUpperCase();
+
+        async create(params) {
+            const { targetEmail, targetRole, purpose, expiresInHours = 72, createdBy } = params;
+            const tokenValue = this.generateUUID();
+
+            const { data, error } = await HMS._db()
+                .from('tokens')
+                .insert({
+                    token: tokenValue,
+                    target_email: targetEmail,
+                    target_role: targetRole,
+                    purpose: purpose || 'registration',
+                    created_by: createdBy || 'system',
+                    expires_at: new Date(
+                        Date.now() + expiresInHours * 60 * 60 * 1000
+                    ).toISOString(),
+                })
+                .select()
+                .single();
+
+            if (error) {
+                return { error: error.message };
+            }
+            return data;
         },
-        generateToken() {
-            return Math.random().toString(36).substring(2) + Date.now().toString(36);
+
+        async validate(tokenString) {
+            const { data: token } = await HMS._db()
+                .from('tokens')
+                .select('*')
+                .eq('token', tokenString)
+                .single();
+
+            if (!token) {
+                return { valid: false, error: 'Token not found' };
+            }
+            if (token.used) {
+                return { valid: false, error: 'Token already used', token };
+            }
+            if (new Date(token.expires_at) < new Date()) {
+                return { valid: false, error: 'Token expired', token };
+            }
+            return { valid: true, token };
+        },
+
+        async markUsed(tokenString) {
+            const { error } = await HMS._db()
+                .from('tokens')
+                .update({ used: true, used_at: new Date().toISOString() })
+                .eq('token', tokenString);
+            return !error;
+        },
+
+        async getByEmail(email) {
+            const { data, error } = await HMS._db()
+                .from('tokens')
+                .select('*')
+                .eq('target_email', email)
+                .eq('used', false)
+                .gt('expires_at', new Date().toISOString());
+            if (error) {
+                return [];
+            }
+            return data;
+        },
+
+        async generateLink(params) {
+            const { targetEmail, targetRole, baseUrl } = params;
+
+            const existingTokens = await this.getByEmail(targetEmail);
+            if (existingTokens.length > 0) {
+                const existing = existingTokens[0];
+                return {
+                    token: existing.token,
+                    link: `${baseUrl || window.location.origin}/onboard/${targetRole}.html?token=${existing.token}`,
+                    expiresAt: existing.expires_at,
+                    isExisting: true,
+                };
+            }
+
+            const token = await this.create(params);
+            if (token.error) {
+                return token;
+            }
+            return {
+                token: token.token,
+                link: `${baseUrl || window.location.origin}/onboard/${targetRole}.html?token=${token.token}`,
+                expiresAt: token.expires_at,
+                isExisting: false,
+            };
         },
     },
 
-    // Multilingual SMS Templates
+    // ============================================
+    // FEEDBACK
+    // ============================================
+    feedback: {
+        async getAll() {
+            const { data, error } = await HMS._db()
+                .from('feedback')
+                .select('*')
+                .order('created_at', { ascending: false });
+            if (error) {
+                return [];
+            }
+            return data;
+        },
+
+        async add(fb) {
+            const { data, error } = await HMS._db()
+                .from('feedback')
+                .insert({
+                    role: fb.role,
+                    page: fb.page,
+                    type: fb.type,
+                    priority: fb.priority || 'medium',
+                    description: fb.description,
+                    name: fb.name || 'Anonymous',
+                    user_agent: fb.userAgent || fb.user_agent,
+                    screen_size: fb.screenSize || fb.screen_size,
+                })
+                .select()
+                .single();
+            if (error) {
+                return { error: error.message };
+            }
+            return data;
+        },
+
+        async getByRole(role) {
+            const { data, error } = await HMS._db().from('feedback').select('*').eq('role', role);
+            if (error) {
+                return [];
+            }
+            return data;
+        },
+
+        async getByStatus(status) {
+            const { data, error } = await HMS._db()
+                .from('feedback')
+                .select('*')
+                .eq('status', status);
+            if (error) {
+                return [];
+            }
+            return data;
+        },
+
+        async getOpen() {
+            const { data, error } = await HMS._db()
+                .from('feedback')
+                .select('*')
+                .in('status', ['open', 'in_progress']);
+            if (error) {
+                return [];
+            }
+            return data;
+        },
+
+        async updateStatus(id, status, note = '') {
+            const updates = { status };
+            if (note) {
+                updates.resolution_note = note;
+            }
+            await HMS._db().from('feedback').update(updates).eq('id', id);
+        },
+
+        async stats() {
+            const all = await this.getAll();
+            return {
+                total: all.length,
+                open: all.filter((f) => f.status === 'open').length,
+                inProgress: all.filter((f) => f.status === 'in_progress').length,
+                resolved: all.filter((f) => f.status === 'resolved').length,
+                byRole: {
+                    patient: all.filter((f) => f.role === 'patient').length,
+                    staff: all.filter((f) => f.role === 'staff').length,
+                    doctor: all.filter((f) => f.role === 'doctor').length,
+                    admin: all.filter((f) => f.role === 'admin').length,
+                },
+                byType: {
+                    bug: all.filter((f) => f.type === 'bug').length,
+                    feature: all.filter((f) => f.type === 'feature').length,
+                    question: all.filter((f) => f.type === 'question').length,
+                    other: all.filter((f) => f.type === 'other').length,
+                },
+            };
+        },
+    },
+
+    // ============================================
+    // NOTIFICATIONS (SMS stubs)
+    // ============================================
+    notifications: {
+        sendSMS(phone, message, language = 'en') {
+            console.log(`📱 SMS to ${phone} [${language}]: ${message}`);
+            return { success: true, message: 'SMS queued', preview: message };
+        },
+    },
+
+    // ============================================
+    // SMS TEMPLATES (static data, no DB needed)
+    // ============================================
     smsTemplates: {
         templates: {
             appointment_confirmation: {
@@ -599,228 +972,155 @@ const HMS = {
         },
     },
 
-    // Notification System
-    notifications: {
-        sendSMS(phone, message, language = 'en') {
-            // In production, this would call an SMS API (MSG91, Twilio, etc.)
-            console.log(`📱 SMS to ${phone} [${language}]: ${message}`);
-            return { success: true, message: 'SMS queued', preview: message };
+    // ============================================
+    // UTILITY FUNCTIONS (pure, no DB)
+    // ============================================
+    utils: {
+        formatDate(dateStr) {
+            return new Date(dateStr).toLocaleDateString('en-IN', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+            });
         },
-    },
-
-    // Patient Link System (for staff to send signup links)
-    patientLinks: {
-        generate(patientData, staffId) {
-            const token = HMS.utils.generateToken();
-            const link = {
-                token,
-                patientPhone: patientData.phone,
-                patientName: patientData.name,
-                createdBy: staffId,
-                createdAt: new Date().toISOString(),
-                expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days
-                used: false,
-            };
-
-            const links = this.getAll();
-            links.push(link);
-            localStorage.setItem('hms_patient_links', JSON.stringify(links));
-
-            // Generate the URL (in production, use actual domain)
-            const baseUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
-            return {
-                token,
-                url: `${baseUrl}patient-signup.html?token=${token}`,
-                shortUrl: `adinath.link/${token.substring(0, 8)}`,
-            };
+        formatCurrency(amount) {
+            return `₹${Number(amount).toLocaleString('en-IN')}`;
         },
-
-        getAll() {
-            return JSON.parse(localStorage.getItem('hms_patient_links') || '[]');
+        generateId(prefix) {
+            return prefix + Date.now().toString(36).toUpperCase();
         },
-
-        validate(token) {
-            const links = this.getAll();
-            const link = links.find((l) => l.token === token);
-            if (!link) {
-                return { valid: false, error: 'Invalid link' };
-            }
-            if (link.used) {
-                return { valid: false, error: 'Link already used' };
-            }
-            if (new Date(link.expiresAt) < new Date()) {
-                return { valid: false, error: 'Link expired' };
-            }
-            return { valid: true, link };
+        generateToken() {
+            return Math.random().toString(36).substring(2) + Date.now().toString(36);
         },
-
-        markUsed(token) {
-            const links = this.getAll();
-            const index = links.findIndex((l) => l.token === token);
-            if (index !== -1) {
-                links[index].used = true;
-                links[index].usedAt = new Date().toISOString();
-                localStorage.setItem('hms_patient_links', JSON.stringify(links));
-            }
-        },
-    },
-
-    // Feedback Management - Track issues and suggestions by role
-    feedback: {
-        getAll() {
-            return JSON.parse(localStorage.getItem('hms_feedback') || '[]');
-        },
-
-        add(feedback) {
-            const items = this.getAll();
-            feedback.id = HMS.utils.generateId('FB');
-            feedback.createdAt = new Date().toISOString();
-            feedback.status = 'open'; // open, in_progress, resolved, closed
-            items.push(feedback);
-            localStorage.setItem('hms_feedback', JSON.stringify(items));
-            console.log('📝 Feedback logged:', feedback);
-            return feedback;
-        },
-
-        getByRole(role) {
-            return this.getAll().filter((f) => f.role === role);
-        },
-
-        getByStatus(status) {
-            return this.getAll().filter((f) => f.status === status);
-        },
-
-        getOpen() {
-            return this.getAll().filter((f) => f.status === 'open' || f.status === 'in_progress');
-        },
-
-        updateStatus(id, status, note = '') {
-            const items = this.getAll();
-            const index = items.findIndex((f) => f.id === id);
-            if (index !== -1) {
-                items[index].status = status;
-                items[index].updatedAt = new Date().toISOString();
-                if (note) {
-                    items[index].resolutionNote = note;
-                }
-                localStorage.setItem('hms_feedback', JSON.stringify(items));
-            }
-        },
-
-        // Export all feedback as JSON for review
-        export() {
-            const data = this.getAll();
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `adinath-feedback-${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-        },
-
-        // Summary stats
-        stats() {
-            const all = this.getAll();
-            return {
-                total: all.length,
-                open: all.filter((f) => f.status === 'open').length,
-                inProgress: all.filter((f) => f.status === 'in_progress').length,
-                resolved: all.filter((f) => f.status === 'resolved').length,
-                byRole: {
-                    patient: all.filter((f) => f.role === 'patient').length,
-                    staff: all.filter((f) => f.role === 'staff').length,
-                    doctor: all.filter((f) => f.role === 'doctor').length,
-                    admin: all.filter((f) => f.role === 'admin').length,
-                },
-                byType: {
-                    bug: all.filter((f) => f.type === 'bug').length,
-                    feature: all.filter((f) => f.type === 'feature').length,
-                    question: all.filter((f) => f.type === 'question').length,
-                    other: all.filter((f) => f.type === 'other').length,
-                },
-            };
-        },
-    },
-
-    // Reset all data
-    reset() {
-        localStorage.removeItem('hms_initialized');
-        localStorage.removeItem('hms_patients');
-        localStorage.removeItem('hms_appointments');
-        localStorage.removeItem('hms_prescriptions');
-        localStorage.removeItem('hms_inventory');
-        localStorage.removeItem('hms_sales');
-        localStorage.removeItem('hms_queue');
-        localStorage.removeItem('hms_users');
-        localStorage.removeItem('hms_current_user');
-        localStorage.removeItem('hms_logged_in');
-        localStorage.removeItem('hms_feedback');
-        this.init();
     },
 };
 
-// Feedback Widget - Add to any page
-// Exported for use in portal pages
+// ============================================
+// FEEDBACK WIDGET - uses safe DOM methods
+// ============================================
 window.initFeedbackWidget = function initFeedbackWidget(role = 'visitor') {
-    // Create feedback button
     const btn = document.createElement('button');
-    btn.innerHTML = '💬 Feedback';
+    btn.textContent = '💬 Feedback';
     btn.id = 'feedback-btn';
     btn.style.cssText =
         'position: fixed; bottom: 80px; left: 20px; z-index: 9999; background: #236b48; color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2);';
 
-    // Create modal
+    // Build feedback modal using safe DOM methods
     const modal = document.createElement('div');
     modal.id = 'feedback-modal';
     modal.style.cssText =
         'display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: center;';
-    modal.innerHTML = `
-        <div style="background: white; border-radius: 16px; padding: 30px; max-width: 450px; width: 90%; max-height: 80vh; overflow-y: auto;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="margin: 0; color: #236b48;">💬 Send Feedback</h3>
-                <button onclick="closeFeedbackModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">×</button>
-            </div>
-            <form id="feedback-form">
-                <input type="hidden" id="fb-role" value="${role}">
-                <input type="hidden" id="fb-page" value="${window.location.pathname}">
-                
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Type</label>
-                    <select id="fb-type" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
-                        <option value="bug">🐛 Bug / Problem</option>
-                        <option value="feature">💡 Feature Request</option>
-                        <option value="question">❓ Question</option>
-                        <option value="other">📝 Other</option>
-                    </select>
-                </div>
-                
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Priority</label>
-                    <select id="fb-priority" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
-                        <option value="low">🟢 Low</option>
-                        <option value="medium" selected>🟡 Medium</option>
-                        <option value="high">🔴 High</option>
-                    </select>
-                </div>
-                
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Description *</label>
-                    <textarea id="fb-description" required rows="4" placeholder="Describe the issue or suggestion..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; resize: vertical;"></textarea>
-                </div>
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Your Name (optional)</label>
-                    <input type="text" id="fb-name" placeholder="Your name" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
-                </div>
-                
-                <button type="submit" style="width: 100%; padding: 12px; background: #236b48; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Submit Feedback</button>
-            </form>
-            <p style="text-align: center; margin-top: 15px; font-size: 12px; color: #666;">Feedback is logged locally and reviewed by the admin.</p>
-        </div>
-    `;
 
-    document.body.appendChild(btn);
-    document.body.appendChild(modal);
+    const card = document.createElement('div');
+    card.style.cssText =
+        'background: white; border-radius: 16px; padding: 30px; max-width: 450px; width: 90%; max-height: 80vh; overflow-y: auto;';
+
+    const form = document.createElement('form');
+    form.id = 'feedback-form';
+
+    // Hidden inputs
+    const roleInput = Object.assign(document.createElement('input'), {
+        type: 'hidden',
+        id: 'fb-role',
+        value: role,
+    });
+    const pageInput = Object.assign(document.createElement('input'), {
+        type: 'hidden',
+        id: 'fb-page',
+        value: window.location.pathname,
+    });
+    form.append(roleInput, pageInput);
+
+    // Helper to create form groups
+    const makeGroup = (labelText, inputEl) => {
+        const group = document.createElement('div');
+        group.style.marginBottom = '15px';
+        const label = document.createElement('label');
+        label.textContent = labelText;
+        label.style.cssText = 'display: block; margin-bottom: 5px; font-weight: 500;';
+        inputEl.style.cssText =
+            'width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;';
+        group.append(label, inputEl);
+        return group;
+    };
+
+    const typeSelect = Object.assign(document.createElement('select'), {
+        id: 'fb-type',
+        required: true,
+    });
+    [
+        'bug:🐛 Bug / Problem',
+        'feature:💡 Feature Request',
+        'question:❓ Question',
+        'other:📝 Other',
+    ].forEach((opt) => {
+        const [val, text] = opt.split(':');
+        typeSelect.append(
+            Object.assign(document.createElement('option'), { value: val, textContent: text })
+        );
+    });
+
+    const prioritySelect = Object.assign(document.createElement('select'), { id: 'fb-priority' });
+    ['low:🟢 Low', 'medium:🟡 Medium', 'high:🔴 High'].forEach((opt) => {
+        const [val, text] = opt.split(':');
+        const option = Object.assign(document.createElement('option'), {
+            value: val,
+            textContent: text,
+        });
+        if (val === 'medium') {
+            option.selected = true;
+        }
+        prioritySelect.append(option);
+    });
+
+    const descArea = Object.assign(document.createElement('textarea'), {
+        id: 'fb-description',
+        required: true,
+        rows: 4,
+        placeholder: 'Describe the issue or suggestion...',
+    });
+    descArea.style.resize = 'vertical';
+
+    const nameInput = Object.assign(document.createElement('input'), {
+        type: 'text',
+        id: 'fb-name',
+        placeholder: 'Your name',
+    });
+
+    form.append(
+        makeGroup('Type', typeSelect),
+        makeGroup('Priority', prioritySelect),
+        makeGroup('Description *', descArea),
+        makeGroup('Your Name (optional)', nameInput)
+    );
+
+    const submitBtn = document.createElement('button');
+    submitBtn.type = 'submit';
+    submitBtn.textContent = 'Submit Feedback';
+    submitBtn.style.cssText =
+        'width: 100%; padding: 12px; background: #236b48; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;';
+    form.append(submitBtn);
+
+    // Header with close button
+    const header = document.createElement('div');
+    header.style.cssText =
+        'display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;';
+    const title = document.createElement('h3');
+    title.textContent = '💬 Send Feedback';
+    title.style.cssText = 'margin: 0; color: #236b48;';
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = '×';
+    closeBtn.style.cssText = 'background: none; border: none; font-size: 24px; cursor: pointer;';
+    closeBtn.onclick = () => closeFeedbackModal();
+    header.append(title, closeBtn);
+
+    const footer = document.createElement('p');
+    footer.textContent = 'Feedback is sent to the admin for review.';
+    footer.style.cssText = 'text-align: center; margin-top: 15px; font-size: 12px; color: #666;';
+
+    card.append(header, form, footer);
+    modal.append(card);
+    document.body.append(btn, modal);
 
     btn.onclick = () => {
         modal.style.display = 'flex';
@@ -831,7 +1131,7 @@ window.initFeedbackWidget = function initFeedbackWidget(role = 'visitor') {
         }
     };
 
-    document.getElementById('feedback-form').onsubmit = (e) => {
+    form.onsubmit = async (e) => {
         e.preventDefault();
         const feedback = {
             role: document.getElementById('fb-role').value,
@@ -844,165 +1144,17 @@ window.initFeedbackWidget = function initFeedbackWidget(role = 'visitor') {
             screenSize: `${window.innerWidth}x${window.innerHeight}`,
         };
 
-        HMS.feedback.add(feedback);
+        await HMS.feedback.add(feedback);
         // eslint-disable-next-line no-alert
-        alert('✅ Thank you! Your feedback has been logged.');
+        alert('✅ Thank you! Your feedback has been submitted.');
         closeFeedbackModal();
-        document.getElementById('feedback-form').reset();
+        form.reset();
     };
 };
 
 function closeFeedbackModal() {
     document.getElementById('feedback-modal').style.display = 'none';
 }
-
-// ============================================
-// SECURE TOKEN SYSTEM
-// Generates cryptographically secure tokens for registration links
-// ============================================
-
-HMS.tokens = {
-    STORAGE_KEY: 'hms_secure_tokens',
-
-    // Generate a cryptographically secure UUID v4
-    generateUUID() {
-        if (crypto && crypto.randomUUID) {
-            return crypto.randomUUID();
-        }
-        // Fallback for older browsers
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-            const r = crypto.getRandomValues(new Uint8Array(1))[0] % 16;
-            const v = c === 'x' ? r : (r & 0x3) | 0x8;
-            return v.toString(16);
-        });
-    },
-
-    // Get all tokens
-    getAll() {
-        const data = localStorage.getItem(this.STORAGE_KEY);
-        return data ? JSON.parse(data) : [];
-    },
-
-    // Save tokens
-    save(tokens) {
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(tokens));
-    },
-
-    // Create a new secure registration token
-    create(params) {
-        const { targetEmail, targetRole, purpose, expiresInHours = 72, createdBy } = params;
-
-        const token = {
-            id: this.generateUUID(),
-            token: this.generateUUID(), // The actual token in the URL
-            targetEmail,
-            targetRole,
-            purpose: purpose || 'registration',
-            createdAt: new Date().toISOString(),
-            expiresAt: new Date(Date.now() + expiresInHours * 60 * 60 * 1000).toISOString(),
-            createdBy: createdBy || 'system',
-            used: false,
-            usedAt: null,
-        };
-
-        const tokens = this.getAll();
-        tokens.push(token);
-        this.save(tokens);
-
-        console.log('🔐 Secure token created for:', targetEmail);
-        return token;
-    },
-
-    // Validate a token
-    validate(tokenString) {
-        const tokens = this.getAll();
-        const token = tokens.find((t) => t.token === tokenString);
-
-        if (!token) {
-            return { valid: false, error: 'Token not found' };
-        }
-
-        if (token.used) {
-            return { valid: false, error: 'Token already used', token };
-        }
-
-        if (new Date(token.expiresAt) < new Date()) {
-            return { valid: false, error: 'Token expired', token };
-        }
-
-        return { valid: true, token };
-    },
-
-    // Mark token as used
-    markUsed(tokenString) {
-        const tokens = this.getAll();
-        const index = tokens.findIndex((t) => t.token === tokenString);
-
-        if (index !== -1) {
-            tokens[index].used = true;
-            tokens[index].usedAt = new Date().toISOString();
-            this.save(tokens);
-            return true;
-        }
-        return false;
-    },
-
-    // Get token by target email (for checking existing invites)
-    getByEmail(email) {
-        const tokens = this.getAll();
-        return tokens.filter(
-            (t) => t.targetEmail === email && !t.used && new Date(t.expiresAt) > new Date()
-        );
-    },
-
-    // Clean up expired tokens
-    cleanup() {
-        const tokens = this.getAll();
-        const validTokens = tokens.filter((t) => {
-            // Keep used tokens for audit trail (30 days)
-            if (t.used) {
-                return new Date(t.usedAt) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-            }
-            // Remove expired unused tokens
-            return new Date(t.expiresAt) > new Date();
-        });
-        this.save(validTokens);
-        console.log(`🧹 Token cleanup: ${tokens.length - validTokens.length} tokens removed`);
-    },
-
-    // Generate a secure registration link
-    generateLink(params) {
-        const { targetEmail, targetRole, baseUrl } = params;
-
-        // Check for existing valid token
-        const existingTokens = this.getByEmail(targetEmail);
-        if (existingTokens.length > 0) {
-            // Return existing valid token
-            const existing = existingTokens[0];
-            return {
-                token: existing.token,
-                link: `${baseUrl || window.location.origin}/onboard/${targetRole}.html?token=${existing.token}`,
-                expiresAt: existing.expiresAt,
-                isExisting: true,
-            };
-        }
-
-        // Create new token
-        const token = this.create(params);
-        return {
-            token: token.token,
-            link: `${baseUrl || window.location.origin}/onboard/${targetRole}.html?token=${token.token}`,
-            expiresAt: token.expiresAt,
-            isExisting: false,
-        };
-    },
-};
-
-// Cleanup expired tokens on init
-setTimeout(() => HMS.tokens.cleanup(), 5000);
-
-// Initialize on load
-HMS.init();
 
 // Export for Node.js/Jest testing
 if (typeof module !== 'undefined' && module.exports) {

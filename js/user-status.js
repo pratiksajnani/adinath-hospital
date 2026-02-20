@@ -1,109 +1,14 @@
 // ============================================
 // USER STATUS COMPONENT
 // Shows logged-in user or Guest on all pages
+// Uses Supabase session for auth state
 // ============================================
-
-// Inject User Status UI into page
-function injectUserStatus() {
-    // Don't inject if page already has a nav-integrated user status
-    if (
-        document.querySelector('.nav .user-status') ||
-        document.getElementById('user-status-widget')
-    ) {
-        // Just update the existing widget instead
-        updateUserStatusWidget();
-        return;
-    }
-
-    // Create the user status HTML
-    const userStatusHTML = `
-        <div id="user-status-widget" style="
-            position: fixed;
-            top: 15px;
-            right: 20px;
-            z-index: 9999;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-        ">
-            <div id="user-status-btn" style="
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                padding: 8px 16px;
-                background: white;
-                border-radius: 25px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-                cursor: pointer;
-                font-size: 14px;
-                border: 2px solid #236b48;
-                transition: all 0.2s;
-            " onclick="toggleUserMenu()">
-                <span id="user-status-icon">👤</span>
-                <span id="user-status-name" style="font-weight: 500; color: #1e293b;">Guest</span>
-                <span style="color: #64748b; font-size: 10px;">▼</span>
-            </div>
-            
-            <div id="user-status-menu" style="
-                display: none;
-                position: absolute;
-                top: 100%;
-                right: 0;
-                margin-top: 8px;
-                background: white;
-                border-radius: 12px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-                min-width: 220px;
-                overflow: hidden;
-            ">
-                <!-- Guest Menu -->
-                <div id="guest-menu-items">
-                    <a href="${getBasePath()}login.html" style="display: block; padding: 12px 16px; text-decoration: none; color: #1e293b; border-bottom: 1px solid #e2e8f0;">
-                        🔐 Staff/Doctor Login
-                    </a>
-                    <a href="${getBasePath()}portal/patient/index.html" style="display: block; padding: 12px 16px; text-decoration: none; color: #1e293b;">
-                        🏥 Patient Portal
-                    </a>
-                </div>
-                
-                <!-- Logged In Menu -->
-                <div id="logged-in-menu-items" style="display: none;">
-                    <div style="padding: 16px; background: linear-gradient(135deg, #f0fdf4, #e8f5e9); border-bottom: 1px solid #e2e8f0;">
-                        <div id="menu-user-name" style="font-weight: 600; color: #236b48; font-size: 15px;">User</div>
-                        <div id="menu-user-role" style="font-size: 12px; color: #64748b; text-transform: capitalize; margin-top: 2px;">Role</div>
-                    </div>
-                    <a href="#" id="menu-portal-link" style="display: block; padding: 12px 16px; text-decoration: none; color: #1e293b; border-bottom: 1px solid #e2e8f0;">
-                        📊 My Dashboard
-                    </a>
-                    <a href="${getBasePath()}index.html" style="display: block; padding: 12px 16px; text-decoration: none; color: #1e293b; border-bottom: 1px solid #e2e8f0;">
-                        🏠 Home
-                    </a>
-                    <a href="#" onclick="doLogout(); return false;" style="display: block; padding: 12px 16px; text-decoration: none; color: #dc2626;">
-                        🚪 Logout
-                    </a>
-                </div>
-            </div>
-        </div>
-    `;
-
-    // Add to page
-    document.body.insertAdjacentHTML('beforeend', userStatusHTML);
-
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-        const widget = document.getElementById('user-status-widget');
-        if (widget && !widget.contains(e.target)) {
-            document.getElementById('user-status-menu').style.display = 'none';
-        }
-    });
-
-    // Update status on load
-    updateUserStatusWidget();
-}
-
-// Get base path for links
-// Accepts optional path parameter for testing
+// Get base path for links (shared with AccessControl)
 function getBasePath(testPath = null) {
+    if (typeof AccessControl !== 'undefined' && AccessControl.getBasePath) {
+        return AccessControl.getBasePath(testPath);
+    }
     const path = testPath || window.location.pathname;
-
     if (
         path.includes('/portal/') ||
         path.includes('/docs/') ||
@@ -112,7 +17,6 @@ function getBasePath(testPath = null) {
         path.includes('/store/') ||
         path.includes('/onboard/')
     ) {
-        // Nested pages
         if (path.split('/').filter((p) => p).length >= 3) {
             return '../../';
         }
@@ -121,20 +25,150 @@ function getBasePath(testPath = null) {
     return '';
 }
 
+// Inject User Status UI into page
+function injectUserStatus() {
+    if (
+        document.querySelector('.nav .user-status') ||
+        document.getElementById('user-status-widget')
+    ) {
+        updateUserStatusWidget();
+        return;
+    }
+
+    // Build widget using safe DOM methods
+    const widget = document.createElement('div');
+    widget.id = 'user-status-widget';
+    widget.style.cssText =
+        'position: fixed; top: 15px; right: 20px; z-index: 9999; font-family: "Segoe UI", system-ui, sans-serif;';
+
+    const btn = document.createElement('div');
+    btn.id = 'user-status-btn';
+    btn.style.cssText =
+        'display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: white; border-radius: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.15); cursor: pointer; font-size: 14px; border: 2px solid #236b48; transition: all 0.2s;';
+    btn.onclick = toggleUserMenu;
+
+    const iconSpan = Object.assign(document.createElement('span'), {
+        id: 'user-status-icon',
+        textContent: '👤',
+    });
+    const nameSpan = Object.assign(document.createElement('span'), {
+        id: 'user-status-name',
+        textContent: 'Guest',
+    });
+    nameSpan.style.cssText = 'font-weight: 500; color: #1e293b;';
+    const arrow = document.createElement('span');
+    arrow.textContent = '▼';
+    arrow.style.cssText = 'color: #64748b; font-size: 10px;';
+    btn.append(iconSpan, nameSpan, arrow);
+
+    const menu = document.createElement('div');
+    menu.id = 'user-status-menu';
+    menu.style.cssText =
+        'display: none; position: absolute; top: 100%; right: 0; margin-top: 8px; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); min-width: 220px; overflow: hidden;';
+
+    // Guest menu
+    const guestMenu = document.createElement('div');
+    guestMenu.id = 'guest-menu-items';
+    const basePath = getBasePath();
+
+    const loginLink = Object.assign(document.createElement('a'), {
+        href: `${basePath}login.html`,
+        textContent: '🔐 Staff/Doctor Login',
+    });
+    loginLink.style.cssText =
+        'display: block; padding: 12px 16px; text-decoration: none; color: #1e293b; border-bottom: 1px solid #e2e8f0;';
+
+    const patientLink = Object.assign(document.createElement('a'), {
+        href: `${basePath}portal/patient/index.html`,
+        textContent: '🏥 Patient Portal',
+    });
+    patientLink.style.cssText =
+        'display: block; padding: 12px 16px; text-decoration: none; color: #1e293b;';
+    guestMenu.append(loginLink, patientLink);
+
+    // Logged-in menu
+    const loggedInMenu = document.createElement('div');
+    loggedInMenu.id = 'logged-in-menu-items';
+    loggedInMenu.style.display = 'none';
+
+    const userHeader = document.createElement('div');
+    userHeader.style.cssText =
+        'padding: 16px; background: linear-gradient(135deg, #f0fdf4, #e8f5e9); border-bottom: 1px solid #e2e8f0;';
+    const menuUserName = Object.assign(document.createElement('div'), {
+        id: 'menu-user-name',
+        textContent: 'User',
+    });
+    menuUserName.style.cssText = 'font-weight: 600; color: #236b48; font-size: 15px;';
+    const menuUserRole = Object.assign(document.createElement('div'), {
+        id: 'menu-user-role',
+        textContent: 'Role',
+    });
+    menuUserRole.style.cssText =
+        'font-size: 12px; color: #64748b; text-transform: capitalize; margin-top: 2px;';
+    userHeader.append(menuUserName, menuUserRole);
+
+    const portalLink = Object.assign(document.createElement('a'), {
+        id: 'menu-portal-link',
+        href: '#',
+        textContent: '📊 My Dashboard',
+    });
+    portalLink.style.cssText =
+        'display: block; padding: 12px 16px; text-decoration: none; color: #1e293b; border-bottom: 1px solid #e2e8f0;';
+
+    const homeLink = Object.assign(document.createElement('a'), {
+        href: `${basePath}index.html`,
+        textContent: '🏠 Home',
+    });
+    homeLink.style.cssText =
+        'display: block; padding: 12px 16px; text-decoration: none; color: #1e293b; border-bottom: 1px solid #e2e8f0;';
+
+    const logoutLink = Object.assign(document.createElement('a'), {
+        href: '#',
+        textContent: '🚪 Logout',
+    });
+    logoutLink.style.cssText =
+        'display: block; padding: 12px 16px; text-decoration: none; color: #dc2626;';
+    logoutLink.onclick = (e) => {
+        e.preventDefault();
+        doLogout();
+    };
+
+    loggedInMenu.append(userHeader, portalLink, homeLink, logoutLink);
+    menu.append(guestMenu, loggedInMenu);
+    widget.append(btn, menu);
+    document.body.appendChild(widget);
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (widget && !widget.contains(e.target)) {
+            menu.style.display = 'none';
+        }
+    });
+
+    updateUserStatusWidget();
+}
+
 // Toggle menu visibility
 function toggleUserMenu() {
     const menu = document.getElementById('user-status-menu');
     menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
 }
 
-// Update the widget based on login status
-function updateUserStatusWidget() {
-    const isLoggedIn = localStorage.getItem('hms_logged_in') === 'true';
-    const role = localStorage.getItem('hms_role');
-    const userName =
-        localStorage.getItem('hms_user_name') || localStorage.getItem('hms_user_email');
+// Update the widget based on Supabase session
+async function updateUserStatusWidget() {
+    let role = null;
+    let userName = null;
 
-    // Try injected widget first, then nav-integrated version
+    try {
+        const profile = await HMS.auth.getProfile();
+        if (profile) {
+            role = profile.role;
+            userName = profile.name || profile.email;
+        }
+    } catch {
+        // HMS not initialized yet or no session
+    }
+
     const icon = document.getElementById('user-status-icon') || document.getElementById('userIcon');
     const name =
         document.getElementById('user-status-name') || document.getElementById('userDisplayName');
@@ -153,8 +187,7 @@ function updateUserStatusWidget() {
         return;
     }
 
-    if (isLoggedIn && role) {
-        // Logged in state
+    if (role) {
         const roleIcons = {
             admin: '👑',
             doctor: '👨‍⚕️',
@@ -163,7 +196,6 @@ function updateUserStatusWidget() {
             nurse: '👩‍⚕️',
             patient: '🏥',
         };
-
         const roleColors = {
             admin: '#dc2626',
             doctor: '#236b48',
@@ -181,7 +213,6 @@ function updateUserStatusWidget() {
             name.textContent = displayName;
             name.style.color = roleColors[role] || '#1e293b';
         }
-
         if (guestMenu) {
             guestMenu.style.display = 'none';
         }
@@ -195,7 +226,6 @@ function updateUserStatusWidget() {
             menuRole.textContent = role.charAt(0).toUpperCase() + role.slice(1);
         }
 
-        // Set portal link
         const basePath = getBasePath();
         const portalLinks = {
             admin: `${basePath}portal/admin/index.html`,
@@ -208,7 +238,6 @@ function updateUserStatusWidget() {
             portalLink.href = portalLinks[role] || `${basePath}portal/index.html`;
         }
     } else {
-        // Guest state
         if (icon) {
             icon.textContent = '👤';
         }
@@ -216,7 +245,6 @@ function updateUserStatusWidget() {
             name.textContent = 'Guest';
             name.style.color = '#64748b';
         }
-
         if (guestMenu) {
             guestMenu.style.display = 'block';
         }
@@ -226,22 +254,10 @@ function updateUserStatusWidget() {
     }
 }
 
-// Logout function
-function doLogout() {
-    localStorage.removeItem('hms_logged_in');
-    localStorage.removeItem('hms_role');
-    localStorage.removeItem('hms_user_email');
-    localStorage.removeItem('hms_user_name');
-    localStorage.removeItem('hms_current_user');
-    localStorage.removeItem('hms_auth_method');
-    localStorage.removeItem('hms_doctor');
-    localStorage.removeItem('hms_doctor_id');
-    localStorage.removeItem('hms_demo_user');
-    localStorage.removeItem('currentPatient');
-
-    updateUserStatusWidget();
-
-    // Redirect to home
+// Logout via Supabase
+async function doLogout() {
+    await HMS.auth.signOut();
+    await updateUserStatusWidget();
     window.location.assign(`${getBasePath()}index.html`);
 }
 

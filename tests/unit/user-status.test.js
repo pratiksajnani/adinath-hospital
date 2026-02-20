@@ -1,22 +1,22 @@
 /**
  * USER STATUS Widget Unit Tests
- * Tests for user status display, menus, and logout
+ * Tests for user status display, menus, and logout (Supabase)
  */
 
-// Jest 30+ with jsdom - mock location methods, don't replace the object
-window.location.replace = jest.fn();
-window.location.assign = jest.fn();
-
-// Load user-status module
-const { getBasePath, toggleUserMenu, updateUserStatusWidget, doLogout, injectUserStatus } = require('../../js/user-status.js');
+// HMS is pre-mocked in setup.js; load the module here
+// user-status.js auto-executes injectUserStatus() when required
+const { getBasePath, toggleUserMenu, updateUserStatusWidget, doLogout, injectUserStatus } =
+    require('../../js/user-status.js');
 
 beforeEach(() => {
-    localStorage.clear();
+    // Re-set HMS mock implementations after resetMocks resets them
+    HMS.auth.getProfile.mockResolvedValue(null);
+    HMS.auth.signOut.mockResolvedValue(undefined);
+    // Clear DOM between tests
     document.body.innerHTML = '';
 });
 
 describe('getBasePath()', () => {
-    // Using testPath parameter for Jest 30+ jsdom compatibility
     test('should return empty string for root pages', () => {
         expect(getBasePath('/index.html')).toBe('');
     });
@@ -48,13 +48,17 @@ describe('getBasePath()', () => {
     test('should return ../ for onboard pages', () => {
         expect(getBasePath('/onboard/doctor.html')).toBe('../');
     });
+
+    test('should return empty for homepage', () => {
+        expect(getBasePath('/')).toBe('');
+    });
 });
 
 describe('injectUserStatus()', () => {
     test('should inject user status widget into body', () => {
         injectUserStatus();
         const widget = document.getElementById('user-status-widget');
-        expect(widget).toBeDefined();
+        expect(widget).toBeTruthy();
     });
 
     test('should show Guest by default', () => {
@@ -63,10 +67,31 @@ describe('injectUserStatus()', () => {
         expect(nameElement.textContent).toBe('Guest');
     });
 
-    test('should call updateUserStatusWidget', () => {
+    test('should create user-status-btn element', () => {
         injectUserStatus();
-        // Widget should exist after injection
-        expect(document.getElementById('user-status-widget')).toBeTruthy();
+        expect(document.getElementById('user-status-btn')).toBeTruthy();
+    });
+
+    test('should create user-status-menu element', () => {
+        injectUserStatus();
+        expect(document.getElementById('user-status-menu')).toBeTruthy();
+    });
+
+    test('should create guest-menu-items element', () => {
+        injectUserStatus();
+        expect(document.getElementById('guest-menu-items')).toBeTruthy();
+    });
+
+    test('should create logged-in-menu-items element', () => {
+        injectUserStatus();
+        expect(document.getElementById('logged-in-menu-items')).toBeTruthy();
+    });
+
+    test('should not inject duplicate widget if already present', () => {
+        injectUserStatus();
+        injectUserStatus();
+        const widgets = document.querySelectorAll('#user-status-widget');
+        expect(widgets.length).toBe(1);
     });
 });
 
@@ -75,92 +100,64 @@ describe('updateUserStatusWidget()', () => {
         injectUserStatus();
     });
 
-    test('should show Guest when not logged in', () => {
-        updateUserStatusWidget();
+    test('should show Guest when profile is null', async () => {
+        HMS.auth.getProfile.mockResolvedValue(null);
+        await updateUserStatusWidget();
         const nameElement = document.getElementById('user-status-name');
         expect(nameElement.textContent).toBe('Guest');
     });
 
-    test('should show first word of user name when logged in', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_user_name', 'Dr. Ashok');
-        localStorage.setItem('hms_role', 'doctor');
-        
-        updateUserStatusWidget();
-        
+    test('should show first word of name when logged in', async () => {
+        HMS.auth.getProfile.mockResolvedValue({
+            name: 'Dr. Ashok',
+            email: 'drsajnani@gmail.com',
+            role: 'doctor',
+        });
+        await updateUserStatusWidget();
         const nameElement = document.getElementById('user-status-name');
-        // Code shows first word only
+        // displayName = name.split('@')[0].split(' ')[0] = 'Dr.'
         expect(nameElement.textContent).toBe('Dr.');
     });
 
-    test('should show Admin when admin is logged in', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_user_name', 'Pratik');
-        localStorage.setItem('hms_role', 'admin');
-        
-        updateUserStatusWidget();
-        
+    test('should show email prefix when name is not available', async () => {
+        HMS.auth.getProfile.mockResolvedValue({
+            name: null,
+            email: 'test@test.com',
+            role: 'patient',
+        });
+        await updateUserStatusWidget();
         const nameElement = document.getElementById('user-status-name');
-        expect(nameElement.textContent).toBe('Pratik');
-    });
-
-    test('should show email prefix if name not available', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_user_email', 'test@test.com');
-        localStorage.setItem('hms_role', 'patient');
-        
-        updateUserStatusWidget();
-        
-        const nameElement = document.getElementById('user-status-name');
-        // Code shows part before @ and first word
+        // displayName = email.split('@')[0].split(' ')[0] = 'test'
         expect(nameElement.textContent).toBe('test');
     });
-});
 
-describe('toggleUserMenu()', () => {
-    beforeEach(() => {
-        injectUserStatus();
+    test('should show guest menu when not logged in', async () => {
+        HMS.auth.getProfile.mockResolvedValue(null);
+        await updateUserStatusWidget();
+        const guestMenu = document.getElementById('guest-menu-items');
+        const loggedInMenu = document.getElementById('logged-in-menu-items');
+        expect(guestMenu.style.display).not.toBe('none');
+        expect(loggedInMenu.style.display).toBe('none');
     });
 
-    test('should toggle menu visibility', () => {
-        const menu = document.getElementById('user-status-menu');
-        expect(menu.style.display).toBe('none');
-        
-        toggleUserMenu();
-        expect(menu.style.display).toBe('block');
-        
-        toggleUserMenu();
-        expect(menu.style.display).toBe('none');
-    });
-});
-
-describe('doLogout()', () => {
-    beforeEach(() => {
-        injectUserStatus();
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'admin');
-        localStorage.setItem('hms_user_email', 'test@test.com');
-        localStorage.setItem('hms_user_name', 'Test User');
+    test('should show logged-in menu when logged in', async () => {
+        HMS.auth.getProfile.mockResolvedValue({
+            name: 'Test User',
+            email: 'test@test.com',
+            role: 'patient',
+        });
+        await updateUserStatusWidget();
+        const guestMenu = document.getElementById('guest-menu-items');
+        const loggedInMenu = document.getElementById('logged-in-menu-items');
+        expect(guestMenu.style.display).toBe('none');
+        expect(loggedInMenu.style.display).toBe('block');
     });
 
-    test('should clear hms_logged_in', () => {
-        doLogout();
-        expect(localStorage.getItem('hms_logged_in')).toBeNull();
-    });
-
-    test('should clear hms_role', () => {
-        doLogout();
-        expect(localStorage.getItem('hms_role')).toBeNull();
-    });
-
-    test('should clear hms_user_email', () => {
-        doLogout();
-        expect(localStorage.getItem('hms_user_email')).toBeNull();
-    });
-
-    test('should clear hms_user_name', () => {
-        doLogout();
-        expect(localStorage.getItem('hms_user_name')).toBeNull();
+    test('should handle HMS error gracefully and show Guest', async () => {
+        HMS.auth.getProfile.mockRejectedValue(new Error('HMS not initialized'));
+        await updateUserStatusWidget();
+        const nameElement = document.getElementById('user-status-name');
+        expect(nameElement.textContent).toBe('Guest');
     });
 });
 
@@ -169,110 +166,89 @@ describe('Role Icons', () => {
         injectUserStatus();
     });
 
-    test('should show doctor icon for doctor role', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_user_name', 'Dr. Test');
-        localStorage.setItem('hms_role', 'doctor');
-        
-        updateUserStatusWidget();
-        
+    test('should show doctor icon for doctor role', async () => {
+        HMS.auth.getProfile.mockResolvedValue({ name: 'Dr. Test', email: 'dr@test.com', role: 'doctor' });
+        await updateUserStatusWidget();
         const iconElement = document.getElementById('user-status-icon');
-        expect(iconElement.textContent).toBe('👨‍⚕️');
+        expect(iconElement.textContent).toBe('\u{1F468}\u200D\u2695\uFE0F');
     });
 
-    test('should show admin icon for admin role', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_user_name', 'Admin');
-        localStorage.setItem('hms_role', 'admin');
-        
-        updateUserStatusWidget();
-        
+    test('should show admin icon for admin role', async () => {
+        HMS.auth.getProfile.mockResolvedValue({ name: 'Admin', email: 'admin@test.com', role: 'admin' });
+        await updateUserStatusWidget();
         const iconElement = document.getElementById('user-status-icon');
-        expect(iconElement.textContent).toBe('👑');
+        expect(iconElement.textContent).toBe('\u{1F451}');
     });
 
-    test('should show patient icon for patient role', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_user_name', 'Patient');
-        localStorage.setItem('hms_role', 'patient');
-        
-        updateUserStatusWidget();
-        
+    test('should show patient icon for patient role', async () => {
+        HMS.auth.getProfile.mockResolvedValue({ name: 'Patient', email: 'patient@test.com', role: 'patient' });
+        await updateUserStatusWidget();
         const iconElement = document.getElementById('user-status-icon');
-        expect(iconElement.textContent).toBe('🏥');
+        expect(iconElement.textContent).toBe('\u{1F3E5}');
     });
 
-    test('should show staff icon for staff role', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_user_name', 'Staff');
-        localStorage.setItem('hms_role', 'staff');
-        
-        updateUserStatusWidget();
-        
+    test('should show staff icon for staff role', async () => {
+        HMS.auth.getProfile.mockResolvedValue({ name: 'Staff', email: 'staff@test.com', role: 'staff' });
+        await updateUserStatusWidget();
         const iconElement = document.getElementById('user-status-icon');
-        expect(iconElement.textContent).toBe('💁');
+        expect(iconElement.textContent).toBe('\u{1F481}');
     });
 
-    test('should show receptionist icon', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_user_name', 'Receptionist');
-        localStorage.setItem('hms_role', 'receptionist');
-        
-        updateUserStatusWidget();
-        
+    test('should show receptionist icon', async () => {
+        HMS.auth.getProfile.mockResolvedValue({ name: 'Receptionist', email: 'r@test.com', role: 'receptionist' });
+        await updateUserStatusWidget();
         const iconElement = document.getElementById('user-status-icon');
-        expect(iconElement.textContent).toBe('💁');
+        expect(iconElement.textContent).toBe('\u{1F481}');
     });
 
-    test('should show nurse icon', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_user_name', 'Nurse');
-        localStorage.setItem('hms_role', 'nurse');
-        
-        updateUserStatusWidget();
-        
+    test('should show nurse icon', async () => {
+        HMS.auth.getProfile.mockResolvedValue({ name: 'Nurse', email: 'nurse@test.com', role: 'nurse' });
+        await updateUserStatusWidget();
         const iconElement = document.getElementById('user-status-icon');
-        expect(iconElement.textContent).toBe('👩‍⚕️');
+        expect(iconElement.textContent).toBe('\u{1F469}\u200D\u2695\uFE0F');
     });
 
-    test('should show default icon for unknown role', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_user_name', 'Unknown');
-        localStorage.setItem('hms_role', 'unknown');
-        
-        updateUserStatusWidget();
-        
+    test('should show default icon for unknown role', async () => {
+        HMS.auth.getProfile.mockResolvedValue({ name: 'Unknown', email: 'u@test.com', role: 'unknown' });
+        await updateUserStatusWidget();
         const iconElement = document.getElementById('user-status-icon');
-        expect(iconElement.textContent).toBe('👤');
+        expect(iconElement.textContent).toBe('\u{1F464}');
     });
 });
 
-describe('Menu Items', () => {
+describe('toggleUserMenu()', () => {
     beforeEach(() => {
+        HMS.auth.getProfile.mockResolvedValue(null);
         injectUserStatus();
     });
 
-    test('should show guest menu when not logged in', () => {
-        updateUserStatusWidget();
-        
-        const guestMenu = document.getElementById('guest-menu-items');
-        const loggedInMenu = document.getElementById('logged-in-menu-items');
-        
-        expect(guestMenu.style.display).not.toBe('none');
-        expect(loggedInMenu.style.display).toBe('none');
+    test('should toggle menu visibility', () => {
+        const menu = document.getElementById('user-status-menu');
+        expect(menu.style.display).toBe('none');
+
+        toggleUserMenu();
+        expect(menu.style.display).toBe('block');
+
+        toggleUserMenu();
+        expect(menu.style.display).toBe('none');
+    });
+});
+
+describe('doLogout()', () => {
+    beforeEach(() => {
+        HMS.auth.getProfile.mockResolvedValue(null);
+        HMS.auth.signOut.mockResolvedValue(undefined);
+        injectUserStatus();
     });
 
-    test('should show logged in menu when logged in', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_user_name', 'Test');
-        localStorage.setItem('hms_role', 'patient');
-        
-        updateUserStatusWidget();
-        
-        const guestMenu = document.getElementById('guest-menu-items');
-        const loggedInMenu = document.getElementById('logged-in-menu-items');
-        
-        expect(guestMenu.style.display).toBe('none');
-        expect(loggedInMenu.style.display).toBe('block');
+    test('should call HMS.auth.signOut', async () => {
+        // window.location.assign is read-only in jsdom; verify signOut is called
+        // (redirect assertion is covered by E2E tests)
+        await expect(doLogout()).resolves.not.toThrow();
+        expect(HMS.auth.signOut).toHaveBeenCalled();
+    });
+
+    test('should complete without error', async () => {
+        await expect(doLogout()).resolves.not.toThrow();
     });
 });

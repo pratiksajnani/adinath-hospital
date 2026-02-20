@@ -222,6 +222,7 @@
         </div>
     </div>
     
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="../js/config.js"></script>
     <script src="../js/hms.js"></script>
     <script>
@@ -309,45 +310,46 @@
         
         const params = new URLSearchParams(window.location.search);
         const token = params.get('token');
-        
-        function loadInvite() {
+
+        async function loadInvite() {
+            await HMS.init();
+
             if (!token) {
                 // Allow direct registration without invite
                 document.getElementById('invite-info').style.display = 'none';
                 return;
             }
-            
-            const invites = JSON.parse(localStorage.getItem('hms_invites') || '[]');
-            const invite = invites.find(i => i.id === token);
-            
-            if (!invite) {
-                document.getElementById('invite-info').innerHTML = '<p style="color:#991b1b;">Invite not found</p>';
+
+            const validation = await HMS.tokens.validate(token);
+
+            if (!validation.valid) {
+                const msg = validation.error === 'Token already used'
+                    ? 'This invite has been used'
+                    : 'Invite not found';
+                document.getElementById('invite-name').textContent = msg;
+                document.getElementById('invite-name').style.color = '#991b1b';
                 return;
             }
-            
-            if (invite.status === 'used') {
-                document.getElementById('invite-info').innerHTML = '<p style="color:#991b1b;">This invite has been used</p>';
-                return;
-            }
-            
-            document.getElementById('invite-name').textContent = invite.name;
+
+            const invite = validation.token;
+            document.getElementById('invite-name').textContent = invite.name || invite.targetEmail || '';
             document.getElementById('name').value = invite.name || '';
             document.getElementById('phone').value = invite.phone || '';
-            document.getElementById('email').value = invite.email || '';
+            document.getElementById('email').value = invite.targetEmail || invite.email || '';
         }
-        
-        document.getElementById('register-form').addEventListener('submit', function(e) {
+
+        document.getElementById('register-form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
-            
+
             if (password !== confirmPassword) {
                 document.getElementById('error-msg').textContent = 'Passwords do not match';
                 document.getElementById('error-msg').style.display = 'block';
                 return;
             }
-            
+
             // Create patient record
             const patient = {
                 id: 'PAT' + Date.now().toString(36).toUpperCase(),
@@ -361,15 +363,9 @@
                 preferredLanguage: document.getElementById('language').value,
                 createdAt: new Date().toISOString()
             };
-            
-            if (HMS.patients) {
-                HMS.patients.add(patient);
-            } else {
-                const patients = JSON.parse(localStorage.getItem('hms_patients') || '[]');
-                patients.push(patient);
-                localStorage.setItem('hms_patients', JSON.stringify(patients));
-            }
-            
+
+            await HMS.patients.add(patient);
+
             // Create user account
             const user = {
                 id: patient.id,
@@ -384,30 +380,18 @@
                 active: true,
                 createdAt: new Date().toISOString()
             };
-            
-            if (HMS.users) {
-                HMS.users.add(user);
-            } else {
-                const users = JSON.parse(localStorage.getItem('hms_users') || '[]');
-                users.push(user);
-                localStorage.setItem('hms_users', JSON.stringify(users));
-            }
-            
+
+            await HMS.users.add(user);
+
             // Mark invite as used
             if (token) {
-                const invites = JSON.parse(localStorage.getItem('hms_invites') || '[]');
-                const invite = invites.find(i => i.id === token);
-                if (invite) {
-                    invite.status = 'used';
-                    invite.usedAt = new Date().toISOString();
-                    localStorage.setItem('hms_invites', JSON.stringify(invites));
-                }
+                await HMS.tokens.markUsed(token);
             }
-            
+
             document.getElementById('form-section').style.display = 'none';
             document.getElementById('success-section').style.display = 'block';
         });
-        
+
         loadInvite();
     </script>
 <script src="../js/user-status.js"></script>

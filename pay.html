@@ -349,9 +349,9 @@
     <!-- Razorpay -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
-    <script src="js/api.js"></script>
-    
+
     <script>
         // Get payment details from URL params
         const params = new URLSearchParams(window.location.search);
@@ -418,7 +418,13 @@
                 // Create order via API
                 let orderData;
                 try {
-                    orderData = await API.payments.createOrder(amount, type, description, { name, phone, email });
+                    const resp = await fetch(`${CONFIG.SUPABASE_URL}/functions/v1/create-payment`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', apikey: CONFIG.SUPABASE_ANON_KEY },
+                        body: JSON.stringify({ amount, type, description, customer: { name, phone, email }, receipt: `ADH_${Date.now()}` }),
+                    });
+                    orderData = await resp.json();
+                    if (!resp.ok) throw new Error(orderData.error || 'Payment API failed');
                 } catch (e) {
                     console.warn('API not available, using demo mode');
                     orderData = {

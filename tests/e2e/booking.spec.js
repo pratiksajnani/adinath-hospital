@@ -67,7 +67,7 @@ test.describe('Appointment Booking', () => {
     await expect(page.locator('#bookingForm')).not.toBeVisible();
   });
 
-  test('should save appointment to HMS data', async ({ page }) => {
+  test('should show confirmation after successful booking', async ({ page }) => {
     // Select doctor and fill form
     await page.locator('label[for="dr-sunita"]').click();
 
@@ -83,17 +83,13 @@ test.describe('Appointment Booking', () => {
     await page.locator('#reason').fill('Routine checkup');
 
     await page.locator('button[type="submit"]').click();
-    await expect(page.locator('#confirmationSection')).toBeVisible({ timeout: 5000 });
 
-    // Verify HMS stored the appointment
-    const appointments = await page.evaluate(() => {
-      return JSON.parse(localStorage.getItem('hms_appointments') || '[]');
-    });
-
-    const found = appointments.find(a => a.patientName === 'Data Test Patient');
-    expect(found).toBeTruthy();
-    expect(found.doctor).toBe('sunita');
-    expect(found.reason).toBe('Routine checkup');
+    // Appointment data is now stored in Supabase, not localStorage.
+    // Verify the success confirmation is shown in the UI instead.
+    const confirmation = page.locator('#confirmationSection');
+    await expect(confirmation).toBeVisible({ timeout: 5000 });
+    await expect(confirmation).toContainText('Sunita');
+    await expect(confirmation).toContainText('Data Test Patient');
   });
 
   test('should have WhatsApp booking option', async ({ page }) => {

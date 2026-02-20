@@ -200,6 +200,7 @@
         </div>
     </div>
     
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="../js/config.js"></script>
     <script src="../js/hms.js"></script>
     <script>
@@ -207,17 +208,19 @@
         const params = new URLSearchParams(window.location.search);
         const tokenString = params.get('token');
         let validatedToken = null;
-        
+
         // Load and validate invite using secure token system
-        function loadInvite() {
+        async function loadInvite() {
+            await HMS.init();
+
             if (!tokenString) {
                 showError('Invalid or missing invite link. Please contact the hospital administrator.');
                 return;
             }
-            
+
             // Validate token using secure HMS.tokens system
-            const validation = HMS.tokens.validate(tokenString);
-            
+            const validation = await HMS.tokens.validate(tokenString);
+
             if (!validation.valid) {
                 switch (validation.error) {
                     case 'Token not found':
@@ -236,9 +239,9 @@
             }
             
             validatedToken = validation.token;
-            
+
             // Look up user by email from token
-            const user = HMS.users.getByEmail(validatedToken.targetEmail);
+            const user = await HMS.users.getByEmail(validatedToken.targetEmail);
             
             if (user) {
                 // Pre-fill with existing user data
@@ -279,35 +282,35 @@
         }
         
         // Handle form submission
-        document.getElementById('register-form').addEventListener('submit', function(e) {
+        document.getElementById('register-form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             if (!validatedToken) {
                 showError('Session expired. Please use the invite link again.');
                 return;
             }
-            
+
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
-            
+
             if (password.length < 8) {
                 document.getElementById('error-msg').textContent = 'Password must be at least 8 characters';
                 document.getElementById('error-msg').style.display = 'block';
                 return;
             }
-            
+
             if (password !== confirmPassword) {
                 document.getElementById('error-msg').textContent = 'Passwords do not match';
                 document.getElementById('error-msg').style.display = 'block';
                 return;
             }
-            
+
             // Check if user exists and update, or create new
-            const existingUser = HMS.users.getByEmail(validatedToken.targetEmail);
-            
+            const existingUser = await HMS.users.getByEmail(validatedToken.targetEmail);
+
             if (existingUser) {
                 // Update existing user with new password and details
-                HMS.users.update(existingUser.id, {
+                await HMS.users.update(existingUser.id, {
                     password: password, // In production, this would be hashed
                     name: document.getElementById('name').value,
                     phone: document.getElementById('phone').value,
@@ -336,11 +339,11 @@
                     registeredAt: new Date().toISOString(),
                     createdAt: new Date().toISOString()
                 };
-                HMS.users.add(newUser);
+                await HMS.users.add(newUser);
             }
-            
+
             // Mark token as used (prevents reuse)
-            HMS.tokens.markUsed(tokenString);
+            await HMS.tokens.markUsed(tokenString);
             
             // Show success
             document.getElementById('form-section').style.display = 'none';

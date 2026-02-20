@@ -42,9 +42,8 @@ Key methods follow a consistent pattern:
 - `Entity.getAll()` - List all records
 - `Entity.update(id, data)` - Modify existing record
 - `Entity.delete(id)` - Remove record
-- `HMS.reset()` - Clear all data (for testing)
 
-**Note:** Data is stored in `localStorage` with key `adinath_hospital_hms`. In production, migrate to a real database (Supabase/Firebase).
+**Note:** All data methods are async (return Promises). Data is stored in Supabase (PostgreSQL).
 
 ### Internationalization (`js/i18n.js`)
 
@@ -243,10 +242,10 @@ If pre-commit checks fail, fix issues and commit again (never use `--no-verify`)
 
 ### Data Persistence
 
-- All data stored in `localStorage` (key: `adinath_hospital_hms`)
-- Data persists between page reloads within same browser
-- **Testing:** Use `HMS.reset()` in browser console to reinitialize demo data
-- **Production migration:** Needs cloud database (Supabase/Firebase recommended)
+- All data stored in Supabase (PostgreSQL with Row Level Security)
+- Data syncs across devices and browsers via Supabase session
+- **Auth:** Supabase Auth (email/password, Google OAuth)
+- `localStorage` only used for UI preferences (language, accessibility settings)
 
 ### Security Considerations
 
@@ -319,7 +318,7 @@ If pre-commit checks fail, fix issues and commit again (never use `--no-verify`)
 
 ### Data Not Persisting
 
-Run `HMS.reset()` in browser console to reinitialize localStorage, then refresh page.
+Check Supabase connection in browser console. Verify `HMS.init()` completes without errors. Check network tab for failed Supabase API calls.
 
 ### Tests Failing
 

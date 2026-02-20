@@ -135,6 +135,18 @@ describe('SecurityUtils.validateInput()', () => {
 describe('SecurityUtils.logSecurityEvent()', () => {
   beforeEach(() => {
     localStorage.clear();
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    console.warn.mockRestore();
+  });
+
+  test('should always log to console.warn regardless of environment', () => {
+    SecurityUtils.logSecurityEvent('login_attempt', { email: 'test@test.com' });
+    expect(console.warn).toHaveBeenCalledWith('[SECURITY]', expect.objectContaining({
+      event: 'login_attempt',
+    }));
   });
 
   test('should log event to localStorage', () => {
@@ -143,6 +155,12 @@ describe('SecurityUtils.logSecurityEvent()', () => {
     expect(logs.length).toBe(1);
     expect(logs[0].event).toBe('login_attempt');
     expect(logs[0].details.email).toBe('test@test.com');
+  });
+
+  test('should include timestamp in log entry', () => {
+    SecurityUtils.logSecurityEvent('access_denied');
+    const logs = JSON.parse(localStorage.getItem('security_logs'));
+    expect(logs[0].timestamp).toBeDefined();
   });
 
   test('should cap logs at 100 entries', () => {

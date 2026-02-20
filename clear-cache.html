@@ -189,12 +189,11 @@
                     }
                 }
                 
-                // 3. Clear localStorage HMS data
-                addLog('Clearing local storage...');
-                const keysToKeep = ['hms_logged_in', 'hms_role', 'hms_user_email'];
+                // 3. Clear localStorage preferences
+                addLog('Clearing local storage preferences...');
                 let cleared = 0;
-                for (let key of Object.keys(localStorage)) {
-                    if (key.startsWith('hms_') && !keysToKeep.includes(key)) {
+                for (const key of Object.keys(localStorage)) {
+                    if (key.startsWith('hms_') || key.startsWith('security_')) {
                         localStorage.removeItem(key);
                         cleared++;
                     }

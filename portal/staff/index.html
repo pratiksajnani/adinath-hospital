@@ -347,6 +347,7 @@
         </div>
     </main>
     
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="../../js/i18n.js"></script>
     <script src="../../js/hms.js"></script>
     <script>
@@ -359,9 +360,9 @@
         });
         
         // Load queue
-        function refreshQueue() {
+        async function refreshQueue() {
             const today = new Date().toISOString().split('T')[0];
-            const appointments = HMS.appointments.getByDate(today);
+            const appointments = await HMS.appointments.getByDate(today);
             const waiting = appointments.filter(a => ['pending', 'confirmed', 'waiting'].includes(a.status));
             
             document.getElementById('waitingCount').textContent = waiting.length;
@@ -387,22 +388,22 @@
         }
         
         // Generate and send link
-        function generateLink() {
+        async function generateLink() {
             const name = document.getElementById('linkPatientName').value;
             const phone = document.getElementById('linkPatientPhone').value;
             const doctor = document.getElementById('linkDoctor').value;
-            
+
             if (!name || !phone) {
                 alert('Please enter patient name and phone number');
                 return null;
             }
-            
-            const link = HMS.patientLinks.generate({ name, phone }, 'U004'); // Poonam's ID
+
+            const link = await HMS.patientLinks.generate({ name, phone }, 'U004'); // Poonam's ID
             return { link, name, phone, doctor };
         }
-        
-        function sendViaSMS() {
-            const data = generateLink();
+
+        async function sendViaSMS() {
+            const data = await generateLink();
             if (!data) return;
             
             const lang = document.getElementById('linkLanguage').value;
@@ -418,8 +419,8 @@
             addToRecentLinks(data);
         }
         
-        function sendViaWhatsApp() {
-            const data = generateLink();
+        async function sendViaWhatsApp() {
+            const data = await generateLink();
             if (!data) return;
             
             const lang = document.getElementById('linkLanguage').value;
@@ -435,8 +436,8 @@
             addToRecentLinks(data);
         }
         
-        function showQR() {
-            const data = generateLink();
+        async function showQR() {
+            const data = await generateLink();
             if (!data) return;
             
             showLinkResult(data.link);
@@ -484,7 +485,7 @@
         }
         
         // Initialize
-        refreshQueue();
+        (async () => { await HMS.init(); await refreshQueue(); })();
         
         // Initialize feedback widget for staff role
         if (typeof initFeedbackWidget === 'function') {

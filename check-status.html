@@ -328,6 +328,7 @@
         <a href="index.html" class="back-link">← Back to Homepage</a>
     </div>
     
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
     <script src="js/hms.js"></script>
     <script src="js/i18n.js"></script>
@@ -421,41 +422,45 @@
             return translations[currentLang][key] || translations['en'][key] || key;
         }
         
-        document.getElementById('lookupForm').addEventListener('submit', function(e) {
+        document.addEventListener('DOMContentLoaded', async () => {
+            await HMS.init();
+        });
+
+        document.getElementById('lookupForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const phone = document.getElementById('phoneInput').value.trim();
             if (phone.length !== 10) {
                 alert('Please enter a valid 10-digit phone number');
                 return;
             }
-            
+
             // Show loading
             document.getElementById('loadingState').style.display = 'block';
             document.getElementById('resultsSection').classList.remove('show');
             document.getElementById('noResults').style.display = 'none';
-            
+
             // Simulate search delay for UX
-            setTimeout(() => {
-                searchAppointments(phone);
+            setTimeout(async () => {
+                await searchAppointments(phone);
             }, 800);
         });
         
-        function searchAppointments(phone) {
+        async function searchAppointments(phone) {
             document.getElementById('loadingState').style.display = 'none';
-            
+
             // Get appointments from HMS
-            const allAppointments = HMS.appointments.getAll();
-            const matching = allAppointments.filter(a => 
+            const allAppointments = await HMS.appointments.getAll();
+            const matching = allAppointments.filter(a =>
                 a.phone && a.phone.replace(/\D/g, '').includes(phone)
             );
-            
+
             // Also check patients
-            const patients = HMS.patients.getAll();
-            const matchingPatient = patients.find(p => 
+            const patients = await HMS.patients.getAll();
+            const matchingPatient = patients.find(p =>
                 p.phone && p.phone.replace(/\D/g, '').includes(phone)
             );
-            
+
             if (matchingPatient) {
                 // Get all appointments for this patient
                 const patientAppts = allAppointments.filter(a => a.patientId === matchingPatient.id);
@@ -465,31 +470,8 @@
                     }
                 });
             }
-            
+
             if (matching.length === 0) {
-                // Add demo appointments for testing
-                if (phone === '9876543210') {
-                    displayAppointments([
-                        {
-                            id: 'demo1',
-                            doctor: 'Dr. Ashok Sajnani',
-                            date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-                            time: '11:30 AM',
-                            reason: 'Knee Pain Consultation',
-                            status: 'confirmed'
-                        },
-                        {
-                            id: 'demo2',
-                            doctor: 'Dr. Sunita Sajnani',
-                            date: '2024-12-10',
-                            time: '3:00 PM',
-                            reason: 'Follow-up Visit',
-                            status: 'completed'
-                        }
-                    ]);
-                    return;
-                }
-                
                 document.getElementById('noResults').style.display = 'block';
             } else {
                 displayAppointments(matching);

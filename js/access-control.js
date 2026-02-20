@@ -1,15 +1,11 @@
 // ============================================
 // ACCESS CONTROL & SECURITY
-// Role-based page access management
+// Role-based page access management (Supabase)
 // ============================================
-
 const AccessControl = {
-    // Define page access rules
-    // 'public' = anyone can access
-    // 'authenticated' = any logged in user
-    // Array of roles = only those roles can access
+    // Page access rules
+    // 'public' = anyone, 'authenticated' = any logged-in user, array = specific roles
     rules: {
-        // Public pages - anyone can access
         '/': 'public',
         '/index.html': 'public',
         '/book.html': 'public',
@@ -22,32 +18,24 @@ const AccessControl = {
         '/services/gynecology.html': 'public',
         '/services/yoga.html': 'public',
 
-        // Onboarding - requires valid token (handled by page itself)
         '/onboard/': 'public',
         '/onboard/admin.html': 'public',
         '/onboard/doctor.html': 'public',
         '/onboard/staff.html': 'public',
         '/onboard/patient.html': 'public',
 
-        // Documentation/Guides - public for now
         '/docs/': 'public',
         '/docs/PATIENT_GUIDE.html': 'public',
         '/docs/PATIENT_DEMO.html': 'public',
         '/docs/share-links.html': 'public',
 
-        // Staff-only guides
         '/docs/STAFF_GUIDE.html': ['admin', 'staff', 'receptionist'],
-
-        // Doctor-only guides
         '/docs/DOCTOR_GUIDE.html': ['admin', 'doctor'],
-
-        // Admin-only guides
         '/docs/ADMIN_GUIDE.html': ['admin'],
         '/docs/SITEADMIN_DEMO.html': ['admin'],
         '/docs/test-matrix.html': ['admin'],
         '/docs/send-registration-links.html': ['admin'],
 
-        // Forms - staff and above
         '/forms/': ['admin', 'doctor', 'staff', 'receptionist'],
         '/forms/index.html': ['admin', 'doctor', 'staff', 'receptionist'],
         '/forms/patient-intake.html': ['admin', 'doctor', 'staff', 'receptionist'],
@@ -56,57 +44,42 @@ const AccessControl = {
         '/forms/discharge.html': ['admin', 'doctor'],
         '/forms/data-collection/': ['admin'],
 
-        // Portal - role-specific access
         '/portal/': 'authenticated',
         '/portal/index.html': 'authenticated',
 
-        // Admin portal
         '/portal/admin/': ['admin'],
         '/portal/admin/index.html': ['admin'],
         '/portal/admin/manage.html': ['admin'],
         '/portal/admin/send-registration.html': ['admin'],
 
-        // Doctor portal
         '/portal/doctor/': ['admin', 'doctor'],
         '/portal/doctor/index.html': ['admin', 'doctor'],
         '/portal/doctor/simple.html': ['admin', 'doctor'],
 
-        // Staff portal
         '/portal/staff/': ['admin', 'staff', 'receptionist', 'nurse', 'pharmacist'],
         '/portal/staff/index.html': ['admin', 'staff', 'receptionist', 'nurse', 'pharmacist'],
 
-        // Patient portal
         '/portal/patient/': ['admin', 'patient'],
         '/portal/patient/index.html': ['admin', 'patient'],
         '/portal/patient/appointments.html': ['admin', 'patient'],
         '/portal/patient/prescriptions.html': ['admin', 'patient'],
 
-        // Store dashboard - staff only
         '/store/': ['admin', 'staff', 'receptionist', 'pharmacist'],
         '/store/index.html': ['admin', 'staff', 'receptionist', 'pharmacist'],
 
-        // Cache clear - admin only
         '/clear-cache.html': ['admin'],
     },
 
-    // Get current user role
-    getCurrentRole() {
-        const isLoggedIn = localStorage.getItem('hms_logged_in') === 'true';
-        if (!isLoggedIn) {
-            return null;
-        }
-        return localStorage.getItem('hms_role');
+    // Get current user role from Supabase
+    async getCurrentRole() {
+        return HMS.auth.getRole();
     },
 
-    // Check if user can access current page
-    canAccess(path) {
-        const role = this.getCurrentRole();
-
-        // Find matching rule (check exact match first, then prefix match)
+    // Check if user can access a given path
+    canAccessWithRole(path, role) {
         let rule = this.rules[path];
 
         if (!rule) {
-            // Try prefix matching for directories
             const pathParts = path.split('/').filter((p) => p);
             for (let i = pathParts.length; i >= 0; i--) {
                 const prefix = `/${pathParts.slice(0, i).join('/')}/`;
@@ -117,34 +90,24 @@ const AccessControl = {
             }
         }
 
-        // Default to public if no rule found
         if (!rule) {
             return true;
         }
-
-        // Public pages
         if (rule === 'public') {
             return true;
         }
-
-        // Authenticated pages
         if (rule === 'authenticated') {
             return !!role;
         }
-
-        // Role-specific pages
         if (Array.isArray(rule)) {
             return rule.includes(role);
         }
-
         return false;
     },
 
-    // Enforce access control
-    enforce() {
+    // Enforce access control (async)
+    async enforce() {
         const path = window.location.pathname;
-
-        // Normalize path
         let normalizedPath = path;
         if (path.includes('/adinath-hospital')) {
             normalizedPath = path.replace('/adinath-hospital', '');
@@ -153,15 +116,13 @@ const AccessControl = {
             normalizedPath = `/${normalizedPath}`;
         }
 
-        if (!this.canAccess(normalizedPath)) {
-            const role = this.getCurrentRole();
+        const role = await this.getCurrentRole();
 
+        if (!this.canAccessWithRole(normalizedPath, role)) {
             if (!role) {
-                // Not logged in - redirect to login
                 const returnUrl = encodeURIComponent(window.location.href);
                 window.location.assign(`${this.getBasePath()}login.html?redirect=${returnUrl}`);
             } else {
-                // Logged in but unauthorized - show error and redirect
                 // eslint-disable-next-line no-alert -- Intentional user notification
                 window.alert(
                     '⛔ Access Denied\n\nYou do not have permission to access this page.\nRedirecting to your dashboard...'
@@ -171,8 +132,7 @@ const AccessControl = {
         }
     },
 
-    // Get base path for current environment
-    // Accepts optional path parameter for testing
+    // Get base path for relative navigation
     getBasePath(testPath = null) {
         const path = testPath || window.location.pathname;
         if (
@@ -214,38 +174,11 @@ const AccessControl = {
         window.location.assign(basePath + portal);
     },
 
-    // Add security headers via meta tags (CSP, etc.)
-    addSecurityMeta() {
-        // Content Security Policy
-        const csp = document.createElement('meta');
-        csp.httpEquiv = 'Content-Security-Policy';
-        csp.content =
-            "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https:;";
-
-        // X-Content-Type-Options
-        const xcto = document.createElement('meta');
-        xcto.httpEquiv = 'X-Content-Type-Options';
-        xcto.content = 'nosniff';
-
-        // X-Frame-Options
-        const xfo = document.createElement('meta');
-        xfo.httpEquiv = 'X-Frame-Options';
-        xfo.content = 'SAMEORIGIN';
-
-        // Referrer Policy
-        const rp = document.createElement('meta');
-        rp.name = 'referrer';
-        rp.content = 'strict-origin-when-cross-origin';
-
-        document.head.prepend(rp, xfo, xcto, csp);
-    },
-
     // Session timeout (auto logout after inactivity)
     sessionTimeout: 30 * 60 * 1000, // 30 minutes
     lastActivity: Date.now(),
 
     initSessionTimeout() {
-        // Update last activity on user interaction
         ['mousedown', 'keydown', 'scroll', 'touchstart'].forEach((event) => {
             document.addEventListener(
                 event,
@@ -256,39 +189,24 @@ const AccessControl = {
             );
         });
 
-        // Check for timeout every minute
-        setInterval(() => {
-            const role = this.getCurrentRole();
+        setInterval(async () => {
+            const role = await this.getCurrentRole();
             if (role && Date.now() - this.lastActivity > this.sessionTimeout) {
                 // eslint-disable-next-line no-alert -- Intentional user notification
                 window.alert('⏰ Session Expired\n\nYou have been logged out due to inactivity.');
-                this.logout();
+                await this.logout();
             }
         }, 60000);
     },
 
-    // Secure logout
-    logout() {
-        localStorage.removeItem('hms_logged_in');
-        localStorage.removeItem('hms_role');
-        localStorage.removeItem('hms_user_email');
-        localStorage.removeItem('hms_user_name');
-        localStorage.removeItem('hms_current_user');
-        localStorage.removeItem('hms_auth_method');
-        localStorage.removeItem('hms_doctor');
-        localStorage.removeItem('hms_doctor_id');
-        localStorage.removeItem('hms_demo_user');
-        localStorage.removeItem('currentPatient');
-
+    // Secure logout via Supabase
+    async logout() {
+        await HMS.auth.signOut();
         window.location.assign(`${this.getBasePath()}index.html`);
     },
 
-    // Initialize
-    init() {
-        // Add security meta tags
-        this.addSecurityMeta();
-
-        // Enforce access control (skip for public pages to avoid redirect loops)
+    // Initialize (async)
+    async init() {
         const publicPaths = [
             '/',
             '/index.html',
@@ -304,17 +222,17 @@ const AccessControl = {
             !currentPath.startsWith('/services/') &&
             !currentPath.startsWith('/onboard/')
         ) {
-            this.enforce();
+            await this.enforce();
         }
 
-        // Initialize session timeout for authenticated users
-        if (this.getCurrentRole()) {
+        const role = await this.getCurrentRole();
+        if (role) {
             this.initSessionTimeout();
         }
     },
 };
 
-// Auto-initialize when DOM is ready
+// Auto-initialize when DOM is ready (async)
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => AccessControl.init());
 } else {

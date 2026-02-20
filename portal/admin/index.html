@@ -624,6 +624,7 @@
         </main>
     </div>
     
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="../../js/config.js"></script>
     <script src="../../js/hms.js"></script>
     <script>
@@ -631,66 +632,48 @@
         document.addEventListener('DOMContentLoaded', () => {
             checkAuth();
         });
-        
-        function checkAuth() {
-            const isLoggedIn = localStorage.getItem('hms_logged_in') === 'true';
-            const role = localStorage.getItem('hms_role');
-            const adminRegistered = localStorage.getItem('admin_registered');
-            
-            // Allow access if logged in as admin or if admin is registered
-            if (isLoggedIn && (role === 'admin' || adminRegistered)) {
+
+        async function checkAuth() {
+            await HMS.init();
+            const role = await HMS.auth.getRole();
+
+            if (role === 'admin') {
                 document.getElementById('authOverlay').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'grid';
-                
-                // Load admin data
-                const adminData = JSON.parse(localStorage.getItem('admin_data') || '{}');
-                if (adminData.name) {
-                    document.getElementById('adminName').textContent = adminData.name.split(' ')[0];
-                    document.getElementById('userName').textContent = adminData.name;
-                    document.getElementById('userAvatar').textContent = adminData.name.split(' ').map(n => n[0]).join('');
+
+                // Load admin profile data
+                const profile = await HMS.auth.getProfile();
+                if (profile && profile.name) {
+                    document.getElementById('adminName').textContent = profile.name.split(' ')[0];
+                    document.getElementById('userName').textContent = profile.name;
+                    document.getElementById('userAvatar').textContent = profile.name.split(' ').map(n => n[0]).join('');
                 }
-                
-                // Show security method
-                const securityMethod = localStorage.getItem('admin_security_method');
-                if (securityMethod) {
-                    document.getElementById('securityBadge').innerHTML = `🔐 ${securityMethod}`;
-                    document.getElementById('twoFAStatus').innerHTML = `🔐 ${securityMethod}`;
-                }
-                
+
                 loadDashboard();
-            } else {
-                // Check if coming from login
-                const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.get('demo') === 'true') {
-                    // Demo access
-                    localStorage.setItem('hms_logged_in', 'true');
-                    localStorage.setItem('hms_role', 'admin');
-                    location.reload();
-                }
             }
-            
-            document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-IN', { 
-                weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
+
+            document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-IN', {
+                weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
             });
         }
-        
-        function loadDashboard() {
+
+        async function loadDashboard() {
             const today = new Date().toISOString().split('T')[0];
-            const appointments = HMS.appointments.getByDate(today);
-            const patients = HMS.patients.getAll();
-            const lowStock = HMS.inventory.getLowStock();
-            
+            const appointments = await HMS.appointments.getByDate(today);
+            const patients = await HMS.patients.getAll();
+            const lowStock = await HMS.inventory.getLowStock();
+
             document.getElementById('statAppointments').textContent = appointments.length;
             document.getElementById('statPatients').textContent = patients.length;
-            document.getElementById('statSales').textContent = HMS.utils.formatCurrency(HMS.sales.getTodayTotal());
+            document.getElementById('statSales').textContent = HMS.utils.formatCurrency(await HMS.sales.getTodayTotal());
             document.getElementById('statCompleted').textContent = appointments.filter(a => a.status === 'completed').length;
-            
+
             renderAppointments(appointments);
             renderPatients(patients);
-            renderAlerts(lowStock);
-            
-            document.getElementById('patientSearch').addEventListener('input', (e) => {
-                const results = HMS.patients.search(e.target.value);
+            renderAlerts(lowStock, appointments);
+
+            document.getElementById('patientSearch').addEventListener('input', async (e) => {
+                const results = await HMS.patients.search(e.target.value);
                 renderPatients(results);
             });
         }
@@ -737,10 +720,10 @@
             `).join('');
         }
         
-        function renderAlerts(lowStock) {
+        function renderAlerts(lowStock, appointments) {
             const container = document.getElementById('alertsList');
             let html = '';
-            
+
             if (lowStock.length > 0) {
                 lowStock.forEach(item => {
                     html += `
@@ -754,8 +737,8 @@
                     `;
                 });
             }
-            
-            const pending = HMS.appointments.getByDate(new Date().toISOString().split('T')[0]).filter(a => a.status === 'pending');
+
+            const pending = appointments.filter(a => a.status === 'pending');
             if (pending.length > 0) {
                 html += `
                     <div class="alert-item info">
@@ -767,12 +750,12 @@
                     </div>
                 `;
             }
-            
+
             container.innerHTML = html || '<p style="text-align: center; color: var(--text-light);">No alerts 🎉</p>';
         }
-        
-        function updateStatus(id, status) {
-            HMS.appointments.updateStatus(id, status);
+
+        async function updateStatus(id, status) {
+            await HMS.appointments.updateStatus(id, status);
             loadDashboard();
         }
         
@@ -788,10 +771,9 @@
             else document.getElementById('tab-overview').classList.add('active');
         }
         
-        function logout() {
+        async function logout() {
             if (confirm('Are you sure you want to logout?')) {
-                localStorage.removeItem('hms_logged_in');
-                localStorage.removeItem('hms_role');
+                await HMS.auth.signOut();
                 window.location.href = '../../login.html';
             }
         }

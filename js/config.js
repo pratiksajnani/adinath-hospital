@@ -1,42 +1,19 @@
 // ============================================
 // ADINATH HOSPITAL - CONFIGURATION
-// Environment detection and base URL
+// Supabase connection and base URL
 // ============================================
 
-// Detect environment from hostname
-const HOSTNAME = window.location.hostname;
-
-const ENV = (() => {
-    if (HOSTNAME.includes('localhost') || HOSTNAME.includes('127.0.0.1')) {
-        return 'local';
-    } else if (HOSTNAME.includes('github.io')) {
-        return 'github'; // GitHub Pages (demo)
-    } else if (HOSTNAME.includes('amplifyapp.com')) {
-        return 'staging'; // AWS Amplify staging
-    } else if (HOSTNAME.includes('adinathhealth.com')) {
-        return 'production'; // Production domain
-    }
-    return 'production'; // Custom domain
-})();
-
 const CONFIG = {
-    ENV,
+    // Base URL for GitHub Pages path prefix (empty for production/local)
+    BASE_URL: window.location.hostname.includes('github.io') ? '/adinath-hospital' : '',
 
-    // Base URL configuration
-    BASE_URL: (() => {
-        switch (ENV) {
-            case 'github':
-                return '/adinath-hospital'; // GitHub Pages project path
-            default:
-                return ''; // No prefix for local, staging, production
-        }
-    })(),
+    // Supabase connection
+    SUPABASE_URL: 'https://lhwqwloibxiiqtgaoxqp.supabase.co',
+    SUPABASE_ANON_KEY:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxod3F3bG9pYnhpaXF0Z2FveHFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMzMzMzksImV4cCI6MjA4MTkwOTMzOX0.s5IuG7e50dam4QAPpyTXEYoNHIWv8PupOgXx8Y_Rv0Y',
 };
-
-// Log environment info (for debugging)
-console.info(`🏥 Adinath Hospital | Environment: ${ENV} | Base: ${CONFIG.BASE_URL || '/'}`);
 
 // Export for use in other files
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { CONFIG, ENV };
+    module.exports = { CONFIG };
 }

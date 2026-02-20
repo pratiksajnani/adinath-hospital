@@ -31,6 +31,7 @@ export default [
         HMS: 'readonly',
         I18N: 'readonly',
         CONFIG: 'readonly',
+        AccessControl: 'readonly',
         SupabaseClient: 'readonly',
         supabase: 'readonly',
         SupabaseAuth: 'readonly',

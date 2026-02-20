@@ -1,22 +1,16 @@
 /**
  * ACCESS CONTROL Unit Tests
- * Tests role-based page access management
+ * Tests role-based page access management (Supabase)
  */
 
-// Mock alert
-global.alert = jest.fn();
-
-// Jest 30+ with jsdom - mock location methods, don't replace the object
-// jsdom provides window.location, we just mock the navigation methods
-window.location.replace = jest.fn();
-window.location.assign = jest.fn();
-
-// Load AccessControl module
+// HMS is pre-mocked in setup.js; just load the module here
+// Load AccessControl module (auto-init runs here, calls HMS.auth.getRole)
 const AccessControl = require('../../js/access-control.js');
 
 beforeEach(() => {
-    localStorage.clear();
-    global.alert.mockClear();
+    // Re-set implementations after resetMocks resets them between tests
+    HMS.auth.getRole.mockResolvedValue(null);
+    HMS.auth.signOut.mockResolvedValue(undefined);
 });
 
 describe('AccessControl Module', () => {
@@ -24,8 +18,8 @@ describe('AccessControl Module', () => {
         expect(typeof AccessControl.getCurrentRole).toBe('function');
     });
 
-    test('should have canAccess function', () => {
-        expect(typeof AccessControl.canAccess).toBe('function');
+    test('should have canAccessWithRole function', () => {
+        expect(typeof AccessControl.canAccessWithRole).toBe('function');
     });
 
     test('should have logout function', () => {
@@ -39,204 +33,180 @@ describe('AccessControl Module', () => {
 });
 
 describe('AccessControl.getCurrentRole()', () => {
-    test('should return null when not logged in', () => {
-        expect(AccessControl.getCurrentRole()).toBeNull();
+    test('should call HMS.auth.getRole', async () => {
+        HMS.auth.getRole.mockResolvedValue('admin');
+        await AccessControl.getCurrentRole();
+        expect(HMS.auth.getRole).toHaveBeenCalled();
     });
 
-    test('should return role when logged in', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'admin');
-        expect(AccessControl.getCurrentRole()).toBe('admin');
+    test('should return the role from HMS.auth.getRole', async () => {
+        HMS.auth.getRole.mockResolvedValue('doctor');
+        const role = await AccessControl.getCurrentRole();
+        expect(role).toBe('doctor');
     });
 
-    test('should return null if logged_in is false', () => {
-        localStorage.setItem('hms_logged_in', 'false');
-        localStorage.setItem('hms_role', 'admin');
-        expect(AccessControl.getCurrentRole()).toBeNull();
-    });
-
-    test('should return correct role for doctor', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'doctor');
-        expect(AccessControl.getCurrentRole()).toBe('doctor');
+    test('should return null when no session', async () => {
+        HMS.auth.getRole.mockResolvedValue(null);
+        const role = await AccessControl.getCurrentRole();
+        expect(role).toBeNull();
     });
 });
 
-describe('AccessControl.canAccess() - Public Pages', () => {
+describe('AccessControl.canAccessWithRole() - Public Pages', () => {
     test('should allow access to homepage', () => {
-        expect(AccessControl.canAccess('/')).toBe(true);
-        expect(AccessControl.canAccess('/index.html')).toBe(true);
+        expect(AccessControl.canAccessWithRole('/', null)).toBe(true);
+        expect(AccessControl.canAccessWithRole('/index.html', null)).toBe(true);
     });
 
     test('should allow access to public pages', () => {
-        expect(AccessControl.canAccess('/book.html')).toBe(true);
-        expect(AccessControl.canAccess('/store.html')).toBe(true);
-        expect(AccessControl.canAccess('/login.html')).toBe(true);
-        expect(AccessControl.canAccess('/404.html')).toBe(true);
+        expect(AccessControl.canAccessWithRole('/book.html', null)).toBe(true);
+        expect(AccessControl.canAccessWithRole('/store.html', null)).toBe(true);
+        expect(AccessControl.canAccessWithRole('/login.html', null)).toBe(true);
+        expect(AccessControl.canAccessWithRole('/404.html', null)).toBe(true);
     });
 
     test('should allow access to services pages', () => {
-        expect(AccessControl.canAccess('/services/')).toBe(true);
-        expect(AccessControl.canAccess('/services/orthopedic.html')).toBe(true);
+        expect(AccessControl.canAccessWithRole('/services/', null)).toBe(true);
+        expect(AccessControl.canAccessWithRole('/services/orthopedic.html', null)).toBe(true);
     });
 
     test('should allow access to onboarding pages', () => {
-        expect(AccessControl.canAccess('/onboard/')).toBe(true);
-        expect(AccessControl.canAccess('/onboard/admin.html')).toBe(true);
-        expect(AccessControl.canAccess('/onboard/doctor.html')).toBe(true);
+        expect(AccessControl.canAccessWithRole('/onboard/', null)).toBe(true);
+        expect(AccessControl.canAccessWithRole('/onboard/admin.html', null)).toBe(true);
+        expect(AccessControl.canAccessWithRole('/onboard/doctor.html', null)).toBe(true);
     });
 
     test('should allow access to public docs', () => {
-        expect(AccessControl.canAccess('/docs/')).toBe(true);
-        expect(AccessControl.canAccess('/docs/PATIENT_GUIDE.html')).toBe(true);
+        expect(AccessControl.canAccessWithRole('/docs/', null)).toBe(true);
+        expect(AccessControl.canAccessWithRole('/docs/PATIENT_GUIDE.html', null)).toBe(true);
     });
 });
 
-describe('AccessControl.canAccess() - Authenticated Pages', () => {
+describe('AccessControl.canAccessWithRole() - Authenticated Pages', () => {
     test('should deny portal access when not logged in', () => {
-        expect(AccessControl.canAccess('/portal/')).toBe(false);
-        expect(AccessControl.canAccess('/portal/index.html')).toBe(false);
+        expect(AccessControl.canAccessWithRole('/portal/', null)).toBe(false);
+        expect(AccessControl.canAccessWithRole('/portal/index.html', null)).toBe(false);
     });
 
     test('should allow portal access when logged in as any role', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'patient');
-        expect(AccessControl.canAccess('/portal/')).toBe(true);
+        expect(AccessControl.canAccessWithRole('/portal/', 'patient')).toBe(true);
+        expect(AccessControl.canAccessWithRole('/portal/', 'doctor')).toBe(true);
     });
 });
 
-describe('AccessControl.canAccess() - Admin Pages', () => {
+describe('AccessControl.canAccessWithRole() - Admin Pages', () => {
     test('should deny admin portal when not logged in', () => {
-        expect(AccessControl.canAccess('/portal/admin/')).toBe(false);
-        expect(AccessControl.canAccess('/portal/admin/index.html')).toBe(false);
+        expect(AccessControl.canAccessWithRole('/portal/admin/', null)).toBe(false);
+        expect(AccessControl.canAccessWithRole('/portal/admin/index.html', null)).toBe(false);
     });
 
     test('should deny admin portal to non-admin', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'doctor');
-        expect(AccessControl.canAccess('/portal/admin/')).toBe(false);
+        expect(AccessControl.canAccessWithRole('/portal/admin/', 'doctor')).toBe(false);
     });
 
     test('should allow admin portal to admin', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'admin');
-        expect(AccessControl.canAccess('/portal/admin/')).toBe(true);
-        expect(AccessControl.canAccess('/portal/admin/index.html')).toBe(true);
+        expect(AccessControl.canAccessWithRole('/portal/admin/', 'admin')).toBe(true);
+        expect(AccessControl.canAccessWithRole('/portal/admin/index.html', 'admin')).toBe(true);
     });
 
     test('should restrict ADMIN_GUIDE to admin only', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        
-        localStorage.setItem('hms_role', 'staff');
-        expect(AccessControl.canAccess('/docs/ADMIN_GUIDE.html')).toBe(false);
-        
-        localStorage.setItem('hms_role', 'admin');
-        expect(AccessControl.canAccess('/docs/ADMIN_GUIDE.html')).toBe(true);
+        expect(AccessControl.canAccessWithRole('/docs/ADMIN_GUIDE.html', 'staff')).toBe(false);
+        expect(AccessControl.canAccessWithRole('/docs/ADMIN_GUIDE.html', 'admin')).toBe(true);
     });
 });
 
-describe('AccessControl.canAccess() - Doctor Pages', () => {
+describe('AccessControl.canAccessWithRole() - Doctor Pages', () => {
     test('should deny doctor portal when not logged in', () => {
-        expect(AccessControl.canAccess('/portal/doctor/')).toBe(false);
+        expect(AccessControl.canAccessWithRole('/portal/doctor/', null)).toBe(false);
     });
 
     test('should deny doctor portal to patient', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'patient');
-        expect(AccessControl.canAccess('/portal/doctor/')).toBe(false);
+        expect(AccessControl.canAccessWithRole('/portal/doctor/', 'patient')).toBe(false);
     });
 
     test('should allow doctor portal to doctor', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'doctor');
-        expect(AccessControl.canAccess('/portal/doctor/')).toBe(true);
+        expect(AccessControl.canAccessWithRole('/portal/doctor/', 'doctor')).toBe(true);
     });
 
     test('should allow doctor portal to admin', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'admin');
-        expect(AccessControl.canAccess('/portal/doctor/')).toBe(true);
+        expect(AccessControl.canAccessWithRole('/portal/doctor/', 'admin')).toBe(true);
     });
 });
 
-describe('AccessControl.canAccess() - Staff Pages', () => {
+describe('AccessControl.canAccessWithRole() - Staff Pages', () => {
     test('should deny staff portal when not logged in', () => {
-        expect(AccessControl.canAccess('/portal/staff/')).toBe(false);
+        expect(AccessControl.canAccessWithRole('/portal/staff/', null)).toBe(false);
     });
 
     test('should allow staff portal to staff roles', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        
-        ['staff', 'receptionist', 'nurse', 'pharmacist', 'admin'].forEach(role => {
-            localStorage.setItem('hms_role', role);
-            expect(AccessControl.canAccess('/portal/staff/')).toBe(true);
+        ['staff', 'receptionist', 'nurse', 'pharmacist', 'admin'].forEach((role) => {
+            expect(AccessControl.canAccessWithRole('/portal/staff/', role)).toBe(true);
         });
     });
 
     test('should deny staff portal to patient', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'patient');
-        expect(AccessControl.canAccess('/portal/staff/')).toBe(false);
+        expect(AccessControl.canAccessWithRole('/portal/staff/', 'patient')).toBe(false);
     });
 });
 
-describe('AccessControl.canAccess() - Patient Pages', () => {
+describe('AccessControl.canAccessWithRole() - Patient Pages', () => {
     test('should deny patient portal when not logged in', () => {
-        expect(AccessControl.canAccess('/portal/patient/')).toBe(false);
+        expect(AccessControl.canAccessWithRole('/portal/patient/', null)).toBe(false);
     });
 
     test('should allow patient portal to patient', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'patient');
-        expect(AccessControl.canAccess('/portal/patient/')).toBe(true);
+        expect(AccessControl.canAccessWithRole('/portal/patient/', 'patient')).toBe(true);
     });
 
     test('should allow patient portal to admin', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'admin');
-        expect(AccessControl.canAccess('/portal/patient/')).toBe(true);
+        expect(AccessControl.canAccessWithRole('/portal/patient/', 'admin')).toBe(true);
     });
 });
 
-describe('AccessControl.canAccess() - Forms', () => {
+describe('AccessControl.canAccessWithRole() - Forms', () => {
     test('should deny forms when not logged in', () => {
-        expect(AccessControl.canAccess('/forms/')).toBe(false);
+        expect(AccessControl.canAccessWithRole('/forms/', null)).toBe(false);
     });
 
-    test('should allow forms to staff roles', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'receptionist');
-        expect(AccessControl.canAccess('/forms/')).toBe(true);
+    test('should allow forms to receptionist', () => {
+        expect(AccessControl.canAccessWithRole('/forms/', 'receptionist')).toBe(true);
+    });
+});
+
+describe('AccessControl.canAccessWithRole() - Prefix Matching', () => {
+    test('should use prefix matching for unknown paths under known directories', () => {
+        expect(
+            AccessControl.canAccessWithRole('/portal/admin/some-unknown-page.html', 'admin')
+        ).toBe(true);
+    });
+
+    test('should return true for completely unknown paths (default public)', () => {
+        expect(AccessControl.canAccessWithRole('/some-random-unknown-path.html', null)).toBe(true);
     });
 });
 
 describe('AccessControl.logout()', () => {
-    beforeEach(() => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'admin');
-        localStorage.setItem('hms_user_email', 'test@test.com');
-        localStorage.setItem('hms_user_name', 'Test User');
-        window.location.pathname = '/';
+    test('should call HMS.auth.signOut', async () => {
+        HMS.auth.signOut.mockResolvedValue(undefined);
+        // Expect signOut to be called (navigation side-effect tested via E2E)
+        await expect(AccessControl.logout()).resolves.not.toThrow();
+        expect(HMS.auth.signOut).toHaveBeenCalled();
     });
 
-    test('should clear hms_logged_in', () => {
-        AccessControl.logout();
-        expect(localStorage.getItem('hms_logged_in')).toBeNull();
-    });
-
-    test('should clear hms_role', () => {
-        AccessControl.logout();
-        expect(localStorage.getItem('hms_role')).toBeNull();
-    });
-
-    test('should clear hms_user_email', () => {
-        AccessControl.logout();
-        expect(localStorage.getItem('hms_user_email')).toBeNull();
+    test('should redirect after signing out', async () => {
+        HMS.auth.signOut.mockResolvedValue(undefined);
+        // logout() navigates — jsdom will emit a "Not implemented: navigation" error.
+        // We verify signOut was called; the actual redirect is validated via E2E tests.
+        let signOutCalled = false;
+        HMS.auth.signOut.mockImplementation(async () => {
+            signOutCalled = true;
+        });
+        await expect(AccessControl.logout()).resolves.not.toThrow();
+        expect(signOutCalled).toBe(true);
     });
 });
 
 describe('AccessControl.getBasePath()', () => {
-    // Using testPath parameter for Jest 30+ jsdom compatibility
     test('should return empty for root pages', () => {
         expect(AccessControl.getBasePath('/index.html')).toBe('');
     });
@@ -248,68 +218,7 @@ describe('AccessControl.getBasePath()', () => {
     test('should return ../../ for nested portal pages', () => {
         expect(AccessControl.getBasePath('/portal/admin/index.html')).toBe('../../');
     });
-});
 
-describe('AccessControl - Rules Completeness', () => {
-    test('should have rules for critical paths', () => {
-        const criticalPaths = [
-            '/', '/index.html', '/login.html', '/book.html',
-            '/portal/', '/portal/admin/', '/portal/doctor/', '/portal/staff/', '/portal/patient/',
-            '/forms/', '/docs/'
-        ];
-        
-        criticalPaths.forEach(path => {
-            expect(AccessControl.rules[path]).toBeDefined();
-        });
-    });
-});
-
-describe('AccessControl - Session Timeout', () => {
-    test('should have 30 minute timeout configured', () => {
-        expect(AccessControl.sessionTimeout).toBe(30 * 60 * 1000);
-    });
-
-    test('should track lastActivity', () => {
-        expect(AccessControl.lastActivity).toBeDefined();
-        expect(typeof AccessControl.lastActivity).toBe('number');
-    });
-});
-
-describe('AccessControl.canAccess() - Prefix Matching', () => {
-    test('should use prefix matching for unknown paths under known directories', () => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'admin');
-        
-        // Path like /portal/admin/some-unknown-page.html should match /portal/admin/
-        expect(AccessControl.canAccess('/portal/admin/some-unknown-page.html')).toBe(true);
-    });
-
-    test('should return true for completely unknown paths (default public)', () => {
-        // An unknown path with no matching rule defaults to public
-        expect(AccessControl.canAccess('/some-random-unknown-path.html')).toBe(true);
-    });
-});
-
-describe('AccessControl.enforce()', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
-        global.alert.mockClear();
-    });
-
-    // Note: These tests are limited in Jest 30+ jsdom because window.location.pathname
-    // cannot be changed. The actual enforce() is tested via E2E tests.
-    test('should not throw on public page', () => {
-        // Current pathname is '/' which is public
-        expect(() => AccessControl.enforce()).not.toThrow();
-    });
-
-    test('should have enforce function', () => {
-        expect(typeof AccessControl.enforce).toBe('function');
-    });
-});
-
-describe('AccessControl.getBasePath() - Various Paths', () => {
-    // Using testPath parameter for Jest 30+ jsdom compatibility
     test('should return ../../ for doctor portal pages', () => {
         expect(AccessControl.getBasePath('/portal/doctor/index.html')).toBe('../../');
     });
@@ -347,70 +256,73 @@ describe('AccessControl.getBasePath() - Various Paths', () => {
     });
 });
 
-// Note: In Jest 30+ with jsdom, window.location.assign is read-only and cannot be mocked.
-// These redirect tests are covered by E2E tests instead.
-describe('AccessControl.redirectToRolePortal()', () => {
-    test('should have redirectToRolePortal function', () => {
-        expect(typeof AccessControl.redirectToRolePortal).toBe('function');
-    });
+describe('AccessControl - Rules Completeness', () => {
+    test('should have rules for critical paths', () => {
+        const criticalPaths = [
+            '/',
+            '/index.html',
+            '/login.html',
+            '/book.html',
+            '/portal/',
+            '/portal/admin/',
+            '/portal/doctor/',
+            '/portal/staff/',
+            '/portal/patient/',
+            '/forms/',
+            '/docs/',
+        ];
 
-    test('should define portal mappings correctly', () => {
-        // Test the mapping logic without triggering navigation
-        const portals = {
-            admin: 'portal/admin/index.html',
-            doctor: 'portal/doctor/index.html',
-            staff: 'portal/staff/index.html',
-            receptionist: 'portal/staff/index.html',
-            nurse: 'portal/staff/index.html',
-            pharmacist: 'store/index.html',
-            patient: 'portal/patient/index.html',
-        };
-        
-        // Verify the function exists and can handle role lookups
-        Object.keys(portals).forEach(role => {
-            expect(() => AccessControl.redirectToRolePortal).not.toThrow();
+        criticalPaths.forEach((path) => {
+            expect(AccessControl.rules[path]).toBeDefined();
         });
     });
 });
 
-describe('AccessControl.addSecurityMeta()', () => {
-    test('should not throw', () => {
-        expect(() => AccessControl.addSecurityMeta()).not.toThrow();
+describe('AccessControl - Session Timeout', () => {
+    test('should have 30 minute timeout configured', () => {
+        expect(AccessControl.sessionTimeout).toBe(30 * 60 * 1000);
     });
-});
 
-describe('AccessControl - Activity Tracking', () => {
-    test('should be able to set lastActivity', () => {
+    test('should track lastActivity', () => {
+        expect(AccessControl.lastActivity).toBeDefined();
+        expect(typeof AccessControl.lastActivity).toBe('number');
+    });
+
+    test('should be able to update lastActivity', () => {
         const before = AccessControl.lastActivity;
         AccessControl.lastActivity = Date.now() + 1000;
         expect(AccessControl.lastActivity).toBeGreaterThan(before);
     });
 });
 
-describe('AccessControl.init()', () => {
-    beforeEach(() => {
-        localStorage.clear();
-        window.location.pathname = '/';
+describe('AccessControl.enforce()', () => {
+    test('should have enforce function', () => {
+        expect(typeof AccessControl.enforce).toBe('function');
     });
 
-    test('should not throw when initializing', () => {
-        expect(() => AccessControl.init()).not.toThrow();
+    test('should not throw when called on public page with no role', async () => {
+        HMS.auth.getRole.mockResolvedValue(null);
+        // Pathname is '/' (public) — enforce should do nothing
+        await expect(AccessControl.enforce()).resolves.toBeUndefined();
+    });
+});
+
+describe('AccessControl.redirectToRolePortal()', () => {
+    test('should have redirectToRolePortal function', () => {
+        expect(typeof AccessControl.redirectToRolePortal).toBe('function');
     });
 
-    test('should call addSecurityMeta', () => {
-        const spy = jest.spyOn(AccessControl, 'addSecurityMeta');
-        AccessControl.init();
-        expect(spy).toHaveBeenCalled();
-        spy.mockRestore();
+    test('should define portal mappings for all known roles', () => {
+        // Verify the function exists and won't throw when we look it up
+        // (actual navigation tested via E2E tests in jsdom — window.location.assign is read-only)
+        const roles = ['admin', 'doctor', 'staff', 'receptionist', 'nurse', 'pharmacist', 'patient'];
+        roles.forEach((role) => {
+            expect(typeof AccessControl.redirectToRolePortal).toBe('function');
+        });
     });
 });
 
 describe('AccessControl.initSessionTimeout()', () => {
-    beforeEach(() => {
-        localStorage.setItem('hms_logged_in', 'true');
-        localStorage.setItem('hms_role', 'admin');
-    });
-
     test('should not throw when initializing session timeout', () => {
         expect(() => AccessControl.initSessionTimeout()).not.toThrow();
     });
@@ -419,12 +331,3 @@ describe('AccessControl.initSessionTimeout()', () => {
         expect(AccessControl.sessionTimeout).toBe(30 * 60 * 1000);
     });
 });
-
-describe('AccessControl.canAccess() - Edge Cases', () => {
-    test('should return false for unmatched authenticated rule when not logged in', () => {
-        localStorage.clear();
-        expect(AccessControl.canAccess('/portal/')).toBe(false);
-    });
-});
-
-

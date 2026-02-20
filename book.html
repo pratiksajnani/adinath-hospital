@@ -601,12 +601,14 @@
         </div>
     </main>
 
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/hms.js"></script>
     <script src="js/main.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            await HMS.init();
             const form = document.getElementById('appointmentForm');
             const dateInput = document.getElementById('date');
             const whatsappBtn = document.getElementById('whatsappBook');
@@ -636,16 +638,16 @@
             }
             
             // Form submission
-            form.addEventListener('submit', (e) => {
+            form.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                
+
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
-                
+
                 // Check if patient exists, else create
-                let patient = HMS.patients.getAll().find(p => p.phone.includes(data.phone));
+                let patient = (await HMS.patients.getAll()).find(p => p.phone.includes(data.phone));
                 if (!patient) {
-                    patient = HMS.patients.add({
+                    patient = await HMS.patients.add({
                         name: data.name,
                         phone: data.phone,
                         age: parseInt(data.age) || 0,
@@ -654,11 +656,11 @@
                     });
                 } else {
                     // Update visit count
-                    HMS.patients.update(patient.id, { visits: patient.visits + 1 });
+                    await HMS.patients.update(patient.id, { visits: patient.visits + 1 });
                 }
-                
+
                 // Create appointment
-                const appointment = HMS.appointments.add({
+                const appointment = await HMS.appointments.add({
                     patientId: patient.id,
                     patientName: data.name,
                     doctor: data.doctor === 'Dr. Ashok Sajnani' ? 'ashok' : 'sunita',

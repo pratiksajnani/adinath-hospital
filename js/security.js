@@ -2,8 +2,6 @@
 // SECURITY UTILITIES
 // Input validation and security logging
 // ============================================
-/* global ENV */
-
 const SecurityUtils = {
     /**
      * Escape HTML special characters
@@ -84,9 +82,7 @@ const SecurityUtils = {
             url: window.location.href,
             userAgent: navigator.userAgent,
         };
-        if (typeof ENV !== 'undefined' && ENV === 'local') {
-            console.warn('[SECURITY]', log);
-        }
+        console.warn('[SECURITY]', log);
         try {
             const logs = JSON.parse(localStorage.getItem('security_logs') || '[]');
             logs.push(log);

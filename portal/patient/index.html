@@ -18,7 +18,7 @@
             --success: #22c55e;
         }
         body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-        
+
         /* Header */
         .header {
             background: var(--primary);
@@ -31,10 +31,10 @@
         .header h1 { font-size: 1.25rem; display: flex; align-items: center; gap: 10px; }
         .header nav a { color: white; text-decoration: none; margin-left: 24px; opacity: 0.9; }
         .header nav a:hover { opacity: 1; }
-        
+
         /* Container */
         .container { max-width: 1000px; margin: 0 auto; padding: 32px; }
-        
+
         /* Welcome Section */
         .welcome {
             background: linear-gradient(135deg, var(--primary), #1e4d35);
@@ -47,11 +47,11 @@
         .welcome h2 { font-size: 2rem; margin-bottom: 8px; }
         .welcome p { opacity: 0.9; margin-bottom: 24px; }
         .welcome-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-        
+
         /* Auth Section */
         .auth-section { display: none; }
         .auth-section.active { display: block; }
-        
+
         .auth-card {
             background: var(--card);
             border-radius: 20px;
@@ -68,11 +68,11 @@
         }
         .auth-header h2 { margin-bottom: 8px; }
         .auth-body { padding: 32px; }
-        
+
         /* Dashboard Section */
         .dashboard-section { display: none; }
         .dashboard-section.active { display: block; }
-        
+
         /* Cards */
         .card {
             background: var(--card);
@@ -90,10 +90,10 @@
         }
         .card-header h3 { font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
         .card-body { padding: 24px; }
-        
+
         /* Grid */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-        
+
         /* Form */
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
@@ -106,7 +106,7 @@
             transition: all 0.2s;
         }
         .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
-        
+
         /* Buttons */
         .btn {
             display: inline-flex;
@@ -128,7 +128,7 @@
         .btn-outline:hover { background: rgba(255,255,255,0.1); }
         .btn-block { width: 100%; }
         .btn-success { background: var(--success); color: white; }
-        
+
         /* Appointment Cards */
         .appointment-card {
             display: flex;
@@ -163,7 +163,7 @@
         .status-pending { background: #fef3c7; color: #b45309; }
         .status-confirmed { background: #dbeafe; color: #1d4ed8; }
         .status-completed { background: #dcfce7; color: #16a34a; }
-        
+
         /* Prescription Cards */
         .rx-card {
             border: 2px solid var(--border);
@@ -176,16 +176,16 @@
         .rx-meds { background: var(--bg); padding: 16px; border-radius: 10px; }
         .rx-meds li { padding: 8px 0; border-bottom: 1px dashed var(--border); list-style: none; }
         .rx-meds li:last-child { border-bottom: none; }
-        
+
         /* Profile Info */
         .profile-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
         .profile-item label { display: block; font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; margin-bottom: 4px; }
         .profile-item span { font-size: 1.1rem; font-weight: 500; }
-        
+
         /* Empty State */
         .empty-state { text-align: center; padding: 60px; color: var(--text-light); }
         .empty-state .icon { font-size: 4rem; margin-bottom: 16px; opacity: 0.5; }
-        
+
         /* Quick Actions */
         .quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
         .quick-action {
@@ -200,7 +200,7 @@
         .quick-action:hover { border-color: var(--primary); transform: translateY(-2px); }
         .quick-action .icon { font-size: 2rem; margin-bottom: 12px; }
         .quick-action span { color: var(--text-light); font-size: 0.9rem; }
-        
+
         @media (max-width: 768px) {
             .grid-2, .quick-actions { grid-template-columns: 1fr; }
             .header { flex-direction: column; gap: 16px; }
@@ -220,7 +220,7 @@
             <a href="#" onclick="logout()" id="logoutBtn" style="display: none;">🚪 Logout</a>
         </nav>
     </header>
-    
+
     <!-- Auth Section -->
     <section class="auth-section active" id="authSection">
         <div class="auth-card">
@@ -240,14 +240,14 @@
                 <button class="btn btn-primary btn-block" onclick="patientLogin()">
                     Login →
                 </button>
-                
+
                 <p style="text-align: center; margin-top: 24px; color: var(--text-light);">
                     New patient? <a href="../../book.html" style="color: var(--primary); font-weight: 500;">Book your first appointment</a>
                 </p>
             </div>
         </div>
     </section>
-    
+
     <!-- Dashboard Section -->
     <section class="dashboard-section" id="dashboardSection">
         <div class="container">
@@ -260,7 +260,7 @@
                     <a href="../../store.html" class="btn btn-outline">💊 Order Medicines</a>
                 </div>
             </div>
-            
+
             <!-- Quick Actions -->
             <div class="quick-actions">
                 <div class="quick-action" onclick="location.href='../../book.html'">
@@ -280,7 +280,7 @@
                     <span>WhatsApp Us</span>
                 </div>
             </div>
-            
+
             <!-- Main Content -->
             <div class="grid-2">
                 <!-- Upcoming Appointments -->
@@ -292,7 +292,7 @@
                         <!-- Loaded dynamically -->
                     </div>
                 </div>
-                
+
                 <!-- Profile -->
                 <div class="card">
                     <div class="card-header">
@@ -306,7 +306,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Prescriptions -->
             <div class="card">
                 <div class="card-header">
@@ -318,60 +318,63 @@
             </div>
         </div>
     </section>
-    
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="../../js/hms.js"></script>
     <script>
         let currentPatient = null;
-        
+
         // Check if already logged in
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedPatient = localStorage.getItem('currentPatient');
+        document.addEventListener('DOMContentLoaded', async () => {
+            await HMS.init();
+            const savedPatient = sessionStorage.getItem('currentPatient');
             if (savedPatient) {
                 currentPatient = JSON.parse(savedPatient);
                 showDashboard();
             }
         });
-        
-        function patientLogin() {
+
+        async function patientLogin() {
             const phone = document.getElementById('loginPhone').value.trim();
             const name = document.getElementById('loginName').value.trim();
-            
+
             if (!phone || !name) {
                 alert('Please enter both phone number and name');
                 return;
             }
-            
+
             // Search for patient
-            let patient = HMS.patients.getAll().find(p => 
+            const allPatients = await HMS.patients.getAll();
+            let patient = allPatients.find(p =>
                 p.phone.includes(phone) && p.name.toLowerCase().includes(name.toLowerCase())
             );
-            
+
             // If not found, create new patient
             if (!patient) {
                 if (confirm('Patient not found. Would you like to register?')) {
                     const age = prompt('Enter your age:');
                     const gender = prompt('Enter gender (male/female):');
-                    patient = HMS.patients.add({ name, phone, age: parseInt(age) || 0, gender: gender || 'other', address: '' });
+                    patient = await HMS.patients.add({ name, phone, age: parseInt(age) || 0, gender: gender || 'other', address: '' });
                 } else {
                     return;
                 }
             }
-            
+
             currentPatient = patient;
-            localStorage.setItem('currentPatient', JSON.stringify(patient));
+            sessionStorage.setItem('currentPatient', JSON.stringify(patient));
             showDashboard();
         }
-        
+
         function showDashboard() {
             document.getElementById('authSection').classList.remove('active');
             document.getElementById('dashboardSection').classList.add('active');
             document.getElementById('logoutBtn').style.display = 'inline';
             document.getElementById('patientNameDisplay').textContent = currentPatient.name.split(' ')[0];
-            
+
             loadDashboardData();
         }
-        
-        function loadDashboardData() {
+
+        async function loadDashboardData() {
             // Load profile
             const profileHtml = `
                 <div class="profile-item">
@@ -400,11 +403,11 @@
                 </div>
             `;
             document.getElementById('profileInfo').innerHTML = profileHtml;
-            
+
             // Load appointments
-            const appointments = HMS.appointments.getByPatient(currentPatient.id);
+            const appointments = await HMS.appointments.getByPatient(currentPatient.id);
             const aptContainer = document.getElementById('appointmentsList');
-            
+
             if (appointments.length === 0) {
                 aptContainer.innerHTML = `
                     <div class="empty-state">
@@ -432,11 +435,11 @@
                     `;
                 }).join('');
             }
-            
+
             // Load prescriptions
-            const prescriptions = HMS.prescriptions.getByPatient(currentPatient.id);
+            const prescriptions = await HMS.prescriptions.getByPatient(currentPatient.id);
             const rxContainer = document.getElementById('prescriptionsList');
-            
+
             if (prescriptions.length === 0) {
                 rxContainer.innerHTML = `
                     <div class="empty-state">
@@ -466,23 +469,23 @@
                 `).join('');
             }
         }
-        
-        function logout() {
-            localStorage.removeItem('currentPatient');
+
+        async function logout() {
+            sessionStorage.removeItem('currentPatient');
             currentPatient = null;
             document.getElementById('authSection').classList.add('active');
             document.getElementById('dashboardSection').classList.remove('active');
             document.getElementById('logoutBtn').style.display = 'none';
         }
-        
+
         function editProfile() {
             alert('Profile editing coming soon! Please contact the hospital for updates.');
         }
-        
+
         function printRx(id) {
             alert('🖨️ Prescription ready to print!\n\nCollect from medical store.');
         }
-        
+
         function contactWhatsApp() {
             window.open('https://wa.me/919925450425?text=Hi, I am ' + currentPatient.name + ' (ID: ' + currentPatient.id + '). I need assistance.', '_blank');
         }
@@ -492,4 +495,3 @@
 <script src="../../js/access-control.js"></script>
 </body>
 </html>
-

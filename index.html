@@ -479,6 +479,7 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="js/config.js"></script>
     <script src="js/security.js"></script>
     <script src="js/booking-wizard.js"></script>
@@ -500,10 +501,11 @@
         }
 
         // User Status Display
-        function updateUserStatus() {
-            const isLoggedIn = localStorage.getItem('hms_logged_in') === 'true';
-            const role = localStorage.getItem('hms_role');
-            const userName = localStorage.getItem('hms_user_name') || localStorage.getItem('hms_user_email');
+        async function updateUserStatus() {
+            await HMS.init();
+            const role = await HMS.auth.getRole();
+            const profile = await HMS.auth.getProfile();
+            const userName = profile ? (profile.name || profile.email) : null;
 
             const userIcon = document.getElementById('userIcon');
             const userDisplayName = document.getElementById('userDisplayName');
@@ -514,7 +516,7 @@
             const myPortalLink = document.getElementById('myPortalLink');
             const adminOnlyLinks = document.getElementById('adminOnlyLinks');
 
-            if (isLoggedIn && role) {
+            if (role) {
                 const roleIcons = {
                     'admin': '\u{1f451}',
                     'doctor': '\u{1f468}\u200d\u2695\ufe0f',
@@ -556,19 +558,13 @@
             }
         }
 
-        function logoutUser() {
-            localStorage.removeItem('hms_logged_in');
-            localStorage.removeItem('hms_role');
-            localStorage.removeItem('hms_user_email');
-            localStorage.removeItem('hms_user_name');
-            localStorage.removeItem('hms_current_user');
-            localStorage.removeItem('hms_auth_method');
-            updateUserStatus();
-            alert('\u2705 Logged out successfully!');
+        async function logoutUser() {
+            await HMS.auth.signOut();
+            await updateUserStatus();
         }
 
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', updateUserStatus);
+        document.addEventListener('DOMContentLoaded', () => updateUserStatus());
     </script>
     <script src="js/user-status.js"></script>
 </body>

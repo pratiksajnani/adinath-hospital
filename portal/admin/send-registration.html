@@ -238,6 +238,7 @@
     
     <div class="success-toast" id="toast">✅ Link copied to clipboard!</div>
     
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="../../js/hms.js"></script>
     <script>
         // Doctor configuration (no static tokens - they're generated securely)
@@ -253,55 +254,51 @@
                 email: 'sunita.sajnani9@gmail.com'
             }
         };
-        
+
         // Store generated links
         const generatedLinks = {};
-        
+
         // Generate secure links on load
-        document.addEventListener('DOMContentLoaded', function() {
-            Object.keys(doctors).forEach(id => {
+        document.addEventListener('DOMContentLoaded', async function() {
+            await HMS.init();
+
+            for (const id of Object.keys(doctors)) {
                 const doctor = doctors[id];
-                
+
                 // Check registration status first
-                if (typeof HMS !== 'undefined') {
-                    HMS.init();
-                    const user = HMS.users.getByEmail(doctor.email);
-                    if (user && user.registered) {
-                        document.getElementById(`${id}-status`).textContent = '✅ Registered';
-                        document.getElementById(`${id}-status`).className = 'doctor-status status-registered';
-                        document.getElementById(`${id}-card`).classList.add('sent');
-                        document.getElementById(`${id}-link`).innerHTML = 
-                            '<span style="color:#236b48;">✓ Already registered. No link needed.</span>';
-                        return;
-                    }
-                    
-                    // Generate secure token using HMS.tokens
-                    const linkInfo = HMS.tokens.generateLink({
-                        targetEmail: doctor.email,
-                        targetRole: 'doctor',
-                        expiresInHours: 72,
-                        createdBy: 'admin'
-                    });
-                    
-                    generatedLinks[id] = linkInfo;
-                    
-                    const expiresAt = new Date(linkInfo.expiresAt);
-                    const expiresIn = Math.round((expiresAt - new Date()) / (1000 * 60 * 60));
-                    
-                    document.getElementById(`${id}-link`).innerHTML = 
-                        `<div style="word-break:break-all;">${linkInfo.link}</div>
-                         <div style="font-size:11px; color:#64748b; margin-top:4px;">
-                            🔐 Secure token • Expires in ${expiresIn} hours ${linkInfo.isExisting ? '(existing)' : '(new)'}
-                         </div>`;
+                const user = await HMS.users.getByEmail(doctor.email);
+                if (user && user.registered) {
+                    document.getElementById(`${id}-status`).textContent = '✅ Registered';
+                    document.getElementById(`${id}-status`).className = 'doctor-status status-registered';
+                    document.getElementById(`${id}-card`).classList.add('sent');
+                    document.getElementById(`${id}-link`).textContent = '✓ Already registered. No link needed.';
+                    document.getElementById(`${id}-link`).style.color = '#236b48';
+                    continue;
                 }
-            });
+
+                // Generate secure token using HMS.tokens
+                const linkInfo = await HMS.tokens.generateLink({
+                    targetEmail: doctor.email,
+                    targetRole: 'doctor',
+                    expiresInHours: 72,
+                    createdBy: 'admin'
+                });
+
+                generatedLinks[id] = linkInfo;
+
+                const expiresAt = new Date(linkInfo.expiresAt);
+                const expiresIn = Math.round((expiresAt - new Date()) / (1000 * 60 * 60));
+
+                document.getElementById(`${id}-link`).textContent =
+                    `${linkInfo.link} — Expires in ${expiresIn} hours ${linkInfo.isExisting ? '(existing)' : '(new)'}`;
+            }
         });
-        
-        function getLink(doctorId) {
+
+        async function getLink(doctorId) {
             if (!generatedLinks[doctorId]) {
                 // Generate if not already
                 const doctor = doctors[doctorId];
-                generatedLinks[doctorId] = HMS.tokens.generateLink({
+                generatedLinks[doctorId] = await HMS.tokens.generateLink({
                     targetEmail: doctor.email,
                     targetRole: 'doctor',
                     expiresInHours: 72,
@@ -310,10 +307,10 @@
             }
             return generatedLinks[doctorId].link;
         }
-        
-        function sendViaWhatsApp(doctorId) {
+
+        async function sendViaWhatsApp(doctorId) {
             const doctor = doctors[doctorId];
-            const link = getLink(doctorId);
+            const link = await getLink(doctorId);
             const message = `Namaste ${doctor.name}! 🙏
 
 Welcome to Adinath Hospital's digital system.
@@ -339,8 +336,8 @@ This will allow you to:
             document.getElementById(`${doctorId}-status`).className = 'doctor-status status-sent';
         }
         
-        function copyLink(doctorId) {
-            const link = getLink(doctorId);
+        async function copyLink(doctorId) {
+            const link = await getLink(doctorId);
             navigator.clipboard.writeText(link).then(() => {
                 const toast = document.getElementById('toast');
                 toast.style.display = 'block';

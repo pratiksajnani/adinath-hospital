@@ -516,7 +516,7 @@
     <script src="js/i18n.js"></script>
     <script>
         let currentRole = 'doctor';
-        
+
         const features = {
             doctor: [
                 { icon: '📅', text: 'View today\'s appointments' },
@@ -537,30 +537,25 @@
                 { icon: '⚙️', text: 'System settings' }
             ]
         };
-        
-        // Production credentials (no demo display)
-        
+
         const doctorEmails = {
             ashok: 'drsajnani@gmail.com',
             sunita: 'sunita.sajnani9@gmail.com'
         };
 
+        // Initialize HMS on load
+        (async () => { await HMS.init(); })();
+
         function switchRole(role) {
             currentRole = role;
-
-            // Update tabs
             document.querySelectorAll('.role-tab').forEach(tab => {
                 tab.classList.toggle('active', tab.dataset.role === role);
             });
 
-            // Show/hide doctor select and email field
             const isDoctor = role === 'doctor';
-            document.getElementById('doctorSelectGroup').style.display =
-                isDoctor ? 'block' : 'none';
-            document.getElementById('usernameGroup').style.display =
-                isDoctor ? 'none' : 'block';
+            document.getElementById('doctorSelectGroup').style.display = isDoctor ? 'block' : 'none';
+            document.getElementById('usernameGroup').style.display = isDoctor ? 'none' : 'block';
 
-            // Auto-fill email for doctors
             if (isDoctor) {
                 const selected = document.getElementById('doctorSelect').value;
                 document.getElementById('username').value = doctorEmails[selected] || '';
@@ -568,7 +563,6 @@
                 document.getElementById('username').value = '';
             }
 
-            // Update features list (uses only hardcoded feature data, no user input)
             const featureList = document.getElementById('featureList');
             const roleName = role === 'doctor' ? 'Doctor' : role === 'staff' ? 'Staff' : 'Admin';
             featureList.textContent = '';
@@ -588,130 +582,47 @@
                 featureList.appendChild(item);
             });
         }
-        
-        // Initialize
+
         switchRole('doctor');
-        
-        // Show/hide messages
+
         function showSuccess(msg) {
             const el = document.getElementById('successMessage');
             el.textContent = msg;
             el.style.display = 'block';
             document.getElementById('errorMessage').style.display = 'none';
         }
-        
         function showError(msg) {
             const el = document.getElementById('errorMessage');
             el.textContent = msg;
             el.style.display = 'block';
             document.getElementById('successMessage').style.display = 'none';
         }
-        
         function hideMessages() {
             document.getElementById('successMessage').style.display = 'none';
             document.getElementById('errorMessage').style.display = 'none';
         }
-        
+
         // ============================================
-        // Google OAuth Login
+        // Google OAuth Login (via Supabase)
         // ============================================
-        // Allowed Google accounts for each role
-        // Gmail OAuth works for ALL roles - just enter your Gmail
-        const allowedGoogleAccounts = {
-            doctor: {
-                'drsajnani@gmail.com': { name: 'Dr. Ashok Sajnani', doctor: 'ashok' },
-                'sunita.sajnani9@gmail.com': { name: 'Dr. Sunita Sajnani', doctor: 'sunita' }
-            },
-            admin: {
-                'pratik.sajnani@gmail.com': { name: 'Pratik Sajnani' }
-            },
-            staff: {
-                // Any Gmail can be used for staff - they'll be verified in the system
-                '*': { name: 'Staff Member' }
-            }
-        };
-        
-        // Allow any Gmail for all roles (open OAuth)
-        const ALLOW_ANY_GMAIL = true;
-        
         async function loginWithGoogle() {
             hideMessages();
-            
-            // Check if Supabase is configured for real OAuth
-            if (typeof supabase !== 'undefined' && window.SUPABASE_URL && window.SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
-                try {
-                    const { data, error } = await supabase.auth.signInWithOAuth({
-                        provider: 'google',
-                        options: {
-                            redirectTo: window.location.origin + '/portal/index.html'
-                        }
-                    });
-                    
-                    if (error) throw error;
-                    // Redirect happens automatically
-                } catch (err) {
-                    showError('Google login failed: ' + err.message);
-                }
-            } else {
-                // Local mode - prompt for Google email
-                // Gmail OAuth now works for ALL roles
-                const allowedEmails = allowedGoogleAccounts[currentRole] || {};
-                const emailList = Object.keys(allowedEmails).filter(e => e !== '*');
-                
-                // Show Google email prompt - allow any Gmail
-                let promptText = `🔐 Google Login for ${currentRole.charAt(0).toUpperCase() + currentRole.slice(1)}\n\nEnter your Gmail address:`;
-                if (emailList.length > 0) {
-                    promptText += `\n\nKnown accounts: ${emailList.join(', ')}`;
-                }
-                
-                const email = prompt(promptText);
-                
-                if (!email) return;
-                
-                const normalizedEmail = email.toLowerCase().trim();
-                
-                // Check if email ends with @gmail.com
-                if (!normalizedEmail.endsWith('@gmail.com')) {
-                    showError('Please use a Gmail address (@gmail.com)');
-                    return;
-                }
-                
-                // Get user data from known accounts or create generic one
-                let userData = allowedEmails[normalizedEmail];
-                
-                // If ALLOW_ANY_GMAIL is true, accept any Gmail
-                if (!userData && ALLOW_ANY_GMAIL) {
-                    // Extract name from email
-                    const namePart = normalizedEmail.split('@')[0].replace(/[._]/g, ' ');
-                    const capitalizedName = namePart.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-                    userData = { name: capitalizedName };
-                }
-                
-                if (userData) {
-                    // Valid Google account
-                    localStorage.setItem('hms_logged_in', 'true');
-                    localStorage.setItem('hms_role', currentRole);
-                    localStorage.setItem('hms_user_email', normalizedEmail);
-                    localStorage.setItem('hms_user_name', userData.name);
-                    localStorage.setItem('hms_auth_method', 'google');
-                    
-                    if (userData.doctor) {
-                        localStorage.setItem('hms_doctor_id', userData.doctor);
-                    }
-                    
-                    showSuccess(`✅ Welcome, ${userData.name}! Logging in with Google...`);
-                    setTimeout(() => redirectToPortal(currentRole), 1000);
-                } else {
-                    showError(`❌ Email not authorized for ${currentRole} login.\n\nAllowed: ${emailList.join(', ')}`);
-                }
+            try {
+                const result = await HMS.auth.signInWithOAuth('google', {
+                    redirectTo: window.location.origin + '/portal/index.html'
+                });
+                if (result.error) throw new Error(result.error);
+                // Redirect happens automatically via Supabase
+            } catch (err) {
+                showError('Google login failed: ' + err.message);
             }
         }
-        
+
         // ============================================
-        // Phone OTP Login
+        // Phone OTP Login (via Supabase)
         // ============================================
         let pendingPhone = '';
-        
+
         function showPhoneLogin() {
             hideMessages();
             document.getElementById('phoneModal').classList.add('show');
@@ -720,94 +631,66 @@
             document.getElementById('phoneNumber').value = '';
             document.getElementById('phoneNumber').focus();
         }
-        
+
         async function sendOTP() {
             const phone = document.getElementById('phoneNumber').value.trim();
-            
             if (!/^\d{10}$/.test(phone)) {
+                // eslint-disable-next-line no-alert
                 alert('Please enter a valid 10-digit phone number');
                 return;
             }
-            
             pendingPhone = phone;
-            
-            // Check if Supabase is configured
-            if (typeof supabase !== 'undefined' && window.SUPABASE_URL && window.SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
-                try {
-                    const { data, error } = await supabase.auth.signInWithOtp({
-                        phone: '+91' + phone
-                    });
-                    
-                    if (error) throw error;
-                    
-                    document.getElementById('phoneStep1').style.display = 'none';
-                    document.getElementById('phoneStep2').style.display = 'block';
-                    document.getElementById('phoneModalText').textContent = `OTP sent to +91 ${phone}`;
-                } catch (err) {
-                    alert('Failed to send OTP: ' + err.message);
-                }
-            } else {
-                // Demo mode
+
+            try {
+                const result = await HMS.auth.signInWithOtp({ phone: '+91' + phone });
+                if (result.error) throw new Error(result.error);
+
                 document.getElementById('phoneStep1').style.display = 'none';
                 document.getElementById('phoneStep2').style.display = 'block';
-                document.getElementById('phoneModalText').textContent = `Demo: Enter any 6 digits to login`;
-                
-                // Focus first OTP input
+                document.getElementById('phoneModalText').textContent = 'OTP sent to +91 ' + phone;
                 document.querySelector('.otp-input input').focus();
+            } catch (err) {
+                // eslint-disable-next-line no-alert
+                alert('Failed to send OTP: ' + err.message);
             }
         }
-        
+
         function moveToNext(input, index) {
             if (input.value.length === 1 && index < 6) {
-                const inputs = document.querySelectorAll('.otp-input input');
-                inputs[index].focus();
+                document.querySelectorAll('.otp-input input')[index].focus();
             }
         }
-        
+
         async function verifyOTP() {
             const inputs = document.querySelectorAll('.otp-input input');
             let otp = '';
             inputs.forEach(input => otp += input.value);
-            
+
             if (otp.length !== 6) {
+                // eslint-disable-next-line no-alert
                 alert('Please enter all 6 digits');
                 return;
             }
-            
-            // Check if Supabase is configured
-            if (typeof supabase !== 'undefined' && window.SUPABASE_URL && window.SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
-                try {
-                    const { data, error } = await supabase.auth.verifyOtp({
-                        phone: '+91' + pendingPhone,
-                        token: otp,
-                        type: 'sms'
-                    });
-                    
-                    if (error) throw error;
-                    
-                    // Success - redirect
-                    localStorage.setItem('hms_logged_in', 'true');
-                    localStorage.setItem('hms_auth_method', 'phone');
-                    closeModal('phoneModal');
-                    redirectToPortal(currentRole);
-                } catch (err) {
-                    alert('Invalid OTP: ' + err.message);
-                }
-            } else {
-                // Demo mode - accept any OTP
+
+            try {
+                const result = await HMS.auth.verifyOtp({
+                    phone: '+91' + pendingPhone,
+                    token: otp,
+                    type: 'sms'
+                });
+                if (result.error) throw new Error(result.error);
+
                 closeModal('phoneModal');
-                localStorage.setItem('hms_logged_in', 'true');
-                localStorage.setItem('hms_role', currentRole);
-                localStorage.setItem('hms_user_phone', pendingPhone);
-                localStorage.setItem('hms_auth_method', 'phone');
-                
-                showSuccess('✅ Phone verified! Redirecting...');
-                setTimeout(() => redirectToPortal(currentRole), 1000);
+                const role = await HMS.auth.getRole();
+                redirectToPortal(role || 'patient');
+            } catch (err) {
+                // eslint-disable-next-line no-alert
+                alert('Invalid OTP: ' + err.message);
             }
         }
-        
+
         // ============================================
-        // Magic Link Login
+        // Magic Link Login (via Supabase)
         // ============================================
         function showMagicLinkLogin() {
             hideMessages();
@@ -815,113 +698,63 @@
             document.getElementById('magicLinkEmail').value = '';
             document.getElementById('magicLinkEmail').focus();
         }
-        
+
         async function sendMagicLink() {
             const email = document.getElementById('magicLinkEmail').value.trim();
-            
             if (!email || !email.includes('@')) {
+                // eslint-disable-next-line no-alert
                 alert('Please enter a valid email address');
                 return;
             }
-            
-            // Check if Supabase is configured
-            if (typeof supabase !== 'undefined' && window.SUPABASE_URL && window.SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
-                try {
-                    const { data, error } = await supabase.auth.signInWithOtp({
-                        email: email,
-                        options: {
-                            emailRedirectTo: window.location.origin + '/portal/index.html'
-                        }
-                    });
-                    
-                    if (error) throw error;
-                    
-                    closeModal('magicLinkModal');
-                    showSuccess(`✨ Magic link sent to ${email}! Check your inbox.`);
-                } catch (err) {
-                    alert('Failed to send magic link: ' + err.message);
-                }
-            } else {
-                // Demo mode
+
+            try {
+                const result = await HMS.auth.signInWithOtp({
+                    email: email,
+                    options: { emailRedirectTo: window.location.origin + '/portal/index.html' }
+                });
+                if (result.error) throw new Error(result.error);
+
                 closeModal('magicLinkModal');
-                showSuccess(`✨ Demo Mode: Magic link would be sent to ${email}. Logging in automatically...`);
-                
-                setTimeout(() => {
-                    localStorage.setItem('hms_logged_in', 'true');
-                    localStorage.setItem('hms_role', currentRole);
-                    localStorage.setItem('hms_user_email', email);
-                    localStorage.setItem('hms_auth_method', 'magic_link');
-                    
-                    redirectToPortal(currentRole);
-                }, 2000);
+                showSuccess('Magic link sent to ' + email + '! Check your inbox.');
+            } catch (err) {
+                // eslint-disable-next-line no-alert
+                alert('Failed to send magic link: ' + err.message);
             }
         }
-        
+
         // ============================================
-        // Email/Password Login
+        // Email/Password Login (via Supabase)
         // ============================================
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             hideMessages();
-            
+
             const email = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const submitBtn = e.target.querySelector('button[type="submit"]');
-            
+
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '⏳ Logging in...';
-            
+            submitBtn.textContent = 'Logging in...';
+
             try {
-                // Check if Supabase is configured
-                if (typeof supabase !== 'undefined' && window.SUPABASE_URL && window.SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
-                    const { data, error } = await supabase.auth.signInWithPassword({
-                        email: email,
-                        password: password
-                    });
-                    
-                    if (error) throw error;
-                    
-                    // Get role from user metadata or default to current selected role
-                    const role = data.user?.user_metadata?.role || currentRole;
-                    localStorage.setItem('hms_logged_in', 'true');
-                    localStorage.setItem('hms_role', role);
-                    localStorage.setItem('hms_user_email', email);
-                    localStorage.setItem('hms_auth_method', 'password');
-                    
-                    redirectToPortal(role);
-                } else {
-                    // Local mode - check against HMS users
-                    const result = HMS.auth.login(email, password);
-                    
-                    if (result.error) {
-                        throw new Error(result.error);
-                    }
-                    
-                    if (result.success && result.user) {
-                        localStorage.setItem('hms_logged_in', 'true');
-                        localStorage.setItem('hms_role', result.user.role);
-                        localStorage.setItem('hms_user_email', result.user.email);
-                        localStorage.setItem('hms_user_name', result.user.name);
-                        localStorage.setItem('hms_auth_method', 'password');
-                        localStorage.setItem('hms_doctor', document.getElementById('doctorSelect').value);
-                        
-                        redirectToPortal(result.user.role);
-                    } else {
-                        throw new Error('Invalid email/username or password');
-                    }
-                }
+                const result = await HMS.auth.signIn(email, password);
+                if (result.error) throw new Error(result.error);
+
+                // Get role from profiles table
+                const role = await HMS.auth.getRole();
+                showSuccess('Login successful! Redirecting...');
+                setTimeout(() => redirectToPortal(role || currentRole), 500);
             } catch (err) {
                 showError(err.message || 'Login failed. Please try again.');
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = '🔓 Login to Dashboard';
+                submitBtn.textContent = 'Login to Dashboard';
             }
         });
-        
+
         // ============================================
         // Helpers
         // ============================================
         function redirectToPortal(role) {
-            // Honor ?redirect= param (e.g. from mockup auth gate)
             const params = new URLSearchParams(window.location.search);
             const redirectTo = params.get('redirect');
             if (redirectTo && redirectTo.startsWith('/')) {
@@ -932,8 +765,8 @@
             const doctor = document.getElementById('doctorSelect').value;
 
             if (role === 'doctor') {
-                window.location.href = `portal/doctor/simple.html?doctor=${doctor}`;
-            } else if (role === 'staff' || role === 'receptionist' || role === 'nurse' || role === 'pharmacist') {
+                window.location.href = 'portal/doctor/simple.html?doctor=' + doctor;
+            } else if (['staff', 'receptionist', 'nurse', 'pharmacist'].includes(role)) {
                 window.location.href = 'portal/staff/index.html';
             } else if (role === 'admin') {
                 window.location.href = 'portal/admin/index.html';
@@ -941,30 +774,22 @@
                 window.location.href = 'portal/index.html';
             }
         }
-        
+
         function closeModal(modalId) {
             document.getElementById(modalId).classList.remove('show');
         }
-        
-        function setLang(lang) {
-            if (typeof I18N !== 'undefined') {
-                I18N.setLanguage(lang);
-            }
-        }
-        
+
         // Close modals on escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('show'));
             }
         });
-        
+
         // Close modals on backdrop click
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
             overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    overlay.classList.remove('show');
-                }
+                if (e.target === overlay) overlay.classList.remove('show');
             });
         });
     </script>

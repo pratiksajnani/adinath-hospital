@@ -414,40 +414,42 @@
         </div>
     </div>
     
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="../../js/config.js"></script>
     <script src="../../js/hms.js"></script>
     <script>
         let selectedAppointment = null;
         let currentDoctor = 'ashok';
-        
+
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            await HMS.init();
             document.getElementById('todayDate').textContent = new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' });
-            loadDashboard();
-            
-            document.getElementById('doctorSelect').addEventListener('change', (e) => {
+            await loadDashboard();
+
+            document.getElementById('doctorSelect').addEventListener('change', async (e) => {
                 currentDoctor = e.target.value;
-                loadDashboard();
+                await loadDashboard();
             });
         });
-        
-        function loadDashboard() {
+
+        async function loadDashboard() {
             const today = new Date().toISOString().split('T')[0];
-            const appointments = HMS.appointments.getByDoctor(currentDoctor, today);
-            
+            const appointments = await HMS.appointments.getByDoctor(currentDoctor, today);
+
             // Update stats
-            const stats = HMS.appointments.getTodayStats();
             document.getElementById('statTotal').textContent = appointments.length;
             document.getElementById('statPending').textContent = appointments.filter(a => a.status === 'pending').length;
             document.getElementById('statWaiting').textContent = appointments.filter(a => a.status === 'waiting').length;
             document.getElementById('statCompleted').textContent = appointments.filter(a => a.status === 'completed').length;
-            
+
             // Render appointments
             const list = document.getElementById('appointmentsList');
             if (appointments.length === 0) {
                 list.innerHTML = `<div class="empty-state"><div class="icon">📅</div><p>No appointments today</p></div>`;
                 return;
             }
-            
+
             list.innerHTML = appointments.map(apt => `
                 <div class="appointment-item" onclick="selectAppointment('${apt.id}')">
                     <div class="appointment-time">${apt.time}</div>
@@ -459,10 +461,10 @@
                 </div>
             `).join('');
         }
-        
-        function selectAppointment(id) {
-            selectedAppointment = HMS.appointments.get(id);
-            const patient = HMS.patients.get(selectedAppointment.patientId);
+
+        async function selectAppointment(id) {
+            selectedAppointment = await HMS.appointments.get(id);
+            const patient = await HMS.patients.get(selectedAppointment.patientId);
             
             document.getElementById('noPatientSelected').style.display = 'none';
             document.getElementById('patientDetails').style.display = 'block';
@@ -477,10 +479,10 @@
             document.getElementById('patientAvatar').textContent = patient?.gender === 'female' ? '👩' : '👨';
         }
         
-        function updateAppointmentStatus(status) {
+        async function updateAppointmentStatus(status) {
             if (!selectedAppointment) return;
-            HMS.appointments.updateStatus(selectedAppointment.id, status);
-            loadDashboard();
+            await HMS.appointments.updateStatus(selectedAppointment.id, status);
+            await loadDashboard();
             alert(`✅ Status updated to: ${status}`);
         }
         
@@ -505,7 +507,7 @@
             container.appendChild(row);
         }
         
-        function savePrescription() {
+        async function savePrescription() {
             const medicines = [];
             document.querySelectorAll('.medicine-row').forEach(row => {
                 const inputs = row.querySelectorAll('input');
@@ -517,7 +519,7 @@
                     });
                 }
             });
-            
+
             const rx = {
                 patientId: selectedAppointment.patientId,
                 patientName: selectedAppointment.patientName,
@@ -527,33 +529,33 @@
                 advice: document.getElementById('rxAdvice').value,
                 followup: document.getElementById('rxFollowup').value
             };
-            
-            HMS.prescriptions.add(rx);
+
+            await HMS.prescriptions.add(rx);
             closeModal('prescriptionModal');
             alert('✅ Prescription saved! Ready to print.');
         }
-        
-        function sendSMS() {
+
+        async function sendSMS() {
             if (!selectedAppointment) return;
-            const patient = HMS.patients.get(selectedAppointment.patientId);
+            const patient = await HMS.patients.get(selectedAppointment.patientId);
             const message = prompt('Enter SMS message:', `Dear ${selectedAppointment.patientName}, your appointment at Adinath Hospital is confirmed. - Dr. ${currentDoctor === 'ashok' ? 'Ashok' : 'Sunita'} Sajnani`);
             if (message) {
                 alert(`📱 SMS would be sent to ${patient?.phone || 'patient'}\n\n"${message}"`);
             }
         }
         
-        function viewHistory() {
+        async function viewHistory() {
             if (!selectedAppointment) return;
-            const prescriptions = HMS.prescriptions.getByPatient(selectedAppointment.patientId);
-            const appointments = HMS.appointments.getByPatient(selectedAppointment.patientId);
+            const prescriptions = await HMS.prescriptions.getByPatient(selectedAppointment.patientId);
+            const appointments = await HMS.appointments.getByPatient(selectedAppointment.patientId);
             alert(`📋 Patient History\n\nTotal Visits: ${appointments.length}\nPrescriptions: ${prescriptions.length}\n\n(Full history view coming soon)`);
         }
-        
-        function addNotes() {
+
+        async function addNotes() {
             if (!selectedAppointment) return;
             const notes = prompt('Add notes for this visit:', selectedAppointment.notes || '');
             if (notes !== null) {
-                HMS.appointments.updateStatus(selectedAppointment.id, selectedAppointment.status, notes);
+                await HMS.appointments.updateStatus(selectedAppointment.id, selectedAppointment.status, notes);
                 alert('📝 Notes saved!');
             }
         }
