@@ -72,6 +72,9 @@ const AccessControl = {
 
     // Get current user role from Supabase
     async getCurrentRole() {
+        if (typeof HMS === 'undefined') {
+            return null;
+        }
         return HMS.auth.getRole();
     },
 
@@ -201,7 +204,9 @@ const AccessControl = {
 
     // Secure logout via Supabase
     async logout() {
-        await HMS.auth.signOut();
+        if (typeof HMS !== 'undefined') {
+            await HMS.auth.signOut();
+        }
         window.location.assign(`${this.getBasePath()}index.html`);
     },
 

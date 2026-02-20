@@ -11,16 +11,10 @@
   "id": "adinath-hospital",
   "icons": [
     {
-      "src": "images/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "images/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "src": "images/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
   ],
   "categories": ["health", "medical"],
@@ -29,19 +23,9 @@
   "shortcuts": [
     {
       "name": "Book Appointment",
+      "short_name": "Book",
       "url": "/book.html",
-      "description": "Book an appointment with our doctors",
-      "icons": [{ "src": "images/icon-book.png", "sizes": "96x96" }]
-    },
-    {
-      "name": "Call Hospital",
-      "url": "tel:+919925450425",
-      "description": "Call Adinath Hospital directly"
-    },
-    {
-      "name": "WhatsApp Us",
-      "url": "https://wa.me/919925450425",
-      "description": "Chat with us on WhatsApp"
+      "description": "Book an appointment with our doctors"
     }
   ],
   "related_applications": [],
