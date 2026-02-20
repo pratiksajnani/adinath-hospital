@@ -38,8 +38,10 @@ function injectUserStatus() {
     // Build widget using safe DOM methods
     const widget = document.createElement('div');
     widget.id = 'user-status-widget';
-    widget.style.cssText =
-        'position: fixed; top: 15px; right: 20px; z-index: 9999; font-family: "Segoe UI", system-ui, sans-serif;';
+    // Push below fixed header (72px) when one exists, otherwise sit at top
+    const hasHeader = document.querySelector('header, .header');
+    const topPos = hasHeader ? '80px' : '15px';
+    widget.style.cssText = `position: fixed; top: ${topPos}; right: 20px; z-index: 9999; font-family: "Segoe UI", system-ui, sans-serif;`;
 
     const btn = document.createElement('div');
     btn.id = 'user-status-btn';
